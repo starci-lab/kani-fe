@@ -1,10 +1,18 @@
-import { KaniButton, KaniNavbar, KaniNavbarBrand, KaniNavbarContent, KaniNavbarItem } from "../../atomic"
+import { 
+    KaniButton, 
+    KaniNavbar, 
+    KaniNavbarBrand, 
+    KaniNavbarContent, 
+    KaniNavbarItem
+} from "../../atomic"
 import { Link } from "@heroui/react"
 import React from "react"
-import { useConnectModalDisclosure } from "@/hooks/singleton"
+import { useAppSelector } from "@/redux"
+import { useRouter } from "next/navigation"
 
 export const Navbar = () => {
-    const { onOpen } = useConnectModalDisclosure()
+    const apiAuthRedirect = useAppSelector((state) => state.api.apiAuthRedirect)
+    const router = useRouter()
     return (
         <KaniNavbar>
             <KaniNavbarBrand>
@@ -30,7 +38,7 @@ export const Navbar = () => {
             <KaniNavbarContent justify="end">
                 <KaniNavbarItem className="hidden lg:flex">
                     <KaniButton onPress={() => {
-                        onOpen()
+                        apiAuthRedirect.redirectGoogle(router)
                     }}>Login</KaniButton>
                 </KaniNavbarItem>
                 <KaniNavbarItem>

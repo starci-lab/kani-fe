@@ -8,17 +8,22 @@
     "start": "next start"
   },
   "dependencies": {
+    "@apollo/client": "^4.0.6",
     "@heroui/react": "^2.8.4",
     "@reduxjs/toolkit": "^2.9.0",
+    "bn.js": "^5.2.2",
     "framer-motion": "^12.23.22",
     "next": "15.5.4",
     "react": "19.1.0",
     "react-dom": "19.1.0",
-    "react-redux": "^9.2.0"
+    "react-redux": "^9.2.0",
+    "superjson": "^2.2.2",
+    "swr": "^2.3.6"
   },
   "devDependencies": {
     "@eslint/js": "^9.36.0",
     "@tailwindcss/postcss": "^4",
+    "@types/bn.js": "^5.2.0",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
