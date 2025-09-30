@@ -5,6 +5,7 @@ import { SearchParamKey } from "@/modules/query"
 import { SessionStorage, SessionStorageKey } from "@/modules/storages"
 import { useSearchParams } from "next/navigation"
 import React, { useEffect } from "react"
+import { QRCode } from "@/components"
 
 const Page = () => {
     const searchParams = useSearchParams()
@@ -22,7 +23,7 @@ const Page = () => {
         handleEffect()
     }, [searchParams])
 
-    return <div>Callback {user?.email}</div>
+    return <div><QRCode /></div>
 }
 
 export default Page
