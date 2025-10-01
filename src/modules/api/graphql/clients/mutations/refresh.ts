@@ -9,6 +9,7 @@ const mutation1 = gql`
   mutation Refresh {
     refresh {
       success
+      error
       message
       data {
         accessToken

@@ -3,8 +3,6 @@ import React from "react"
 
 export const KaniButton = (props: ButtonProps) => {
     return (
-        <Button {...props}>
-            {props.children}
-        </Button>
+        <Button {...props}/>
     )
 }

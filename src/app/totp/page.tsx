@@ -1,16 +1,15 @@
 "use client"
 import { useQueryUserWithoutRetrySwrMutation } from "@/hooks/singleton"
-import { useAppSelector } from "@/redux"
 import { SearchParamKey } from "@/modules/query"
 import { SessionStorage, SessionStorageKey } from "@/modules/storages"
 import { useSearchParams } from "next/navigation"
 import React, { useEffect } from "react"
-import { QRCode } from "@/components"
+import { EnableTOTPCard } from "@/components"
+import { Spacer } from "@heroui/react"
 
 const Page = () => {
     const searchParams = useSearchParams()
     const queryUserMutation = useQueryUserWithoutRetrySwrMutation()
-    const user = useAppSelector(state => state.session.user)
     useEffect(() => {
         const handleEffect = async () => {
         // get access token from search params
@@ -23,7 +22,12 @@ const Page = () => {
         handleEffect()
     }, [searchParams])
 
-    return <div><QRCode /></div>
+    return <div>  
+        <Spacer y={10} />
+        <div className="flex justify-center">
+            <EnableTOTPCard />
+        </div>
+    </div>
 }
 
 export default Page

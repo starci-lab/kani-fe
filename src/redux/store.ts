@@ -1,11 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit"
-import { chainReducer, apiReducer, sessionReducer } from "./slices"
+import { chainReducer, apiReducer, sessionReducer, pageReducer } from "./slices"
 
 export const store = configureStore({
     reducer: {
         chain: chainReducer,
         api: apiReducer,
         session: sessionReducer,
+        page: pageReducer,
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware({
         serializableCheck: false,

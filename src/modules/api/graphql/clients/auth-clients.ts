@@ -17,7 +17,6 @@ const sessionStorage = new SessionStorage()
 export const createAccessTokenAuthLink = () =>
     new ApolloLink((operation, forward) => {
         const accessToken = sessionStorage.getItem<string>(SessionStorageKey.AccessToken)
-
         // Add Authorization header if accessToken exists
         if (accessToken) {
             operation.setContext(({ headers = {} }) => ({
@@ -60,7 +59,7 @@ export const createErrorLink = (withRetry = true) =>
             return
         }
         // if network error, log the error
-        console.error(`[Network error]: ${error}`)
+        console.error(`[Network error]: ${error.message}`)
     })
     
 /**
@@ -134,6 +133,18 @@ export const noCacheAuthClient = new ApolloClient({
         createErrorLink(), 
         createTimeoutLink(), 
         createHttpLink()
+    ]),
+    cache: new InMemoryCache(),
+})
+
+export const noCacheCredentialAuthClient = new ApolloClient({
+    // Combine the 4 links
+    link: ApolloLink.from([
+        createRetryLink(), 
+        createAccessTokenAuthLink(), 
+        createErrorLink(), 
+        createTimeoutLink(), 
+        createHttpLink(true)
     ]),
     cache: new InMemoryCache(),
 })
