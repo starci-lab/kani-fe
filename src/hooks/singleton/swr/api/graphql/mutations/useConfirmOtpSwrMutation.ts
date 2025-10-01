@@ -1,4 +1,4 @@
-import { MutationConfirmTotpRequest, mutationConfirmTotp } from "@/modules/api"
+import { MutationConfirmTotpParams, mutationConfirmTotp } from "@/modules/api"
 import useSWRMutation from "swr/mutation"
 import { SwrContext } from "../../../SwrContext"
 import { useContext } from "react"
@@ -12,11 +12,11 @@ export const useConfirmOtpSwrMutationCore = () => {
             {
                 arg,
             }: {
-                arg: MutationConfirmTotpRequest
+                arg: MutationConfirmTotpParams
             }
         ) => {
             const data = await mutationConfirmTotp({
-                request: arg,
+                headers: arg.headers,
             })
             const accessToken = data.data?.confirmTotp.data?.accessToken
             // if access token is returned, store it in session storage

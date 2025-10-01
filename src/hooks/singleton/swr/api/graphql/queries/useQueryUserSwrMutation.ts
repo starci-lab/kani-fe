@@ -14,7 +14,10 @@ export const useQueryUserSwrMutationCore = () => {
             if (!user) {
                 throw new Error("User not found")
             }
-            dispatch(setUser(user))
+            if (!user.data) {
+                throw new Error("User data not found")
+            }
+            dispatch(setUser(user.data))
             return data
         }
     )
@@ -31,7 +34,10 @@ export const useQueryUserWithoutRetrySwrMutationCore = () => {
             if (!user) {
                 throw new Error("User not found")
             }
-            dispatch(setUser(user))
+            if (!user.data) {
+                throw new Error("User data not found")
+            }
+            dispatch(setUser(user.data))
             return data
         }
     )

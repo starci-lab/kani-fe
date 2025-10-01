@@ -4,6 +4,7 @@ import { useContext } from "react"
 import { FormikContext } from "./FormikContext"
 import { useConfirmOtpSwrMutation } from "../swr"
 import { runGraphQLWithToast } from "@/components"
+import { MutationHeadersKey } from "@/modules/api"
 
 // Form values type — only one field for the 6-digit OTP code
 export interface EnableTotpFormikValues {
@@ -29,7 +30,9 @@ export const useEnableTotpFormikCore = () => {
         onSubmit: async (values) => {
             await runGraphQLWithToast(async () => {
                 const response = await confirmOtpMutation.trigger({
-                    totpCode: values.otp,
+                    headers: {
+                        [MutationHeadersKey.TOTP]: values.otp,
+                    },
                 })
                 if (!response.data?.confirmTotp) {
                     throw new Error("Failed to verify TOTP")

@@ -1,2 +1,2 @@
-export * from "./confirm-totp"
-export * from "./add-liquidity-provision-bot"
+export * from "./mutation-confirm-totp"
+export * from "./mutation-add-liquidity-provision-bot"

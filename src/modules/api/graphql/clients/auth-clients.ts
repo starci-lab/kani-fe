@@ -148,3 +148,17 @@ export const noCacheCredentialAuthClient = new ApolloClient({
     ]),
     cache: new InMemoryCache(),
 })
+
+export const createNoCacheCredentialAuthClientWithHeaders = (
+    headers: Record<string, string>
+) => new ApolloClient({
+    // Combine the 4 links
+    link: ApolloLink.from([
+        createRetryLink(), 
+        createAccessTokenAuthLink(), 
+        createErrorLink(), 
+        createTimeoutLink(), 
+        createHttpLink(true, headers)
+    ]),
+    cache: new InMemoryCache(),
+})
