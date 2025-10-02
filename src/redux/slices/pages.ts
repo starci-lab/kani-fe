@@ -10,7 +10,7 @@ export enum EnableTOTPCardPage {
 export enum InitializeLiquidityProvisionBotCardPage {
     SelectPriorityToken = "selectPriorityToken",
     SelectLiquidityPools = "selectLiquidityPools",
-    Continue = "continue",
+    ProvideMetadata = "provideMetadata",
 }
 
 export interface PageSlice {

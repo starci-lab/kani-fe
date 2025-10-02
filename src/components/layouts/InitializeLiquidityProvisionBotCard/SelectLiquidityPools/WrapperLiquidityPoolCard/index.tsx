@@ -13,9 +13,9 @@ export const WrapperLiquidityPoolCard = ({ liquidityPool }: WrapperLiquidityPool
         <LiquidityPoolCard 
             liquidityPool={liquidityPool} 
             isSelected={
-                initializeLiquidityProvisionBotFormik.values.liquidityPools.includes(liquidityPool.displayId)
+                initializeLiquidityProvisionBotFormik.values.liquidityPoolIds.includes(liquidityPool.displayId)
             } onSelect={() => {
-                initializeLiquidityProvisionBotFormik.setFieldValue("liquidityPools", [...initializeLiquidityProvisionBotFormik.values.liquidityPools, liquidityPool.displayId])
+                initializeLiquidityProvisionBotFormik.setFieldValue("liquidityPoolIds", [...initializeLiquidityProvisionBotFormik.values.liquidityPoolIds, liquidityPool.displayId])
             }} 
         />
     )

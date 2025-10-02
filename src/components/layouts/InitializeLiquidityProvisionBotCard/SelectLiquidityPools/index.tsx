@@ -1,4 +1,4 @@
-import React from "react"
+    import React from "react"
 import {
     KaniButton,
     KaniCardBody,
@@ -51,7 +51,7 @@ export const SelectLiquidityPools = () => {
                     onPress={() => {
                         dispatch(
                             setInitializeLiquidityProvisionBotCard(
-                                InitializeLiquidityProvisionBotCardPage.Continue
+                                InitializeLiquidityProvisionBotCardPage.ProvideMetadata
                             )
                         );
                     }}

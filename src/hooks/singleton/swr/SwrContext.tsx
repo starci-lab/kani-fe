@@ -7,6 +7,7 @@ import {
     useConfirmOtpSwrMutationCore,
     useAddLiquidityProvisionBotSwrMutationCore,
     useQueryStaticSwrMutationCore,
+    useInitializeLiquidityProvisionBotSwrMutationCore,
 } from "./api"
 
 export interface SwrContextType {
@@ -19,6 +20,7 @@ export interface SwrContextType {
     typeof useAddLiquidityProvisionBotSwrMutationCore
   >;
   queryStaticMutation: ReturnType<typeof useQueryStaticSwrMutationCore>;
+  initializeLiquidityProvisionBotMutation: ReturnType<typeof useInitializeLiquidityProvisionBotSwrMutationCore>;
 }
 
 export const SwrContext = createContext<SwrContextType | null>(null)
@@ -31,6 +33,7 @@ export const SwrProvider = ({ children }: PropsWithChildren) => {
     const addLiquidityProvisionBotMutation =
     useAddLiquidityProvisionBotSwrMutationCore()
     const queryStaticMutation = useQueryStaticSwrMutationCore()
+    const initializeLiquidityProvisionBotMutation = useInitializeLiquidityProvisionBotSwrMutationCore()
     return (
         <SwrContext.Provider
             value={{
@@ -39,6 +42,7 @@ export const SwrProvider = ({ children }: PropsWithChildren) => {
                 confirmOtpMutation,
                 addLiquidityProvisionBotMutation,
                 queryStaticMutation,
+                initializeLiquidityProvisionBotMutation,
             }}
         >
             {children}
