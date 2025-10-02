@@ -7,7 +7,7 @@ export enum EnableTOTPCardPage {
     VerifyTOTP = "verifyTOTP",
 }
 
-export enum SetupLiquidityProvisionBotCardPage {
+export enum InitializeLiquidityProvisionBotCardPage {
     SelectPriorityToken = "selectPriorityToken",
     SelectLiquidityPools = "selectLiquidityPools",
     Continue = "continue",
@@ -15,12 +15,12 @@ export enum SetupLiquidityProvisionBotCardPage {
 
 export interface PageSlice {
     enableTOTPCard: EnableTOTPCardPage
-    setupLiquidityProvisionBotCard: SetupLiquidityProvisionBotCardPage
+    initializeLiquidityProvisionBotCard: InitializeLiquidityProvisionBotCardPage
 }
 
 const initialState: PageSlice = {
     enableTOTPCard: EnableTOTPCardPage.ScanTOTP,
-    setupLiquidityProvisionBotCard: SetupLiquidityProvisionBotCardPage.SelectPriorityToken,
+    initializeLiquidityProvisionBotCard: InitializeLiquidityProvisionBotCardPage.SelectPriorityToken,
 }
 
 export const pageSlice = createSlice({
@@ -30,11 +30,11 @@ export const pageSlice = createSlice({
         setEnableTOTPCard: (state, action) => {
             state.enableTOTPCard = action.payload
         },
-        setSetupLiquidityProvisionBotCard: (state, action) => {
-            state.setupLiquidityProvisionBotCard = action.payload
+        setInitializeLiquidityProvisionBotCard: (state, action) => {
+            state.initializeLiquidityProvisionBotCard = action.payload
         },
     },
 })
 
 export const pageReducer = pageSlice.reducer
-export const { setEnableTOTPCard, setSetupLiquidityProvisionBotCard } = pageSlice.actions
+export const { setEnableTOTPCard, setInitializeLiquidityProvisionBotCard } = pageSlice.actions

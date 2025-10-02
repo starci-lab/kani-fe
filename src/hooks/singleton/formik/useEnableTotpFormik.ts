@@ -12,21 +12,23 @@ export interface EnableTotpFormikValues {
 }
 
 // Validation schema for the OTP form
-const enableTotpValidationSchema = Yup.object({
+const validationSchema = Yup.object({
     otp: Yup.string()
         .length(6, "OTP must be exactly 6 digits")
         .matches(/^\d+$/, "OTP must contain only digits")
         .required("OTP is required"),
 })
 
+const initialValues: EnableTotpFormikValues = {
+    otp: "",
+}
+
 // Core hook — creates the Formik instance for the TOTP form
 export const useEnableTotpFormikCore = () => {
     const confirmOtpMutation = useConfirmOtpSwrMutation()
     return useFormik<EnableTotpFormikValues>({
-        initialValues: {
-            otp: "",
-        },
-        validationSchema: enableTotpValidationSchema,
+        initialValues,
+        validationSchema,
         onSubmit: async (values) => {
             await runGraphQLWithToast(async () => {
                 const response = await confirmOtpMutation.trigger({

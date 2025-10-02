@@ -1,12 +1,14 @@
 "use client"
 import React from "react"
 import { useParams } from "next/navigation"
-import { SetupLiquidityProvisionBotCard } from "@/components/layouts"
+import { InitializeLiquidityProvisionBotCard } from "@/components/layouts"
+import { Spacer } from "@heroui/react"
 
 const Page = () => {
     const { id } = useParams()
-    return <div>
-        <SetupLiquidityProvisionBotCard id={id as string} />
+    return <div className="mx-auto flex flex-col items-center w-full">
+        <Spacer y={6} />
+        <InitializeLiquidityProvisionBotCard id={id as string} />
     </div>
 }
 

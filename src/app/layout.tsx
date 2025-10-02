@@ -13,7 +13,7 @@ const Layout = ({
     children,
 }: PropsWithChildren) => {
     return (
-        <html lang="en">
+        <html lang="en" suppressHydrationWarning>
             <body
                 className={`${font.variable} antialiased`}
             >

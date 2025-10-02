@@ -9,7 +9,7 @@ export interface XsSnippetProps {
 // XsSnippet is a snippet of text that is displayed in a small box
 export const XsSnippet = ({ text }: XsSnippetProps) => {
     return (
-        <div className="bg-content2 w-fit py-1 px-1.5 rounded-medium flex items-center gap-1">
+        <div className="bg-content2/50 w-fit py-1 px-1.5 rounded-medium flex items-center gap-1">
             <KaniLink color="foreground" className="text-xs text-foreground-500">{
                 centerPad(
                     text ?? "",
