@@ -8,7 +8,7 @@ export class ApiAuthRedirect {
     private readonly baseUrl: string
     constructor(version: ApiVersion = ApiVersion.V1) {
         this.version = version
-        this.baseUrl = `${publicEnv().apiBaseUrl}/api/${this.version}`
+        this.baseUrl = `${publicEnv().apiBaseUrl.http}/${this.version}`
     }
     // redirect to google auth
     public redirectGoogle(router: ReturnType<typeof useRouter>) {

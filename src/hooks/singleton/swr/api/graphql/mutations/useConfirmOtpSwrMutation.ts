@@ -3,8 +3,10 @@ import useSWRMutation from "swr/mutation"
 import { SwrContext } from "../../../SwrContext"
 import { useContext } from "react"
 import { SessionStorage, SessionStorageKey } from "@/modules"
+import { setTotpVerified, useAppDispatch } from "@/redux"
 
 export const useConfirmOtpSwrMutationCore = () => {
+    const dispatch = useAppDispatch()
     const swrMutation = useSWRMutation(
         ["CONFIRM_OTP_SWR_MUTATION"],
         async (
@@ -23,6 +25,8 @@ export const useConfirmOtpSwrMutationCore = () => {
             if (accessToken) {
                 new SessionStorage().setItem(SessionStorageKey.AccessToken, accessToken)
             }
+            // if this api is called, set totp verified to true
+            dispatch(setTotpVerified(true))
             return data
         }
     )

@@ -8,7 +8,7 @@ export enum EnableTOTPCardPage {
 }
 
 export enum SetupLiquidityProvisionBotCardPage {
-    SelectYieldToken = "selectYieldToken",
+    SelectPriorityToken = "selectPriorityToken",
     SelectLiquidityPools = "selectLiquidityPools",
     Continue = "continue",
 }
@@ -20,7 +20,7 @@ export interface PageSlice {
 
 const initialState: PageSlice = {
     enableTOTPCard: EnableTOTPCardPage.ScanTOTP,
-    setupLiquidityProvisionBotCard: SetupLiquidityProvisionBotCardPage.SelectYieldToken,
+    setupLiquidityProvisionBotCard: SetupLiquidityProvisionBotCardPage.SelectPriorityToken,
 }
 
 export const pageSlice = createSlice({

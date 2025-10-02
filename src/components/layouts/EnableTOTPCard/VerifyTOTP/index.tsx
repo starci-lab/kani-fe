@@ -9,6 +9,7 @@ import React from "react"
 import { EnableTOTPCardPage, setEnableTOTPCard, useAppDispatch, useAppSelector } from "@/redux"
 import { Spacer } from "@heroui/react"
 import { useEnableTotpFormik } from "@/hooks/singleton"
+import { useRouter } from "next/navigation"
 
 export const VerifyTOTP = () => {
     const user = useAppSelector((state) => state.session.user)
@@ -22,6 +23,7 @@ export const VerifyTOTP = () => {
     )}`
     const dispatch = useAppDispatch()
     const enableTotpFormik = useEnableTotpFormik()
+    const router = useRouter()
     return (
         <>
             <KaniCardHeader
@@ -60,8 +62,9 @@ export const VerifyTOTP = () => {
                 <KaniButton fullWidth color="primary"
                 isDisabled={!enableTotpFormik.isValid}
                 isLoading={enableTotpFormik.isSubmitting}
-                onPress={() => {
-                    enableTotpFormik.handleSubmit()
+                onPress={async () => {
+                    await enableTotpFormik.submitForm()
+                    router.push("/dashboard/liquidity-provision/68dcec515eb983cbc0e8f313")
                 }}>
                     Confirm
                 </KaniButton>
