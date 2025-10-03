@@ -1,0 +1,10 @@
+{
+    "dashboard_liquidity_provision": {
+      "investment": "Investment",
+      "investment_tooltip": "Total amount of investment in the bot.",
+      "assets": "Assets",
+      "assets_tooltip": "Distribution of assets in the bot.",
+      "token_priority": "Priority Token",
+      "amount": "Amount"
+    }
+  }

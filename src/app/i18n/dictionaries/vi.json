@@ -1,0 +1,10 @@
+{
+    "dashboard_liquidity_provision": {
+      "investment": "Khoản đầu tư",
+      "investment_tooltip": "Tổng số tiền đầu tư trong bot.",
+      "assets": "Tài sản",
+      "assets_tooltip": "Phân bổ tài sản bên trong bot.",
+      "token_priority": "Token ưu tiên",
+      "amount": "Số lượng"
+    }
+  }

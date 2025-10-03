@@ -3,6 +3,7 @@ import { Geist } from "next/font/google"
 import "./globals.css"
 import { PropsWithChildren } from "react"
 import { InnerLayout } from "./InnerLayout"
+import { NextIntlClientProvider } from "next-intl"
 
 const font = Geist({
     variable: "--font-geist-sans",
@@ -17,9 +18,11 @@ const Layout = ({
             <body
                 className={`${font.variable} antialiased`}
             >
-                <InnerLayout>
-                    {children}
-                </InnerLayout>
+                <NextIntlClientProvider>
+                    <InnerLayout>
+                        {children}
+                    </InnerLayout>
+                </NextIntlClientProvider>
             </body>
         </html>
     )

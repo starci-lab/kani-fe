@@ -1,5 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit"
-import { chainReducer, apiReducer, sessionReducer, pageReducer, staticReducer, socketReducer } from "./slices"
+import { 
+    chainReducer, 
+    apiReducer, 
+    sessionReducer, 
+    pageReducer, 
+    staticReducer, 
+    socketReducer, 
+    paramsReducer 
+} from "./slices"
 
 export const store = configureStore({
     reducer: {
@@ -9,6 +17,7 @@ export const store = configureStore({
         page: pageReducer,
         static: staticReducer,
         socket: socketReducer,
+        params: paramsReducer,
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware({
         serializableCheck: false,
