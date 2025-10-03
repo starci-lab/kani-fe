@@ -1,21 +1,30 @@
 import React from "react"
 
 import { KaniTooltip } from "../../atomic"
+import { WithClassNames } from "@/components/types"
+import { cn } from "@heroui/react"
 
-export interface TooltipTitleProps {
+export interface TooltipTitleProps extends WithClassNames<{
+    title: string
+    tooltipString?: string
+}> {
     title: string
     tooltipString?: string
 }
 
-export const TooltipTitle = ({ title, tooltipString }: TooltipTitleProps) => {
+export const TooltipTitle = ({ title, tooltipString, classNames }: TooltipTitleProps) => {
     return (
         <>
         {tooltipString ? (
-            <KaniTooltip content={tooltipString}>
-                {title}
+            <KaniTooltip content={cn(tooltipString, classNames?.tooltipString)}>
+                <div className={cn("text-sm", classNames?.title)}>
+                    {title}
+                </div>
             </KaniTooltip>
         ) : (
-            {title}
+            <div className={cn("text-sm", classNames?.title)}>
+                {title}
+            </div>
         )}
         </>
     )

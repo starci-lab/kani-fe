@@ -4,7 +4,7 @@ import { Container, TooltipTitle, AreaChart } from "../../../../reuseable"
 import { Spacer } from "@heroui/react"
 import { KaniCard, KaniCardBody } from "@/components"
 import {useTranslations} from "next-intl"
-import { PriorityToken } from "./PriorityToken"
+import { TokenCard, TokenCardType } from "./TokenCard"
 
 export interface DashboardLiquidityProvisionIdPageProps {
     id: string
@@ -51,11 +51,24 @@ export const DashboardLiquidityProvisionIdPage =
                                 title="Assets" 
                                 tooltipString={t("assets_tooltip")} />
                             <Spacer y={4} />
+                            <div className="flex gap-2">
                             {priorityToken && liquidityProvisionBot?.accountAddress && (
-                                <PriorityToken 
-                                    priorityToken={priorityToken} 
-                                    ownerAddress={liquidityProvisionBot?.accountAddress} />
+                                <>
+                                <TokenCard 
+                                    token={priorityToken} 
+                                    ownerAddress={liquidityProvisionBot?.accountAddress}
+                                    type={TokenCardType.PriorityToken}
+                                    limit={10}
+                                />
+                                <TokenCard 
+                                    token={priorityToken} 
+                                    ownerAddress={liquidityProvisionBot?.accountAddress}
+                                    type={TokenCardType.GasToken}
+                                    limit={10}
+                                />
+                                </> 
                             )}
+                            </div>
                         </KaniCardBody>
                     </KaniCard>
                 </div>
