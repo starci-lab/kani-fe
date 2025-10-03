@@ -6,7 +6,8 @@ import {
     pageReducer, 
     staticReducer, 
     socketReducer, 
-    paramsReducer 
+    paramsReducer,
+    rpcReducer,
 } from "./slices"
 
 export const store = configureStore({
@@ -18,6 +19,7 @@ export const store = configureStore({
         static: staticReducer,
         socket: socketReducer,
         params: paramsReducer,
+        rpc: rpcReducer,
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware({
         serializableCheck: false,

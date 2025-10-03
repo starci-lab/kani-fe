@@ -16,7 +16,7 @@ export interface TokenSchema extends AbstractSchema {
     decimals: number
 
     /** Contract address of the token on its chain */
-    tokenAddress?: string
+    tokenAddress: string
 
     /** CoinMarketCap ID (e.g. 'sui', 'bitcoin') */
     coinMarketCapId?: string

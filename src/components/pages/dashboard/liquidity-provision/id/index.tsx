@@ -1,9 +1,10 @@
 import React, { useEffect } from "react"
 import { useAppDispatch, setDashboardLiquidityProvisionId, useAppSelector } from "@/redux"
 import { Container, TooltipTitle, AreaChart } from "../../../../reuseable"
-import { Divider, Spacer } from "@heroui/react"
-import { KaniAvatar, KaniCard, KaniCardBody } from "@/components"
+import { Spacer } from "@heroui/react"
+import { KaniCard, KaniCardBody } from "@/components"
 import {useTranslations} from "next-intl"
+import { PriorityToken } from "./PriorityToken"
 
 export interface DashboardLiquidityProvisionIdPageProps {
     id: string
@@ -27,7 +28,7 @@ export const DashboardLiquidityProvisionIdPage =
         // use effect to set the id in the redux state
         useEffect(() => {
             dispatch(setDashboardLiquidityProvisionId(id))
-        }, [id])    
+        }, [id])   
         return (
             <Container>
                 <div className="text-2xl font-bold">
@@ -50,36 +51,11 @@ export const DashboardLiquidityProvisionIdPage =
                                 title="Assets" 
                                 tooltipString={t("assets_tooltip")} />
                             <Spacer y={4} />
-                            <div className="bg-content2 rounded-medium px-3 py-2">
-                                <div className="flex items-center gap-2">
-                                    <KaniAvatar src={priorityToken?.iconUrl}/>
-                                    <div>
-                                        <div className="text-sm">{priorityToken?.name}</div>
-                                        <div className="text-xs text-foreground-500">{priorityToken?.symbol}</div>
-                                    </div>
-                                </div>
-                                <Spacer y={2} />
-                                <Divider/>
-                                <Spacer y={2} />
-                                <div className="flex flex-col gap-2">
-                                    <div className="flex items-center gap-2 justify-between">
-                                        <div className="text-sm">
-                                            {t("token_priority")}
-                                        </div>
-                                        <div className="text-sm">
-                                        111
-                                        </div>
-                                    </div>
-                                    <div className="flex items-center gap-2 justify-between">
-                                        <div className="text-sm">
-                                            {t("amount")}
-                                        </div>
-                                        <div className="text-sm">
-                                        111
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            {priorityToken && liquidityProvisionBot?.accountAddress && (
+                                <PriorityToken 
+                                    priorityToken={priorityToken} 
+                                    ownerAddress={liquidityProvisionBot?.accountAddress} />
+                            )}
                         </KaniCardBody>
                     </KaniCard>
                 </div>
