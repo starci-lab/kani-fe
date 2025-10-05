@@ -8,7 +8,7 @@ export interface SessionSlice {
 }
 
 const initialState: SessionSlice = {
-    totpVerified: true,
+    totpVerified: false,
 }
 
 export const sessionSlice = createSlice({

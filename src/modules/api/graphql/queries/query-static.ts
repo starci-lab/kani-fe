@@ -1,6 +1,6 @@
 import { DocumentNode, gql } from "@apollo/client"
 import { GraphQLResponse, QueryParams } from "../types"
-import { LiquidityPoolSchema, TokenSchema, DexSchema } from "@/modules/types"
+import { LiquidityPoolSchema, TokenSchema, DexSchema, ConfigSchema } from "@/modules/types"
 import { client } from "../clients"
 
 const query1 = gql`
@@ -44,11 +44,10 @@ const query1 = gql`
             fee
             network
             chainId
-            farmTokenTypes
-            priorityAOverB
             dex
             tokenA
             tokenB
+            rewardTokens
         }
     }
     dexes {
@@ -66,6 +65,14 @@ const query1 = gql`
             iconUrl
         }
     }    
+    gasConfig {
+        success
+        message
+        error
+        data {
+            minGasRequired
+        }
+    }
 }`
 
 export enum QueryStatic {
@@ -80,6 +87,7 @@ export interface QueryStaticResponse {
     tokens: GraphQLResponse<Array<TokenSchema>>
     liquidityPools: GraphQLResponse<Array<LiquidityPoolSchema>>
     dexes: GraphQLResponse<Array<DexSchema>>
+    gasConfig: GraphQLResponse<ConfigSchema>
 }
 
 export type QueryStaticParams = QueryParams<QueryStatic, QueryStaticResponse>;

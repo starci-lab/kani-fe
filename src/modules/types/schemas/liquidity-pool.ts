@@ -1,5 +1,5 @@
 import { LiquidityPoolId } from "./enums"
-import { ChainId, Network, TokenType } from "../blockchain"
+import { ChainId, Network } from "../blockchain"
 import { AbstractSchema } from "./abstract"
 
 export interface LiquidityPoolSchema extends AbstractSchema {
@@ -27,9 +27,6 @@ export interface LiquidityPoolSchema extends AbstractSchema {
     /** Chain ID where this pool exists */
     chainId: ChainId
 
-    /** Types of farming pools this token can participate in */
-    farmTokenTypes: Array<TokenType>
-
-    /** Whether the pool prioritizes token A over B */
-    priorityAOverB?: boolean
+    /** Reward tokens for the pool */
+    rewardTokens: Array<string>
 }

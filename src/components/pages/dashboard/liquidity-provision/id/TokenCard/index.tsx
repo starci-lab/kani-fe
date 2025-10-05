@@ -4,7 +4,7 @@ import { useTranslations } from "next-intl"
 import React from "react"
 import { KaniAvatar, KaniChip } from "../../../../../atomic"
 import { Spacer, Divider, cn } from "@heroui/react"
-import { GasPumpIcon, StarIcon, WarningIcon } from "@phosphor-icons/react"
+import { GasPumpIcon, StarIcon } from "@phosphor-icons/react"
 import { TooltipTitle } from "@/components"
 
 export enum TokenCardType {

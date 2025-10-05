@@ -5,6 +5,7 @@ import { Spacer } from "@heroui/react"
 import { KaniCard, KaniCardBody } from "@/components"
 import {useTranslations} from "next-intl"
 import { TokenCard, TokenCardType } from "./TokenCard"
+import { PoolInfoCard } from "./PoolInfoCard"
 
 export interface DashboardLiquidityProvisionIdPageProps {
     id: string
@@ -35,7 +36,7 @@ export const DashboardLiquidityProvisionIdPage =
                     {liquidityProvisionBot?.name}
                 </div>
                 <Spacer y={6} />
-                <div className="flex">
+                <div className="flex gap-6">
                     <KaniCard>
                         <KaniCardBody>
                             <TooltipTitle 
@@ -71,6 +72,7 @@ export const DashboardLiquidityProvisionIdPage =
                             </div>
                         </KaniCardBody>
                     </KaniCard>
+                    <PoolInfoCard />
                 </div>
             </Container>
         )

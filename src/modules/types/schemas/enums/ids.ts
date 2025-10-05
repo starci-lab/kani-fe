@@ -44,3 +44,9 @@ export enum CexId {
     Gate = "gate",
     Bybit = "bybit",
 }
+
+
+// -------------------- ConfigId --------------------
+export enum ConfigId {
+    Gas = "gas",
+}
