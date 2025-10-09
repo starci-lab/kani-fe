@@ -19,7 +19,7 @@ export const ConnectModal = () => {
     return (
         <KaniModal isOpen={isOpen} onOpenChange={onOpenChange}>
             <KaniModalContent>
-                <KaniModalHeader>Connect</KaniModalHeader>
+                <KaniModalHeader title="Connect" />
                 <KaniModalBody>
                     <KaniButton
                         variant="flat"

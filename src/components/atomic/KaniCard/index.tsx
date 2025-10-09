@@ -6,6 +6,7 @@ import {
     CardHeader,
     HTMLHeroUIProps,
     Spacer,
+    cn,
 } from "@heroui/react"
 import { CardProps } from "@heroui/react"
 
@@ -14,7 +15,7 @@ export const KaniCard = (props: CardProps) => {
 }
 
 export const KaniCardBody = (props: HTMLHeroUIProps<"div">) => {
-    return <CardBody {...props} />
+    return <CardBody {...props} className={cn(props.className)} />
 }
 
 export interface KaniCardHeaderProps extends HTMLHeroUIProps<"div"> {

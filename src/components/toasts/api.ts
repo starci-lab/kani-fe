@@ -25,17 +25,37 @@ export const showUnauthorizedToast = () => {
     })
 }
 
+export interface RunGraphQLWithToastOptions {
+    showSuccessToast?: boolean
+    showErrorToast?: boolean
+}
 // Execute an API action and automatically show a toast based on the result
 export const runGraphQLWithToast = async <T>(
     action: () => Promise<GraphQLResponse<T>>,
+    options: RunGraphQLWithToastOptions = {
+        showSuccessToast: true,
+        showErrorToast: true,
+    },
 ) => {
     try {
         const response = await action()
-        showGraphQLToast(response)
+        if (options?.showSuccessToast) {
+            showGraphQLToast(response)
+        }
     } catch (error) {
         const _error = error as Error
         if (_error.message.toLowerCase().includes("unauthorized")) {
-            showUnauthorizedToast()
+            if (options?.showErrorToast) {
+                showUnauthorizedToast()
+            }
+            return
+        }
+        if (options?.showErrorToast) {
+            addToast({
+                title: "Error",
+                description: _error.message,
+                color: "danger",
+            })
         }
     }
 }

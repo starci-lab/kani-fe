@@ -1,4 +1,4 @@
-import { ChainId } from "@/common"
+import { ChainId } from "@/modules/types"
 import { KaniButton } from "@/components"
 import { useAddLiquidityProvisionBotSwrMutation } from "@/hooks/singleton"
 import React from "react"
@@ -9,7 +9,7 @@ export const AddLiquidityProvisionBot = () => {
         isLoading={addLiquidityProvisionBotMutation.isMutating} 
         onPress={() => {
             addLiquidityProvisionBotMutation.trigger({
-                chainId: ChainId.Sui,
+                chainId: ChainId.Solana,
             })
         }}>Click me</KaniButton>
 }

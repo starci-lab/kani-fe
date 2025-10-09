@@ -6,54 +6,32 @@ import {
     KaniModalHeader,
     KaniModalBody,
     KaniButton,
-    KaniInput,
     KaniModalFooter,
-    KaniLink,
-    KaniImage,
+    KaniSnippet,
+    KaniAlert,
 } from "../../atomic"
-import { Divider, Spacer } from "@heroui/react"
 import { useExportPrivateKeyModalDisclosure } from "@/hooks/singleton/discloresure"
+import { useAppSelector } from "@/redux"
+import { Spacer } from "@heroui/react"
 
 export const ExportPrivateKeyModal = () => {
     const { isOpen, onOpenChange } = useExportPrivateKeyModalDisclosure()
+    const exportPrivateKey = useAppSelector((state) => state.modals.exportPrivateKey.privateKey)
     return (
         <KaniModal isOpen={isOpen} onOpenChange={onOpenChange}>
             <KaniModalContent>
-                <KaniModalHeader>Private Key Export</KaniModalHeader>
+                <KaniModalHeader title="Export Private Key" />
                 <KaniModalBody>
-                    <KaniButton
-                        variant="flat"
-                        color="primary"
-                        startContent={
-                            <KaniImage
-                                removeWrapper
-                                className="w-5 h-5"
-                                src="/icons/google.svg"
-                            />
-                        }
-                    >
-            Export Private Key
-                    </KaniButton>
+                    <KaniAlert color="danger" title="Don't share your private key with anyone" description=
+                        "This private key grants full access to your wallet and all held assets." />
                     <Spacer y={4}/>
-                    <div className="flex items-center gap-1">
-                        <Divider className="flex-1"/>
-                        <div className="text-xs text-foreground-500">OR</div>
-                        <Divider className="flex-1"/>
-                    </div>
-                    <Spacer y={4}/>
-                    <div className="flex">
-                        <KaniInput placeholder="Email" radius="none" classNames={{
-                            inputWrapper: "!rounded-l-medium",
-                        }}/>
-                        <KaniButton variant="flat" className="rounded-l-none">Continue</KaniButton>
+                    <div className="bg-content2 rounded-medium p-4 gap-2 flex items-center">
+                        <div className="line-clamp-3 break-all text-sm">{exportPrivateKey ?? ""}</div>
+                        <KaniSnippet value={exportPrivateKey ?? ""}/>
                     </div>
                 </KaniModalBody>
                 <KaniModalFooter>
-                    <div className="flex items-center gap-1">
-                        <KaniLink as={"button"} className="text-xs text-foreground-500" color="foreground">Terms</KaniLink>
-                        <div className="text-foreground-500 text-xs">•</div>
-                        <KaniLink as={"button"} className="text-xs text-foreground-500" color="foreground">Privacy</KaniLink>
-                    </div>
+                    <KaniButton variant="flat" fullWidth onPress={onOpenChange}>Close</KaniButton>
                 </KaniModalFooter>
             </KaniModalContent>
         </KaniModal>

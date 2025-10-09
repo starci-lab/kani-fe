@@ -1,24 +1,24 @@
-import { NetworkId } from "@/common"
+import { Network } from "@/modules/types"
 import { createSlice } from "@reduxjs/toolkit"
 
 
 export interface ChainSlice {
-    networkId: NetworkId
+    network: Network
 }
 
 const initialState: ChainSlice = {
-    networkId: NetworkId.Testnet,
+    network: Network.Testnet,
 }
 
 export const chainSlice = createSlice({
     name: "chain",
     initialState,
     reducers: {
-        setNetworkId: (state, action) => {
-            state.networkId = action.payload
+        setNetwork: (state, action) => {
+            state.network = action.payload
         },
     },
 })
 
 export const chainReducer = chainSlice.reducer
-export const { setNetworkId } = chainSlice.actions
+export const { setNetwork } = chainSlice.actions

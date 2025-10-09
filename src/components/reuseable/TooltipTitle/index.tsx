@@ -17,12 +17,12 @@ export const TooltipTitle = ({ title, tooltipString, classNames }: TooltipTitleP
         <>
         {tooltipString ? (
             <KaniTooltip content={cn(tooltipString, classNames?.tooltipString)}>
-                <div className={cn("text-sm", classNames?.title)}>
+                <div className={cn("text-sm text-foreground-500", classNames?.title)}>
                     {title}
                 </div>
             </KaniTooltip>
         ) : (
-            <div className={cn("text-sm", classNames?.title)}>
+            <div className={cn("text-sm text-foreground-500", classNames?.title)}>
                 {title}
             </div>
         )}

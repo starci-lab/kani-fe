@@ -1,4 +1,4 @@
-import { ChainId } from "@/common/types"
+import { ChainId } from "@/modules/types"
 import { AbstractSchema } from "./abstract"
 
 export interface LiquidityProvisionBotSchema  extends AbstractSchema  {

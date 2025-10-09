@@ -5,26 +5,30 @@ export interface GraphQLResponse<TData = undefined> {
     data?: TData;
 }
 
-export enum MutationHeadersKey {
+export enum GraphQLHeadersKey {
     TOTP = "X-TOTP",
 }
 
-export type MutationHeaders = Record<MutationHeadersKey, string>
+export type GraphQLHeaders = Record<GraphQLHeadersKey, string>
 
 export interface MutationParams<TMutation, TRequest = undefined> {
     mutation?: TMutation
     request?: TRequest
-    headers?: MutationHeaders
-}
-
-export interface MutationVariables<TRequest> {
-    request: TRequest
+    headers?: GraphQLHeaders
 }
 
 export interface QueryParams<TQuery, TRequest = undefined> {
     query?: TQuery
     request?: TRequest
-    headers?: Record<string, string>
+    headers?: GraphQLHeaders
+}
+
+export interface QueryVariables<TRequest> {
+    request: TRequest
+}
+
+export interface MutationVariables<TRequest> {
+    request: TRequest
 }
 
 export interface QueryVariables<TRequest> {

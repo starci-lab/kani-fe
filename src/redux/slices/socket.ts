@@ -36,10 +36,10 @@ export const socketSlice = createSlice({
         setTokenPrice: (state, action: PayloadAction<SetTokenPricePayload>) => {
             state.tokenPrices[action.payload.tokenId] = action.payload.price
         },
-        setLiquidityPools: (state, action: PayloadAction<Record<LiquidityPoolId, FetchedPool>>) => {
+        setSocketLiquidityPools: (state, action: PayloadAction<Record<LiquidityPoolId, FetchedPool>>) => {
             state.liquidityPools = action.payload
         },
-        setLiquidityPool: (state, action: PayloadAction<SetLiquidityPoolPayload>) => {
+        setSocketLiquidityPool: (state, action: PayloadAction<SetLiquidityPoolPayload>) => {
             state.liquidityPools[action.payload.liquidityPoolId] = action.payload.fetchedPool
         },
     },
@@ -59,5 +59,6 @@ export const socketReducer = socketSlice.reducer
 export const { 
     setTokenPrices, 
     setTokenPrice, 
-    setLiquidityPools 
+    setSocketLiquidityPools, 
+    setSocketLiquidityPool 
 } = socketSlice.actions

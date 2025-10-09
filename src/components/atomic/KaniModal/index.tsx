@@ -3,14 +3,15 @@ import {
     Modal,
     ModalProps,
     ModalContentProps,
-    ModalHeaderProps,
     ModalBodyProps,
     ModalContent,
     ModalHeader,
     ModalBody,
     cn,
     ModalFooter,
-    ModalFooterProps
+    ModalFooterProps,
+    HTMLHeroUIProps,
+    Spacer
 } from "@heroui/react"
 import React from "react"
 
@@ -22,8 +23,23 @@ export const KaniModalContent = (props: ModalContentProps) => {
     return <ModalContent {...props} />
 }
 
-export const KaniModalHeader = (props: ModalHeaderProps) => {
-    return <ModalHeader className={cn("justify-center", props.className)} {...props} />
+export interface KaniModalHeaderProps extends HTMLHeroUIProps<"div"> {
+    title: string;
+    description?: React.ReactNode;
+}
+
+export const KaniModalHeader = (props: KaniModalHeaderProps) => {
+    return (
+        <ModalHeader className="justify-center pb-2" {...props}>
+            <div className="text-center">
+                <div className="text-lg font-bold">{props.title}</div>
+                <Spacer y={2}/>
+                {props.description && (
+                    <div className="text-xs text-foreground-500 font-normal">{props.description}</div>
+                )}
+            </div>
+        </ModalHeader>
+    )
 }
 
 export const KaniModalBody = (props: ModalBodyProps) => {
@@ -31,5 +47,5 @@ export const KaniModalBody = (props: ModalBodyProps) => {
 }
 
 export const KaniModalFooter = (props: ModalFooterProps) => {
-    return <ModalFooter className={cn("p-4 justify-center", props.className)} {...props} />
+    return <ModalFooter className={cn("p-4 justify-center pt-2", props.className)} {...props} />
 }

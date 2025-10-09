@@ -1,8 +1,7 @@
 import { useBalanceSwr } from "@/hooks/reuseable"
 import { TokenSchema } from "@/modules/types"
-import { useTranslations } from "next-intl"
 import React from "react"
-import { KaniAvatar, KaniChip } from "../../../../../atomic"
+import { KaniAvatar, KaniChip } from "@/components"
 import { Spacer, Divider, cn } from "@heroui/react"
 import { GasPumpIcon, StarIcon } from "@phosphor-icons/react"
 import { TooltipTitle } from "@/components"
@@ -18,12 +17,12 @@ export interface TokenCardProps {
     type: TokenCardType
     limit: number
 }
+
 export const TokenCard = ({ token, ownerAddress, type, limit }: TokenCardProps) => {
     const { data } = useBalanceSwr({
         tokenId: token.displayId,
         ownerAddress: ownerAddress,
     })
-    const t = useTranslations("dashboard_liquidity_provision")
     const isLimitReached = data?.balance.lte(limit)
     const renderChips = () => {
         switch (type) {

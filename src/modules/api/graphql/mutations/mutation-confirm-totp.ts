@@ -1,5 +1,5 @@
 import { DocumentNode, gql } from "@apollo/client"
-import { GraphQLResponse, MutationHeadersKey, MutationParams } from "../types"
+import { GraphQLResponse, GraphQLHeadersKey, MutationParams } from "../types"
 import { createNoCacheCredentialAuthClientWithHeaders } from "../clients"
 
 const mutation1 = gql`
@@ -39,7 +39,7 @@ export const mutationConfirmTotp = async ({
     if (!headers) {
         throw new Error("Headers are required")
     }
-    if (!headers[MutationHeadersKey.TOTP]) {
+    if (!headers[GraphQLHeadersKey.TOTP]) {
         throw new Error("TOTP is required")
     }
     return await createNoCacheCredentialAuthClientWithHeaders(headers).mutate<{

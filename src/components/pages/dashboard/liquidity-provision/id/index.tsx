@@ -1,11 +1,12 @@
 import React, { useEffect } from "react"
 import { useAppDispatch, setDashboardLiquidityProvisionId, useAppSelector } from "@/redux"
-import { Container, TooltipTitle, AreaChart } from "../../../../reuseable"
+import { Container } from "../../../../reuseable"
 import { Spacer } from "@heroui/react"
-import { KaniCard, KaniCardBody } from "@/components"
-import {useTranslations} from "next-intl"
-import { TokenCard, TokenCardType } from "./TokenCard"
+import { Investment } from "./Investment"
 import { PoolInfoCard } from "./PoolInfoCard"
+import { LiquidityPools } from "./LiquidityPools"
+import { PositionRecords } from "./PositionRecords"
+import { Wallet } from "./Wallet"
 
 export interface DashboardLiquidityProvisionIdPageProps {
     id: string
@@ -14,17 +15,10 @@ export interface DashboardLiquidityProvisionIdPageProps {
 export const DashboardLiquidityProvisionIdPage = 
     ({ id }: DashboardLiquidityProvisionIdPageProps) => 
     {
-        const t = useTranslations("dashboard_liquidity_provision")
         // get the id from the url
         const dispatch = useAppDispatch()
-        const tokens = useAppSelector(
-            (state) => state.static.tokens
-        )
         const liquidityProvisionBot = useAppSelector(
             (state) => state.session.liquidityProvisionBot
-        )
-        const priorityToken = tokens.find(
-            (token) => token.id === liquidityProvisionBot?.priorityToken
         )
         // use effect to set the id in the redux state
         useEffect(() => {
@@ -36,43 +30,16 @@ export const DashboardLiquidityProvisionIdPage =
                     {liquidityProvisionBot?.name}
                 </div>
                 <Spacer y={6} />
-                <div className="flex gap-6">
-                    <KaniCard>
-                        <KaniCardBody>
-                            <TooltipTitle 
-                                title={t("investment")} 
-                                tooltipString={t("investment_tooltip")} />
-                            <div className="text-2xl font-bold">
-                                $14k
-                            </div>
-                            <Spacer y={4} />
-                            <AreaChart />
-                            <Spacer y={4} />
-                            <TooltipTitle 
-                                title="Assets" 
-                                tooltipString={t("assets_tooltip")} />
-                            <Spacer y={4} />
-                            <div className="flex gap-2">
-                            {priorityToken && liquidityProvisionBot?.accountAddress && (
-                                <>
-                                <TokenCard 
-                                    token={priorityToken} 
-                                    ownerAddress={liquidityProvisionBot?.accountAddress}
-                                    type={TokenCardType.PriorityToken}
-                                    limit={10}
-                                />
-                                <TokenCard 
-                                    token={priorityToken} 
-                                    ownerAddress={liquidityProvisionBot?.accountAddress}
-                                    type={TokenCardType.GasToken}
-                                    limit={10}
-                                />
-                                </> 
-                            )}
-                            </div>
-                        </KaniCardBody>
-                    </KaniCard>
-                    <PoolInfoCard />
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div className="flex flex-col gap-6 col-span-2">
+                        <Investment/>
+                        <LiquidityPools/>
+                    </div>
+                    <div className="flex flex-col gap-6 col-span-1">
+                        <Wallet/>
+                        <PoolInfoCard />
+                        <PositionRecords/>
+                    </div>
                 </div>
             </Container>
         )

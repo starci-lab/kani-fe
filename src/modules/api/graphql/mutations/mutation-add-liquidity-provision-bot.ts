@@ -1,7 +1,7 @@
 import { DocumentNode, gql } from "@apollo/client"
 import { noCacheCredentialAuthClient } from "../clients"
 import { GraphQLResponse, MutationParams } from "../types"
-import { ChainId } from "@/common"
+import { ChainId } from "@/modules/types"
 
 const mutation1 = gql`
   mutation AddLiquidityProvisionBot($request: AddLiquidityProvisionBotRequest!) {
