@@ -21,6 +21,11 @@ const query1 = gql`
         priorityToken
         liquidityPools
         initialized
+        explorerId
+        rpcUrls
+        running
+        lastRunAt
+        stoppedAt
       }
     }
   }

@@ -10,6 +10,11 @@ import {
     useInitializeLiquidityProvisionBotSwrMutationCore,
     useQueryLiquidityProvisionSwrCore,
     useQueryExportedAccountSwrMutationCore,
+    useUpdateLiquidityProvisionBotExplorerIdSwrMutationCore,
+    useUpdateLiquidityProvisionBotLiquidityPoolsSwrMutationCore,
+    useUpdateLiquidityProvisionBotRpcsSwrMutationCore,
+    useRunLiquidityProvisionBotSwrMutationCore,
+    useStopLiquidityProvisionBotSwrMutationCore,
 } from "./api"
 
 export interface SwrContextType {
@@ -25,6 +30,11 @@ export interface SwrContextType {
   initializeLiquidityProvisionBotMutation: ReturnType<typeof useInitializeLiquidityProvisionBotSwrMutationCore>;
   queryLiquidityProvision: ReturnType<typeof useQueryLiquidityProvisionSwrCore>;
   queryExportedAccount: ReturnType<typeof useQueryExportedAccountSwrMutationCore>;
+  updateLiquidityProvisionBotExplorerIdMutation: ReturnType<typeof useUpdateLiquidityProvisionBotExplorerIdSwrMutationCore>;
+  updateLiquidityProvisionBotLiquidityPoolsMutation: ReturnType<typeof useUpdateLiquidityProvisionBotLiquidityPoolsSwrMutationCore>;
+  updateLiquidityProvisionBotRpcsMutation: ReturnType<typeof useUpdateLiquidityProvisionBotRpcsSwrMutationCore>;
+  runLiquidityProvisionBotMutation: ReturnType<typeof useRunLiquidityProvisionBotSwrMutationCore>;
+  stopLiquidityProvisionBotMutation: ReturnType<typeof useStopLiquidityProvisionBotSwrMutationCore>;
 }
 
 export const SwrContext = createContext<SwrContextType | null>(null)
@@ -40,6 +50,11 @@ export const SwrProvider = ({ children }: PropsWithChildren) => {
     const initializeLiquidityProvisionBotMutation = useInitializeLiquidityProvisionBotSwrMutationCore()
     const queryLiquidityProvision = useQueryLiquidityProvisionSwrCore()
     const queryExportedAccount = useQueryExportedAccountSwrMutationCore()
+    const updateLiquidityProvisionBotExplorerIdMutation = useUpdateLiquidityProvisionBotExplorerIdSwrMutationCore()
+    const updateLiquidityProvisionBotLiquidityPoolsMutation = useUpdateLiquidityProvisionBotLiquidityPoolsSwrMutationCore()
+    const updateLiquidityProvisionBotRpcsMutation = useUpdateLiquidityProvisionBotRpcsSwrMutationCore()
+    const runLiquidityProvisionBotMutation = useRunLiquidityProvisionBotSwrMutationCore()
+    const stopLiquidityProvisionBotMutation = useStopLiquidityProvisionBotSwrMutationCore()
     return (
         <SwrContext.Provider
             value={{
@@ -51,6 +66,11 @@ export const SwrProvider = ({ children }: PropsWithChildren) => {
                 initializeLiquidityProvisionBotMutation,
                 queryLiquidityProvision,
                 queryExportedAccount,
+                updateLiquidityProvisionBotExplorerIdMutation,
+                updateLiquidityProvisionBotLiquidityPoolsMutation,
+                updateLiquidityProvisionBotRpcsMutation,
+                runLiquidityProvisionBotMutation,
+                stopLiquidityProvisionBotMutation,
             }}
         >
             {children}

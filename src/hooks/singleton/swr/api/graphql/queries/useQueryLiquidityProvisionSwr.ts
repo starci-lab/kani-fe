@@ -6,11 +6,9 @@ import useSWR from "swr"
 
 export const useQueryLiquidityProvisionSwrCore = () => {
     const dispatch = useAppDispatch()
-    const id = useAppSelector((state) => state.params.dashboard.liquidityProvision.id)
+    const id = useAppSelector((state) => state.session.liquidityProvisionBot?.id)
     const totpVerified = useAppSelector((state) => state.session.totpVerified)
     // if id and totpVerified are not null, then return the id
-    console.log("id", id)
-    console.log("totpVerified", totpVerified)
     const swrMutation = useSWR(
         (id && totpVerified) ? ["QUERY_LIQUIDITY_PROVISION_SWR_MUTATION", id] : null,
         async () => {

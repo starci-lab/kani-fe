@@ -33,9 +33,11 @@ export const KaniModalHeader = (props: KaniModalHeaderProps) => {
         <ModalHeader className="justify-center pb-2" {...props}>
             <div className="text-center">
                 <div className="text-lg font-bold">{props.title}</div>
-                <Spacer y={2}/>
                 {props.description && (
-                    <div className="text-xs text-foreground-500 font-normal">{props.description}</div>
+                    <>
+                        <Spacer y={2}/>
+                        <div className="text-xs text-foreground-500 font-normal">{props.description}</div>
+                    </>
                 )}
             </div>
         </ModalHeader>

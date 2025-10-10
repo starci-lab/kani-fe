@@ -6,7 +6,6 @@ import {
     pageReducer, 
     staticReducer, 
     socketReducer, 
-    paramsReducer,
     modalsReducer,
     rpcReducer,
 } from "./slices"
@@ -19,7 +18,6 @@ export const store = configureStore({
         page: pageReducer,
         static: staticReducer,
         socket: socketReducer,
-        params: paramsReducer,
         rpc: rpcReducer,
         modals: modalsReducer,
     },

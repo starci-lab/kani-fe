@@ -50,9 +50,16 @@ export const ConfirmTOTPModal = () => {
                     </div>
                 </KaniModalBody>
                 <KaniModalFooter>
-                    <KaniButton fullWidth color="primary" onPress={() => {
-                        formik.submitForm()
-                    }}>
+                    <KaniButton 
+                        isDisabled={!formik.isValid}
+                        isLoading={formik.isSubmitting}
+                        fullWidth 
+                        color="primary"
+                        onPress={
+                            async () => {
+                                await formik.submitForm()
+                            }
+                        }>
                         Confirm
                     </KaniButton>
                 </KaniModalFooter>
