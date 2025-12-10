@@ -10,6 +10,10 @@ export const publicEnv = () => {
             maxRetryDelay: Number(process.env.NEXT_PUBLIC_GRAPHQL_MAX_RETRY_DELAY || 1000),
             initialRetryDelay: Number(process.env.NEXT_PUBLIC_GRAPHQL_INITIAL_RETRY_DELAY || 300),
             timeout: Number(process.env.NEXT_PUBLIC_GRAPHQL_TIMEOUT || 300000),
+        },
+        privy: {
+            appId: process.env.NEXT_PUBLIC_PRIVY_APP_ID || "",
+            clientId: process.env.NEXT_PUBLIC_PRIVY_CLIENT_ID || "",
         }
     }
 }

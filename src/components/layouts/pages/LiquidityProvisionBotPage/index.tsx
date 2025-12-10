@@ -1,7 +1,5 @@
 import React, { useEffect } from "react"
-import { useAppDispatch, setDashboardLiquidityProvisionId, useAppSelector } from "@/redux"
-import { Container } from "../../../../reuseable"
-import { Spacer } from "@heroui/react"
+import { useAppDispatch, useAppSelector } from "@/redux"
 import { Investment } from "./Investment"
 import { PoolInfoCard } from "./PoolInfoCard"
 import { LiquidityPools } from "./LiquidityPools"
@@ -9,23 +7,15 @@ import { PositionRecords } from "./PositionRecords"
 import { ConfigCard } from "./ConfigCard"
 import { PlayIcon, StopIcon } from "@phosphor-icons/react"
 import { KaniButton } from "@/components"
+import { Container } from "@/components"
 
 export interface LiquidityProvisionBotPageProps {
     id: string
 }
 
 export const LiquidityProvisionBotPage = 
-    ({ id }: LiquidityProvisionBotPageProps) => 
+    ({ liquidityProvisionBot }: LiquidityProvisionBotPageProps) => 
     {
-        // get the id from the url
-        const dispatch = useAppDispatch()
-        const liquidityProvisionBot = useAppSelector(
-            (state) => state.session.liquidityProvisionBot
-        )
-        // use effect to set the id in the redux state
-        useEffect(() => {
-            dispatch(setDashboardLiquidityProvisionId(id))
-        }, [id])   
         return (
             <Container>
                 <div className="flex justify-between items-center">

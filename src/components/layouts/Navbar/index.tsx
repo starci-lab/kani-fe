@@ -1,5 +1,4 @@
 import { 
-    KaniButton, 
     KaniNavbar, 
     KaniNavbarBrand, 
     KaniNavbarContent, 
@@ -7,12 +6,13 @@ import {
 } from "../../atomic"
 import { Link } from "@heroui/react"
 import React from "react"
-import { useAppSelector } from "@/redux"
-import { useRouter } from "next/navigation"
+import { usePrivy } from "@privy-io/react-auth"
+import { KaniSignInButton } from "./KaniSignInButton"
+import { KaniUserDropdown } from "./KaniUserDropdown"
+import { KaniLoadingButton } from "./KaniLoadingButton"
 
 export const Navbar = () => {
-    const apiAuthRedirect = useAppSelector((state) => state.api.apiAuthRedirect)
-    const router = useRouter()
+    const { authenticated, ready } = usePrivy()
     return (
         <KaniNavbar>
             <KaniNavbarBrand>
@@ -36,10 +36,18 @@ export const Navbar = () => {
                 </KaniNavbarItem>
             </KaniNavbarContent>
             <KaniNavbarContent justify="end">
-                <KaniNavbarItem className="hidden lg:flex">
-                    <KaniButton onPress={() => {
-                        apiAuthRedirect.redirectGoogle(router)
-                    }}>Login</KaniButton>
+                <KaniNavbarItem>
+                    {
+                        (() => {
+                            if (!ready) {
+                                return <KaniLoadingButton />
+                            }
+                            if (authenticated) {
+                                return <KaniUserDropdown />
+                            }
+                            return <KaniSignInButton />
+                        })()
+                    }
                 </KaniNavbarItem>
                 <KaniNavbarItem>
                 </KaniNavbarItem>
