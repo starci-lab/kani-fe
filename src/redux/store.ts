@@ -1,13 +1,14 @@
-import { configureStore } from "@reduxjs/toolkit"
+import { combineReducers, configureStore } from "@reduxjs/toolkit"
 import { 
     chainReducer, 
     apiReducer, 
     sessionReducer, 
-    pageReducer, 
     staticReducer, 
     socketReducer, 
     modalsReducer,
     rpcReducer,
+    routesReducer,
+    botsReducer,
 } from "./slices"
 
 export const store = configureStore({
@@ -15,11 +16,14 @@ export const store = configureStore({
         chain: chainReducer,
         api: apiReducer,
         session: sessionReducer,
-        page: pageReducer,
         static: staticReducer,
         socket: socketReducer,
         rpc: rpcReducer,
         modals: modalsReducer,
+        routes: routesReducer,
+        pages: combineReducers({
+            bots: botsReducer,
+        }),
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware({
         serializableCheck: false,

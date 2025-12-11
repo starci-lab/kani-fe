@@ -6,13 +6,14 @@ import { useInitializeLiquidityProvisionBotFormikCore } from "./useInitializeLiq
 import { useConfirmTotpFormikCore } from "./useConfirmTotpFormik"
 import { useUpdateExplorerFormikCore } from "./useUpdateExplorerFormik"
 import { useUpdateRpcsFormikCore } from "./useUpdateRpcsFormik"
-
+import { useCreateBotFormikCore } from "./useCreateBotFormik"
 export interface FormikContextType {
     enableTotpFormik: ReturnType<typeof useEnableTotpFormikCore>
     initializeLiquidityProvisionBotFormik: ReturnType<typeof useInitializeLiquidityProvisionBotFormikCore>
     confirmTotpFormik: ReturnType<typeof useConfirmTotpFormikCore>
     updateExplorerFormik: ReturnType<typeof useUpdateExplorerFormikCore>
     updateRpcsFormik: ReturnType<typeof useUpdateRpcsFormikCore>
+    createBotFormik: ReturnType<typeof useCreateBotFormikCore>
 }
 
 export const FormikContext = createContext<FormikContextType | null>(null)
@@ -23,13 +24,15 @@ export const FormikProvider = ({ children }: PropsWithChildren) => {
     const confirmTotpFormik = useConfirmTotpFormikCore()
     const updateExplorerFormik = useUpdateExplorerFormikCore()
     const updateRpcsFormik = useUpdateRpcsFormikCore()
+    const createBotFormik = useCreateBotFormikCore()
     return (
         <FormikContext.Provider value={{ 
             enableTotpFormik, 
             initializeLiquidityProvisionBotFormik, 
             confirmTotpFormik, 
             updateExplorerFormik, 
-            updateRpcsFormik 
+            updateRpcsFormik,
+            createBotFormik
         }}>
             {children}
         </FormikContext.Provider>

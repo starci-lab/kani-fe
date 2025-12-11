@@ -16,14 +16,20 @@ import {
     PencilLineIcon, 
     SignOutIcon 
 } from "@phosphor-icons/react"
+import useSWRMutation from "swr/mutation"
 
 export const KaniUserDropdown = () => {
     const { logout, user } = usePrivy()
     const {showMfaEnrollmentModal} = useMfaEnrollment()
+    const logoutSwrMutation = useSWRMutation(
+        "LOGOUT_SWR_MUTATION", 
+        async () => {
+            return await logout()
+        })
     return (
         <KaniDropdown>
             <KaniDropdownTrigger>
-                <KaniButton variant="bordered">
+                <KaniButton isLoading={logoutSwrMutation.isMutating} variant="bordered">
                     {truncateWithEllipsis(user?.email?.address ?? "")}
                 </KaniButton>
             </KaniDropdownTrigger>
@@ -49,7 +55,7 @@ export const KaniUserDropdown = () => {
                         startContent={<SignOutIcon />}
                         key="sign-out"
                         className="text-danger"
-                        onPress={() => logout()}
+                        onPress={() => logoutSwrMutation.trigger()}
                     >
                     Sign Out
                     </KaniDropdownItem>

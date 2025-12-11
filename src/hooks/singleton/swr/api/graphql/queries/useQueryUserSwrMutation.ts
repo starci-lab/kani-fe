@@ -3,11 +3,13 @@ import useSWRMutation from "swr/mutation"
 import { SwrContext } from "../../../SwrContext"
 import { useContext } from "react"
 import { useAppDispatch, setUser } from "@/redux"
+import { usePrivy } from "@privy-io/react-auth"
 
 export const useQueryUserSwrMutationCore = () => {
+    const { authenticated } = usePrivy()
     const dispatch = useAppDispatch()
     const swrMutation = useSWRMutation(
-        ["QUERY_USER_SWR_MUTATION"],
+        authenticated ? "QUERY_USER_SWR_MUTATION" : null,
         async () => {
             const data = await queryUser({})
             const user = data.data?.user
@@ -29,7 +31,7 @@ export const useQueryUserWithoutRetrySwrMutationCore = () => {
     const swrMutation = useSWRMutation(
         ["QUERY_USER_WITHOUT_RETRY_SWR_MUTATION"],
         async () => {
-            const data = await queryUser({}, true)
+            const data = await queryUser({})
             const user = data.data?.user
             if (!user) {
                 throw new Error("User not found")

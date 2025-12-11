@@ -14,9 +14,9 @@ import { createHttpLink } from "./http"
 const sessionStorage = new SessionStorage()
 
 // Modern auth link using ApolloLink (setContext is deprecated)
-export const createAccessTokenAuthLink = () =>
+export const createAccessTokenAuthLink = (token?: string) =>
     new ApolloLink((operation, forward) => {
-        const accessToken = sessionStorage.getItem<string>(SessionStorageKey.AccessToken)
+        const accessToken = token || sessionStorage.getItem<string>(SessionStorageKey.AccessToken)
         // Add Authorization header if accessToken exists
         if (accessToken) {
             operation.setContext(({ headers = {} }) => ({
@@ -159,6 +159,35 @@ export const createNoCacheCredentialAuthClientWithHeaders = (
         createErrorLink(), 
         createTimeoutLink(), 
         createHttpLink(true, headers)
+    ]),
+    cache: new InMemoryCache(),
+})
+
+export const createNoCacheCredentialAuthClientWithTokenAndHeaders = (
+    token: string,
+    headers: Record<string, string>
+) => new ApolloClient({
+    // Combine the 4 links
+    link: ApolloLink.from([
+        createRetryLink(), 
+        createAccessTokenAuthLink(token), 
+        createErrorLink(), 
+        createTimeoutLink(), 
+        createHttpLink(true, headers)
+    ]),
+    cache: new InMemoryCache(),
+})
+
+export const createNoCacheCredentialAuthClientWithToken = (
+    token: string
+) => new ApolloClient({
+    // Combine the 4 links
+    link: ApolloLink.from([
+        createRetryLink(), 
+        createAccessTokenAuthLink(token), 
+        createErrorLink(), 
+        createTimeoutLink(), 
+        createHttpLink(true)
     ]),
     cache: new InMemoryCache(),
 })

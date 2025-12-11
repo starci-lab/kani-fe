@@ -9,7 +9,9 @@ export const KaniSignInButton = () => {
         <KaniButton 
             isLoading={isModalOpen}
             color="primary"
-            onPress={() => login()}
+            onPress={
+                () => login()
+            }
         >
             Sign In
         </KaniButton>

@@ -1,5 +1,5 @@
 import { UserSchema } from "@/modules/types"
-import { noCacheAuthClient, noCacheAuthClientWithoutRetry } from "../clients"
+import { createNoCacheCredentialAuthClientWithToken } from "../clients"
 import { GraphQLResponse, QueryParams } from "../types"
 import { DocumentNode, gql } from "@apollo/client"
 
@@ -10,13 +10,7 @@ const query1 = gql`
       success
       error
       data {
-        email
-        encryptedTotpSecret
-        temporaryTotpToken
-        oauthProvider
-        oauthProviderId
-        picture
-        referralCode
+        id
       }
     }
   }
@@ -33,13 +27,15 @@ const queryMap: Record<QueryUser, DocumentNode> = {
 export type QueryUserParams = QueryParams<QueryUser, UserSchema>;
 
 export const queryUser = async (
-    { query = QueryUser.Query1 }: QueryUserParams,
-    withRetry = true
+    { query = QueryUser.Query1, token }: QueryUserParams
 ) => {
+    if (!token) {
+        throw new Error("Token is required")
+    }
     const queryDocument = queryMap[query]
     // use no cache credential to include http only cookies
-    const client = withRetry ? noCacheAuthClientWithoutRetry : noCacheAuthClient
-    return await client.query<{ user: GraphQLResponse<UserSchema> }>({
-        query: queryDocument,
-    })
+    return await createNoCacheCredentialAuthClientWithToken(token)
+        .query<{ user: GraphQLResponse<UserSchema> }>({
+            query: queryDocument,
+        })
 }

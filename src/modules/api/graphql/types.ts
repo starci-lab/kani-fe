@@ -15,12 +15,14 @@ export interface MutationParams<TMutation, TRequest = undefined> {
     mutation?: TMutation
     request?: TRequest
     headers?: GraphQLHeaders
+    token?: string
 }
 
 export interface QueryParams<TQuery, TRequest = undefined> {
     query?: TQuery
     request?: TRequest
     headers?: GraphQLHeaders
+    token?: string
 }
 
 export interface QueryVariables<TRequest> {

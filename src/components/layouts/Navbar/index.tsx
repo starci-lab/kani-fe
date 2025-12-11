@@ -14,7 +14,7 @@ import { KaniLoadingButton } from "./KaniLoadingButton"
 export const Navbar = () => {
     const { authenticated, ready } = usePrivy()
     return (
-        <KaniNavbar>
+        <KaniNavbar isBordered>
             <KaniNavbarBrand>
                 <p className="font-bold text-inherit">KANI</p>
             </KaniNavbarBrand>
