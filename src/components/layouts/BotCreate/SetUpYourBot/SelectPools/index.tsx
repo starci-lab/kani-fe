@@ -16,7 +16,7 @@ export const SelectPools = () => {
     const selectedLiquidityPools = useMemo(() => {
         return liquidityPools.filter((liquidityPool) =>
             formik.values.liquidityPoolIds?.includes(liquidityPool.displayId)
-        )
+        );
     }, [liquidityPools, formik.values.liquidityPoolIds])
     return (
         <div className="flex flex-col">
@@ -25,18 +25,25 @@ export const SelectPools = () => {
                 tooltipString="This is the pools of your bot"
                 isRequired
             />
-            <Spacer y={2} />
             <div>
-                {!formik.values.liquidityPoolIds.length ? (
-                    <div className="text-xs text-foreground-500">
-            Kani automatically selects the best-performing pools for you. You
-            can still choose manually if you prefer.
-                    </div>
+                {
+                    !formik.values.liquidityPoolIds.length ? (
+                    <>
+                        <Spacer y={2} />
+                        <div className="text-xs text-foreground-500">
+                            Kani automatically selects the best-performing pools for you. You
+                            can still choose manually if you prefer.
+                        </div>
+                    </>
                 ) : (
                     <div>
-                        <div className="flex flex-col gap-4">
+                        <Spacer y={4} />
+                        <div className="flex flex-col gap-3">
                             {selectedLiquidityPools.map((liquidityPool) => (
-                                <PoolCard key={liquidityPool.id} liquidityPool={liquidityPool} />
+                                <PoolCard
+                                    key={liquidityPool.id}
+                                    liquidityPool={liquidityPool}
+                                />
                             ))}
                         </div>
                         <Spacer y={2} />
@@ -55,21 +62,20 @@ export const SelectPools = () => {
                     variant="flat"
                     onPress={onOpen}
                 >
-          Select Pools
+                    Select Pools
                 </KaniButton>
-                {
-                    formik.values.liquidityPoolIds.length > 0 && (
-                        <KaniButton
-                            variant="light"
-                            color="danger"
-                            onPress={() => {
-                                formik.setFieldValue("liquidityPoolIds", [])
-                            }}
-                        >
-            Reset
-                        </KaniButton>
-                    )}
+                {formik.values.liquidityPoolIds.length > 0 && (
+                    <KaniButton
+                        variant="light"
+                        color="danger"
+                        onPress={() => {
+                            formik.setFieldValue("liquidityPoolIds", []);
+                        }}
+                    >
+                        Reset
+                    </KaniButton>
+                )}
             </div>
         </div>
-    )
-}
+    );
+};
