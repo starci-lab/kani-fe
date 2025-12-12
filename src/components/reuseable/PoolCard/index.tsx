@@ -10,15 +10,18 @@ import {
     KaniLink,
 } from "@/components/atomic"
 import { useAppSelector } from "@/redux"
-import { Spacer } from "@heroui/react"
+import { cn, Spacer } from "@heroui/react"
 import { centerPad, computePercentage, roundNumber } from "@/modules/utils"
 
 export interface PoolCardProps {
   liquidityPool: LiquidityPoolSchema;
+  isSelected: boolean;
+  onSelect: (liquidityPool: LiquidityPoolSchema) => void;
+  onDeselect: (liquidityPool: LiquidityPoolSchema) => void;
 }
 
 export const PoolCard = (
-    { liquidityPool }: PoolCardProps
+    { liquidityPool, isSelected, onSelect, onDeselect }: PoolCardProps
 ) => {
     const dynamicLiquidityPoolInfos = useAppSelector((state) => state.dynamic.dynamicLiquidityPoolInfos)
     const dynamicLiquidityPoolInfo = useMemo(() => {
@@ -41,7 +44,24 @@ export const PoolCard = (
         [dexes, liquidityPool.dex]
     )
     return (
-        <KaniCard isPressable shadow="none" className="border border-default">
+        <KaniCard 
+            isPressable
+            isDisabled={isSelected}
+            shadow="none" 
+            className={
+                cn(
+                    "cursor-pointer",
+                    "border border-default", 
+                    {
+                        "border-primary": isSelected,
+                    })
+            } 
+            onPress={
+                () => isSelected 
+                    ? onDeselect(liquidityPool) 
+                    : onSelect(liquidityPool)
+            }
+        >
             <KaniCardBody>
                 <div className="flex items-center justify-between">
                     <div className="text-primary font-medium">{

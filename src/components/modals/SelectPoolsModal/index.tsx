@@ -1,4 +1,4 @@
-import { useSelectPoolsDisclosure } from "@/hooks/singleton"
+import { useCreateBotFormik, useSelectPoolsDisclosure } from "@/hooks/singleton"
 import { 
     KaniModal, 
     KaniModalContent, 
@@ -9,7 +9,7 @@ import {
     KaniInput,
     KaniLink
 } from "@/components/atomic"
-import React from "react"
+import React, { useMemo } from "react"
 import { FadersIcon } from "@phosphor-icons/react"
 import { useAppSelector } from "@/redux"
 import { PoolNotFound } from "./PoolNotFound"
@@ -19,6 +19,28 @@ import { PoolsScrollShadow } from "./PoolsScrollShadow"
 export const SelectPoolsModal = () => {
     const { isOpen, onOpenChange } = useSelectPoolsDisclosure()
     const liquidityPools = useAppSelector(state => state.static.liquidityPools)
+    const formik = useCreateBotFormik()
+    const tokens = useAppSelector(state => state.static.tokens)
+    const filteredLiquidityPools = useMemo(() => {
+        return liquidityPools.filter(liquidityPool => {
+            const targetToken = tokens.find((token) => token.displayId === formik.values.targetTokenId)
+            const quoteToken = tokens.find((token) => token.displayId === formik.values.quoteTokenId)
+            if (!targetToken || !quoteToken) {
+                return false
+            }
+            const targetTokenId = targetToken.id
+            const quoteTokenId = quoteToken.id
+            const isPair = liquidityPool.tokenA === targetTokenId && liquidityPool.tokenB === quoteTokenId
+            || liquidityPool.tokenA === quoteTokenId && liquidityPool.tokenB === targetTokenId
+            return isPair && liquidityPool.chainId === formik.values.chainId
+        })
+    }, [
+        liquidityPools, 
+        formik.values.chainId, 
+        formik.values.targetTokenId, 
+        formik.values.quoteTokenId, tokens
+    ])
+
     return (
         <KaniModal isOpen={isOpen} onOpenChange={onOpenChange}>
             <KaniModalContent>
@@ -37,7 +59,7 @@ export const SelectPoolsModal = () => {
                         className="w-full"
                     />
                     <Spacer y={4} />
-                    {!liquidityPools.length ? <PoolNotFound /> : <PoolsScrollShadow/>}
+                    {!filteredLiquidityPools.length ? <PoolNotFound /> : <PoolsScrollShadow/>}
                 </KaniModalBody>
                 <KaniModalFooter>
                     <KaniButton variant="flat" fullWidth onPress={onOpenChange}>Close</KaniButton>

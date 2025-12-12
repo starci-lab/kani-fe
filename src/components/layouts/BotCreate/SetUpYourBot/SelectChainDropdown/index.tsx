@@ -23,7 +23,7 @@ export const SelectChainDropdown = () => {
     return (
         <KaniDropdown>
             <KaniDropdownTrigger>
-                <KaniButton variant="bordered">
+                <KaniButton variant="flat">
                     <KaniImage src={metadata.iconUrl} className="w-5 h-5" />
                     {metadata.name}
                 </KaniButton>

@@ -5,7 +5,11 @@ import {
     ScrollableList, 
     ScrollableListSkeleton 
 } from "@/components/reuseable"
-import { useCreateBotFormik, useQueryStaticSwrMutation } from "@/hooks/singleton"
+import { 
+    useCreateBotFormik, 
+    useQueryStaticSwrMutation 
+} from "@/hooks/singleton"
+
 
 export const PoolsScrollShadow = () => {
     const queryStaticSwrMutation = useQueryStaticSwrMutation()
@@ -18,7 +22,7 @@ export const PoolsScrollShadow = () => {
                 const targetToken = tokens.find((token) => token.displayId === formik.values.targetTokenId)
                 const quoteToken = tokens.find((token) => token.displayId === formik.values.quoteTokenId)
                 if (!targetToken || !quoteToken) {
-                    return []
+                    return false
                 }
                 const targetTokenId = targetToken.id
                 const quoteTokenId = quoteToken.id
@@ -46,6 +50,25 @@ export const PoolsScrollShadow = () => {
                         <PoolCard 
                             key={liquidityPool.id} 
                             liquidityPool={liquidityPool} 
+                            isSelected={
+                                formik.values.liquidityPoolIds?.includes(liquidityPool.displayId) 
+                                ?? false
+                            }
+                            onSelect={(liquidityPool) => {
+                                formik.setFieldValue(
+                                    "liquidityPoolIds", 
+                                    [
+                                        ...(formik.values.liquidityPoolIds ?? []), 
+                                        liquidityPool.displayId
+                                    ]
+                                )
+                            }}
+                            onDeselect={(liquidityPool) => {
+                                formik.setFieldValue(
+                                    "liquidityPoolIds", 
+                                    formik.values.liquidityPoolIds?.filter((id) => id !== liquidityPool.displayId) ?? []
+                                )
+                            }}
                         />
                     )}
                 />

@@ -1,6 +1,5 @@
 "use client"
 import React from "react"
-import { Bots } from "../BotList/Bots"
 import { KaniBreadcrumb, KaniBreadcrumbItem } from "@/components/atomic"
 import { Spacer } from "@heroui/react"
 import { paths } from "@/modules"
@@ -16,7 +15,6 @@ export const BotCreate = () => {
             </KaniBreadcrumb>
             <Spacer y={6}/>
             <SetUpYourBot/>
-            <Bots/>
         </div>
     )
 }

@@ -1,6 +1,7 @@
 import React from "react"
 import {
     KaniInput,
+    KaniButton,
 } from "@/components/atomic"
 import { Spacer } from "@heroui/react"
 import { TooltipTitle } from "@/components/reuseable"
@@ -13,7 +14,7 @@ export const SetUpYourBot = () => {
     return (
         <div>
             <div className="text-2xl font-bold text-primary">Set Up Your Bot</div>
-            <Spacer y={6} />
+            <Spacer y={12} />
             <div className="flex flex-col gap-4">
                 <TooltipTitle
                     title="Bot Name"
@@ -44,6 +45,17 @@ export const SetUpYourBot = () => {
             <SelectTokens />
             <Spacer y={6} />
             <SelectPools />
+            <Spacer y={12} />
+            <KaniButton 
+                isDisabled={!formik.isValid}
+                size="lg"
+                color="primary" onPress={
+                    () => {
+                        formik.submitForm()
+                    }
+                }>
+                Create Bot
+            </KaniButton>
         </div>
     )
 }

@@ -2,7 +2,7 @@ import { useFormik } from "formik"
 import { useContext } from "react"
 import * as Yup from "yup"
 import { FormikContext } from "./FormikContext"
-import { ChainId, TokenId } from "@/modules/types"
+import { ChainId, LiquidityPoolId, TokenId } from "@/modules/types"
 
 export interface CreateBotFormikValues {
     name: string
@@ -10,21 +10,23 @@ export interface CreateBotFormikValues {
     isTargetTokenSelected: boolean
     targetTokenId?: TokenId
     quoteTokenId?: TokenId
-    }
+    liquidityPoolIds: Array<LiquidityPoolId>
+}
 
 const initialValues: CreateBotFormikValues = {
     name: "",
     chainId: ChainId.Solana,
     isTargetTokenSelected: false,
+    liquidityPoolIds: [],
 }
 
 export const useCreateBotFormikCore = () => {
     const validationSchema = Yup.object({
         name: Yup.string().required("Bot name is required"),
         chainId: Yup.string().required("Chain ID is required"),
-        isTargetTokenSelected: Yup.boolean().required("Is target token selected is required"),
         targetTokenId: Yup.string().required("Target token ID is required"),
         quoteTokenId: Yup.string().required("Quote token ID is required"),
+        liquidityPoolIds: Yup.array().of(Yup.string()).required("Liquidity pool IDs are required"),
     })
     return useFormik<CreateBotFormikValues>({
         initialValues,

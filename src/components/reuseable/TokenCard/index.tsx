@@ -36,12 +36,12 @@ export const TokenCard = ({
         "border border-default",
         isPrimarySide ?
         {
-            "border-primary border-2": isSelected,
-            "border-secondary border-2": isOtherSideSelected,
+            "border-primary": isSelected,
+            "border-secondary": isOtherSideSelected,
         } :
         {
-            "border-secondary border-2": isSelected,
-            "border-primary border-2": isOtherSideSelected,
+            "border-secondary": isSelected,
+            "border-primary": isOtherSideSelected,
         }
       )}
     >
