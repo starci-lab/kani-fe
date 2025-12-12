@@ -50,6 +50,7 @@ export const Sidebar = () => {
     return (
         <div className="hidden md:block p-6 w-[300px] min-w-[300px] border-r border-divider">
             <KaniListbox 
+                aria-label="Main Navigation"
                 selectedKeys={[sidebarTab]} 
                 onSelectionChange={(value) => 
                 {
@@ -68,7 +69,7 @@ export const Sidebar = () => {
             <Spacer y={4}/>
             <KaniDivider/>
             <Spacer y={4}/>
-            <KaniListbox>
+            <KaniListbox aria-label="Secondary Navigation">
                 {tabs2.map((tab) => (
                     <KaniListboxItem aria-label={tab.ariaLabel} key={tab.key} startContent={<tab.icon />} endContent={<LinkIcon />}>{tab.label}</KaniListboxItem>
                 ))}

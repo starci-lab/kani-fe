@@ -9,6 +9,7 @@ import {
     rpcReducer,
     routesReducer,
     botsReducer,
+    dynamicReducer,
 } from "./slices"
 
 export const store = configureStore({
@@ -17,6 +18,7 @@ export const store = configureStore({
         api: apiReducer,
         session: sessionReducer,
         static: staticReducer,
+        dynamic: dynamicReducer,
         socket: socketReducer,
         rpc: rpcReducer,
         modals: modalsReducer,

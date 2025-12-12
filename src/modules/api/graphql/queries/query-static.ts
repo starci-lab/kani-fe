@@ -23,7 +23,6 @@ const query1 = gql`
             iconUrl
             chainId
             projectUrl
-            network
             cexIds
             whichCex
             cexSymbols
@@ -42,12 +41,10 @@ const query1 = gql`
             displayId
             poolAddress
             fee
-            network
             chainId
             dex
             tokenA
             tokenB
-            rewardTokens
         }
     }
     dexes {
@@ -64,15 +61,7 @@ const query1 = gql`
             website
             iconUrl
         }
-    }    
-    gasConfig {
-        success
-        message
-        error
-        data {
-            minGasRequired
-        }
-    }
+    } 
 }`
 
 export enum QueryStatic {

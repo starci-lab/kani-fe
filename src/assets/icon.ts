@@ -3,6 +3,11 @@ import { ChainId } from "@/modules/types"
 // we represent as a function to ensure optional loading or logic processing
 export const iconAssetConfig = () => ({
     icon: {
+        kani: {
+            default: "/kani/kani-default.png",
+            pools: "/kani/kani-pools.png",
+            notFound: "/kani/kani-not-found.png",
+        },
         googleSvg: "/icons/google.svg",
         tokens: {
             bnb: {

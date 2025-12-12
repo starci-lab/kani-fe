@@ -25,6 +25,9 @@ export enum DexId {
     Turbos = "turbos",
     Momentum = "momentum",
     FlowX = "flowx",
+    Meteora = "meteora",
+    Raydium = "raydium",
+    Orca = "orca",
 }
 
 // -------------------- LiquidityPoolId --------------------

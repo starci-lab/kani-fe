@@ -1,7 +1,7 @@
 import { queryStatic } from "@/modules/api"
 import { SwrContext } from "../../../SwrContext"
 import { useContext } from "react"
-import { useAppDispatch, setTokens, setDexes, setLiquidityPools, setConfig } from "@/redux"
+import { useAppDispatch, setTokens, setDexes, setLiquidityPools } from "@/redux"
 import useSWR from "swr"
 
 export const useQueryStaticSwrMutationCore = () => {
@@ -13,7 +13,6 @@ export const useQueryStaticSwrMutationCore = () => {
             const tokens = data.data?.tokens
             const liquidityPools = data.data?.liquidityPools
             const dexes = data.data?.dexes
-            const gasConfig = data.data?.gasConfig
             if (!tokens || !tokens.data) {
                 throw new Error("Tokens not found")
             }
@@ -23,13 +22,9 @@ export const useQueryStaticSwrMutationCore = () => {
             if (!dexes || !dexes.data) {
                 throw new Error("Dexes not found")
             }
-            if (!gasConfig || !gasConfig.data) {
-                throw new Error("Config not found")
-            }
             dispatch(setTokens(tokens.data))
             dispatch(setLiquidityPools(liquidityPools.data))
             dispatch(setDexes(dexes.data))
-            dispatch(setConfig(gasConfig.data))
             return data
         }
     )

@@ -4,6 +4,7 @@ import { DepositModal } from "./DepositModal"
 import { ConfirmTOTPModal } from "./ConfirmTOTPModal"
 import { ExportPrivateKeyModal } from "./ExportPrivateKeyModal"
 import { UpdateExplorerModal } from "./UpdateExplorerModal"
+import { SelectPoolsModal } from "./SelectPoolsModal"
 
 export const ModalContainer = () => {
     return (
@@ -13,6 +14,7 @@ export const ModalContainer = () => {
             <ConfirmTOTPModal />
             <ExportPrivateKeyModal />
             <UpdateExplorerModal />
+            <SelectPoolsModal />
         </>
     )
 }

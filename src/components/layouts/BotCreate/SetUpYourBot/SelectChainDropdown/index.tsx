@@ -6,7 +6,9 @@ import {
     KaniDropdownItem,
     KaniImage,
 } from "@/components/atomic"
-import { useCreateBotFormik } from "@/hooks/singleton"
+import { 
+    useCreateBotFormik, 
+} from "@/hooks/singleton"
 import React, { useMemo } from "react"
 import { getChainMetadata, supportedChains } from "@/modules"
 import { ChainId } from "@/modules/types"
@@ -17,6 +19,7 @@ export const SelectChainDropdown = () => {
     const metadata = useMemo(() => {
         return getChainMetadata(formik.values.chainId)
     }, [formik.values.chainId])
+    // we return the dropdown
     return (
         <KaniDropdown>
             <KaniDropdownTrigger>
@@ -28,7 +31,7 @@ export const SelectChainDropdown = () => {
             <KaniDropdownMenu
                 selectionMode="single"
                 selectedKeys={[formik.values.chainId]}
-                onSelectionChange={(value) => {
+                onSelectionChange={async (value) => {
                     const selectedKeys = Array.from(value)
                     formik.setFieldValue("chainId", selectedKeys[0] as ChainId)
                 }}
@@ -36,7 +39,7 @@ export const SelectChainDropdown = () => {
                 {supportedChains().map((chainId) => {
                     const metadata = getChainMetadata(chainId)
                     return (
-                        <KaniDropdownItem key={chainId}>
+                        <KaniDropdownItem aria-label={metadata.name} key={chainId}>
                             <div className="flex items-center gap-2 max-w-[300px]">
                                 <div>
                                     <div className="flex items-center gap-2">

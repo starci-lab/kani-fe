@@ -17,6 +17,7 @@ import {
     useStopLiquidityProvisionBotSwrMutationCore,
     useVerifyPrivyAuthTokenSwrMutationCore,
     useQueryUserSwrCore,
+    useQueryDynamicLiquidityPoolInfoSwrMutationCore,
 } from "./api"
 
 export interface SwrContextType {
@@ -39,6 +40,7 @@ export interface SwrContextType {
   stopLiquidityProvisionBotMutation: ReturnType<typeof useStopLiquidityProvisionBotSwrMutationCore>;
   verifyPrivyAuthTokenMutation: ReturnType<typeof useVerifyPrivyAuthTokenSwrMutationCore>;
   queryUser: ReturnType<typeof useQueryUserSwrCore>;
+  queryDynamicLiquidityPoolInfoMutation: ReturnType<typeof useQueryDynamicLiquidityPoolInfoSwrMutationCore>;
 }
 
 export const SwrContext = createContext<SwrContextType | null>(null)
@@ -61,6 +63,7 @@ export const SwrProvider = ({ children }: PropsWithChildren) => {
     const stopLiquidityProvisionBotMutation = useStopLiquidityProvisionBotSwrMutationCore()
     const verifyPrivyAuthTokenMutation = useVerifyPrivyAuthTokenSwrMutationCore()
     const queryUser = useQueryUserSwrCore()
+    const queryDynamicLiquidityPoolInfoMutation = useQueryDynamicLiquidityPoolInfoSwrMutationCore()
     return (
         <SwrContext.Provider
             value={{
@@ -79,6 +82,7 @@ export const SwrProvider = ({ children }: PropsWithChildren) => {
                 stopLiquidityProvisionBotMutation,
                 verifyPrivyAuthTokenMutation,
                 queryUser,
+                queryDynamicLiquidityPoolInfoMutation,
             }}
         >
             {children}
