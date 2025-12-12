@@ -45,6 +45,7 @@ const query1 = gql`
             dex
             tokenA
             tokenB
+            url
         }
     }
     dexes {

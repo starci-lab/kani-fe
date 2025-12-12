@@ -11,13 +11,15 @@ import {
 } from "@/components/atomic"
 import { useAppSelector } from "@/redux"
 import { Spacer } from "@heroui/react"
-import { computePercentage, roundNumber } from "@/modules/utils"
+import { centerPad, computePercentage, roundNumber } from "@/modules/utils"
 
 export interface PoolCardProps {
   liquidityPool: LiquidityPoolSchema;
 }
 
-export const PoolCard = ({ liquidityPool }: PoolCardProps) => {
+export const PoolCard = (
+    { liquidityPool }: PoolCardProps
+) => {
     const dynamicLiquidityPoolInfos = useAppSelector((state) => state.dynamic.dynamicLiquidityPoolInfos)
     const dynamicLiquidityPoolInfo = useMemo(() => {
         return dynamicLiquidityPoolInfos.find(
@@ -116,7 +118,15 @@ export const PoolCard = ({ liquidityPool }: PoolCardProps) => {
                     </div>
                 </div>
                 <Spacer y={4} />
-                <KaniLink color="foreground" size="sm" showAnchorIcon={true} href={`https://bscscan.com/address/${liquidityPool.poolAddress}`}>{liquidityPool.displayId}</KaniLink>
+                <KaniLink 
+                    color="foreground" 
+                    size="sm" 
+                    isExternal 
+                    showAnchorIcon={true} 
+                    href={liquidityPool.url}>{
+                        centerPad(liquidityPool.url, 18, 6)
+                    }
+                </KaniLink>
             </KaniCardBody>
         </KaniCard>
     )

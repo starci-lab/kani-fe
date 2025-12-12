@@ -7,13 +7,14 @@ import { TooltipTitle } from "@/components/reuseable"
 import { useCreateBotFormik } from "@/hooks/singleton"
 import { SelectChainDropdown } from "./SelectChainDropdown"
 import { SelectPools } from "./SelectPools"
+import { SelectTokens } from "./SelectTokens"
 export const SetUpYourBot = () => {
     const formik = useCreateBotFormik()
     return (
         <div>
             <div className="text-2xl font-bold text-primary">Set Up Your Bot</div>
             <Spacer y={6} />
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-4">
                 <TooltipTitle
                     title="Bot Name"
                     tooltipString="This is the name of your bot"
@@ -28,8 +29,8 @@ export const SetUpYourBot = () => {
                     errorMessage={formik.errors.name}
                 />
             </div>
-            <Spacer y={4} />
-            <div className="flex flex-col gap-2">
+            <Spacer y={6} />
+            <div className="flex flex-col gap-4">
                 <TooltipTitle
                     title="Chain"
                     tooltipString="This is the chain of your bot"
@@ -39,7 +40,9 @@ export const SetUpYourBot = () => {
                     <SelectChainDropdown />
                 </div>
             </div>
-            <Spacer y={4} />
+            <Spacer y={6} />
+            <SelectTokens />
+            <Spacer y={6} />
             <SelectPools />
         </div>
     )

@@ -8,6 +8,7 @@ import { useDepositModalDisclosureCore } from "./useDepositModalDiscloreusre"
 import { useUpdateExplorerDisclosureCore } from "./useUpdateExplorerDiscloresure"
 import { useUpdateRpcsDisclosureCore } from "./useUpdateRpcsDiscloresure"
 import { useSelectPoolsDisclosureCore } from "./useSelectPoolsDiscloresure"
+import { useSelectTokenDisclosureCore } from "./useSelectTokenDiscloresure"
 
 export interface DiscloresureContextType {
     connectModal: ReturnType<typeof useConnectModalDisclosureCore>
@@ -17,6 +18,7 @@ export interface DiscloresureContextType {
     updateExplorerModal: ReturnType<typeof useUpdateExplorerDisclosureCore>
     updateRpcsModal: ReturnType<typeof useUpdateRpcsDisclosureCore>
     selectPoolsModal: ReturnType<typeof useSelectPoolsDisclosureCore>
+    selectTokenModal: ReturnType<typeof useSelectTokenDisclosureCore>
 }
 
 export const DiscloresureContext = createContext<DiscloresureContextType | null>(null)
@@ -29,6 +31,7 @@ export const DiscloresureProvider = ({ children }: PropsWithChildren) => {
     const updateExplorerModal = useUpdateExplorerDisclosureCore()
     const updateRpcsModal = useUpdateRpcsDisclosureCore()
     const selectPoolsModal = useSelectPoolsDisclosureCore()
+    const selectTokenModal = useSelectTokenDisclosureCore()
     return (
         <DiscloresureContext.Provider value={{ 
             connectModal, 
@@ -37,7 +40,8 @@ export const DiscloresureProvider = ({ children }: PropsWithChildren) => {
             depositModal, 
             updateExplorerModal, 
             updateRpcsModal,
-            selectPoolsModal
+            selectPoolsModal,
+            selectTokenModal
         }}>
             {children}
         </DiscloresureContext.Provider>

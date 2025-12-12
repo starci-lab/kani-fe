@@ -27,6 +27,6 @@ export interface LiquidityPoolSchema extends AbstractSchema {
     /** Chain ID where this pool exists */
     chainId: ChainId
 
-    /** Reward tokens for the pool */
-    rewardTokens: Array<string>
+    /** URL of the pool */
+    url: string
 }
