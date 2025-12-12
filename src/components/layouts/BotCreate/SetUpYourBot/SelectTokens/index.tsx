@@ -19,7 +19,7 @@ export const SelectTokens = () => {
                 tooltipString="This is the tokens of your bot"
                 isRequired
             />
-            <Spacer y={2} />
+            <Spacer y={4} />
             <KaniAlert
                 variant="flat"
                 color="secondary"

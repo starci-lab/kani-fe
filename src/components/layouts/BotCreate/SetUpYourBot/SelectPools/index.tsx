@@ -29,7 +29,7 @@ export const SelectPools = () => {
                 {
                     !formik.values.liquidityPoolIds.length ? (
                     <>
-                        <Spacer y={2} />
+                        <Spacer y={3} />
                         <div className="text-xs text-foreground-500">
                             Kani automatically selects the best-performing pools for you. You
                             can still choose manually if you prefer.
@@ -46,7 +46,7 @@ export const SelectPools = () => {
                                 />
                             ))}
                         </div>
-                        <Spacer y={2} />
+                        <Spacer y={3} />
                         <div className="text-xs text-foreground-500">
                             You can only select up to 3 pools.
                         </div>

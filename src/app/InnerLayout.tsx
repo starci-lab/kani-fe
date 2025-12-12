@@ -24,6 +24,9 @@ export const InnerLayout = ({ children }: PropsWithChildren) => {
                         ethereum: {
                             createOnLogin: "off",
                         },
+                        solana: {
+                            createOnLogin: "off",
+                        },
                     },
                     loginMethods: ["email"],
                     captchaEnabled: true,

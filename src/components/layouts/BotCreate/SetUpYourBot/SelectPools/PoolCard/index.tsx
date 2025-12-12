@@ -9,7 +9,7 @@ import {
 import React from "react"
 import { LiquidityPoolSchema } from "@/modules/types"
 import { useAppSelector } from "@/redux"
-import { computePercentage } from "@/modules/utils"
+import { centerPad, computePercentage } from "@/modules/utils"
 import { Spacer } from "@heroui/react"
 import { XIcon } from "@phosphor-icons/react"
 import { useCreateBotFormik } from "@/hooks/singleton"
@@ -91,6 +91,16 @@ export const PoolCard = ({ liquidityPool }: PoolCardProps) => {
                         </div>
                     </div>
                 </div>
+                <Spacer y={4} />
+                <KaniLink 
+                    color="foreground" 
+                    size="sm" 
+                    isExternal 
+                    showAnchorIcon={true} 
+                    href={liquidityPool.url}>{
+                        centerPad(liquidityPool.url, 18, 6)
+                    }
+                </KaniLink>
             </KaniCardBody>
         </KaniCard>
     )

@@ -2,6 +2,7 @@ import React from "react"
 import {
     KaniInput,
     KaniButton,
+    KaniSwitch,
 } from "@/components/atomic"
 import { Spacer } from "@heroui/react"
 import { TooltipTitle } from "@/components/reuseable"
@@ -45,6 +46,20 @@ export const SetUpYourBot = () => {
             <SelectTokens />
             <Spacer y={6} />
             <SelectPools />
+            <Spacer y={6} />
+            <div>
+                <TooltipTitle
+                    title="Exit To USDC"
+                    tooltipString="This is the exit to USDC of your bot"
+                    isRequired
+                />
+                <Spacer y={3} />
+                <div className="text-xs text-foreground-500">
+                If enabled, your bot will automatically move to USDC when a major price drop is detected.
+                </div>
+                <Spacer y={4} />
+                <KaniSwitch/>
+            </div>
             <Spacer y={12} />
             <KaniButton 
                 isDisabled={!formik.isValid}

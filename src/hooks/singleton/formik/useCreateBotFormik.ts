@@ -3,6 +3,8 @@ import { useContext } from "react"
 import * as Yup from "yup"
 import { FormikContext } from "./FormikContext"
 import { ChainId, LiquidityPoolId, TokenId } from "@/modules/types"
+import { useCreateBotSwrMutation } from "../swr"
+import { runGraphQLWithToast } from "@/components/toasts"
 
 export interface CreateBotFormikValues {
     name: string
@@ -29,11 +31,34 @@ const validationSchema = Yup.object({
 })
 
 export const useCreateBotFormikCore = () => {
+    const createBotMutation = useCreateBotSwrMutation()
     return useFormik<CreateBotFormikValues>({
         initialValues,
         validationSchema,
         onSubmit: async (values) => {
-            console.log(values)
+            if (!values.targetTokenId || !values.quoteTokenId) {
+                throw new Error("Target token ID and quote token ID are required")
+            }
+            await runGraphQLWithToast(
+                async () => {
+                    const response = await createBotMutation.trigger({
+                        request: {
+                            name: values.name,
+                            chainId: values.chainId,
+                            targetTokenId: values.targetTokenId!,
+                            quoteTokenId: values.quoteTokenId!,
+                        },
+                    })
+                    if (!response.data?.createBot) {
+                        throw new Error("Failed to create bot")
+                    }
+                    return response.data?.createBot
+                },
+                {
+                    showSuccessToast: true,
+                    showErrorToast: true,
+                }
+            )
         }
     })
 }
