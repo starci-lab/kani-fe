@@ -15,14 +15,14 @@ export const SelectTokens = () => {
     return (
         <div>
             <TooltipTitle
-                title="Tokens"
+                title="Select Tokens"
                 tooltipString="This is the tokens of your bot"
                 isRequired
             />
             <Spacer y={2} />
             <KaniAlert
                 variant="flat"
-                color="warning"
+                color="secondary"
                 description={
                     <div className="text-xs flex flex-col gap-2">
                         <div>Kani bot always works with 2 tokens.</div>

@@ -20,14 +20,15 @@ const initialValues: CreateBotFormikValues = {
     liquidityPoolIds: [],
 }
 
+const validationSchema = Yup.object({
+    name: Yup.string().required("Bot name is required"),
+    chainId: Yup.string().required("Chain ID is required"),
+    targetTokenId: Yup.string().required("Target token ID is required"),
+    quoteTokenId: Yup.string().required("Quote token ID is required"),
+    liquidityPoolIds: Yup.array().of(Yup.string()).required("Liquidity pool IDs are required"),
+})
+
 export const useCreateBotFormikCore = () => {
-    const validationSchema = Yup.object({
-        name: Yup.string().required("Bot name is required"),
-        chainId: Yup.string().required("Chain ID is required"),
-        targetTokenId: Yup.string().required("Target token ID is required"),
-        quoteTokenId: Yup.string().required("Quote token ID is required"),
-        liquidityPoolIds: Yup.array().of(Yup.string()).required("Liquidity pool IDs are required"),
-    })
     return useFormik<CreateBotFormikValues>({
         initialValues,
         validationSchema,

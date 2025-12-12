@@ -21,7 +21,7 @@ export const SelectPools = () => {
     return (
         <div className="flex flex-col">
             <TooltipTitle
-                title="Pools"
+                title="Select Pools"
                 tooltipString="This is the pools of your bot"
                 isRequired
             />
