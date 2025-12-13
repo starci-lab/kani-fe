@@ -6,6 +6,8 @@ import { ExportPrivateKeyModal } from "./ExportPrivateKeyModal"
 import { UpdateExplorerModal } from "./UpdateExplorerModal"
 import { SelectPoolsModal } from "./SelectPoolsModal"
 import { SelectTokenModal } from "./SelectTokenModal"
+import { SignInModal } from "./SignInModal"
+import { EnableMFAModal } from "./EnableMFAModal"
 
 export const ModalContainer = () => {
     return (
@@ -17,6 +19,8 @@ export const ModalContainer = () => {
             <UpdateExplorerModal />
             <SelectPoolsModal />
             <SelectTokenModal />
+            <SignInModal />
+            <EnableMFAModal />
         </>
     )
 }

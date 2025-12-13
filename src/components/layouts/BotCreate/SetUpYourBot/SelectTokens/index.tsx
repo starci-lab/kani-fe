@@ -25,7 +25,7 @@ export const SelectTokens = () => {
                 color="secondary"
                 description={
                     <div className="text-xs flex flex-col gap-2">
-                        <div>Kani bot always works with 2 tokens.</div>
+                        <div>Kani bot always operates on a liquidity pool that consists of exactly two tokens.</div>
                         <div>Target Token is the token you want to earn — for example, if you farm SOL, then SOL is the target token.</div>
                         <div>Quote Token is the token paired with the target to form the LP — for example, in a SOL-USDC pair, USDC is the quote token.</div>
                     </div>

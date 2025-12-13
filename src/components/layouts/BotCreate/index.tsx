@@ -10,7 +10,11 @@ export const BotCreate = () => {
     return (
         <div>
             <KaniBreadcrumb>
-                <KaniBreadcrumbItem onPress={() => router.push(paths().bots().base())}>Bots</KaniBreadcrumbItem>
+                <KaniBreadcrumbItem onPress={
+                    () => router.push(
+                        paths().bots().base()
+                    )
+                }>Bots</KaniBreadcrumbItem>
                 <KaniBreadcrumbItem>Create</KaniBreadcrumbItem>
             </KaniBreadcrumb>
             <Spacer y={6}/>

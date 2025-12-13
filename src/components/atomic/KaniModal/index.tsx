@@ -14,6 +14,8 @@ import {
     Spacer
 } from "@heroui/react"
 import React from "react"
+import { KaniButton } from "../KaniButton"
+import { ArrowLeftIcon } from "@phosphor-icons/react"
 
 export const KaniModal = (props: ModalProps) => {
     return <Modal {...props} />
@@ -26,11 +28,19 @@ export const KaniModalContent = (props: ModalContentProps) => {
 export interface KaniModalHeaderProps extends HTMLHeroUIProps<"div"> {
     title: string;
     description?: React.ReactNode;
+    onPrev?: () => void;
 }
 
 export const KaniModalHeader = (props: KaniModalHeaderProps) => {
     return (
         <ModalHeader className="justify-center pb-2" {...props}>
+            {props.onPrev && (
+                <div className="absolute left-4 top-[14px]">
+                    <KaniButton size="sm" variant="light" isIconOnly radius="full" onPress={props.onPrev}>
+                        <ArrowLeftIcon />
+                    </KaniButton>
+                </div>
+            )}
             <div className="text-center">
                 <div className="text-lg font-bold">{props.title}</div>
                 {props.description && (

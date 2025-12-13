@@ -8,29 +8,21 @@ import {
     KaniDropdownSection,
     KaniDropdownTrigger,
 } from "@/components/atomic"
-import { usePrivy, useMfaEnrollment } from "@privy-io/react-auth"
 import { truncateWithEllipsis } from "@/modules/utils"
-
+import { useAppSelector } from "@/redux"
 import { 
     AtIcon, 
     PencilLineIcon, 
     SignOutIcon 
 } from "@phosphor-icons/react"
-import useSWRMutation from "swr/mutation"
 
 export const KaniUserDropdown = () => {
-    const { logout, user } = usePrivy()
-    const {showMfaEnrollmentModal} = useMfaEnrollment()
-    const logoutSwrMutation = useSWRMutation(
-        "LOGOUT_SWR_MUTATION", 
-        async () => {
-            return await logout()
-        })
+    const user = useAppSelector((state) => state.session.user)
     return (
         <KaniDropdown>
             <KaniDropdownTrigger>
-                <KaniButton isLoading={logoutSwrMutation.isMutating} variant="bordered">
-                    {truncateWithEllipsis(user?.email?.address ?? "")}
+                <KaniButton variant="bordered">
+                    {truncateWithEllipsis(user?.email ?? "")}
                 </KaniButton>
             </KaniDropdownTrigger>
             <KaniDropdownMenu aria-label="Static Actions">
@@ -40,12 +32,12 @@ export const KaniUserDropdown = () => {
                         key="your-email"
                         startContent={<AtIcon />}
                     >
-                        {user?.email?.address ?? ""}
+                        {user?.email ?? ""}
                     </KaniDropdownItem>
                     <KaniDropdownItem 
                         key="enroll-in-mfa"
                         startContent={<PencilLineIcon />}
-                        onPress={() => showMfaEnrollmentModal()}
+                        onPress={() => {}}
                     >
                     Enroll in MFA
                     </KaniDropdownItem>
@@ -55,7 +47,7 @@ export const KaniUserDropdown = () => {
                         startContent={<SignOutIcon />}
                         key="sign-out"
                         className="text-danger"
-                        onPress={() => logoutSwrMutation.trigger()}
+                        onPress={() => {}}
                     >
                     Sign Out
                     </KaniDropdownItem>

@@ -1,5 +1,12 @@
 import React from "react"
-import { KaniModal, KaniModalContent, KaniModalHeader, KaniModalBody, KaniImage, KaniSnippet } from "../../atomic"
+import { 
+    KaniModal, 
+    KaniModalContent, 
+    KaniModalHeader, 
+    KaniModalBody, 
+    KaniImage, 
+    KaniSnippet 
+} from "../../atomic"
 import { useDepositModalDisclosure } from "@/hooks/singleton"
 import { QRCode } from "../../reuseable"
 import { useAppSelector } from "@/redux"
@@ -34,7 +41,7 @@ export const DepositModal = () => {
                             <div className="flex gap-1 items-center">
                                 <KaniSnippet
                                     classNames={{
-                                        icon: "w-5 h-5"
+                                        base: "w-5 h-5"
                                     }}
                                     value={liquidityProvisionBot?.accountAddress ?? ""} />
                                 <div className="text-sm">

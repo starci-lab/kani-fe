@@ -1,35 +1,38 @@
-import { UserSchema } from "@/modules/types"
 import { createNoCacheCredentialAuthClientWithToken } from "../clients"
 import { GraphQLResponse, QueryParams } from "../types"
 import { DocumentNode, gql } from "@apollo/client"
 
 const query1 = gql`
-  query User {
-    user {
+  query TotpSecret {
+    totpSecret {
       message
       success
       error
       data {
-        id
-        mfaEnabled
-        email
+        totpSecret
+        totpSecretUrl
       }
     }
   }
 `
 
-export enum QueryUser {
+export enum QueryTotpSecret {
   Query1 = "query1",
 }
 
-const queryMap: Record<QueryUser, DocumentNode> = {
-    [QueryUser.Query1]: query1,
+const queryMap: Record<QueryTotpSecret, DocumentNode> = {
+    [QueryTotpSecret.Query1]: query1,
 }
 
-export type QueryUserParams = QueryParams<QueryUser, UserSchema>;
+export interface TotpSecretResponse {
+  totpSecret: string;
+  totpSecretUrl: string;
+}
 
-export const queryUser = async (
-    { query = QueryUser.Query1, token }: QueryUserParams
+export type QueryTotpSecretParams = QueryParams<QueryTotpSecret>;
+
+export const queryTotpSecret = async (
+    { query = QueryTotpSecret.Query1, token }: QueryTotpSecretParams
 ) => {
     if (!token) {
         throw new Error("Token is required")
@@ -37,7 +40,7 @@ export const queryUser = async (
     const queryDocument = queryMap[query]
     // use no cache credential to include http only cookies
     return await createNoCacheCredentialAuthClientWithToken(token)
-        .query<{ user: GraphQLResponse<UserSchema> }>({
+        .query<{ totpSecret: GraphQLResponse<TotpSecretResponse> }>({
             query: queryDocument,
         })
 }

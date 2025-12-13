@@ -5,42 +5,62 @@ import { FormikContext } from "./FormikContext"
 import { useConfirmOtpSwrMutation } from "../swr"
 import { runGraphQLWithToast } from "@/components"
 import { GraphQLHeadersKey } from "@/modules/api"
+import { useEnableMFAModalDisclosure } from "../discloresure"
+import { 
+    EnableMFAPage, 
+    setEnableMFAPage, 
+    useAppDispatch 
+} from "@/redux"
 
 // Form values type — only one field for the 6-digit OTP code
 export interface EnableTotpFormikValues {
-    otp: string
+    totp: string
 }
 
 // Validation schema for the OTP form
 const validationSchema = Yup.object({
-    otp: Yup.string()
+    totp: Yup.string()
         .length(6, "OTP must be exactly 6 digits")
         .matches(/^\d+$/, "OTP must contain only digits")
         .required("OTP is required"),
 })
 
 const initialValues: EnableTotpFormikValues = {
-    otp: "",
+    totp: "",
 }
 
 // Core hook — creates the Formik instance for the TOTP form
 export const useEnableTotpFormikCore = () => {
     const confirmOtpMutation = useConfirmOtpSwrMutation()
+    const { onClose } = useEnableMFAModalDisclosure()
+    const dispatch = useAppDispatch()
     return useFormik<EnableTotpFormikValues>({
         initialValues,
         validationSchema,
-        onSubmit: async (values) => {
-            await runGraphQLWithToast(async () => {
-                const response = await confirmOtpMutation.trigger({
-                    headers: {
-                        [GraphQLHeadersKey.TOTP]: values.otp,
-                    },
+        onSubmit: async (values, { resetForm }) => {
+            const success = await runGraphQLWithToast(
+                async () => {
+                    const response = await confirmOtpMutation.trigger({
+                        headers: {
+                            [GraphQLHeadersKey.TOTP]: values.totp,
+                        },
+                    })
+                    if (!response.data?.confirmTotp) {
+                        throw new Error("Failed to verify TOTP")
+                    }
+                    return response.data.confirmTotp
+                }, {
+                    showSuccessToast: true,
+                    showErrorToast: false,
                 })
-                if (!response.data?.confirmTotp) {
-                    throw new Error("Failed to verify TOTP")
-                }
-                return response.data.confirmTotp
-            })
+            if (success) {
+                // set the page to the scan QR page
+                dispatch(setEnableMFAPage(EnableMFAPage.ScanQR))
+                // close the modal
+                onClose()
+                // reset the form
+                resetForm()
+            }
         },
     })
 }

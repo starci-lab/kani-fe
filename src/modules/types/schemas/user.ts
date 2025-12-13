@@ -1,6 +1,5 @@
 export interface UserSchema {
     id: string
-    username: string
+    mfaEnabled: boolean
     email: string
-    temporaryTotpToken?: string
 }

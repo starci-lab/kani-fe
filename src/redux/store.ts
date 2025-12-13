@@ -4,12 +4,14 @@ import {
     apiReducer, 
     sessionReducer, 
     staticReducer, 
-    socketReducer, 
-    modalsReducer,
+    socketReducer,
     rpcReducer,
     routesReducer,
     botsReducer,
     dynamicReducer,
+    signInModalReducer,
+    exportPrivateKeyReducer,
+    enableMFAModalReducer,
 } from "./slices"
 
 export const store = configureStore({
@@ -21,10 +23,14 @@ export const store = configureStore({
         dynamic: dynamicReducer,
         socket: socketReducer,
         rpc: rpcReducer,
-        modals: modalsReducer,
         routes: routesReducer,
         pages: combineReducers({
             bots: botsReducer,
+        }),
+        modals: combineReducers({
+            signIn: signInModalReducer,
+            exportPrivateKey: exportPrivateKeyReducer,
+            enableMFAModal: enableMFAModalReducer,
         }),
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware({

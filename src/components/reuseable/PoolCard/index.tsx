@@ -116,7 +116,7 @@ export const PoolCard = (
                 <Spacer y={4} />
                 <KaniDivider />
                 <Spacer y={4} />
-                <div className="flex flex-col gap-1">
+                <div className="flex flex-col gap-3">
                     <div className="flex items-center justify-between">
                         <div className="text-sm text-foreground-500">TVL</div>
                         <div className="text-sm">{dynamicLiquidityPoolInfo?.tvl 

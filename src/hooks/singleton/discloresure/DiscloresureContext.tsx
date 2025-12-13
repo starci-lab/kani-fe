@@ -9,6 +9,8 @@ import { useUpdateExplorerDisclosureCore } from "./useUpdateExplorerDiscloresure
 import { useUpdateRpcsDisclosureCore } from "./useUpdateRpcsDiscloresure"
 import { useSelectPoolsDisclosureCore } from "./useSelectPoolsDiscloresure"
 import { useSelectTokenDisclosureCore } from "./useSelectTokenDiscloresure"
+import { useSignInDisclosureCore } from "./useSignInDiscloresure"
+import { useEnableMFAModalDisclosureCore } from "./useEnableMFADiscloresure"
 
 export interface DiscloresureContextType {
     connectModal: ReturnType<typeof useConnectModalDisclosureCore>
@@ -19,6 +21,8 @@ export interface DiscloresureContextType {
     updateRpcsModal: ReturnType<typeof useUpdateRpcsDisclosureCore>
     selectPoolsModal: ReturnType<typeof useSelectPoolsDisclosureCore>
     selectTokenModal: ReturnType<typeof useSelectTokenDisclosureCore>
+    signInModal: ReturnType<typeof useSignInDisclosureCore>
+    enableMFAModal: ReturnType<typeof useEnableMFAModalDisclosureCore>
 }
 
 export const DiscloresureContext = createContext<DiscloresureContextType | null>(null)
@@ -32,6 +36,8 @@ export const DiscloresureProvider = ({ children }: PropsWithChildren) => {
     const updateRpcsModal = useUpdateRpcsDisclosureCore()
     const selectPoolsModal = useSelectPoolsDisclosureCore()
     const selectTokenModal = useSelectTokenDisclosureCore()
+    const signInModal = useSignInDisclosureCore()
+    const enableMFAModal = useEnableMFAModalDisclosureCore()
     return (
         <DiscloresureContext.Provider value={{ 
             connectModal, 
@@ -41,7 +47,9 @@ export const DiscloresureProvider = ({ children }: PropsWithChildren) => {
             updateExplorerModal, 
             updateRpcsModal,
             selectPoolsModal,
-            selectTokenModal
+            selectTokenModal,
+            signInModal,
+            enableMFAModal
         }}>
             {children}
         </DiscloresureContext.Provider>

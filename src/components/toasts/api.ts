@@ -41,14 +41,16 @@ export const runGraphQLWithToast = async <T>(
         const response = await action()
         if (options?.showSuccessToast) {
             showGraphQLToast(response)
+            return true
         }
+        return response
     } catch (error) {
         const _error = error as Error
         if (_error.message.toLowerCase().includes("unauthorized")) {
             if (options?.showErrorToast) {
                 showUnauthorizedToast()
             }
-            return
+            return false
         }
         if (options?.showErrorToast) {
             addToast({
@@ -57,5 +59,6 @@ export const runGraphQLWithToast = async <T>(
                 color: "danger",
             })
         }
+        return false
     }
 }

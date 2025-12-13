@@ -6,13 +6,12 @@ import {
 } from "../../atomic"
 import { Link } from "@heroui/react"
 import React from "react"
-import { usePrivy } from "@privy-io/react-auth"
 import { KaniSignInButton } from "./KaniSignInButton"
 import { KaniUserDropdown } from "./KaniUserDropdown"
-import { KaniLoadingButton } from "./KaniLoadingButton"
+import { useAppSelector } from "@/redux"
 
 export const Navbar = () => {
-    const { authenticated, ready } = usePrivy()
+    const user = useAppSelector((state) => state.session.user)
     return (
         <KaniNavbar isBordered>
             <KaniNavbarBrand>
@@ -39,13 +38,10 @@ export const Navbar = () => {
                 <KaniNavbarItem>
                     {
                         (() => {
-                            if (!ready) {
-                                return <KaniLoadingButton />
-                            }
-                            if (authenticated) {
-                                return <KaniUserDropdown />
-                            }
-                            return <KaniSignInButton />
+                            if (!user) {
+                                return <KaniSignInButton />
+                            }    
+                            return <KaniUserDropdown />
                         })()
                     }
                 </KaniNavbarItem>

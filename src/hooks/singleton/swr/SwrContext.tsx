@@ -19,6 +19,9 @@ import {
     useQueryUserSwrCore,
     useQueryDynamicLiquidityPoolInfoSwrMutationCore,
     useCreateBotSwrMutationCore,
+    useRequestSignInOtpSwrMutationCore,
+    useVerifySignInOtpSwrMutationCore,
+    useQueryTotpSecretSwrMutationCore,
 } from "./api"
 
 export interface SwrContextType {
@@ -43,6 +46,9 @@ export interface SwrContextType {
   queryUser: ReturnType<typeof useQueryUserSwrCore>;
   queryDynamicLiquidityPoolInfoMutation: ReturnType<typeof useQueryDynamicLiquidityPoolInfoSwrMutationCore>;
   createBotMutation: ReturnType<typeof useCreateBotSwrMutationCore>;
+  requestSignInOtpMutation: ReturnType<typeof useRequestSignInOtpSwrMutationCore>;
+  verifySignInOtpMutation: ReturnType<typeof useVerifySignInOtpSwrMutationCore>;
+  queryTotpSecretMutation: ReturnType<typeof useQueryTotpSecretSwrMutationCore>;
 }
 
 export const SwrContext = createContext<SwrContextType | null>(null)
@@ -67,6 +73,9 @@ export const SwrProvider = ({ children }: PropsWithChildren) => {
     const queryUser = useQueryUserSwrCore()
     const queryDynamicLiquidityPoolInfoMutation = useQueryDynamicLiquidityPoolInfoSwrMutationCore()
     const createBotMutation = useCreateBotSwrMutationCore()
+    const requestSignInOtpMutation = useRequestSignInOtpSwrMutationCore()
+    const verifySignInOtpMutation = useVerifySignInOtpSwrMutationCore()
+    const queryTotpSecretMutation = useQueryTotpSecretSwrMutationCore()
     return (
         <SwrContext.Provider
             value={{
@@ -87,6 +96,9 @@ export const SwrProvider = ({ children }: PropsWithChildren) => {
                 queryUser,
                 queryDynamicLiquidityPoolInfoMutation,
                 createBotMutation,
+                requestSignInOtpMutation,
+                verifySignInOtpMutation,
+                queryTotpSecretMutation,
             }}
         >
             {children}
