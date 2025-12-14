@@ -1,0 +1,25 @@
+import { ExplorerId } from "@/modules/blockchain"
+import { ChainId } from "../blockchain"
+
+export interface BotSchema  {
+    accountAddress?: string
+    encryptedPrivateKey?: string
+    chainId: ChainId
+    user: string
+    name?: string
+    priorityToken?: string
+    liquidityPools: Array<string>   
+    initialized: boolean
+    rpcUrls: Array<string>
+    explorerId: ExplorerId
+    running: boolean
+    lastRunAt: Date
+    stoppedAt: Date
+    targetToken: string
+    quoteToken: string
+    snapshotTargetBalanceAmount?: string
+    snapshotQuoteBalanceAmount?: string
+    snapshotGasBalanceAmount?: string
+    lastBalancesSnapshotAt?: Date
+    isExitToUsdc: boolean
+}

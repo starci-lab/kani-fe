@@ -58,12 +58,16 @@ export const SetUpYourBot = () => {
                 If enabled, your bot will automatically move to USDC when a major price drop is detected.
                 </div>
                 <Spacer y={4} />
-                <KaniSwitch/>
+                <KaniSwitch
+                    isSelected={formik.values.isExitToUsdc}
+                    onValueChange={(value) => formik.setFieldValue("isExitToUsdc", value)}
+                />
             </div>
             <Spacer y={12} />
             <KaniButton 
                 isDisabled={!formik.isValid}
                 size="lg"
+                isLoading={formik.isSubmitting}
                 color="primary" onPress={
                     () => {
                         formik.submitForm()

@@ -1,4 +1,4 @@
-export * from "./useConfirmOtpSwrMutation"
+export * from "./useEnableMFASwrMutation"
 export * from "./useAddLiquidityProvisionBotSwrMutation"
 export * from "./useInitializeLiquidityProvisionBotSwrMutation"
 export * from "./useRunLiquidityProvisionBotSwrMutation"

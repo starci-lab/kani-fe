@@ -12,6 +12,7 @@ import {
     signInModalReducer,
     exportPrivateKeyReducer,
     enableMFAModalReducer,
+    botReducer,
 } from "./slices"
 
 export const store = configureStore({
@@ -27,6 +28,7 @@ export const store = configureStore({
         pages: combineReducers({
             bots: botsReducer,
         }),
+        bot: botReducer,
         modals: combineReducers({
             signIn: signInModalReducer,
             exportPrivateKey: exportPrivateKeyReducer,

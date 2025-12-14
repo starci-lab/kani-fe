@@ -1,7 +1,6 @@
 import { useRef, useEffect } from "react"
 import { createManager } from "./utils"
-import { useAppSelector, useAppDispatch } from "@/redux"
-import { SessionStorage, SessionStorageKey } from "@/modules"
+import { useAppSelector } from "@/redux"
 import EventEmitter2 from "eventemitter2"
 import superjson from "@/modules/superjson"
 import { ChainId, Network } from "@/modules/types"
@@ -23,7 +22,6 @@ export interface LiquidityPoolsFetchedEvent {
 export const useCoreSocketIo = () => {
     // create socket io client
     const socketRef = useRef(createManager().socket("/core"))
-    const totpVerified = useAppSelector((state) => state.session.totpVerified)
 
     // on socket io connect
     useEffect(() => {
@@ -51,21 +49,22 @@ export const useCoreSocketIo = () => {
         }
     }, [])
 
-    // if totp is verified, connect to socket io
+    const accessToken = useAppSelector((state) => state.session.accessToken)
+
+    // if access token is present, connect to socket io
     useEffect(() => {
-        if (!totpVerified) {
+        if (!accessToken) {
             return
         }
         const socket = socketRef.current
         // set auth token
         socket.auth = {
-            token: new SessionStorage().getItem(SessionStorageKey.AccessToken),
+            token: accessToken,
         }
         socket.connect()
-    }, [totpVerified])
+    }, [accessToken])
 
     const tokenPrices = useAppSelector((state) => state.socket.tokenPrices)
-    const dispatch = useAppDispatch()
     // on price update
 
     useEffect(() => {

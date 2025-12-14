@@ -1,26 +1,26 @@
-import { MutationCreateBotParams, mutationCreateBot } from "@/modules/api"
+import { MutationEnableMFAParams, mutationEnableMFA } from "@/modules/api"
 import useSWRMutation from "swr/mutation"
 import { SwrContext } from "../../../SwrContext"
 import { useContext } from "react"
 import { useAppSelector } from "@/redux"
 
-export const useCreateBotSwrMutationCore = () => {
-    const accessToken = useAppSelector((state) => state.session.accessToken)    
+export const useEnableMFASwrMutationCore = () => {
+    const accessToken = useAppSelector((state) => state.session.accessToken)
     const swrMutation = useSWRMutation(
-        ["CREATE_BOT_SWR_MUTATION"],
+        ["ENABLE_MFA_SWR_MUTATION"],
         async (
             _,
             {
                 arg,
             }: {
-                arg: MutationCreateBotParams
+                arg: MutationEnableMFAParams
             }
         ) => {
             if (!accessToken) {
                 throw new Error("Access token is required")
             }
-            const data = await mutationCreateBot({
-                request: arg.request,
+            const data = await mutationEnableMFA({
+                headers: arg.headers,
                 token: accessToken,
             })
             return data
@@ -29,7 +29,7 @@ export const useCreateBotSwrMutationCore = () => {
     return swrMutation
 }
 
-export const useCreateBotSwrMutation = () => {
-    const { createBotMutation } = useContext(SwrContext)!
-    return createBotMutation
+export const useEnableMFASwrMutation = () => {
+    const { enableMFAMutation } = useContext(SwrContext)!
+    return enableMFAMutation
 }

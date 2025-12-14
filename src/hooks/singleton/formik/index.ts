@@ -1,5 +1,5 @@
 export * from "./FormikContext"
-export * from "./useEnableTotpFormik"
+export * from "./useEnableMFAFormik"
 export * from "./useInitializeLiquidityProvisionBotFormik"
 export * from "./useConfirmTotpFormik"
 export * from "./useUpdateExplorerFormik"

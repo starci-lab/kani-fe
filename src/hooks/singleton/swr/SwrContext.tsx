@@ -4,7 +4,6 @@ import { createContext } from "react"
 import {
     useQueryUserSwrMutationCore,
     useQueryUserWithoutRetrySwrMutationCore,
-    useConfirmOtpSwrMutationCore,
     useAddLiquidityProvisionBotSwrMutationCore,
     useQueryStaticSwrMutationCore,
     useInitializeLiquidityProvisionBotSwrMutationCore,
@@ -22,6 +21,8 @@ import {
     useRequestSignInOtpSwrMutationCore,
     useVerifySignInOtpSwrMutationCore,
     useQueryTotpSecretSwrMutationCore,
+    useEnableMFASwrMutationCore,
+    useQueryBotSwrCore,
 } from "./api"
 
 export interface SwrContextType {
@@ -29,7 +30,6 @@ export interface SwrContextType {
   queryUserWithoutRetryMutation: ReturnType<
     typeof useQueryUserWithoutRetrySwrMutationCore
   >;
-  confirmOtpMutation: ReturnType<typeof useConfirmOtpSwrMutationCore>;
   addLiquidityProvisionBotMutation: ReturnType<
     typeof useAddLiquidityProvisionBotSwrMutationCore
   >;
@@ -49,6 +49,8 @@ export interface SwrContextType {
   requestSignInOtpMutation: ReturnType<typeof useRequestSignInOtpSwrMutationCore>;
   verifySignInOtpMutation: ReturnType<typeof useVerifySignInOtpSwrMutationCore>;
   queryTotpSecretMutation: ReturnType<typeof useQueryTotpSecretSwrMutationCore>;
+  enableMFAMutation: ReturnType<typeof useEnableMFASwrMutationCore>;
+  queryBot: ReturnType<typeof useQueryBotSwrCore>;
 }
 
 export const SwrContext = createContext<SwrContextType | null>(null)
@@ -57,7 +59,6 @@ export const SwrProvider = ({ children }: PropsWithChildren) => {
     const queryUserMutation = useQueryUserSwrMutationCore()
     const queryUserWithoutRetryMutation =
     useQueryUserWithoutRetrySwrMutationCore()
-    const confirmOtpMutation = useConfirmOtpSwrMutationCore()
     const addLiquidityProvisionBotMutation =
     useAddLiquidityProvisionBotSwrMutationCore()
     const queryStaticMutation = useQueryStaticSwrMutationCore()
@@ -76,12 +77,13 @@ export const SwrProvider = ({ children }: PropsWithChildren) => {
     const requestSignInOtpMutation = useRequestSignInOtpSwrMutationCore()
     const verifySignInOtpMutation = useVerifySignInOtpSwrMutationCore()
     const queryTotpSecretMutation = useQueryTotpSecretSwrMutationCore()
+    const enableMFAMutation = useEnableMFASwrMutationCore()
+    const queryBot = useQueryBotSwrCore()
     return (
         <SwrContext.Provider
             value={{
                 queryUserMutation,
                 queryUserWithoutRetryMutation,
-                confirmOtpMutation,
                 addLiquidityProvisionBotMutation,
                 queryStaticMutation,
                 initializeLiquidityProvisionBotMutation,
@@ -99,6 +101,8 @@ export const SwrProvider = ({ children }: PropsWithChildren) => {
                 requestSignInOtpMutation,
                 verifySignInOtpMutation,
                 queryTotpSecretMutation,
+                enableMFAMutation,
+                queryBot,
             }}
         >
             {children}

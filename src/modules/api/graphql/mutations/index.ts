@@ -1,4 +1,4 @@
-export * from "./mutation-confirm-totp"
+export * from "./mutation-enable-mfa"
 export * from "./mutation-add-liquidity-provision-bot"
 export * from "./mutation-initialize-liquidity-provision-bot"
 export * from "./mutation-update-liquidity-provision-bot-explorer-id"

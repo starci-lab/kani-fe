@@ -2,7 +2,7 @@ import { useFormik } from "formik"
 import * as Yup from "yup"
 import { useContext } from "react"
 import { FormikContext } from "./FormikContext"
-import { useConfirmOtpSwrMutation } from "../swr"
+import { useEnableMFASwrMutation } from "../swr"
 import { runGraphQLWithToast } from "@/components"
 import { GraphQLHeadersKey } from "@/modules/api"
 import { useEnableMFAModalDisclosure } from "../discloresure"
@@ -13,7 +13,7 @@ import {
 } from "@/redux"
 
 // Form values type — only one field for the 6-digit OTP code
-export interface EnableTotpFormikValues {
+export interface EnableMFAFormikValues {
     totp: string
 }
 
@@ -25,30 +25,30 @@ const validationSchema = Yup.object({
         .required("OTP is required"),
 })
 
-const initialValues: EnableTotpFormikValues = {
+const initialValues: EnableMFAFormikValues = {
     totp: "",
 }
 
 // Core hook — creates the Formik instance for the TOTP form
-export const useEnableTotpFormikCore = () => {
-    const confirmOtpMutation = useConfirmOtpSwrMutation()
+export const useEnableMFAFormikCore = () => {
+    const enableMFAMutation = useEnableMFASwrMutation()
     const { onClose } = useEnableMFAModalDisclosure()
     const dispatch = useAppDispatch()
-    return useFormik<EnableTotpFormikValues>({
+    return useFormik<EnableMFAFormikValues>({
         initialValues,
         validationSchema,
         onSubmit: async (values, { resetForm }) => {
             const success = await runGraphQLWithToast(
                 async () => {
-                    const response = await confirmOtpMutation.trigger({
+                    const response = await enableMFAMutation.trigger({
                         headers: {
                             [GraphQLHeadersKey.TOTP]: values.totp,
                         },
                     })
-                    if (!response.data?.confirmTotp) {
+                    if (!response.data?.enableMFA) {
                         throw new Error("Failed to verify TOTP")
                     }
-                    return response.data.confirmTotp
+                    return response.data.enableMFA
                 }, {
                     showSuccessToast: true,
                     showErrorToast: false,
@@ -66,7 +66,7 @@ export const useEnableTotpFormikCore = () => {
 }
 
 // Context hook — retrieves the Formik instance from the FormikProvider
-export const useEnableTotpFormik = () => {
-    const { enableTotpFormik } = useContext(FormikContext)!
-    return enableTotpFormik
+export const useEnableMFAFormik = () => {
+    const { enableMFAFormik } = useContext(FormikContext)!
+    return enableMFAFormik
 }

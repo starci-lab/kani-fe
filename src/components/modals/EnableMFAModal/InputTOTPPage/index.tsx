@@ -8,12 +8,12 @@ import {
     KaniLink
 } from "../../../atomic"
 import { Spacer } from "@heroui/react"
-import { useEnableTotpFormik } from "@/hooks/singleton"
+import { useEnableMFAFormik } from "@/hooks/singleton"
 import { setEnableMFAPage, EnableMFAPage } from "@/redux"
 import { useAppDispatch } from "@/redux"
 
 export const InputTOTPPage = () => {
-    const formik = useEnableTotpFormik()
+    const formik = useEnableMFAFormik()
     const dispatch = useAppDispatch()
     return (
         <>

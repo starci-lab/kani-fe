@@ -19,7 +19,7 @@ export const SignInModal = () => {
             return <InputOTPPage />
         }
     }
-    return <KaniModal size="xs" isOpen={isOpen} onOpenChange={onOpenChange}>
+    return <KaniModal size="sm" isOpen={isOpen} onOpenChange={onOpenChange}>
         <KaniModalContent>
             {renderPage()}
         </KaniModalContent>

@@ -13,6 +13,7 @@ export interface CreateBotFormikValues {
     targetTokenId?: TokenId
     quoteTokenId?: TokenId
     liquidityPoolIds: Array<LiquidityPoolId>
+    isExitToUsdc: boolean
 }
 
 const initialValues: CreateBotFormikValues = {
@@ -20,6 +21,7 @@ const initialValues: CreateBotFormikValues = {
     chainId: ChainId.Solana,
     isTargetTokenSelected: false,
     liquidityPoolIds: [],
+    isExitToUsdc: false,
 }
 
 const validationSchema = Yup.object({
@@ -28,6 +30,7 @@ const validationSchema = Yup.object({
     targetTokenId: Yup.string().required("Target token ID is required"),
     quoteTokenId: Yup.string().required("Quote token ID is required"),
     liquidityPoolIds: Yup.array().of(Yup.string()).required("Liquidity pool IDs are required"),
+    isExitToUsdc: Yup.boolean().required("Exit to USDC is required"),
 })
 
 export const useCreateBotFormikCore = () => {
@@ -45,8 +48,10 @@ export const useCreateBotFormikCore = () => {
                         request: {
                             name: values.name,
                             chainId: values.chainId,
+                            liquidityPoolIds: values.liquidityPoolIds,
                             targetTokenId: values.targetTokenId!,
                             quoteTokenId: values.quoteTokenId!,
+                            isExitToUsdc: values.isExitToUsdc,
                         },
                     })
                     if (!response.data?.createBot) {

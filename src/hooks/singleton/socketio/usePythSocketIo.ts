@@ -1,7 +1,6 @@
 import { useRef, useEffect } from "react"
 import { createManager } from "./utils"
 import { useAppSelector, useAppDispatch, setTokenPrice } from "@/redux"
-import { SessionStorage, SessionStorageKey } from "@/modules"
 import EventEmitter2 from "eventemitter2"
 import { Network, ChainId, TokenId } from "@/modules/types"
 
@@ -23,7 +22,6 @@ export interface PythPricesUpdatedEvent {
 export const usePythSocketIo = () => {
     // create socket io client
     const socketRef = useRef(createManager().socket("/pyth"))
-    const totpVerified = useAppSelector((state) => state.session.totpVerified)
 
     // on socket io connect
     useEffect(() => {
@@ -51,32 +49,42 @@ export const usePythSocketIo = () => {
         }
     }, [])
 
+    const accessToken = useAppSelector((state) => state.session.accessToken)
+
     // if totp is verified, connect to socket io
     useEffect(() => {
-        if (!totpVerified) {
+        if (!accessToken) {
             return
         }
         const socket = socketRef.current
         // set auth token
         socket.auth = {
-            token: new SessionStorage().getItem(SessionStorageKey.AccessToken),
+            token: accessToken,
         }
         socket.connect()
-    }, [totpVerified])
+    }, [accessToken])
 
     const tokenPrices = useAppSelector((state) => state.socket.tokenPrices)
     const dispatch = useAppDispatch()
     // on price update
     useEffect(() => {
-        const callback = (data: PythPricesUpdatedEvent) => {
+        const callback = (
+            data: PythPricesUpdatedEvent
+        ) => {
             dispatch(setTokenPrice({
                 tokenId: data.tokenId,
                 price: data.price,
             }))
         }
-        pythSocketIoEventEmitter.on(PythSocketIoEvent.PythPricesUpdated, callback)
+        pythSocketIoEventEmitter.on(
+            PythSocketIoEvent.PythPricesUpdated, 
+            callback
+        )
         return () => {
-            pythSocketIoEventEmitter.off(PythSocketIoEvent.PythPricesUpdated, callback)
+            pythSocketIoEventEmitter.off(
+                PythSocketIoEvent.PythPricesUpdated, 
+                callback
+            )
         }
     }, [tokenPrices])
 

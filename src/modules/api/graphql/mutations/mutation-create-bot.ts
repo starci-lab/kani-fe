@@ -28,6 +28,7 @@ export interface MutationCreateBotRequest {
     targetTokenId: TokenId;
     quoteTokenId: TokenId;
     liquidityPoolIds?: Array<LiquidityPoolId>;
+    isExitToUsdc: boolean;
 }
 
 export enum MutationCreateBot {
