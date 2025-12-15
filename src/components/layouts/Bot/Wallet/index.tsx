@@ -1,9 +1,11 @@
-import React from "react"
+import React, { useMemo } from "react"
 import { 
     KaniButton, 
     KaniCard, 
     KaniCardBody, 
     KaniImage, 
+    KaniLink, 
+    ScrollableList, 
     SnippetIcon, 
     TooltipTitle 
 } from "@/components"
@@ -18,6 +20,7 @@ import {
     QrCodeIcon 
 } from "@phosphor-icons/react"
 import { useVerifyDisclosure } from "@/hooks/singleton"
+import { PoolCard } from "./PoolCard"
 
 export interface WalletAction {
     label: string
@@ -28,6 +31,7 @@ export interface WalletAction {
 export const Wallet = () => {
     const bot = useAppSelector((state) => state.bot.bot)
     const chainAssets = getChainAssets(bot?.chainId ?? ChainId.Solana)
+    const liquidityPools = useAppSelector((state) => state.static.liquidityPools)
     const { onOpen } = useVerifyDisclosure()
     const actions: Array<WalletAction> = [
         {
@@ -50,6 +54,12 @@ export const Wallet = () => {
             },
         }
     ]
+
+    const filteredLiquidityPools = useMemo(() => {
+        return liquidityPools.filter((liquidityPool) => {
+            return bot?.liquidityPools?.includes(liquidityPool.id)
+        })
+    }, [liquidityPools, bot?.liquidityPools])
     return (
         <div>
             <KaniCard>
@@ -88,6 +98,35 @@ export const Wallet = () => {
                             </KaniButton>
                         ))}
                     </div>  
+                </KaniCardBody>
+            </KaniCard>
+            <Spacer y={6} />
+            <KaniCard>
+                <KaniCardBody>
+                    <div className="flex justify-between items-center">
+                        <TooltipTitle
+                            title="Pools"
+                            tooltipString="The pools selected for the bot." />
+                        <KaniLink
+                            size="sm"
+                            color="primary"
+                        >
+                            Manage
+                        </KaniLink>    
+                    </div>
+                    <Spacer y={6} />
+                    <ScrollableList
+                        enableScroll={false}
+                        items={filteredLiquidityPools}
+                        renderItem={(liquidityPool) => {
+                            return (
+                                <PoolCard 
+                                    key={liquidityPool.id} 
+                                    liquidityPool={liquidityPool} 
+                                />
+                            )
+                        }}
+                    />
                 </KaniCardBody>
             </KaniCard>
         </div>

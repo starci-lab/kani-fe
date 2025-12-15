@@ -11,7 +11,7 @@ import {
 import { CardProps } from "@heroui/react"
 
 export const KaniCard = (props: CardProps) => {
-    return <Card {...props} shadow="sm" />
+    return <Card shadow="sm" {...props}/>
 }
 
 export const KaniCardBody = (props: HTMLHeroUIProps<"div">) => {

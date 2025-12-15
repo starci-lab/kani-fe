@@ -60,7 +60,7 @@ export const Bot = () => {
             <KaniAlert
                 variant="flat"
                 color="warning"
-                title="Bot Key Backup Required"
+                title="Irreversible Key Export Warning"
                 description={
                     <div>
                         <div className="text-xs">Kani is designed to never see your bot&apos;s private key.
