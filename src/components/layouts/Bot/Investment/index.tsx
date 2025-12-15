@@ -25,9 +25,8 @@ export const Investment = () => {
         (token) => token.chainId === bot?.chainId
         && token.type === TokenType.Native
     ), [tokens, bot?.chainId])
-
+    
     const tokenPrices = useAppSelector((state) => state.socket.tokenPrices)
-
     const targetTokenAmount = useMemo(() => {
         if (!bot?.snapshotTargetBalanceAmount || !targetToken) {
             return new Decimal(0)

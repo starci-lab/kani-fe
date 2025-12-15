@@ -8,6 +8,7 @@ import { useUpdateExplorerFormikCore } from "./useUpdateExplorerFormik"
 import { useUpdateRpcsFormikCore } from "./useUpdateRpcsFormik"
 import { useCreateBotFormikCore } from "./useCreateBotFormik"
 import { useSignInFormikCore } from "./useSignInFormik"
+import { useVerifyFormikCore } from "./useVerifyFormik"
 
 export interface FormikContextType {
     enableMFAFormik: ReturnType<typeof useEnableMFAFormikCore>
@@ -17,6 +18,7 @@ export interface FormikContextType {
     updateRpcsFormik: ReturnType<typeof useUpdateRpcsFormikCore>
     createBotFormik: ReturnType<typeof useCreateBotFormikCore>
     signInFormik: ReturnType<typeof useSignInFormikCore>
+    verifyFormik: ReturnType<typeof useVerifyFormikCore>
 }
 
 export const FormikContext = createContext<FormikContextType | null>(null)
@@ -29,6 +31,7 @@ export const FormikProvider = ({ children }: PropsWithChildren) => {
     const updateRpcsFormik = useUpdateRpcsFormikCore()
     const createBotFormik = useCreateBotFormikCore()
     const signInFormik = useSignInFormikCore()
+    const verifyFormik = useVerifyFormikCore()
     return (
         <FormikContext.Provider value={{ 
             enableMFAFormik, 
@@ -37,7 +40,8 @@ export const FormikProvider = ({ children }: PropsWithChildren) => {
             updateExplorerFormik, 
             updateRpcsFormik,
             createBotFormik,
-            signInFormik
+            signInFormik,
+            verifyFormik
         }}>
             {children}
         </FormikContext.Provider>

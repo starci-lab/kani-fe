@@ -1,17 +1,35 @@
 import React from "react"
-import { useAppSelector } from "@/redux"
+import { setBotTab, useAppDispatch, useAppSelector } from "@/redux"
 import { Investment } from "./Investment"
-import { PoolInfoCard } from "./PoolInfoCard"
-import { LiquidityPools } from "./LiquidityPools"
-import { PositionRecords } from "./PositionRecords"
-import { ConfigCard } from "./ConfigCard"
 import { PlayIcon, StopIcon } from "@phosphor-icons/react"
-import { KaniAlert, KaniButton, WaveBars } from "@/components"
+import { KaniAlert, KaniButton, KaniDivider, WaveBars } from "@/components"
 import { Container } from "@/components"
-import { Spacer } from "@heroui/react"
+import { Spacer, Tabs, Tab } from "@heroui/react"
+import { BotTab } from "@/redux"
+import { Wallet } from "./Wallet"
 
 export const Bot = () => {
+    const tabs = [
+        {
+            key: BotTab.Investment,
+            title: "Investment",
+        },
+        {
+            key: BotTab.Wallet,
+            title: "Wallet",
+        }
+    ]
     const bot = useAppSelector((state) => state.bot.bot)
+    const tab = useAppSelector((state) => state.bot.tab)
+    const dispatch = useAppDispatch()
+    const renderTab = () => {
+        switch (tab) {
+        case BotTab.Investment:
+            return <Investment />
+        case BotTab.Wallet:
+            return <Wallet />
+        }
+    }
     return (
         <Container>
             <div className="flex justify-between items-center">
@@ -38,10 +56,11 @@ export const Bot = () => {
                 )}
             </div>
             <Spacer y={4} />
+
             <KaniAlert
                 variant="flat"
                 color="warning"
-                title="Bot Key Setup Required"
+                title="Bot Key Backup Required"
                 description={
                     <div>
                         <div className="text-xs">Kani is designed to never see your bot&apos;s private key.
@@ -52,17 +71,23 @@ export const Bot = () => {
                 }
             />
             <Spacer y={6} />
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="flex flex-col gap-6 col-span-2">
-                    <Investment />
-                    <LiquidityPools />
-                </div>
-                <div className="flex flex-col gap-6 col-span-1">
-                    <ConfigCard />
-                    <PoolInfoCard />
-                    <PositionRecords />
-                </div>
-            </div>
+            <Tabs 
+                variant="underlined" 
+                selectedKey={tab}
+                onSelectionChange={(value) => {
+                    dispatch(setBotTab(value as BotTab))
+                }}
+                aria-label="Bot Tabs"
+                classNames={{
+                    tabList: "pb-0",
+                }}>
+                {tabs.map((tab) => (
+                    <Tab key={tab.key} title={tab.title} />
+                ))}
+            </Tabs>
+            <KaniDivider/>
+            <Spacer y={6} />
+            {renderTab()}
         </Container>
     )
 }

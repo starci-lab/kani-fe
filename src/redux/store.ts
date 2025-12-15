@@ -13,6 +13,7 @@ import {
     exportPrivateKeyReducer,
     enableMFAModalReducer,
     botReducer,
+    verifyModalReducer,
 } from "./slices"
 
 export const store = configureStore({
@@ -33,6 +34,7 @@ export const store = configureStore({
             signIn: signInModalReducer,
             exportPrivateKey: exportPrivateKeyReducer,
             enableMFAModal: enableMFAModalReducer,
+            verify: verifyModalReducer,
         }),
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware({

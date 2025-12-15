@@ -23,6 +23,8 @@ import {
     useQueryTotpSecretSwrMutationCore,
     useEnableMFASwrMutationCore,
     useQueryBotSwrCore,
+    useRequestSend2FactorOtpSwrMutationCore,
+    useBackupBotPrivateKeySwrMutationCore,
 } from "./api"
 
 export interface SwrContextType {
@@ -51,6 +53,8 @@ export interface SwrContextType {
   queryTotpSecretMutation: ReturnType<typeof useQueryTotpSecretSwrMutationCore>;
   enableMFAMutation: ReturnType<typeof useEnableMFASwrMutationCore>;
   queryBot: ReturnType<typeof useQueryBotSwrCore>;
+  requestSend2FactorOtpMutation: ReturnType<typeof useRequestSend2FactorOtpSwrMutationCore>;
+  backupBotPrivateKeyMutation: ReturnType<typeof useBackupBotPrivateKeySwrMutationCore>;
 }
 
 export const SwrContext = createContext<SwrContextType | null>(null)
@@ -79,6 +83,8 @@ export const SwrProvider = ({ children }: PropsWithChildren) => {
     const queryTotpSecretMutation = useQueryTotpSecretSwrMutationCore()
     const enableMFAMutation = useEnableMFASwrMutationCore()
     const queryBot = useQueryBotSwrCore()
+    const requestSend2FactorOtpMutation = useRequestSend2FactorOtpSwrMutationCore()
+    const backupBotPrivateKeyMutation = useBackupBotPrivateKeySwrMutationCore()
     return (
         <SwrContext.Provider
             value={{
@@ -103,6 +109,8 @@ export const SwrProvider = ({ children }: PropsWithChildren) => {
                 queryTotpSecretMutation,
                 enableMFAMutation,
                 queryBot,
+                requestSend2FactorOtpMutation,
+                backupBotPrivateKeyMutation,
             }}
         >
             {children}

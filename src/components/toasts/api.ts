@@ -43,7 +43,7 @@ export const runGraphQLWithToast = async <T>(
             showGraphQLToast(response)
             return true
         }
-        return response
+        return true
     } catch (error) {
         const _error = error as Error
         if (_error.message.toLowerCase().includes("unauthorized")) {

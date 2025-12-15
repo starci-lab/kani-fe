@@ -11,6 +11,7 @@ import { useSelectPoolsDisclosureCore } from "./useSelectPoolsDiscloresure"
 import { useSelectTokenDisclosureCore } from "./useSelectTokenDiscloresure"
 import { useSignInDisclosureCore } from "./useSignInDiscloresure"
 import { useEnableMFAModalDisclosureCore } from "./useEnableMFADiscloresure"
+import { useVerifyDisclosureCore } from "./useVerifyDiscloresure"
 
 export interface DiscloresureContextType {
     connectModal: ReturnType<typeof useConnectModalDisclosureCore>
@@ -23,6 +24,7 @@ export interface DiscloresureContextType {
     selectTokenModal: ReturnType<typeof useSelectTokenDisclosureCore>
     signInModal: ReturnType<typeof useSignInDisclosureCore>
     enableMFAModal: ReturnType<typeof useEnableMFAModalDisclosureCore>
+    verifyModal: ReturnType<typeof useVerifyDisclosureCore>
 }
 
 export const DiscloresureContext = createContext<DiscloresureContextType | null>(null)
@@ -38,6 +40,7 @@ export const DiscloresureProvider = ({ children }: PropsWithChildren) => {
     const selectTokenModal = useSelectTokenDisclosureCore()
     const signInModal = useSignInDisclosureCore()
     const enableMFAModal = useEnableMFAModalDisclosureCore()
+    const verifyModal = useVerifyDisclosureCore()
     return (
         <DiscloresureContext.Provider value={{ 
             connectModal, 
@@ -49,7 +52,8 @@ export const DiscloresureProvider = ({ children }: PropsWithChildren) => {
             selectPoolsModal,
             selectTokenModal,
             signInModal,
-            enableMFAModal
+            enableMFAModal,
+            verifyModal
         }}>
             {children}
         </DiscloresureContext.Provider>

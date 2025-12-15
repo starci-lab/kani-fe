@@ -1,6 +1,6 @@
 import { TokenSchema } from "@/modules/types"
 import React from "react"
-import { KaniAvatar, KaniChip } from "@/components"
+import { KaniAvatar, KaniChip, KaniLink } from "@/components"
 import { Spacer, cn } from "@heroui/react"
 import { TooltipTitle } from "@/components"
 
@@ -68,6 +68,14 @@ export const TokenCard = ({
                 )}>
                     {balanceAmount}
                 </div>
+                <KaniLink
+                    color="primary"
+                    className="cursor-pointer"
+                >
+                    <div className="text-xs">
+                        Deposit
+                    </div>
+                </KaniLink>
             </div>
         </div>
     )

@@ -7,6 +7,7 @@ export interface GraphQLResponse<TData = undefined> {
 
 export enum GraphQLHeadersKey {
     TOTP = "X-TOTP",
+    EmailOTP = "X-Email-OTP",
 }
 
 export type GraphQLHeaders = Record<GraphQLHeadersKey, string>

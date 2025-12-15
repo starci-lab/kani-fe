@@ -8,6 +8,7 @@ import { SelectPoolsModal } from "./SelectPoolsModal"
 import { SelectTokenModal } from "./SelectTokenModal"
 import { SignInModal } from "./SignInModal"
 import { EnableMFAModal } from "./EnableMFAModal"
+import { VerifyModal } from "./VerifyModal"
 
 export const ModalContainer = () => {
     return (
@@ -21,6 +22,7 @@ export const ModalContainer = () => {
             <SelectTokenModal />
             <SignInModal />
             <EnableMFAModal />
+            <VerifyModal />
         </>
     )
 }
