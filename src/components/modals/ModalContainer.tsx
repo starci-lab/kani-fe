@@ -9,6 +9,7 @@ import { SelectTokenModal } from "./SelectTokenModal"
 import { SignInModal } from "./SignInModal"
 import { EnableMFAModal } from "./EnableMFAModal"
 import { VerifyModal } from "./VerifyModal"
+import { PositionModal } from "./PositionModal"
 
 export const ModalContainer = () => {
     return (
@@ -23,6 +24,7 @@ export const ModalContainer = () => {
             <SignInModal />
             <EnableMFAModal />
             <VerifyModal />
+            <PositionModal />
         </>
     )
 }

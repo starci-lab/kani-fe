@@ -1,5 +1,6 @@
 import { ExplorerId } from "@/modules/blockchain"
 import { ChainId } from "../blockchain"
+import { PositionSchema } from "./position"
 
 export interface BotSchema  {
     accountAddress?: string
@@ -22,4 +23,5 @@ export interface BotSchema  {
     snapshotGasBalanceAmount?: string
     lastBalancesSnapshotAt?: Date
     isExitToUsdc: boolean
+    activePosition?: PositionSchema
 }

@@ -40,6 +40,7 @@ const query1 = gql`
             updatedAt
             displayId
             poolAddress
+            type
             fee
             chainId
             dex

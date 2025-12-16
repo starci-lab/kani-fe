@@ -25,6 +25,39 @@ const query1 = gql`
         snapshotGasBalanceAmount
         lastBalancesSnapshotAt
         isExitToUsdc
+        activePosition { 
+          id
+          openTxHash
+          liquidityPool
+          snapshotTargetBalanceAmountBeforeOpen
+          snapshotQuoteBalanceAmountBeforeOpen
+          snapshotGasBalanceAmountBeforeOpen
+          snapshotTargetBalanceAmountAfterClose
+          snapshotQuoteBalanceAmountAfterClose
+          snapshotGasBalanceAmountAfterClose
+          liquidity
+          tickLower
+          tickUpper
+          amountA
+          amountB
+          minBinId
+          maxBinId
+          bot
+          chainId
+          targetIsA
+          positionOpenedAt
+          positionId
+          isActive
+          closeTxHash
+          positionClosedAt
+          roi
+          pnl
+          metadata
+          feeAmountTarget
+          feeAmountQuote
+          createdAt
+          updatedAt
+        }
       }
     }
   }

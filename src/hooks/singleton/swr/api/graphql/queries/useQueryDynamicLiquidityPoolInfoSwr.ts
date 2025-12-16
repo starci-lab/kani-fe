@@ -1,22 +1,20 @@
 import { queryDynamicLiquidityPoolsInfo, QueryDynamicLiquidityPoolsInfoParams } from "@/modules/api"
 import { SwrContext } from "../../../SwrContext"
 import { useContext } from "react"
-import { usePrivy } from "@privy-io/react-auth"
 import useSWRMutation from "swr/mutation"
 import { setDynamicLiquidityPoolInfos } from "@/redux/slices"
-import { useAppDispatch } from "@/redux"
+import { useAppDispatch, useAppSelector } from "@/redux"
 
 export const useQueryDynamicLiquidityPoolInfoSwrMutationCore = () => {
-    const { getAccessToken } = usePrivy()
     const dispatch = useAppDispatch()
+    const accessToken = useAppSelector((state) => state.session.accessToken)
     const swrMutation = 
     useSWRMutation(["QUERY_DYNAMIC_LIQUIDITY_POOL_INFO_SWR"], 
         async (_, { arg }: { arg: QueryDynamicLiquidityPoolsInfoParams }) => {
-            const token = await getAccessToken()
-            if (!token) {
-                throw new Error("No access token found")
+            if (!accessToken) {
+                throw new Error("Access token is required")
             }
-            const data = await queryDynamicLiquidityPoolsInfo({ token, ...arg })
+            const data = await queryDynamicLiquidityPoolsInfo({ token: accessToken, ...arg })
             if (!data || !data.data) {
                 throw new Error("Dynamic liquidity pools info not found")
             }

@@ -12,6 +12,7 @@ import { useSelectTokenDisclosureCore } from "./useSelectTokenDiscloresure"
 import { useSignInDisclosureCore } from "./useSignInDiscloresure"
 import { useEnableMFAModalDisclosureCore } from "./useEnableMFADiscloresure"
 import { useVerifyDisclosureCore } from "./useVerifyDiscloresure"
+import { usePositionModalDisclosureCore } from "./usePositionModal"
 
 export interface DiscloresureContextType {
     connectModal: ReturnType<typeof useConnectModalDisclosureCore>
@@ -25,6 +26,7 @@ export interface DiscloresureContextType {
     signInModal: ReturnType<typeof useSignInDisclosureCore>
     enableMFAModal: ReturnType<typeof useEnableMFAModalDisclosureCore>
     verifyModal: ReturnType<typeof useVerifyDisclosureCore>
+    positionModal: ReturnType<typeof usePositionModalDisclosureCore>
 }
 
 export const DiscloresureContext = createContext<DiscloresureContextType | null>(null)
@@ -41,6 +43,7 @@ export const DiscloresureProvider = ({ children }: PropsWithChildren) => {
     const signInModal = useSignInDisclosureCore()
     const enableMFAModal = useEnableMFAModalDisclosureCore()
     const verifyModal = useVerifyDisclosureCore()
+    const positionModal = usePositionModalDisclosureCore()
     return (
         <DiscloresureContext.Provider value={{ 
             connectModal, 
@@ -53,7 +56,8 @@ export const DiscloresureProvider = ({ children }: PropsWithChildren) => {
             selectTokenModal,
             signInModal,
             enableMFAModal,
-            verifyModal
+            verifyModal,
+            positionModal
         }}>
             {children}
         </DiscloresureContext.Provider>

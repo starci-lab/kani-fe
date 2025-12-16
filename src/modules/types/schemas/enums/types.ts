@@ -3,3 +3,14 @@ export enum OauthProviderName {
     Facebook = "facebook",
     X = "x",
 }
+
+export enum LiquidityPoolType {
+    Clmm = "clmm",
+    Dlmm = "dlmm",
+}
+
+export enum TransactionType {
+    OpenPosition = "openPosition",
+    ClosePosition = "closePosition",
+    Swap = "swap",
+}

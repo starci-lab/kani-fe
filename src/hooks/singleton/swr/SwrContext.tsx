@@ -25,6 +25,10 @@ import {
     useQueryBotSwrCore,
     useRequestSend2FactorOtpSwrMutationCore,
     useBackupBotPrivateKeySwrMutationCore,
+    useQueryTransactionsSwrCore,
+    useQueryPositionsSwrCore,
+    useQueryPositions2SwrCore,
+    useQueryTransactions2SwrCore,
 } from "./api"
 
 export interface SwrContextType {
@@ -55,6 +59,10 @@ export interface SwrContextType {
   queryBot: ReturnType<typeof useQueryBotSwrCore>;
   requestSend2FactorOtpMutation: ReturnType<typeof useRequestSend2FactorOtpSwrMutationCore>;
   backupBotPrivateKeyMutation: ReturnType<typeof useBackupBotPrivateKeySwrMutationCore>;
+  queryTransactions: ReturnType<typeof useQueryTransactionsSwrCore>;
+  queryPositions: ReturnType<typeof useQueryPositionsSwrCore>;
+  queryPositions2: ReturnType<typeof useQueryPositions2SwrCore>;
+  queryTransactions2: ReturnType<typeof useQueryTransactions2SwrCore>;
 }
 
 export const SwrContext = createContext<SwrContextType | null>(null)
@@ -85,6 +93,10 @@ export const SwrProvider = ({ children }: PropsWithChildren) => {
     const queryBot = useQueryBotSwrCore()
     const requestSend2FactorOtpMutation = useRequestSend2FactorOtpSwrMutationCore()
     const backupBotPrivateKeyMutation = useBackupBotPrivateKeySwrMutationCore()
+    const queryTransactions = useQueryTransactionsSwrCore()
+    const queryPositions = useQueryPositionsSwrCore()
+    const queryPositions2 = useQueryPositions2SwrCore()
+    const queryTransactions2 = useQueryTransactions2SwrCore()
     return (
         <SwrContext.Provider
             value={{
@@ -111,6 +123,10 @@ export const SwrProvider = ({ children }: PropsWithChildren) => {
                 queryBot,
                 requestSend2FactorOtpMutation,
                 backupBotPrivateKeyMutation,
+                queryTransactions,
+                queryPositions,
+                queryPositions2,
+                queryTransactions2,
             }}
         >
             {children}

@@ -26,7 +26,10 @@ export const PoolCard = ({ liquidityPool }: PoolCardProps) => {
     const dynamicLiquidityPoolInfo = dynamicLiquidityPoolInfos.find((dynamicLiquidityPoolInfo) => dynamicLiquidityPoolInfo.id === liquidityPool.id)
     
     return (
-        <KaniCard shadow="none" className="bg-content2">
+        <KaniCard 
+            shadow="none" 
+            className="bg-content2" 
+            isPressable>
             <KaniCardBody>
                 <div className="flex items-center justify-between">
                     <div className="text-primary font-medium">{

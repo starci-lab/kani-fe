@@ -7,6 +7,7 @@ import { Container } from "@/components"
 import { Spacer, Tabs, Tab } from "@heroui/react"
 import { BotTab } from "@/redux"
 import { Wallet } from "./Wallet"
+import { Activity } from "./Activity"
 
 export const Bot = () => {
     const tabs = [
@@ -17,7 +18,11 @@ export const Bot = () => {
         {
             key: BotTab.Wallet,
             title: "Wallet",
-        }
+        },
+        {
+            key: BotTab.Activity,
+            title: "Activity",
+        }   
     ]
     const bot = useAppSelector((state) => state.bot.bot)
     const tab = useAppSelector((state) => state.bot.tab)
@@ -28,6 +33,8 @@ export const Bot = () => {
             return <Investment />
         case BotTab.Wallet:
             return <Wallet />
+        case BotTab.Activity:
+            return <Activity />
         }
     }
     return (

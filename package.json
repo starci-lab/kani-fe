@@ -9,10 +9,12 @@
   },
   "dependencies": {
     "@apollo/client": "^4.0.6",
+    "@cetusprotocol/cetus-sui-clmm-sdk": "^5.4.0",
     "@heroui/react": "^2.8.4",
     "@mysten/sui": "^1.39.0",
     "@phosphor-icons/react": "^2.1.10",
     "@privy-io/react-auth": "^3.8.1",
+    "@raydium-io/raydium-sdk-v2": "^0.2.31-alpha",
     "@reduxjs/toolkit": "^2.9.0",
     "@solana-program/memo": "^0.10.0",
     "@solana-program/system": "^0.10.0",
