@@ -29,6 +29,7 @@ import {
     useQueryPositionsSwrCore,
     useQueryPositions2SwrCore,
     useQueryTransactions2SwrCore,
+    useQueryHistorySwrCore,
 } from "./api"
 
 export interface SwrContextType {
@@ -63,6 +64,7 @@ export interface SwrContextType {
   queryPositions: ReturnType<typeof useQueryPositionsSwrCore>;
   queryPositions2: ReturnType<typeof useQueryPositions2SwrCore>;
   queryTransactions2: ReturnType<typeof useQueryTransactions2SwrCore>;
+  queryHistory: ReturnType<typeof useQueryHistorySwrCore>;
 }
 
 export const SwrContext = createContext<SwrContextType | null>(null)
@@ -97,6 +99,7 @@ export const SwrProvider = ({ children }: PropsWithChildren) => {
     const queryPositions = useQueryPositionsSwrCore()
     const queryPositions2 = useQueryPositions2SwrCore()
     const queryTransactions2 = useQueryTransactions2SwrCore()
+    const queryHistory = useQueryHistorySwrCore()
     return (
         <SwrContext.Provider
             value={{
@@ -127,6 +130,7 @@ export const SwrProvider = ({ children }: PropsWithChildren) => {
                 queryPositions,
                 queryPositions2,
                 queryTransactions2,
+                queryHistory,
             }}
         >
             {children}

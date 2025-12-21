@@ -1,4 +1,4 @@
-import { AreaChart, KaniCard, KaniCardBody, TooltipTitle } from "@/components"
+import { KaniCard, KaniCardBody, TooltipTitle } from "@/components"
 import { useAppSelector } from "@/redux/hooks"
 import { Spacer } from "@heroui/react"
 import React, { useMemo } from "react"
@@ -7,6 +7,7 @@ import { TokenType } from "@/modules/types"
 import Decimal from "decimal.js"
 import { computeDenomination } from "@/modules/utils"
 import BN from "bn.js"
+import { HistoryChart } from "./HistoryChart"
 
 export const Investment = () => {
     const tokens = useAppSelector(
@@ -68,7 +69,7 @@ export const Investment = () => {
                     ${totalInvestment.toString()}
                 </div>
                 <Spacer y={4} />
-                <AreaChart />
+                <HistoryChart />
                 <Spacer y={4} />
                 <TooltipTitle
                     title="Assets"

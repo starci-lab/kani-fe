@@ -1,5 +1,10 @@
-import React from "react"
+import { intervalConfigMap } from "@/hooks/singleton"
+import { ChartInterval } from "@/modules/api"
+import { dayjs } from "@/modules/utils"
+import { useAppSelector } from "@/redux/hooks"
+import React, { useMemo } from "react"
 import {
+    ResponsiveContainer,
     AreaChart as RechartsAreaChart,
     Area,
     XAxis,
@@ -7,61 +12,91 @@ import {
     Tooltip,
 } from "recharts"
 
-const data = [
-    { name: "Jan", uv: 4000 },
-    { name: "Feb", uv: 3000 },
-    { name: "Mar", uv: 2000 },
-    { name: "Apr", uv: 2780 },
-    { name: "May", uv: 1890 },
-    { name: "Jun", uv: 2390 },
-    { name: "Jul", uv: 3490 },
-]
+export interface AreaChartData {
+    name: string
+    value: number
+}
+export interface AreaChartProps {
+    data: Array<AreaChartData>
+}
 
-export const AreaChart = () => {
+export const AreaChart = ({ data }: AreaChartProps) => {
+    const interval = useAppSelector((state) => state.bot.chartInterval)
+    const intervalConfig = useMemo(
+        () => {
+            return intervalConfigMap[interval ?? ChartInterval.OneHour]
+        },
+        [interval]
+    )
+    const bot = useAppSelector((state) => state.bot.bot)
+    const tokens = useAppSelector((state) => state.static.tokens)
+    const token = useMemo(() => {
+        return tokens.find((token) => token.chainId === bot?.chainId && token.id === bot?.targetToken)
+    }, [tokens, bot?.chainId, bot?.targetToken])    
     return (
-        <RechartsAreaChart
-            width={300}   
-            height={150}     
-            data={data}
-            margin={{ top: 10, right: 10, left: 0, bottom: 0 }}
-        >
-            <defs>
-                <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8} />
-                    <stop offset="95%" stopColor="#8884d8" stopOpacity={0} />
-                </linearGradient>
-            </defs>
+        <ResponsiveContainer width="100%" height={200}>
+            <RechartsAreaChart
+                data={data}
+                margin={{ top: 10, right: 10, left: 0, bottom: 10 }}
+            >
+                <defs>
+                    <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor="hsl(var(--heroui-primary))" stopOpacity={0.8} />
+                        <stop offset="95%" stopColor="hsl(var(--heroui-primary))" stopOpacity={0} />
+                    </linearGradient>
+                </defs>
+                <XAxis
+                    dataKey="name"
+                    interval={intervalConfig?.interval}
+                    axisLine={false}
+                    tickLine={false}
+                    tickMargin={10} 
+                    tick={{ fontSize: 12 }}
+                    tickFormatter={
+                        (value, index) => {
+                            if (index === 0) return ""
+                            const localTime = dayjs(value).local()
+                            if (localTime.hour() === 0 && localTime.minute() === 0) {
+                                return localTime.format("DD/MM")
+                            }
+                            return localTime.format("HH:mm")
+                        }}
+                />
+                <YAxis
+                    orientation="right"
+                    axisLine={false}
+                    tickLine={false}
+                    tick={{ fontSize: 12 }}
+                    domain={
+                        [
+                            (dataMin: number) => dataMin * 0.9
+                            , "dataMax"
+                        ]
+                    }
+                />
 
-            {/* X axis bên dưới */}
-            <XAxis
-                dataKey="name"
-                axisLine={false}
-                tickLine={false}
-                tick={{ fontSize: 12 }}
-            />
+                <Tooltip
+                    contentStyle={{ fontSize: 12, borderRadius: 8 }}
+                    cursor={{ stroke: "#ccc", strokeWidth: 1 }}
+                    labelFormatter={(label) =>
+                        dayjs(label).local().format("DD/MM/YYYY HH:mm")
+                    }
+                    formatter={(value) => {
+                        return [value, `${token?.symbol}`]
+                    }}
+                />
 
-            {/* Y axis bên phải */}
-            <YAxis
-                orientation="right"
-                axisLine={false}
-                tickLine={false}
-                tick={{ fontSize: 12 }}
-            />
-
-            <Tooltip
-                contentStyle={{ fontSize: 12 }}
-                cursor={{ stroke: "#ccc", strokeWidth: 1 }}
-            />
-
-            <Area
-                type="monotone"
-                dataKey="uv"
-                stroke="#8884d8"
-                fillOpacity={1}
-                fill="url(#colorUv)"
-                dot={false}        // bỏ mấy cái chấm
-                activeDot={false}  // bỏ chấm khi hover
-            />
-        </RechartsAreaChart>
+                <Area
+                    type="monotone"
+                    dataKey="value"
+                    stroke="hsl(var(--heroui-primary))"
+                    fillOpacity={1}
+                    isAnimationActive={false}
+                    fill="url(#colorUv)"
+                    dot={false}
+                    activeDot={false}
+                />
+            </RechartsAreaChart>
+        </ResponsiveContainer>
     )
 }

@@ -1,5 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 import { BotSchema, PositionSchema, TransactionSchema } from "@/modules/types"
+import { QueryHistoryResponse } from "@/modules"
+import { ChartInterval, ChartUnit } from "@/modules/api"
 
 export enum BotTab {
     Investment = "investment",
@@ -17,6 +19,9 @@ export interface BotSlice {
     positions?: Array<PositionSchema>
     positionsCursor?: string
     positionsPage?: number
+    chartInterval?: ChartInterval
+    chartUnit?: ChartUnit
+    historyResponse?: QueryHistoryResponse
     selectedPosition?: PositionSchema
 }
 
@@ -58,6 +63,15 @@ export const botSlice = createSlice({
         setSelectedPosition: (state, action: PayloadAction<PositionSchema>) => {
             state.selectedPosition = action.payload
         },
+        setChartInterval: (state, action: PayloadAction<ChartInterval>) => {
+            state.chartInterval = action.payload
+        },
+        setChartUnit: (state, action: PayloadAction<ChartUnit>) => {
+            state.chartUnit = action.payload
+        },
+        setHistoryResponse: (state, action: PayloadAction<QueryHistoryResponse>) => {
+            state.historyResponse = action.payload
+        },
     },
 })
 
@@ -72,5 +86,8 @@ export const {
     setPositionsCursor,
     setTransactionsPage,
     setPositionsPage,
-    setSelectedPosition
+    setSelectedPosition,
+    setChartInterval,
+    setChartUnit,
+    setHistoryResponse
 } = botSlice.actions

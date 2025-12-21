@@ -3,6 +3,8 @@ import React from "react"
 import { KaniAvatar, KaniChip, KaniLink } from "@/components"
 import { Spacer, cn } from "@heroui/react"
 import { TooltipTitle } from "@/components"
+import { computeDenomination } from "@/modules/utils"
+import BN from "bn.js"
 
 export enum TokenCardType {
     TargetToken = "targetToken",
@@ -66,7 +68,7 @@ export const TokenCard = ({
                 <div className={cn(
                     "text-2xl font-bold"
                 )}>
-                    {balanceAmount}
+                    {computeDenomination(new BN(balanceAmount), token?.decimals).toString()} {token?.symbol}
                 </div>
                 <KaniLink
                     color="primary"

@@ -106,7 +106,7 @@ export const CLMM = ({ liquidityPool }: CLMMProps) => {
                         {roundNumber(tickLowerPrice.toNumber())} - {roundNumber(tickUpperPrice.toNumber())} <span className="text-secondary">{tokenB?.symbol}</span> per <span className="text-secondary">{tokenA?.symbol}</span>
                     </div>
                     <KaniChip
-                        color={isInRange ? "primary" : "danger"}
+                        color={isInRange ? "success" : "danger"}
                         size="sm"
                         variant="flat"
                     >

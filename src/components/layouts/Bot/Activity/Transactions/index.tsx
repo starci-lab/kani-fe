@@ -17,7 +17,7 @@ import { centerPad } from "@/modules/utils"
 import { useAppSelector } from "@/redux"
 import { Spacer } from "@heroui/react"
 import { ArrowSquareOutIcon } from "@phosphor-icons/react"
-import dayjs from "dayjs"
+import { dayjs } from "@/modules/utils"
 import React, { useCallback } from "react"
 
 export const Transactions = () => {

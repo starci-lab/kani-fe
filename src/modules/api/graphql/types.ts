@@ -10,7 +10,7 @@ export enum GraphQLHeadersKey {
     EmailOTP = "X-Email-OTP",
 }
 
-export type GraphQLHeaders = Record<GraphQLHeadersKey, string>
+export type GraphQLHeaders = Partial<Record<GraphQLHeadersKey, string>>
 
 export interface MutationParams<TMutation, TRequest = undefined> {
     mutation?: TMutation
@@ -36,4 +36,17 @@ export interface MutationVariables<TRequest> {
 
 export interface QueryVariables<TRequest> {
     request: TRequest
+}
+
+export enum ChartInterval {
+    FifteenMinutes = "fifteenMinutes",
+    ThirtyMinutes = "thirtyMinutes",
+    OneHour = "oneHour",
+    TwoHours = "twoHours",
+    FourHours = "fourHours",
+    Day = "day",
+}
+
+export enum ChartUnit {
+    Usd = "usd",
 }

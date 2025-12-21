@@ -37,20 +37,6 @@ export const LiquidityChart = ({ priceLower, priceUpper, currentPrice }: Liquidi
             data={data}
             margin={{ top: 10, right: 10, left: 0, bottom: 0 }}
         >
-            <defs>
-                <linearGradient id="colorLiquidity" x1="0" y1="0" x2="0" y2="1">
-                    <stop
-                        offset="5%"
-                        stopColor="hsl(var(--heroui-secondary))"
-                        stopOpacity={0.8}
-                    />
-                    <stop
-                        offset="95%"
-                        stopColor="hsl(var(--heroui-secondary))"
-                        stopOpacity={0}
-                    />
-                </linearGradient>
-            </defs>
             <XAxis
                 type="number"
                 dataKey="name"
@@ -61,11 +47,12 @@ export const LiquidityChart = ({ priceLower, priceUpper, currentPrice }: Liquidi
             <Area
                 type="linear"
                 dataKey="uv"
-                stroke="hsl(var(--heroui-secondary))"
-                fill="url(#colorLiquidity)"
+                stroke="hsl(var(--heroui-foreground-400))"
+                fill="hsl(var(--heroui-foreground-300))"
                 fillOpacity={1}
                 dot={false}
                 activeDot={false}
+                isAnimationActive={false}
             />
             {/* Lower */}
             <ReferenceLine
