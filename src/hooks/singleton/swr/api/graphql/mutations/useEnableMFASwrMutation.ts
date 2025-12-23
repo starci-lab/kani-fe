@@ -1,7 +1,7 @@
 import { MutationEnableMFAParams, mutationEnableMFA } from "@/modules/api"
 import useSWRMutation from "swr/mutation"
 import { SwrContext } from "../../../SwrContext"
-import { useContext } from "react"
+import { use } from "react"
 import { useAppSelector } from "@/redux"
 
 export const useEnableMFASwrMutationCore = () => {
@@ -30,6 +30,6 @@ export const useEnableMFASwrMutationCore = () => {
 }
 
 export const useEnableMFASwrMutation = () => {
-    const { enableMFASwrMutation } = useContext(SwrContext)!
+    const { enableMFASwrMutation } = use(SwrContext)!
     return enableMFASwrMutation
 }

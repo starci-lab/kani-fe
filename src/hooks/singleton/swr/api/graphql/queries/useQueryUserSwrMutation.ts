@@ -1,7 +1,7 @@
 import { queryUser } from "@/modules/api"
 import useSWRMutation from "swr/mutation"
 import { SwrContext } from "../../../SwrContext"
-import { useContext } from "react"
+import { use } from "react"
 import { useAppDispatch, setUser } from "@/redux"
 import { usePrivy } from "@privy-io/react-auth"
 
@@ -47,11 +47,11 @@ export const useQueryUserWithoutRetrySwrMutationCore = () => {
 }
 
 export const useQueryUserSwrMutation = () => {
-    const { queryUserSwrMutation } = useContext(SwrContext)!
+    const { queryUserSwrMutation } = use(SwrContext)!
     return queryUserSwrMutation
 }
 
 export const useQueryUserWithoutRetrySwrMutation = () => {
-    const { queryUserWithoutRetrySwrMutation } = useContext(SwrContext)!
+    const { queryUserWithoutRetrySwrMutation } = use(SwrContext)!
     return queryUserWithoutRetrySwrMutation
 }

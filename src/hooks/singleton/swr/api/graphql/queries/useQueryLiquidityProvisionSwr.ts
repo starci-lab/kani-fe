@@ -1,6 +1,6 @@
 import { queryLiquidityProvisionBot } from "@/modules/api"
 import { SwrContext } from "../../../SwrContext"
-import { useContext } from "react"
+import { use } from "react"
 import { setLiquidityProvisionBot, useAppDispatch, useAppSelector } from "@/redux"
 import useSWR from "swr"
 
@@ -32,6 +32,6 @@ export const useQueryLiquidityProvisionSwrCore = () => {
 }
 
 export const useQueryLiquidityProvisionSwr = () => {
-    const { queryLiquidityProvisionSwr } = useContext(SwrContext)!
+    const { queryLiquidityProvisionSwr } = use(SwrContext)!
     return queryLiquidityProvisionSwr
 }

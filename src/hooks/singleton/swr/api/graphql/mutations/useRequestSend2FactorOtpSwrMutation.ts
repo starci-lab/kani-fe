@@ -3,7 +3,7 @@ import {
 } from "@/modules/api"
 import useSWRMutation from "swr/mutation"
 import { SwrContext } from "../../../SwrContext"
-import { useContext } from "react"
+import { use } from "react"
 import { useAppSelector } from "@/redux"
 
 export const useRequestSend2FactorOtpSwrMutationCore = () => {
@@ -28,6 +28,6 @@ export const useRequestSend2FactorOtpSwrMutationCore = () => {
 }
 
 export const useRequestSend2FactorOtpSwrMutation = () => {
-    const { requestSend2FactorOtpSwrMutation } = useContext(SwrContext)!
+    const { requestSend2FactorOtpSwrMutation } = use(SwrContext)!
     return requestSend2FactorOtpSwrMutation
 }

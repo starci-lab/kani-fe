@@ -1,6 +1,6 @@
 import { queryTotpSecret } from "@/modules/api"
 import { SwrContext } from "../../../SwrContext"
-import { useContext } from "react"
+import { use } from "react"
 import { useAppSelector } from "@/redux"
 import useSWRMutation from "swr/mutation"
 
@@ -26,6 +26,6 @@ export const useQueryTotpSecretSwrMutationCore = () => {
 }
 
 export const useQueryTotpSecretSwrMutation = () => {
-    const { queryTotpSecretSwrMutation } = useContext(SwrContext)!
+    const { queryTotpSecretSwrMutation } = use(SwrContext)!
     return queryTotpSecretSwrMutation
 }

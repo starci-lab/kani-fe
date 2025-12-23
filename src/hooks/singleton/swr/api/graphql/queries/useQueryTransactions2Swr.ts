@@ -1,6 +1,6 @@
 import { queryTransactions2 } from "@/modules/api"
 import { SwrContext } from "../../../SwrContext"
-import { useContext } from "react"
+import { use } from "react"
 import { setTransactions, setTransactionsPage, useAppDispatch, useAppSelector } from "@/redux"
 import useSWR from "swr"
 
@@ -41,6 +41,6 @@ export const useQueryTransactions2SwrCore = () => {
 }
 
 export const useQueryTransactions2Swr = () => {
-    const { queryTransactions2Swr } = useContext(SwrContext)!
+    const { queryTransactions2Swr } = use(SwrContext)!
     return queryTransactions2Swr
 }

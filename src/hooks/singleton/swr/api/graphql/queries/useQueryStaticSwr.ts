@@ -1,6 +1,6 @@
 import { queryStatic } from "@/modules/api"
 import { SwrContext } from "../../../SwrContext"
-import { useContext } from "react"
+import { use } from "react"
 import { useAppDispatch, setTokens, setDexes, setLiquidityPools } from "@/redux"
 import useSWR from "swr"
 
@@ -32,6 +32,6 @@ export const useQueryStaticSwrCore = () => {
 }
 
 export const useQueryStaticSwr = () => {
-    const { queryStaticSwr } = useContext(SwrContext)!
+    const { queryStaticSwr } = use(SwrContext)!
     return queryStaticSwr
 }

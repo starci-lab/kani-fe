@@ -3,7 +3,6 @@ import { Geist } from "next/font/google"
 import "./globals.css"
 import { PropsWithChildren } from "react"
 import { InnerLayout } from "./InnerLayout"
-export const dynamic = "force-dynamic"
 
 const font = Geist({
     variable: "--font-geist-sans",

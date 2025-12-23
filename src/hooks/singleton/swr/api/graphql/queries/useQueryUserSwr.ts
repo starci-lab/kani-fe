@@ -1,6 +1,6 @@
 import { queryUser } from "@/modules/api"
 import { SwrContext } from "../../../SwrContext"
-import { useContext } from "react"
+import { use } from "react"
 import { useAppDispatch, setUser, useAppSelector } from "@/redux"
 import useSWR from "swr"
 
@@ -28,6 +28,6 @@ export const useQueryUserSwrCore = () => {
 }
 
 export const useQueryUserSwr = () => {
-    const { queryUserSwr } = useContext(SwrContext)!
+    const { queryUserSwr } = use(SwrContext)!
     return queryUserSwr
 }

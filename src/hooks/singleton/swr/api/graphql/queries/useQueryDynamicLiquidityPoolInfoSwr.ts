@@ -1,6 +1,6 @@
 import { queryDynamicLiquidityPoolsInfo, QueryDynamicLiquidityPoolsInfoParams } from "@/modules/api"
 import { SwrContext } from "../../../SwrContext"
-import { useContext } from "react"
+import { use } from "react"
 import useSWRMutation from "swr/mutation"
 import { setDynamicLiquidityPoolInfos } from "@/redux/slices"
 import { useAppDispatch, useAppSelector } from "@/redux"
@@ -25,6 +25,6 @@ export const useQueryDynamicLiquidityPoolInfoSwrMutationCore = () => {
 }
 
 export const useQueryDynamicLiquidityPoolInfoSwrMutation = () => {
-    const { queryDynamicLiquidityPoolInfoSwrMutation } = useContext(SwrContext)!
+    const { queryDynamicLiquidityPoolInfoSwrMutation } = use(SwrContext)!
     return queryDynamicLiquidityPoolInfoSwrMutation
 }

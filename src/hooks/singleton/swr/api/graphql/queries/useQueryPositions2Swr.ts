@@ -1,6 +1,6 @@
 import { queryPositions2 } from "@/modules/api"
 import { SwrContext } from "../../../SwrContext"
-import { useContext } from "react"
+import { use } from "react"
 import { setPositions, setPositionsPage, useAppDispatch, useAppSelector } from "@/redux"
 import useSWR from "swr"
 
@@ -41,6 +41,6 @@ export const useQueryPositions2SwrCore = () => {
 }
 
 export const useQueryPositions2Swr = () => {
-    const { queryPositions2Swr } = useContext(SwrContext)!
+    const { queryPositions2Swr } = use(SwrContext)!
     return queryPositions2Swr
 }

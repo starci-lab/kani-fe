@@ -1,7 +1,7 @@
 import { MutationCreateBotParams, mutationCreateBot } from "@/modules/api"
 import useSWRMutation from "swr/mutation"
 import { SwrContext } from "../../../SwrContext"
-import { useContext } from "react"
+import { use } from "react"
 import { useAppSelector } from "@/redux"
 
 export const useCreateBotSwrMutationCore = () => {
@@ -30,6 +30,6 @@ export const useCreateBotSwrMutationCore = () => {
 }
 
 export const useCreateBotSwrMutation = () => {
-    const { createBotSwrMutation } = useContext(SwrContext)!
+    const { createBotSwrMutation } = use(SwrContext)!
     return createBotSwrMutation
 }

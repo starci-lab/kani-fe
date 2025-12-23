@@ -1,6 +1,6 @@
 import { ChartInterval, queryHistory, QueryHistoryRequest } from "@/modules/api"
 import { SwrContext } from "../../../SwrContext"
-import { useContext } from "react"
+import { use } from "react"
 import { useAppDispatch, useAppSelector, setHistoryResponse } from "@/redux"
 import useSWR from "swr"
 import { dayjs } from "@/modules/utils"
@@ -79,6 +79,6 @@ export const useQueryHistorySwrCore = () => {
 }
 
 export const useQueryHistorySwr = () => {
-    const { queryHistorySwr } = useContext(SwrContext)!
+    const { queryHistorySwr } = use(SwrContext)!
     return queryHistorySwr
 }

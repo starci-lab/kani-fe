@@ -1,10 +1,10 @@
 import { useDisclosure } from "@heroui/react"
-import { useContext } from "react"
+import { use } from "react"
 import { DiscloresureContext } from "./DiscloresureContext"
 
 export const useConnectModalDisclosureCore = () => useDisclosure()
 
 export const useConnectModalDisclosure = () => {
-    const { connectModal } = useContext(DiscloresureContext)!
+    const { connectModal } = use(DiscloresureContext)!
     return connectModal
 }

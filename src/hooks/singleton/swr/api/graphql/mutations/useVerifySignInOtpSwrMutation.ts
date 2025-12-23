@@ -4,7 +4,7 @@ import {
 } from "@/modules/api"
 import useSWRMutation from "swr/mutation"
 import { SwrContext } from "../../../SwrContext"
-import { useContext } from "react"
+import { use } from "react"
 import { 
     LocalStorageKey, 
     setLocalStorageItem 
@@ -41,6 +41,6 @@ export const useVerifySignInOtpSwrMutationCore = () => {
 }
 
 export const useVerifySignInOtpSwrMutation = () => {
-    const { verifySignInOtpSwrMutation } = useContext(SwrContext)!
+    const { verifySignInOtpSwrMutation } = use(SwrContext)!
     return verifySignInOtpSwrMutation
 }

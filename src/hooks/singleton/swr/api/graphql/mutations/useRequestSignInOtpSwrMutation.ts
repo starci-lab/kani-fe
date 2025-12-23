@@ -4,7 +4,7 @@ import {
 } from "@/modules/api"
 import useSWRMutation from "swr/mutation"
 import { SwrContext } from "../../../SwrContext"
-import { useContext } from "react"
+import { use } from "react"
 
 export const useRequestSignInOtpSwrMutationCore = () => {
     const swrMutation = useSWRMutation(
@@ -31,6 +31,6 @@ export const useRequestSignInOtpSwrMutationCore = () => {
 }
 
 export const useRequestSignInOtpSwrMutation = () => {
-    const { requestSignInOtpSwrMutation } = useContext(SwrContext)!
+    const { requestSignInOtpSwrMutation } = use(SwrContext)!
     return requestSignInOtpSwrMutation
 }

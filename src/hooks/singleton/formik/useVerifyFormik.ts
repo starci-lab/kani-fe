@@ -1,5 +1,5 @@
 import { useFormik } from "formik"
-import { useContext } from "react"
+import { use } from "react"
 import * as Yup from "yup"
 import { FormikContext } from "./FormikContext"
 import { runGraphQLWithToast } from "@/components/toasts"
@@ -71,6 +71,6 @@ export const useVerifyFormikCore = () => {
 }
 
 export const useVerifyFormik = () => {
-    const { verifyFormik } = useContext(FormikContext)!
+    const { verifyFormik } = use(FormikContext)!
     return verifyFormik
 }

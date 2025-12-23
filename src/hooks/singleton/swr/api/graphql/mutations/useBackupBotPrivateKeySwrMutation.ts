@@ -4,7 +4,7 @@ import {
 } from "@/modules/api"
 import useSWRMutation from "swr/mutation"
 import { useAppSelector } from "@/redux"
-import { useContext } from "react"
+import { use } from "react"
 import { SwrContext } from "../../../SwrContext"
 
 export const useBackupBotPrivateKeySwrMutationCore = () => {
@@ -39,6 +39,6 @@ interface UseBackupBotPrivateKeySwrMutationParams {
 }
 
 export const useBackupBotPrivateKeySwrMutation = () => {
-    const { backupBotPrivateKeySwrMutation } = useContext(SwrContext)!
+    const { backupBotPrivateKeySwrMutation } = use(SwrContext)!
     return backupBotPrivateKeySwrMutation
 }

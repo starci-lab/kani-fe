@@ -1,6 +1,6 @@
 import { queryBot } from "@/modules/api"
 import { SwrContext } from "../../../SwrContext"
-import { useContext } from "react"
+import { use } from "react"
 import { useAppDispatch, setBot, useAppSelector } from "@/redux"
 import useSWR from "swr"
 
@@ -35,6 +35,6 @@ export const useQueryBotSwrCore = () => {
 }
 
 export const useQueryBotSwr = () => {
-    const { queryBotSwr } = useContext(SwrContext)!
+    const { queryBotSwr } = use(SwrContext)!
     return queryBotSwr
 }

@@ -1,6 +1,6 @@
 import { useFormik } from "formik"
 import * as Yup from "yup"
-import { useContext } from "react"
+import { use } from "react"
 import { FormikContext } from "./FormikContext"
 import { useEnableMFASwrMutation } from "../swr"
 import { runGraphQLWithToast } from "@/components"
@@ -67,6 +67,6 @@ export const useEnableMFAFormikCore = () => {
 
 // Context hook — retrieves the Formik instance from the FormikProvider
 export const useEnableMFAFormik = () => {
-    const { enableMFAFormik } = useContext(FormikContext)!
+    const { enableMFAFormik } = use(FormikContext)!
     return enableMFAFormik
 }

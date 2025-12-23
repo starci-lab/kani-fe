@@ -1,5 +1,5 @@
 import { useFormik } from "formik"
-import { useContext } from "react"
+import { use } from "react"
 import * as Yup from "yup"
 import { FormikContext } from "./FormikContext"
 import { ChainId, LiquidityPoolId, TokenId } from "@/modules/types"
@@ -69,6 +69,6 @@ export const useCreateBotFormikCore = () => {
 }
 
 export const useCreateBotFormik = () => {
-    const { createBotFormik } = useContext(FormikContext)!
+    const { createBotFormik } = use(FormikContext)!
     return createBotFormik
 }

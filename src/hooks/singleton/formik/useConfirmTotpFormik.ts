@@ -1,6 +1,6 @@
 import { useFormik } from "formik"
 import * as Yup from "yup"
-import { useContext } from "react"
+import { use } from "react"
 import { FormikContext } from "./FormikContext"
 import { useConfirmTOTPDisclosure } from "../discloresure"
 
@@ -41,6 +41,6 @@ export const useConfirmTotpFormikCore = () => {
 
 // Context hook — retrieves the Formik instance from the FormikProvider
 export const useConfirmTotpFormik = () => {
-    const { confirmTotpFormik } = useContext(FormikContext)!
+    const { confirmTotpFormik } = use(FormikContext)!
     return confirmTotpFormik
 }

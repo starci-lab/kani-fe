@@ -25,19 +25,22 @@ export const FormikProvider = ({ children }: PropsWithChildren) => {
     const signInFormik = useSignInFormikCore()
     const verifyFormik = useVerifyFormikCore()
     
-    const value = useMemo(() => ({
-        enableMFAFormik, 
-        confirmTotpFormik, 
-        createBotFormik,
-        signInFormik,
-        verifyFormik
-    }), [
-        enableMFAFormik, 
-        confirmTotpFormik, 
-        createBotFormik, 
-        signInFormik, 
-        verifyFormik
-    ])
+    const value = useMemo(
+        () => (
+            {
+                enableMFAFormik, 
+                confirmTotpFormik, 
+                createBotFormik,
+                signInFormik,
+                verifyFormik
+            }), [
+            enableMFAFormik, 
+            confirmTotpFormik, 
+            createBotFormik, 
+            signInFormik, 
+            verifyFormik
+        ]
+    )
 
     return (
         <FormikContext.Provider value={value}>
