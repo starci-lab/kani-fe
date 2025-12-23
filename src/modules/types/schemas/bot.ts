@@ -3,6 +3,7 @@ import { ChainId } from "../blockchain"
 import { PositionSchema } from "./position"
 
 export interface BotSchema  {
+    id: string
     accountAddress?: string
     encryptedPrivateKey?: string
     chainId: ChainId

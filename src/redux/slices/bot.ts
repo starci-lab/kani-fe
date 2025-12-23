@@ -23,6 +23,8 @@ export interface BotSlice {
     chartUnit?: ChartUnit
     historyResponse?: QueryHistoryResponse
     selectedPosition?: PositionSchema
+    bots?: Array<BotSchema>
+    pageNumber?: number
 }
 
 const initialState: BotSlice = {
@@ -72,6 +74,12 @@ export const botSlice = createSlice({
         setHistoryResponse: (state, action: PayloadAction<QueryHistoryResponse>) => {
             state.historyResponse = action.payload
         },
+        setBots: (state, action: PayloadAction<Array<BotSchema>>) => {
+            state.bots = action.payload
+        },
+        setBotsPageNumber: (state, action: PayloadAction<number>) => {
+            state.pageNumber = action.payload
+        },
     },
 })
 
@@ -89,5 +97,7 @@ export const {
     setSelectedPosition,
     setChartInterval,
     setChartUnit,
-    setHistoryResponse
+    setHistoryResponse,
+    setBots,
+    setBotsPageNumber
 } = botSlice.actions

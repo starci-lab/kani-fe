@@ -57,7 +57,7 @@ const queryMap: Record<QueryPositions, DocumentNode> = {
 
 export interface QueryPositionsRequest {
     botId: string;
-    filters: PositionsPaginationCursorFilters;
+    filters?: PositionsPaginationCursorFilters;
 }
 
 export interface PositionsPaginationCursorFilters {

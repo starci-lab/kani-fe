@@ -10,7 +10,6 @@ const scales = [
     [0.7, 0.95, 0.7], // right
     [0.5, 0.7, 0.5], // bottom
 ]
-
 export const WaveBars = () => {
     return (
         <div className="px-3 py-2 bg-content2 rounded-medium">
