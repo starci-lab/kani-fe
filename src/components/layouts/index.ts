@@ -1,6 +1,5 @@
 export * from "./Navbar"
 export * from "./AddLiquidityProvisionBot"
-export * from "./pages"
 export * from "./Sidebar"
 export * from "./BotList"
 export * from "./BotCreate"

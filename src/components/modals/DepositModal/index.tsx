@@ -14,15 +14,15 @@ import { getChainAssets } from "@/assets"
 import { ChainId } from "@/modules/types"
 import { Spacer } from "@heroui/react"
 import { 
-    getMetadata, 
     centerPad 
 } from "@/modules/utils"
+import { getChainMetadata } from "@/modules"
 
 export const DepositModal = () => {
     const { isOpen, onOpenChange } = useDepositModalDisclosure()
     const bot = useAppSelector((state) => state.bot.bot)
     const chainAssets = useMemo(() => getChainAssets(bot?.chainId ?? ChainId.Solana), [bot?.chainId])
-    const metadata = useMemo(() => getMetadata(bot?.chainId ?? ChainId.Solana), [bot?.chainId])
+    const chainMetadata = useMemo(() => getChainMetadata(bot?.chainId ?? ChainId.Solana), [bot?.chainId])
     return (
         <KaniModal size="xs" isOpen={isOpen} onOpenChange={onOpenChange}>
             <KaniModalContent>
@@ -40,7 +40,7 @@ export const DepositModal = () => {
                             <div className="flex items-center gap-1">
                                 <KaniImage className="w-5 h-5" src={chainAssets.token} />
                                 <div className="text-sm">
-                                    {metadata.name}
+                                    {chainMetadata.name}
                                 </div>
                             </div>
                             |

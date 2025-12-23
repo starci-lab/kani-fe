@@ -1,6 +1,5 @@
 export * from "./truncate"
 export * from "./math"
-export * from "./metadata"
 export * from "./misc"
 export * from "./tick"
 export * from "./dayjs"

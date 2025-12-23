@@ -1,11 +1,11 @@
 import React from "react"
 import { LiquidityPoolSchema } from "@/modules/types"
 import { KaniAvatar, KaniAvatarGroup, KaniImage } from "../../atomic"
-import { XsSnippet } from "../XsSnippet"
 import { motion } from "framer-motion"
 import { Chip, Spacer, cn } from "@heroui/react"
 import { useAppSelector } from "@/redux"
 import { computePercentage } from "@/modules/utils"
+import { SnippetIcon } from "../SnippetIcon"
 
 export interface LiquidityPoolCardProps {
     liquidityPool: LiquidityPoolSchema
@@ -43,7 +43,7 @@ export const LiquidityPoolCard = ({ liquidityPool, isSelected, onSelect }: Liqui
                         </div>
                     </div>
                     <Spacer y={2} />
-                    <XsSnippet text={liquidityPool.poolAddress ?? ""} />                  
+                    <SnippetIcon copyString={liquidityPool.poolAddress ?? ""} classNames={{ checkIcon: "text-secondary w-5 h-5", copyIcon: "text-secondary w-5 h-5" }}/>
                 </div>
                 <div className="flex items-center gap-2">
                     <div className="flex items-center gap-2">
