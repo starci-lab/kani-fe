@@ -1,3 +1,4 @@
+"use client"
 import React from "react"
 import { setBotTab, useAppDispatch, useAppSelector } from "@/redux"
 import { Investment } from "./Investment"

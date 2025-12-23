@@ -1,49 +1,82 @@
-import { TooltipTitle, KaniTooltip, KaniLink, KaniImage, runGraphQLWithToast, SnippetIcon } from "@/components"
+import {
+    TooltipTitle,
+    KaniTooltip,
+    KaniLink,
+    KaniImage,
+    runGraphQLWithToast,
+    SnippetIcon,
+} from "@/components"
 import { Spacer } from "@heroui/react"
 import { QrCodeIcon, ArrowSquareOutIcon, KeyIcon } from "@phosphor-icons/react"
 import React, { useMemo } from "react"
 import { ChainId } from "@/modules/types"
 import { getChainAssets } from "@/assets"
 import { centerPad } from "@/modules/utils"
-import { ExplorerId, getExplorerUrl, ExplorerUrlType } from "@/modules/blockchain"
-import { useDepositModalDisclosure, useConfirmTOTPDisclosure, useExportPrivateKeyModalDisclosure, useQueryExportedAccountSwrMutation, useConfirmTotpFormik } from "@/hooks/singleton"
+import {
+    ExplorerId,
+    getExplorerUrl,
+    ExplorerUrlType,
+} from "@/modules/blockchain"
+import {
+    useDepositModalDisclosure,
+    useConfirmTOTPDisclosure,
+    useExportPrivateKeyModalDisclosure,
+    useConfirmTotpFormik,
+    useBackupBotPrivateKeySwrMutation,
+} from "@/hooks/singleton"
 import { useAppDispatch, useAppSelector, setExportPrivateKey } from "@/redux"
-    
+
 export const WalletSection = () => {
     const dispatch = useAppDispatch()
-    const liquidityProvisionBot = useAppSelector((state) => state.session.liquidityProvisionBot)
-    const chainAssets = getChainAssets(liquidityProvisionBot?.chainId ?? ChainId.Solana)
+    const liquidityProvisionBot = useAppSelector(
+        (state) => state.session.liquidityProvisionBot
+    )
+    const chainAssets = getChainAssets(
+        liquidityProvisionBot?.chainId ?? ChainId.Solana
+    )
     const bot = useAppSelector((state) => state.bot.bot)
     const { onOpen } = useDepositModalDisclosure()
     const { onOpen: onOpenConfirmTOTP } = useConfirmTOTPDisclosure()
-    const { onOpen: onOpenExportPrivateKey } = useExportPrivateKeyModalDisclosure()
+    const { onOpen: onOpenExportPrivateKey } =
+    useExportPrivateKeyModalDisclosure()
     const formik = useConfirmTotpFormik()
-    const queryExportedAccountSwrMutation = useQueryExportedAccountSwrMutation()
-    
+    const backupBotPrivateKeySwrMutation = useBackupBotPrivateKeySwrMutation()
+
     const handleExportPrivateKey = () => {
         formik.setFieldValue("next", async (totp: string) => {
-            await runGraphQLWithToast(async () => {
-                const response = await queryExportedAccountSwrMutation.trigger(totp)
-                const privateKey = response?.data?.exportedAccount?.data?.privateKey
-                if (!privateKey) throw new Error("Failed to export private key")
-                if (!response?.data?.exportedAccount) throw new Error("Failed to export private key")
-                dispatch(setExportPrivateKey(privateKey))
-                onOpenExportPrivateKey()
-                return response.data.exportedAccount
-            }, {
-                showSuccessToast: false,
-                showErrorToast: true,
-            })
+            await runGraphQLWithToast(
+                async () => {
+                    const response = await backupBotPrivateKeySwrMutation.trigger({
+                        emailOtp: formik.values.otp,
+                        totp: totp,
+                    })
+                    const privateKey = response?.data?.backupBotPrivateKey?.data?.privateKey
+                    if (!privateKey) throw new Error("Failed to export private key")
+                    if (!response?.data?.backupBotPrivateKey)
+                        throw new Error("Failed to export private key")
+                    dispatch(setExportPrivateKey(privateKey))
+                    onOpenExportPrivateKey()
+                    return response.data.backupBotPrivateKey
+                },
+                {
+                    showSuccessToast: false,
+                    showErrorToast: true,
+                }
+            )
         })
         onOpenConfirmTOTP()
     }
 
-    const explorerUrl = useMemo(() => getExplorerUrl({
-        chainId: bot?.chainId ?? ChainId.Solana,
-        value: bot?.accountAddress ?? "",
-        type: ExplorerUrlType.AccountAddress,
-        explorerId: ExplorerId.SuiVision,
-    }), [bot?.accountAddress, bot?.chainId])
+    const explorerUrl = useMemo(
+        () =>
+            getExplorerUrl({
+                chainId: bot?.chainId ?? ChainId.Solana,
+                value: bot?.accountAddress ?? "",
+                type: ExplorerUrlType.AccountAddress,
+                explorerId: ExplorerId.SuiVision,
+            }),
+        [bot?.accountAddress, bot?.chainId]
+    )
 
     return (
         <div>
@@ -71,7 +104,13 @@ export const WalletSection = () => {
             {/* Wallet Actions */}
             <div className="flex items-center gap-2">
                 <KaniTooltip content="Copy Address">
-                    <SnippetIcon copyString={bot?.accountAddress ?? ""} classNames={{ checkIcon: "text-secondary w-5 h-5", copyIcon: "text-secondary w-5 h-5" }}/>
+                    <SnippetIcon
+                        copyString={bot?.accountAddress ?? ""}
+                        classNames={{
+                            checkIcon: "text-secondary w-5 h-5",
+                            copyIcon: "text-secondary w-5 h-5",
+                        }}
+                    />
                 </KaniTooltip>
                 <KaniTooltip content="Deposit">
                     <KaniLink onPress={onOpen} color="secondary">

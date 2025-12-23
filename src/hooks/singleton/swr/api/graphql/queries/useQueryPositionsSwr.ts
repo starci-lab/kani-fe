@@ -43,6 +43,6 @@ export const useQueryPositionsSwrCore = () => {
 }
 
 export const useQueryPositionsSwr = () => {
-    const { queryPositions } = useContext(SwrContext)!
-    return queryPositions
+    const { queryPositionsSwr } = useContext(SwrContext)!
+    return queryPositionsSwr
 }

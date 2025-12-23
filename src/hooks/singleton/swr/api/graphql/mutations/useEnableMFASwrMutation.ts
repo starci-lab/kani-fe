@@ -30,6 +30,6 @@ export const useEnableMFASwrMutationCore = () => {
 }
 
 export const useEnableMFASwrMutation = () => {
-    const { enableMFAMutation } = useContext(SwrContext)!
-    return enableMFAMutation
+    const { enableMFASwrMutation } = useContext(SwrContext)!
+    return enableMFASwrMutation
 }

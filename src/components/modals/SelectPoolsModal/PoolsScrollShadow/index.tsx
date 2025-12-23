@@ -7,12 +7,12 @@ import {
 } from "@/components/reuseable"
 import { 
     useCreateBotFormik, 
-    useQueryStaticSwrMutation 
+    useQueryStaticSwr 
 } from "@/hooks/singleton"
 
 
 export const PoolsScrollShadow = () => {
-    const queryStaticSwrMutation = useQueryStaticSwrMutation()
+    const queryStaticSwrMutation = useQueryStaticSwr()
     const liquidityPools = useAppSelector((state) => state.static.liquidityPools)
     const formik = useCreateBotFormik()
     const tokens = useAppSelector((state) => state.static.tokens)

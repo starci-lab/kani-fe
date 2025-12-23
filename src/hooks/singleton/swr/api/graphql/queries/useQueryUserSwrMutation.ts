@@ -47,11 +47,11 @@ export const useQueryUserWithoutRetrySwrMutationCore = () => {
 }
 
 export const useQueryUserSwrMutation = () => {
-    const { queryUserMutation } = useContext(SwrContext)!
-    return queryUserMutation
+    const { queryUserSwrMutation } = useContext(SwrContext)!
+    return queryUserSwrMutation
 }
 
 export const useQueryUserWithoutRetrySwrMutation = () => {
-    const { queryUserWithoutRetryMutation } = useContext(SwrContext)!
-    return queryUserWithoutRetryMutation
+    const { queryUserWithoutRetrySwrMutation } = useContext(SwrContext)!
+    return queryUserWithoutRetrySwrMutation
 }

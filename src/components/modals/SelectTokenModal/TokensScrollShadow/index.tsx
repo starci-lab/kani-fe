@@ -7,12 +7,12 @@ import {
 } from "@/components/reuseable";
 import {
     useCreateBotFormik,
-    useQueryStaticSwrMutation,
+    useQueryStaticSwr,
     useSelectTokenDisclosure,
 } from "@/hooks/singleton";
 
 export const TokensScrollShadow = () => {
-    const queryStaticSwrMutation = useQueryStaticSwrMutation();
+    const queryStaticSwrMutation = useQueryStaticSwr();
     const formik = useCreateBotFormik();
     const { onClose } = useSelectTokenDisclosure();
     const tokens = useAppSelector((state) => state.static.tokens);

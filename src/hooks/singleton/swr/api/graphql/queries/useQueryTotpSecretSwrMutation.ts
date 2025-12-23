@@ -7,8 +7,11 @@ import useSWRMutation from "swr/mutation"
 export const useQueryTotpSecretSwrMutationCore = () => {
     const accessToken = useAppSelector((state) => state.session.accessToken)
     const swrMutation = useSWRMutation(
-        "QUERY_TOTP_SECRET_SWR_MUTATION",
+        ["QUERY_TOTP_SECRET_SWR_MUTATION"],
         async () => {
+            if (!accessToken) {
+                throw new Error("Access token is required")
+            }
             const data = await queryTotpSecret({
                 token: accessToken,
             })
@@ -23,6 +26,6 @@ export const useQueryTotpSecretSwrMutationCore = () => {
 }
 
 export const useQueryTotpSecretSwrMutation = () => {
-    const { queryTotpSecretMutation } = useContext(SwrContext)!
-    return queryTotpSecretMutation
+    const { queryTotpSecretSwrMutation } = useContext(SwrContext)!
+    return queryTotpSecretSwrMutation
 }

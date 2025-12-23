@@ -79,6 +79,6 @@ export const useQueryHistorySwrCore = () => {
 }
 
 export const useQueryHistorySwr = () => {
-    const { queryHistory } = useContext(SwrContext)!
-    return queryHistory
+    const { queryHistorySwr } = useContext(SwrContext)!
+    return queryHistorySwr
 }

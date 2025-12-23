@@ -39,6 +39,6 @@ interface UseBackupBotPrivateKeySwrMutationParams {
 }
 
 export const useBackupBotPrivateKeySwrMutation = () => {
-    const { backupBotPrivateKeyMutation } = useContext(SwrContext)!
-    return backupBotPrivateKeyMutation
+    const { backupBotPrivateKeySwrMutation } = useContext(SwrContext)!
+    return backupBotPrivateKeySwrMutation
 }

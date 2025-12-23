@@ -41,6 +41,6 @@ export const useVerifySignInOtpSwrMutationCore = () => {
 }
 
 export const useVerifySignInOtpSwrMutation = () => {
-    const { verifySignInOtpMutation } = useContext(SwrContext)!
-    return verifySignInOtpMutation
+    const { verifySignInOtpSwrMutation } = useContext(SwrContext)!
+    return verifySignInOtpSwrMutation
 }

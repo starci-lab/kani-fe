@@ -9,8 +9,8 @@ export const useQueryLiquidityProvisionSwrCore = () => {
     const id = useAppSelector((state) => state.session.liquidityProvisionBot?.id)
     const totpVerified = useAppSelector((state) => state.session.totpVerified)
     // if id and totpVerified are not null, then return the id
-    const swrMutation = useSWR(
-        (id && totpVerified) ? ["QUERY_LIQUIDITY_PROVISION_SWR_MUTATION", id] : null,
+    const swr = useSWR(
+        (id && totpVerified) ? ["QUERY_LIQUIDITY_PROVISION_SWR", id] : null,
         async () => {
             if (!id) {
                 throw new Error("Id is required")
@@ -28,10 +28,10 @@ export const useQueryLiquidityProvisionSwrCore = () => {
             return data
         }
     )
-    return swrMutation
+    return swr
 }
 
 export const useQueryLiquidityProvisionSwr = () => {
-    const { queryLiquidityProvision } = useContext(SwrContext)!
-    return queryLiquidityProvision
+    const { queryLiquidityProvisionSwr } = useContext(SwrContext)!
+    return queryLiquidityProvisionSwr
 }

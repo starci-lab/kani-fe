@@ -28,6 +28,6 @@ export const useQueryUserSwrCore = () => {
 }
 
 export const useQueryUserSwr = () => {
-    const { queryUser } = useContext(SwrContext)!
-    return queryUser
+    const { queryUserSwr } = useContext(SwrContext)!
+    return queryUserSwr
 }

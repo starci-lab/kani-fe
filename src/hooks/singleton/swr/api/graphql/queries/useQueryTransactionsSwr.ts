@@ -43,6 +43,6 @@ export const useQueryTransactionsSwrCore = () => {
 }
 
 export const useQueryTransactionsSwr = () => {
-    const { queryTransactions } = useContext(SwrContext)!
-    return queryTransactions
+    const { queryTransactionsSwr } = useContext(SwrContext)!
+    return queryTransactionsSwr
 }

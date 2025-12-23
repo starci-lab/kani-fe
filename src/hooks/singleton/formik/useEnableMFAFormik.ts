@@ -31,7 +31,7 @@ const initialValues: EnableMFAFormikValues = {
 
 // Core hook — creates the Formik instance for the TOTP form
 export const useEnableMFAFormikCore = () => {
-    const enableMFAMutation = useEnableMFASwrMutation()
+    const enableMFASwrMutation = useEnableMFASwrMutation()
     const { onClose } = useEnableMFAModalDisclosure()
     const dispatch = useAppDispatch()
     return useFormik<EnableMFAFormikValues>({
@@ -40,7 +40,7 @@ export const useEnableMFAFormikCore = () => {
         onSubmit: async (values, { resetForm }) => {
             const success = await runGraphQLWithToast(
                 async () => {
-                    const response = await enableMFAMutation.trigger({
+                    const response = await enableMFASwrMutation.trigger({
                         headers: {
                             [GraphQLHeadersKey.TOTP]: values.totp,
                         },

@@ -4,9 +4,9 @@ import { useContext } from "react"
 import { useAppDispatch, setTokens, setDexes, setLiquidityPools } from "@/redux"
 import useSWR from "swr"
 
-export const useQueryStaticSwrMutationCore = () => {
+export const useQueryStaticSwrCore = () => {
     const dispatch = useAppDispatch()
-    const swrMutation = useSWR(
+    const swr = useSWR(
         ["QUERY_STATIC_SWR"],
         async () => {
             const data = await queryStatic({})
@@ -28,10 +28,10 @@ export const useQueryStaticSwrMutationCore = () => {
             return data
         }
     )
-    return swrMutation
+    return swr
 }
 
-export const useQueryStaticSwrMutation = () => {
-    const { queryStaticMutation } = useContext(SwrContext)!
-    return queryStaticMutation
+export const useQueryStaticSwr = () => {
+    const { queryStaticSwr } = useContext(SwrContext)!
+    return queryStaticSwr
 }

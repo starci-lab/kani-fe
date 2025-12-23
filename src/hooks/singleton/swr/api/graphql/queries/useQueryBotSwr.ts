@@ -35,6 +35,6 @@ export const useQueryBotSwrCore = () => {
 }
 
 export const useQueryBotSwr = () => {
-    const { queryBot } = useContext(SwrContext)!
-    return queryBot
+    const { queryBotSwr } = useContext(SwrContext)!
+    return queryBotSwr
 }

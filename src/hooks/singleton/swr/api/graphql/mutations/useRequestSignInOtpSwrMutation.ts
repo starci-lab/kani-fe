@@ -31,6 +31,6 @@ export const useRequestSignInOtpSwrMutationCore = () => {
 }
 
 export const useRequestSignInOtpSwrMutation = () => {
-    const { requestSignInOtpMutation } = useContext(SwrContext)!
-    return requestSignInOtpMutation
+    const { requestSignInOtpSwrMutation } = useContext(SwrContext)!
+    return requestSignInOtpSwrMutation
 }

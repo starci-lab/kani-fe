@@ -28,6 +28,6 @@ export const useRequestSend2FactorOtpSwrMutationCore = () => {
 }
 
 export const useRequestSend2FactorOtpSwrMutation = () => {
-    const { requestSend2FactorOtpMutation } = useContext(SwrContext)!
-    return requestSend2FactorOtpMutation
+    const { requestSend2FactorOtpSwrMutation } = useContext(SwrContext)!
+    return requestSend2FactorOtpSwrMutation
 }

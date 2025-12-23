@@ -30,6 +30,6 @@ export const useCreateBotSwrMutationCore = () => {
 }
 
 export const useCreateBotSwrMutation = () => {
-    const { createBotMutation } = useContext(SwrContext)!
-    return createBotMutation
+    const { createBotSwrMutation } = useContext(SwrContext)!
+    return createBotSwrMutation
 }

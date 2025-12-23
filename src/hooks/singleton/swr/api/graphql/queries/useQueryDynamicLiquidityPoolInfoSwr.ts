@@ -25,6 +25,6 @@ export const useQueryDynamicLiquidityPoolInfoSwrMutationCore = () => {
 }
 
 export const useQueryDynamicLiquidityPoolInfoSwrMutation = () => {
-    const { queryDynamicLiquidityPoolInfoMutation } = useContext(SwrContext)!
-    return queryDynamicLiquidityPoolInfoMutation
+    const { queryDynamicLiquidityPoolInfoSwrMutation } = useContext(SwrContext)!
+    return queryDynamicLiquidityPoolInfoSwrMutation
 }
