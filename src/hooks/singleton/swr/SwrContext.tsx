@@ -1,5 +1,5 @@
 "use client"
-import React, { PropsWithChildren } from "react"
+import React, { PropsWithChildren, useMemo } from "react"
 import { createContext } from "react"
 import {
     useQueryUserSwrMutationCore,
@@ -73,30 +73,54 @@ export const SwrProvider = ({ children }: PropsWithChildren) => {
     const queryHistorySwr = useQueryHistorySwrCore()
     const queryBots2Swr = useQueryBots2SwrCore()
     const createBotSwrMutation = useCreateBotSwrMutationCore()
+
+    const values = useMemo(() => ({
+        queryUserSwrMutation,
+        queryUserWithoutRetrySwrMutation,
+        queryStaticSwr,
+        queryLiquidityProvisionSwr,
+        queryUserSwr,
+        queryDynamicLiquidityPoolInfoSwrMutation,
+        requestSignInOtpSwrMutation,
+        verifySignInOtpSwrMutation,
+        queryTotpSecretSwrMutation,
+        enableMFASwrMutation,
+        queryBotSwr,
+        requestSend2FactorOtpSwrMutation,
+        backupBotPrivateKeySwrMutation,
+        queryTransactionsSwr,
+        queryPositionsSwr,
+        queryPositions2Swr,
+        queryTransactions2Swr,
+        queryHistorySwr,
+        queryBots2Swr,
+        createBotSwrMutation,
+    }), [
+        queryUserSwrMutation, 
+        queryUserWithoutRetrySwrMutation, 
+        queryStaticSwr, 
+        queryLiquidityProvisionSwr, 
+        queryUserSwr, 
+        queryDynamicLiquidityPoolInfoSwrMutation,
+        requestSignInOtpSwrMutation,
+        verifySignInOtpSwrMutation,
+        queryTotpSecretSwrMutation,
+        enableMFASwrMutation,
+        queryBotSwr,
+        requestSend2FactorOtpSwrMutation,
+        backupBotPrivateKeySwrMutation,
+        queryTransactionsSwr,
+        queryPositionsSwr,
+        queryPositions2Swr,
+        queryTransactions2Swr,
+        queryHistorySwr,
+        queryBots2Swr,
+        createBotSwrMutation,
+    ]
+    )
     return (
         <SwrContext.Provider
-            value={{
-                queryUserSwrMutation,
-                queryUserWithoutRetrySwrMutation,
-                queryStaticSwr,
-                queryLiquidityProvisionSwr,
-                queryUserSwr,
-                queryDynamicLiquidityPoolInfoSwrMutation,
-                requestSignInOtpSwrMutation,
-                verifySignInOtpSwrMutation,
-                queryTotpSecretSwrMutation,
-                enableMFASwrMutation,
-                queryBotSwr,
-                requestSend2FactorOtpSwrMutation,
-                backupBotPrivateKeySwrMutation,
-                queryTransactionsSwr,
-                queryPositionsSwr,
-                queryPositions2Swr,
-                queryTransactions2Swr,
-                queryHistorySwr,
-                queryBots2Swr,
-                createBotSwrMutation,
-            }}
+            value={values}
         >
             {children}
         </SwrContext.Provider>

@@ -69,9 +69,6 @@ export const useCreateBotFormikCore = () => {
 }
 
 export const useCreateBotFormik = () => {
-    const formik = useContext(FormikContext)
-    if (!formik) {
-        throw new Error("Formik context not found")
-    }
-    return formik.createBotFormik
+    const { createBotFormik } = useContext(FormikContext)!
+    return createBotFormik
 }

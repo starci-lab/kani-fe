@@ -1,5 +1,5 @@
 "use client"
-import React, { PropsWithChildren } from "react"
+import React, { PropsWithChildren, useMemo, useState, useEffect } from "react"
 import { createContext } from "react"
 import { useEnableMFAFormikCore } from "./useEnableMFAFormik"
 import { useConfirmTotpFormikCore } from "./useConfirmTotpFormik"
@@ -17,21 +17,47 @@ export interface FormikContextType {
 
 export const FormikContext = createContext<FormikContextType | null>(null)
 
-export const FormikProvider = ({ children }: PropsWithChildren) => {
+// Lazy formik provider - only initializes hooks after mount
+const LazyFormikProviderContent = ({ children }: PropsWithChildren) => {
     const enableMFAFormik = useEnableMFAFormikCore()
     const confirmTotpFormik = useConfirmTotpFormikCore()
     const createBotFormik = useCreateBotFormikCore()
     const signInFormik = useSignInFormikCore()
     const verifyFormik = useVerifyFormikCore()
+    
+    const value = useMemo(() => ({
+        enableMFAFormik, 
+        confirmTotpFormik, 
+        createBotFormik,
+        signInFormik,
+        verifyFormik
+    }), [
+        enableMFAFormik, 
+        confirmTotpFormik, 
+        createBotFormik, 
+        signInFormik, 
+        verifyFormik
+    ])
+
     return (
-        <FormikContext.Provider value={{ 
-            enableMFAFormik, 
-            confirmTotpFormik, 
-            createBotFormik,
-            signInFormik,
-            verifyFormik
-        }}>
+        <FormikContext.Provider value={value}>
             {children}
         </FormikContext.Provider>
     )
+}
+
+export const FormikProvider = ({ children }: PropsWithChildren) => {
+    const [isMounted, setIsMounted] = useState(false)
+    
+    useEffect(() => {
+        setIsMounted(true)
+    }, [])
+    
+    // During SSR, return children without provider
+    // After mount, initialize formik hooks
+    if (!isMounted) {
+        return <>{children}</>
+    }
+    
+    return <LazyFormikProviderContent>{children}</LazyFormikProviderContent>
 }
