@@ -1,4 +1,5 @@
 export const paths = () => ({
+    base: () => "/",
     bots: () => ({
         base: () => "/bots",
         create: () => "/bots/create",

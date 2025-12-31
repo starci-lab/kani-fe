@@ -3,6 +3,7 @@ import {
     HeroUIProvider, 
     ModalContainer, 
     Navbar,
+    NextThemesProvider,
     WorkersContainer
 } from "@/components"
 import { SingletonHookProvider } from "@/hooks/singleton"
@@ -14,22 +15,24 @@ import { Sidebar } from "@/components/layouts"
 export const InnerLayout = ({ children }: PropsWithChildren) => {
     return (
         <Suspense>
-            <HeroUIProvider> 
-                <ReduxProvider>
-                    <SingletonHookProvider>
-                        <Navbar />
-                        <div className="flex mx-auto max-w-[1024px]">
-                            <Sidebar />
-                            <div className="flex-1 p-6">
-                                {children}
-                            </div>
-                        </div>  
-                        <ModalContainer />
-                        <ToastProvider />
-                        <WorkersContainer />
-                    </SingletonHookProvider>
-                </ReduxProvider>
-            </HeroUIProvider>
+            <NextThemesProvider attribute="class" defaultTheme="dark" enableSystem={true} storageKey="kani-theme">
+                <HeroUIProvider> 
+                    <ReduxProvider>
+                        <SingletonHookProvider>
+                            <Navbar />
+                            <div className="flex mx-auto max-w-[1024px]">
+                                <Sidebar />
+                                <div className="flex-1 p-6">
+                                    {children}
+                                </div>
+                            </div>  
+                            <ModalContainer />
+                            <ToastProvider />
+                            <WorkersContainer />
+                        </SingletonHookProvider>
+                    </ReduxProvider>
+                </HeroUIProvider>
+            </NextThemesProvider>
         </Suspense>
     )
 }

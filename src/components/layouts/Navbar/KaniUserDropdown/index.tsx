@@ -15,9 +15,11 @@ import {
     PencilLineIcon, 
     SignOutIcon 
 } from "@phosphor-icons/react"
+import { useEnableMFAModalDisclosure } from "@/hooks/singleton"
 
 export const KaniUserDropdown = () => {
     const user = useAppSelector((state) => state.session.user)
+    const { onOpen } = useEnableMFAModalDisclosure()
     return (
         <KaniDropdown>
             <KaniDropdownTrigger>
@@ -25,7 +27,7 @@ export const KaniUserDropdown = () => {
                     {truncateWithEllipsis(user?.email ?? "")}
                 </KaniButton>
             </KaniDropdownTrigger>
-            <KaniDropdownMenu aria-label="Static Actions">
+            <KaniDropdownMenu aria-label="Static Actions" disabledKeys={user?.mfaEnabled ? ["enroll-in-mfa"] : []}>
                 <KaniDropdownSection showDivider>
                     <KaniDropdownItem 
                         isReadOnly 
@@ -37,7 +39,9 @@ export const KaniUserDropdown = () => {
                     <KaniDropdownItem 
                         key="enroll-in-mfa"
                         startContent={<PencilLineIcon />}
-                        onPress={() => {}}
+                        onPress={() => {
+                            onOpen()
+                        }}
                     >
                     Enroll in MFA
                     </KaniDropdownItem>

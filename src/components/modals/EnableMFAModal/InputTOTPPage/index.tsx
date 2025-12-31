@@ -48,7 +48,7 @@ export const InputTOTPPage = () => {
             />
             <KaniModalBody>
                 <div className="grid place-items-center overflow-hidden">
-                    <Spacer y={6} />
+                    <Spacer y={4} />
                     <KaniInputOtp
                         variant="flat"
                         length={6}

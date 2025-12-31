@@ -4,11 +4,12 @@ import {
     KaniNavbarContent, 
     KaniNavbarItem
 } from "../../atomic"
-import { Link } from "@heroui/react"
 import React from "react"
 import { KaniSignInButton } from "./KaniSignInButton"
 import { KaniUserDropdown } from "./KaniUserDropdown"
 import { useAppSelector } from "@/redux"
+import { SwitchThemeButton } from "../../reuseable"
+import { MobileMenuButton } from "./MobileMenuButton"
 
 export const Navbar = () => {
     const user = useAppSelector((state) => state.session.user)
@@ -17,24 +18,10 @@ export const Navbar = () => {
             <KaniNavbarBrand>
                 <p className="font-bold text-inherit">KANI</p>
             </KaniNavbarBrand>
-            <KaniNavbarContent className="hidden sm:flex gap-4" justify="center">
-                <KaniNavbarItem>
-                    <Link color="foreground" href="#">
-            Features
-                    </Link>
-                </KaniNavbarItem>
-                <KaniNavbarItem isActive>
-                    <Link aria-current="page" href="#">
-            Customers
-                    </Link>
-                </KaniNavbarItem>
-                <KaniNavbarItem>
-                    <Link color="foreground" href="#">
-            Integrations
-                    </Link>
-                </KaniNavbarItem>
-            </KaniNavbarContent>
             <KaniNavbarContent justify="end">
+                <KaniNavbarItem className="hidden md:block">
+                    <SwitchThemeButton />
+                </KaniNavbarItem>
                 <KaniNavbarItem>
                     {
                         (() => {
@@ -45,7 +32,8 @@ export const Navbar = () => {
                         })()
                     }
                 </KaniNavbarItem>
-                <KaniNavbarItem>
+                <KaniNavbarItem className="sm:hidden">
+                    <MobileMenuButton />
                 </KaniNavbarItem>
             </KaniNavbarContent>
         </KaniNavbar>

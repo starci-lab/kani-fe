@@ -47,6 +47,10 @@ export const ConnectModal = () => {
                         }}/>
                         <KaniButton variant="flat" className="rounded-l-none">Continue</KaniButton>
                     </div>
+                    <Spacer y={4}/>
+                    <div className="text-xs text-foreground-500">
+                        By continuing, you agree to our <KaniLink as={"button"} className="text-xs text-foreground-500" color="foreground">Terms</KaniLink> and <KaniLink as={"button"} className="text-xs text-foreground-500" color="foreground">Privacy</KaniLink>
+                    </div>
                 </KaniModalBody>
                 <KaniModalFooter>
                     <div className="flex items-center gap-1">

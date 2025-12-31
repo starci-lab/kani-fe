@@ -33,7 +33,7 @@ export const InputOTPPage = () => {
             />
             <KaniModalBody>
                 <div className="grid place-items-center overflow-hidden">
-                    <Spacer y={6} />
+                    <Spacer y={4} />
                     <KaniInputOtp
                         variant="flat"
                         length={6}
@@ -63,7 +63,7 @@ export const InputOTPPage = () => {
                     <div className="text-xs">
                         Didn't get an email?{" "}
                         <KaniLink
-                            className="text-xs"
+                            className="text-xs cursor-pointer"
                             color="primary"
                             underline="always"
                             onPress={async () => {
