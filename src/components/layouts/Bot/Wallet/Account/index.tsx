@@ -1,9 +1,21 @@
-import { KaniCard, KaniCardBody, KaniImage, KaniButton, KaniTooltip } from "@/components/atomic"
+import { 
+    KaniCard, 
+    KaniCardBody, 
+    KaniImage, 
+    KaniButton, 
+    KaniTooltip 
+} from "@/components/atomic"
 import { TooltipTitle, SnippetIcon } from "@/components/reuseable"
 import { centerPad } from "@/modules/utils"
 import { Spacer } from "@heroui/react"
 import React, { useMemo } from "react"
-import { setExportPrivateKey, setVerifyModalOnAction, useAppDispatch, useAppSelector, VerifyModalOnActionParams } from "@/redux"
+import { 
+    setExportPrivateKey, 
+    setVerifyModalOnAction, 
+    useAppDispatch, 
+    useAppSelector, 
+    VerifyModalOnActionParams 
+} from "@/redux"
 import { getChainAssets } from "@/assets"
 import { ChainId } from "@/modules/types"
 import {
@@ -11,10 +23,21 @@ import {
     EyeIcon, 
     FloppyDiskBackIcon 
 } from "@phosphor-icons/react"
-import { useDepositModalDisclosure, useExportPrivateKeyModalDisclosure, useVerifyDisclosure } from "@/hooks/singleton"
-import { useBackupBotPrivateKeySwrMutation, useQueryBotSwr } from "@/hooks/singleton"
+import { 
+    useDepositModalDisclosure, 
+    useExportPrivateKeyModalDisclosure, 
+    useVerifyDisclosure 
+} from "@/hooks/singleton"
+import { 
+    useBackupBotPrivateKeySwrMutation, 
+    useQueryBotSwr 
+} from "@/hooks/singleton"
 import { runGraphQLWithToast } from "@/components/toasts"
-import { ExplorerId, getExplorerUrl, ExplorerUrlType } from "@/modules/blockchain"
+import { 
+    ExplorerId, 
+    getExplorerUrl, 
+    ExplorerUrlType 
+} from "@/modules/blockchain"
 
 export interface WalletAction {
     label: string
