@@ -9,7 +9,7 @@ import {
     KaniDropdownTrigger,
 } from "@/components/atomic"
 import { truncateWithEllipsis } from "@/modules/utils"
-import { useAppSelector } from "@/redux"
+import { signOut, useAppDispatch, useAppSelector } from "@/redux"
 import { 
     AtIcon, 
     PencilLineIcon, 
@@ -20,6 +20,7 @@ import { useEnableMFAModalDisclosure } from "@/hooks/singleton"
 export const KaniUserDropdown = () => {
     const user = useAppSelector((state) => state.session.user)
     const { onOpen } = useEnableMFAModalDisclosure()
+    const dispatch = useAppDispatch()
     return (
         <KaniDropdown>
             <KaniDropdownTrigger>
@@ -51,7 +52,9 @@ export const KaniUserDropdown = () => {
                         startContent={<SignOutIcon />}
                         key="sign-out"
                         className="text-danger"
-                        onPress={() => {}}
+                        onPress={() => {
+                            dispatch(signOut())
+                        }}
                     >
                     Sign Out
                     </KaniDropdownItem>

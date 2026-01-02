@@ -25,6 +25,7 @@ const query1 = gql`
         snapshotGasBalanceAmount
         lastBalancesSnapshotAt
         isExitToUsdc
+        backupPrivateKey
         activePosition { 
           id
           openTxHash

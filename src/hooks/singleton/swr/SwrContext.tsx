@@ -22,6 +22,7 @@ import {
     useQueryTransactions2SwrCore,
     useQueryHistorySwrCore,
     useQueryBots2SwrCore,
+    useToggleBotSwrMutationCore,
 } from "./api"
 
 export interface SwrContextType {
@@ -47,6 +48,7 @@ export interface SwrContextType {
   queryTransactions2Swr: ReturnType<typeof useQueryTransactions2SwrCore>;
   queryHistorySwr: ReturnType<typeof useQueryHistorySwrCore>;
   queryBots2Swr: ReturnType<typeof useQueryBots2SwrCore>;
+  toggleBotSwrMutation: ReturnType<typeof useToggleBotSwrMutationCore>;
 }
 
 export const SwrContext = createContext<SwrContextType | null>(null)
@@ -73,7 +75,7 @@ export const SwrProvider = ({ children }: PropsWithChildren) => {
     const queryHistorySwr = useQueryHistorySwrCore()
     const queryBots2Swr = useQueryBots2SwrCore()
     const createBotSwrMutation = useCreateBotSwrMutationCore()
-
+    const toggleBotSwrMutation = useToggleBotSwrMutationCore()
     const values = useMemo(() => ({
         queryUserSwrMutation,
         queryUserWithoutRetrySwrMutation,
@@ -95,6 +97,7 @@ export const SwrProvider = ({ children }: PropsWithChildren) => {
         queryHistorySwr,
         queryBots2Swr,
         createBotSwrMutation,
+        toggleBotSwrMutation,
     }), [
         queryUserSwrMutation,
         queryUserWithoutRetrySwrMutation,
@@ -116,6 +119,7 @@ export const SwrProvider = ({ children }: PropsWithChildren) => {
         queryHistorySwr,
         queryBots2Swr,
         createBotSwrMutation,
+        toggleBotSwrMutation,
     ]
     )
     return (

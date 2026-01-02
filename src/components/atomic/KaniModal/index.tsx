@@ -31,22 +31,22 @@ export interface KaniModalHeaderProps extends HTMLHeroUIProps<"div"> {
     onPrev?: () => void;
 }
 
-export const KaniModalHeader = (props: KaniModalHeaderProps) => {
+export const KaniModalHeader = ({ title, description, onPrev, ...props }: KaniModalHeaderProps) => {
     return (
         <ModalHeader className="justify-center pb-2" {...props}>
-            {props.onPrev && (
+            {onPrev && (
                 <div className="absolute left-4 top-[14px]">
-                    <KaniButton size="sm" variant="light" isIconOnly radius="full" onPress={props.onPrev}>
+                    <KaniButton size="sm" variant="light" isIconOnly radius="full" onPress={onPrev}>
                         <ArrowLeftIcon />
                     </KaniButton>
                 </div>
             )}
             <div className="text-center">
-                <div className="text-lg font-bold">{props.title}</div>
-                {props.description && (
+                <div className="text-lg font-bold">{title}</div>
+                {description && (
                     <>
                         <Spacer y={2}/>
-                        <div className="text-xs text-foreground-500 font-normal">{props.description}</div>
+                        <div className="text-xs text-foreground-500 font-normal">{description}</div>
                     </>
                 )}
             </div>

@@ -29,3 +29,7 @@ export interface GasConfig {
      */
     minGasRequired: Partial<Record<ChainId, Partial<Record<Network, number>>>>
 }
+
+export interface AccountLimitsConfig {
+    maxBotsPerAccount: number
+}

@@ -27,6 +27,9 @@ const query1 = gql`
             snapshotGasBalanceAmount
             lastBalancesSnapshotAt
             isExitToUsdc
+            roi24h
+            pnl24h
+            backupPrivateKey
           }
       }
     }

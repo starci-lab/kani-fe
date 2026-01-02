@@ -2,13 +2,8 @@ import { useFormik } from "formik"
 import { use } from "react"
 import * as Yup from "yup"
 import { FormikContext } from "./FormikContext"
-import { runGraphQLWithToast } from "@/components/toasts"
-import { useBackupBotPrivateKeySwrMutation } from "../swr"
-import { 
-    useExportPrivateKeyModalDisclosure, 
-    useVerifyDisclosure 
-} from "../discloresure"
-import { useAppDispatch, setExportPrivateKey } from "@/redux"
+import { useVerifyDisclosure } from "../discloresure"
+import { useAppDispatch, useAppSelector } from "@/redux"
 import { setVerifyModalPage, VerifyPage } from "@/redux"
 
 export interface VerifyFormikValues {
@@ -32,9 +27,8 @@ const validationSchema = Yup.object({
 
 export const useVerifyFormikCore = () => {
     const dispatch = useAppDispatch()
-    const backupBotPrivateKeyMutation = useBackupBotPrivateKeySwrMutation()
-    const { onOpen: onOpenExportPrivateKey } = useExportPrivateKeyModalDisclosure()
     const { onClose: onCloseVerifyModal} = useVerifyDisclosure()
+    const onAction = useAppSelector((state) => state.modals.verify.onAction)
     return useFormik<VerifyFormikValues>({
         initialValues,
         validationSchema,
@@ -42,29 +36,14 @@ export const useVerifyFormikCore = () => {
             if (!values.emailCode) {
                 throw new Error("Email is required")
             }
-            let privateKey = ""
-            const success = await runGraphQLWithToast(
-                async () => {
-                    const response = await backupBotPrivateKeyMutation.trigger({
-                        emailOtp: values.emailCode,
-                        totp: values.authenticatorAppCode,
-                    })
-                    if (!response.data?.backupBotPrivateKey) {
-                        throw new Error("Failed to verify OTP")
-                    }
-                    privateKey = response.data.backupBotPrivateKey.data?.privateKey ?? ""
-                    return response.data.backupBotPrivateKey
-                }, 
-                {
-                    showSuccessToast: true,
-                    showErrorToast: true,
-                })
+            const success = onAction({
+                emailOtp: values.emailCode,
+                totp: values.authenticatorAppCode,
+            })
             if (success) {
                 onCloseVerifyModal()
                 dispatch(setVerifyModalPage(VerifyPage.Base))
                 resetForm()
-                dispatch(setExportPrivateKey(privateKey))
-                onOpenExportPrivateKey()
             }
         },
     })

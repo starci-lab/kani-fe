@@ -17,7 +17,7 @@ export const EnableMFAModal = () => {
     const renderedRef = useRef<boolean>(false)
     // this is used to trigger the mutation when the user is logged in
     useEffect(() => {
-        if (!user || renderedRef.current || !accessToken) {
+        if (!user || user.mfaEnabled || renderedRef.current || !accessToken) {
             return
         }
         const handleEffect = async () => {

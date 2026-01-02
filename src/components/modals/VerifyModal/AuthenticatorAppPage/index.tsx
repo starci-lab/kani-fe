@@ -15,7 +15,7 @@ export const AuthenticatorAppPage = () => {
     const dispatch = useAppDispatch()
     return (
         <>
-                    <KaniModalHeader
+                <KaniModalHeader
                     onPrev={() => {
                         dispatch(setVerifyModalPage(VerifyPage.Base))
                     }}

@@ -9,6 +9,8 @@ import { Spacer, Tabs, Tab } from "@heroui/react"
 import { BotTab } from "@/redux"
 import { Wallet } from "./Wallet"
 import { Activity } from "./Activity"
+import { useQueryBotSwr, useToggleBotSwrMutation } from "@/hooks/singleton"
+import { runGraphQLWithToast } from "@/components/toasts"
 
 export const Bot = () => {
     const tabs = [
@@ -28,6 +30,8 @@ export const Bot = () => {
     const bot = useAppSelector((state) => state.bot.bot)
     const tab = useAppSelector((state) => state.bot.tab)
     const dispatch = useAppDispatch()
+    const toggleBotSwrMutation = useToggleBotSwrMutation()
+    const queryBotSwr = useQueryBotSwr()
     const renderTab = () => {
         switch (tab) {
         case BotTab.Investment:
@@ -43,13 +47,39 @@ export const Bot = () => {
             <div className="flex justify-between items-center">
                 <div className="flex items-center gap-2">
                     <div className="text-2xl font-bold">{bot?.name}</div>
-                    <WaveBars />
+                    {
+                        bot?.running && (
+                            <WaveBars />
+                        )
+                    }
                 </div>
                 {bot?.running ? (
                     <KaniButton
                         startContent={<StopIcon />}
                         color="primary"
-                        onPress={() => {}}
+                        onPress={
+                            async () => {
+                                await runGraphQLWithToast(
+                                    async () => {
+                                        const response = await toggleBotSwrMutation.trigger({
+                                            request: {
+                                                id: bot?.id ?? "",
+                                                running: false,
+                                            },
+                                        })  
+                                        if (!response.data?.toggleBot) {
+                                            throw new Error("Failed to toggle bot")
+                                        }
+                                        // refetch bot
+                                        await queryBotSwr.mutate()
+                                        return response.data.toggleBot
+                                    }, {
+                                        showSuccessToast: true,
+                                        showErrorToast: true,
+                                    }
+                                )
+                            }
+                        }
                     >
             Stop Bot
                     </KaniButton>
@@ -57,28 +87,51 @@ export const Bot = () => {
                     <KaniButton
                         startContent={<PlayIcon />}
                         color="primary"
-                        onPress={() => {}}
+                        onPress={
+                            async () => {
+                                await runGraphQLWithToast(
+                                    async () => {
+                                        const response = await toggleBotSwrMutation.trigger({
+                                            request: {
+                                                id: bot?.id ?? "",
+                                                running: true,
+                                            },
+                                        })
+                                        if (!response.data?.toggleBot) {
+                                            throw new Error("Failed to toggle bot")
+                                        }
+                                        // refetch bot
+                                        await queryBotSwr.mutate()
+                                        return response.data.toggleBot
+                                    }, {
+                                        showSuccessToast: true,
+                                        showErrorToast: true,
+                                    })
+                            }}
                     >
             Run Bot
                     </KaniButton>
                 )}
             </div>
-            <Spacer y={4} />
-
-            <KaniAlert
-                variant="flat"
-                color="warning"
-                title="Irreversible Key Export Warning"
-                description={
-                    <div>
-                        <div className="text-xs">Kani is designed to never see your bot&apos;s private key.
+            <Spacer y={6} />
+            {!bot?.backupPrivateKey && (
+                <>
+                <KaniAlert
+                    variant="flat"
+                    color="warning"
+                    title="Irreversible Key Export Warning"
+                    description={
+                        <div>
+                            <div className="text-xs">Kani is designed to never see your bot&apos;s private key.
                         All signing is performed exclusively inside a Trusted Execution Environment (TEE).
                         We only allow the key to be exported once so you can store it securely.
+                            </div>
                         </div>
-                    </div>
-                }
-            />
-            <Spacer y={6} />
+                    }
+                />
+                <Spacer y={6} />
+                </>
+            )}
             <Tabs 
                 variant="underlined" 
                 selectedKey={tab}

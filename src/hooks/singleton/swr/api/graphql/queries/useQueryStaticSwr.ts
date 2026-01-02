@@ -1,7 +1,7 @@
 import { queryStatic } from "@/modules/api"
 import { SwrContext } from "../../../SwrContext"
 import { use } from "react"
-import { useAppDispatch, setTokens, setDexes, setLiquidityPools } from "@/redux"
+import { useAppDispatch, setTokens, setDexes, setLiquidityPools, setAccountLimits } from "@/redux"
 import useSWR from "swr"
 
 export const useQueryStaticSwrCore = () => {
@@ -13,6 +13,7 @@ export const useQueryStaticSwrCore = () => {
             const tokens = data.data?.tokens
             const liquidityPools = data.data?.liquidityPools
             const dexes = data.data?.dexes
+            const accountLimits = data.data?.accountLimits
             if (!tokens || !tokens.data) {
                 throw new Error("Tokens not found")
             }
@@ -25,6 +26,9 @@ export const useQueryStaticSwrCore = () => {
             dispatch(setTokens(tokens.data))
             dispatch(setLiquidityPools(liquidityPools.data))
             dispatch(setDexes(dexes.data))
+            if (accountLimits && accountLimits.data) {
+                dispatch(setAccountLimits(accountLimits.data))
+            }
             return data
         }
     )

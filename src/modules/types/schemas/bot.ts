@@ -25,4 +25,7 @@ export interface BotSchema  {
     lastBalancesSnapshotAt?: Date
     isExitToUsdc: boolean
     activePosition?: PositionSchema
+    roi24h?: number
+    pnl24h?: number
+    backupPrivateKey: boolean
 }

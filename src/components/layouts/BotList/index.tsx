@@ -9,11 +9,12 @@ import { useRouter } from "next/navigation"
 import { paths } from "@/modules"
 import { Spacer } from "@heroui/react"
 import { FunnelIcon, PlusIcon, SortAscendingIcon } from "@phosphor-icons/react"
-import { DotsThreeIcon, MagnifyingGlassIcon } from "@phosphor-icons/react/dist/ssr"
+import { MagnifyingGlassIcon } from "@phosphor-icons/react/dist/ssr"
 export const BotList = () => {
     const swr = useQueryBots2Swr()
     const bots = useAppSelector((state) => state.bot.bots)
     const router = useRouter()
+    const accountLimits = useAppSelector((state) => state.static.accountLimits)
     // render bots based on the display mode
     const renderBots = () => {
         if (swr.isLoading) {
@@ -26,7 +27,7 @@ export const BotList = () => {
     }
     return (
         <div> 
-            <div className="flex items-center flex-col sm:flex-row justify-between">
+            <div className="flex items-center justify-between">
                 <div className="text-2xl font-bold text-primary">Bots</div>
                 <div className="flex items-center gap-4">
                     <div className="flex items-center">
@@ -51,6 +52,8 @@ export const BotList = () => {
                     </KaniButton>
                 </div>
             </div>
+            <Spacer y={6} />
+            <div className="text-sm text-foreground-500">Individual users can create and run up to {accountLimits?.maxBotsPerAccount}  bots at the same time.</div>
             <Spacer y={12} />
             {renderBots()}
         </div>
