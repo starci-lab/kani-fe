@@ -5,12 +5,12 @@ export const computePercentage = (
     numerator: Decimal.Value,
     denominator: Decimal.Value = 1,
     fractionDigits: number = 2,
-): number => {
+): Decimal => {
     const percentage = new Decimal(numerator)
         .mul(100)
         .div(denominator)
         .toDecimalPlaces(fractionDigits, Decimal.ROUND_HALF_UP)
-    return percentage.toNumber()
+    return percentage
 }
 
 export const toUnit = (decimals: number = 10): BN => {
@@ -114,4 +114,26 @@ export const adjustSlippage = (
         new Decimal(1).minus(slippage),
         fractionDigits,
     )
+}
+
+/**
+ * Safely divide two BN values and return a Decimal with preserved precision.
+ *
+ * Internally scales the numerator before division to avoid precision loss.
+ */
+export const divideBnToDecimal = (
+    numerator: BN,
+    denominator: BN,
+    precision: number = 5
+): Decimal => {
+    if (denominator.isZero()) {
+        return new Decimal(0)
+    }
+  
+    const scaleFactorBn = toUnit(precision)
+    const scaleFactorDecimal = toUnitDecimal(precision)
+  
+    const scaledResult = numerator.mul(scaleFactorBn).div(denominator)
+  
+    return new Decimal(scaledResult.toString()).div(scaleFactorDecimal)
 }

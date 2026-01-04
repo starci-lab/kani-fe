@@ -33,7 +33,7 @@ export const PoolCard = ({ liquidityPool }: PoolCardProps) => {
                 <div className="flex items-center justify-between">
                     <div className="text-primary font-medium">{
                         dynamicLiquidityPoolInfo?.apr24H ? 
-                            `${computePercentage(dynamicLiquidityPoolInfo?.apr24H ?? 0, 1, 2)}% APR` 
+                            `${computePercentage(dynamicLiquidityPoolInfo?.apr24H ?? 0, 1, 2).toString()}% APR` 
                             : "N/A"
                     }</div>
                     <KaniLink 
@@ -87,7 +87,7 @@ export const PoolCard = ({ liquidityPool }: PoolCardProps) => {
                     </div>
                     <div className="flex items-center gap-1 justify-end">
                         <div className="text-sm">
-                            {computePercentage(liquidityPool.fee, 1, 5)}%
+                            {computePercentage(liquidityPool.fee, 1, 5).toString()}%
                         </div>
                     </div>
                 </div>

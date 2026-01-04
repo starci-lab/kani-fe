@@ -29,12 +29,27 @@ export const getAmountsFromLiquidityRaydium = (
     }
 }
 
+export const getAmountsFromLiquidityOrca = (
+    { liquidity, tickLower, tickUpper, tickCurrent }: GetAmountsFromLiquidityParams
+): GetAmountsFromLiquidityResponse => {
+    const sqrtPriceX64 = tickIndexToSqrtPriceX64(tickCurrent.toNumber())
+    const sqrtPriceAX64 = tickIndexToSqrtPriceX64(tickLower.toNumber())
+    const sqrtPriceBX64 = tickIndexToSqrtPriceX64(tickUpper.toNumber())
+    const { amountA, amountB } = LiquidityMath.getAmountsFromLiquidity(sqrtPriceX64, sqrtPriceAX64, sqrtPriceBX64, liquidity, false)
+    return {
+        amountA,
+        amountB,
+    }
+}
+
 export const getAmountsFromLiquidity = (
     params: GetAmountsFromLiquidityParams
 ): GetAmountsFromLiquidityResponse => {
     switch (params.dex) {
     case DexId.Raydium:
         return getAmountsFromLiquidityRaydium(params)
+    case DexId.Orca:
+        return getAmountsFromLiquidityOrca(params)
     default:
         throw new Error(`Unsupported dex: ${params.dex}`)
     }

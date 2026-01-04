@@ -30,14 +30,14 @@ export const BotCard = ({ bot }: BotCardProps) => {
     const [roi24hString, isPositiveRoi24h] = useMemo(
         () => {
             const isPositiveRoi24h = new Decimal(roundNumber(bot.roi24h || 0)).isPositive()
-            const roi = `${isPositiveRoi24h ? "+" : "-"}${new Decimal(roundNumber(bot.roi24h || 0)).toString()}%`
+            const roi = `${isPositiveRoi24h ? "+" : "-"}${new Decimal(roundNumber(bot.roi24h || 0)).abs().toString()}%`
             return [roi, isPositiveRoi24h]
         }, [bot.roi24h]
     )
     const [pnl24hString, isPositivePnl24h] = useMemo(
         () => {
             const isPositivePnl24h = new Decimal(roundNumber(bot.pnl24h || 0)).isPositive()
-            const pnl = `${isPositivePnl24h ? "+" : "-"}${new Decimal(roundNumber(bot.pnl24h || 0)).toString()}%`
+            const pnl = `${isPositivePnl24h ? "+" : "-"}${new Decimal(roundNumber(bot.pnl24h || 0)).abs().toString()}%`
             return [pnl, isPositivePnl24h]
         }, [bot.pnl24h]
     )

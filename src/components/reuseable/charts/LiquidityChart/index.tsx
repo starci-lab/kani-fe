@@ -9,6 +9,12 @@ import React, { useMemo } from "react"
 import { roundNumber } from "@/modules/utils"
 import Decimal from "decimal.js"
 
+export enum PricePosition {
+    InRange = "inRange",
+    Below = "below",
+    Above = "above",
+}
+
 export interface LiquidityChartProps {
     priceLower: number
     priceUpper: number
@@ -22,14 +28,25 @@ export const LiquidityChart = ({ priceLower, priceUpper, currentPrice }: Liquidi
             { name: roundNumber(priceUpper), uv: 1 },
         ]
     }, [priceLower, priceUpper])
-    const paddingRatio = 0.2
+    const paddingRatio = 0.3
     const computedCurrentPrice = computeCurrentPrice({ current: currentPrice, lower: priceLower, upper: priceUpper })
-    const minX = Decimal.min(priceLower, computedCurrentPrice)
-    const maxX = Decimal.max(computedCurrentPrice, priceUpper)
+    const minX = Decimal.min(priceLower)
+    const maxX = Decimal.max(priceUpper)
     const range = maxX.minus(minX).toNumber()
-
     const extendedMin = minX.minus(range * paddingRatio).toNumber()
     const extendedMax = maxX.plus(range * paddingRatio).toNumber()
+    const pricePosition = useMemo(() => {
+        if (currentPrice < priceLower) {
+            return PricePosition.Below
+        }
+        if (currentPrice > priceUpper) {
+            return PricePosition.Above
+        }
+        return PricePosition.InRange
+    }, [currentPrice, priceLower, priceUpper])
+    const isAboveHalf = useMemo(() => {
+        return currentPrice > (priceLower + priceUpper) / 2
+    }, [currentPrice, priceLower, priceUpper])
     return (
         <RechartsAreaChart
             width={300}   
@@ -64,9 +81,31 @@ export const LiquidityChart = ({ priceLower, priceUpper, currentPrice }: Liquidi
                     const { x, y, height } = viewBox
                     return (
                         <text
-                            x={x + 5}
+                            x={
+                                (() => {
+                                    switch (pricePosition) {
+                                    case PricePosition.InRange:
+                                        return x - 5
+                                    case PricePosition.Below:
+                                        return x + 5
+                                    case PricePosition.Above:
+                                        return x - 5
+                                    }
+                                })()
+                            }
                             y={y + height - 3}  
-                            textAnchor="start"
+                            textAnchor={
+                                (() => {
+                                    switch (pricePosition) {
+                                    case PricePosition.InRange:
+                                        return "end"
+                                    case PricePosition.Below:
+                                        return "start"
+                                    case PricePosition.Above:
+                                        return "end"
+                                    }
+                                })()
+                            }
                             fill="hsl(var(--heroui-foreground-500))"
                             fontSize={12}
                         >
@@ -85,9 +124,29 @@ export const LiquidityChart = ({ priceLower, priceUpper, currentPrice }: Liquidi
                     const { x, y, height } = viewBox
                     return (
                         <text
-                            x={x - 5}
+                            x={(() => {
+                                switch (pricePosition) {
+                                case PricePosition.InRange:
+                                    return x + 5
+                                case PricePosition.Below:
+                                    return x + 5
+                                case PricePosition.Above:
+                                    return x - 5
+                                }
+                            })()}
                             y={y + height - 3}  
-                            textAnchor="end"
+                            textAnchor={
+                                (() => {
+                                    switch (pricePosition) {
+                                    case PricePosition.InRange:
+                                        return "start"
+                                    case PricePosition.Below:
+                                        return "start"
+                                    case PricePosition.Above:
+                                        return "end"
+                                    }
+                                })()
+                            }
                             fill="hsl(var(--heroui-foreground-500))"
                             fontSize={12}
                         >
@@ -110,9 +169,33 @@ export const LiquidityChart = ({ priceLower, priceUpper, currentPrice }: Liquidi
                     const { x, y, height } = viewBox
                     return (
                         <text
-                            x={x - 5}
+                            x={(() => {
+                                if (pricePosition === PricePosition.Above) {
+                                    return x + 5
+                                }
+                                if (pricePosition === PricePosition.Below) {
+                                    return x - 5
+                                }
+                                if (isAboveHalf) {
+                                    return x - 5
+                                }
+                                return x + 5
+                            })()}
                             y={y + height - 3}  
-                            textAnchor="end"
+                            textAnchor={
+                                (() => {
+                                    if (pricePosition === PricePosition.Above) {
+                                        return "start"
+                                    }
+                                    if (pricePosition === PricePosition.Below) {
+                                        return "end"
+                                    }
+                                    if (isAboveHalf) {
+                                        return "end"
+                                    }
+                                    return "start"
+                                })()
+                            }
                             fill="hsl(var(--heroui-foreground-500))"
                             fontSize={12}
                         >
@@ -126,26 +209,51 @@ export const LiquidityChart = ({ priceLower, priceUpper, currentPrice }: Liquidi
 }
 
 export const computeCurrentPrice = (
-    { current, lower, upper, maxRatio = 0.5 }: CompressCurrentPriceProps
+    { current, lower, upper, maxRatio = 0.1 }: CompressCurrentPriceProps
 ) => {
-    if (
-        new Decimal(current).gte(new Decimal(lower)) 
-        && new Decimal(current).lte(new Decimal(upper))
-    ) {
-        return current
+    const cur = new Decimal(current)
+    const low = new Decimal(lower)
+    const up = new Decimal(upper)
+
+    const space = up.minus(low)
+    const boundary = space.mul(0.05)
+    const isLower = cur.lt(low)
+    // In range
+    if (cur.gte(low) && cur.lte(up)) {
+        // we take the new boundary to compute the ratio
+        const upWithBoundary = up.minus(boundary)
+        const downWithBoundary = low.plus(boundary)
+        // we take the price where
+        // ? (price - downWithBoundary) / (upWithBoundary - downWithBoundary)
+        // ? = (price - low) / space
+        // ? => price = (price - low) / space * (upWithBoundary - downWithBoundary) + downWithBoundary
+        const newPrice = cur.minus(low).div(space).mul(upWithBoundary.minus(downWithBoundary)).plus(downWithBoundary)
+        return newPrice.toNumber()
+
     }
-    // space = upper - lower
-    const space = new Decimal(upper).minus(new Decimal(lower))
-    // isLower = current < lower
-    const isLower = new Decimal(current).lt(new Decimal(lower))
-    // diffFromBoundary = lower - current if isLower, otherwise current - upper
-    const diffFromBoundary = isLower ? new Decimal(lower).minus(new Decimal(current)) : new Decimal(current).minus(new Decimal(upper))
-    // diffFromBoundaryPlusSpace = diffFromBoundary + space
-    const diffFromBoundaryPlusSpace = diffFromBoundary.add(space)
-    // compressed = diffFromBoundary / diffFromBoundaryPlusSpace * space * maxRatio
-    const compressed = (diffFromBoundary).div(diffFromBoundaryPlusSpace).mul(space).mul(maxRatio)
-    // result = lower - compressed if isLower, otherwise upper + compressed
-    const result = isLower ? new Decimal(lower).minus(compressed) : new Decimal(upper).plus(compressed)
+    // diff >= 0
+    const diff = isLower
+        ? low.minus(cur)
+        : cur.minus(up)
+
+    /**
+     * x ∈ [0, +∞)
+     * ratio ∈ [0, maxRatio)
+     *
+     * ratio = maxRatio * log(1 + x) / (log(1 + x) + 1)
+     */
+    const x = diff.div(space)
+    const logx = Decimal.ln(x.plus(1))
+    const ratio = new Decimal(maxRatio).mul(
+        logx.div(logx.plus(1))
+    )
+
+    const compressed = ratio.mul(space)
+
+    const result = isLower
+        ? low.minus(compressed).minus(boundary)
+        : up.plus(compressed).plus(boundary)
+
     return roundNumber(result.toNumber(), 2)
 }
 

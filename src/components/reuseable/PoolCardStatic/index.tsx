@@ -7,13 +7,17 @@ import {
     KaniCardBody,
     KaniDivider,
     KaniLink,
+    KaniSkeleton,
 } from "@/components/atomic"
 import { useAppSelector } from "@/redux"
-import { Spacer } from "@heroui/react"
+import { Chip, Spacer, Tooltip } from "@heroui/react"
 import { centerPad, computePercentage, roundNumber } from "@/modules/utils"
 import { PoolTypeChip } from "../PoolTypeChip"
 import { CLMM } from "./CLMM"
 import { DLMM } from "./DLMM"
+import { computeCapitalEfficiency } from "@/modules/math"
+import Decimal from "decimal.js"
+import numeral from "numeral"
 
 export interface PoolCardStaticProps {
   liquidityPool: LiquidityPoolSchema;
@@ -42,6 +46,25 @@ export const PoolCardStatic = (
         () => dexes.find((dex) => dex.id === liquidityPool.dex),
         [dexes, liquidityPool.dex]
     )
+    const activePosition = useAppSelector((state) => state.bot.bot?.activePosition)
+    const clmmLeverage = useMemo(() => {
+        if (liquidityPool.type !== LiquidityPoolType.Clmm) {
+            return new Decimal(0)
+        }
+        return computeCapitalEfficiency(new Decimal(activePosition?.tickLower || 0), new Decimal(activePosition?.tickUpper || 0), new Decimal(dynamicLiquidityPoolInfo?.tickCurrent || 0))
+    }, [dynamicLiquidityPoolInfo, liquidityPool.type])
+    const dlmmLeverage = useMemo(() => {
+        if (liquidityPool.type !== LiquidityPoolType.Dlmm) {
+            return new Decimal(0)
+        }
+        return computeCapitalEfficiency(new Decimal(activePosition?.tickLower || 0), new Decimal(activePosition?.tickUpper || 0), new Decimal(dynamicLiquidityPoolInfo?.tickCurrent || 0))
+    }, [dynamicLiquidityPoolInfo, liquidityPool.type])
+    const leverage = useMemo(() => {
+        if (liquidityPool.type === LiquidityPoolType.Clmm) {
+            return clmmLeverage
+        }
+        return dlmmLeverage
+    }, [liquidityPool.type, clmmLeverage, dlmmLeverage])
     return (
         <KaniCard 
             shadow="none" 
@@ -70,7 +93,7 @@ export const PoolCardStatic = (
                                 <KaniAvatar
                                     src={tokenA?.iconUrl}
                                     classNames={{
-                                        base: "w-5 h-5",
+                                        base: "w-5 h-5 z-10",
                                     }}
                                     radius="full"
                                 />
@@ -89,7 +112,7 @@ export const PoolCardStatic = (
                         </div>
                         <div className="flex items-center gap-1 justify-end">
                             <div className="text-sm">
-                                {computePercentage(liquidityPool.fee, 1, 5)}%
+                                {computePercentage(liquidityPool.fee, 1, 5).toString()}%
                             </div>
                         </div>
                     </div>
@@ -105,33 +128,55 @@ export const PoolCardStatic = (
                     <div className="flex items-center justify-between">
                         <div className="text-sm text-foreground-500">TVL</div>
                         <div className="text-sm">{dynamicLiquidityPoolInfo?.tvl 
-                            ? `$${roundNumber(dynamicLiquidityPoolInfo?.tvl, 2)}` 
-                            : "N/A"
+                            ? `$${numeral(roundNumber(dynamicLiquidityPoolInfo?.tvl, 2)).format("0,0")}` 
+                            : <KaniSkeleton className="h-5 w-[50px] rounded-md"/>
                         }</div>
                     </div>
                     <div className="flex items-center justify-between">
                         <div className="text-sm text-foreground-500">Fees 24H</div>
                         <div className="text-sm">{dynamicLiquidityPoolInfo?.fees24H 
-                            ? `$${roundNumber(dynamicLiquidityPoolInfo?.fees24H ?? 0, 2)}` 
-                            : "N/A"}</div>
+                            ? `$${numeral(roundNumber(dynamicLiquidityPoolInfo?.fees24H ?? 0, 2)).format("0,0")}` 
+                            : <KaniSkeleton className="h-5 w-[50px] rounded-md"/>}</div>
                     </div>
                     <div className="flex items-center justify-between">
                         <div className="text-sm text-foreground-500">Volume 24H</div>
                         <div className="text-sm">{dynamicLiquidityPoolInfo?.volume24H 
-                            ? `$${roundNumber(dynamicLiquidityPoolInfo?.volume24H ?? 0, 2)}` 
-                            : "N/A"}</div>
+                            ? `$${numeral(roundNumber(dynamicLiquidityPoolInfo?.volume24H ?? 0, 2)).format("0,0")}` 
+                            : <KaniSkeleton className="h-5 w-[50px] rounded-md"/>}</div>
                     </div>
                     <div className="flex items-center justify-between">
                         <div className="text-sm text-foreground-500">APR 24H</div>
-                        <div className="text-sm">{dynamicLiquidityPoolInfo?.apr24H 
-                            ? `${computePercentage(dynamicLiquidityPoolInfo?.apr24H ?? 0, 1, 2)}%` 
-                            : "N/A"}</div>
+                        <div className="flex items-center gap-2">
+                            {dynamicLiquidityPoolInfo?.apr24H 
+                                ?
+                                <Tooltip content={
+                                    <div className="text-sm">
+                                        <div>
+        Estimated in-range APR based on fees generated by the pool over the last 24 hours.
+                                        </div>
+                                        <div>
+        Calculated as: Base APR (24h) &times; capital efficiency from the selected price range.
+                                        </div>
+                                        <div>
+        This value assumes the price stays within the range.
+                                        </div>
+                                    </div>
+                                }>
+                                    <div className="text-sm flex items-center gap-2">
+                                        {`${roundNumber(computePercentage(dynamicLiquidityPoolInfo?.apr24H ?? 0, 1, 2).toNumber(), 2)}%`}
+                                        <Chip color="primary" variant="flat">
+                                            &times;{roundNumber(leverage.toNumber(), 2)}
+                                        </Chip>
+                                    </div>
+                                </Tooltip>
+                                : <KaniSkeleton className="h-5 w-[50px] rounded-md"/>}
+                        </div>
                     </div>
                 </div>
                 <Spacer y={4} />
                 <KaniDivider />
                 <Spacer y={4} />
-                <KaniLink 
+                <KaniLink
                     color="foreground" 
                     size="sm" 
                     isExternal 

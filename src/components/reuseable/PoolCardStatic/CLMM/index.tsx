@@ -3,7 +3,7 @@ import { useAppSelector } from "@/redux"
 import React, { useMemo } from "react"
 import { computeDenomination, roundNumber, tickIndexToPrice } from "@/modules/utils"
 import { LiquidityChart } from "@/components/reuseable/charts"
-import { KaniChip, KaniDivider } from "@/components/atomic"
+import { KaniChip, KaniDivider, KaniSkeleton, KaniSpinner } from "@/components/atomic"
 import BN from "bn.js"
 import Decimal from "decimal.js"
 import { getAmountsFromLiquidity } from "@/modules/math"
@@ -74,7 +74,6 @@ export const CLMM = ({ liquidityPool }: CLMMProps) => {
         return computeDenomination(amountB, tokenB?.decimals ?? 0)
     }, [amountB, tokenB?.decimals])
     const tokenPrices = useAppSelector((state) => state.socket.tokenPrices)
-    console.log(tokenPrices)
     const tokenPriceA = useMemo(() => {
         return tokenPrices[tokenA?.displayId || TokenId.SolUsdc] ?? 0
     }, [tokenPrices, tokenA?.displayId])
@@ -91,7 +90,9 @@ export const CLMM = ({ liquidityPool }: CLMMProps) => {
         return amountAValue.add(amountBValue)
     }, [amountAValue, amountBValue])
     return (
-        <div>
+        <>
+            {dynamicLiquidityPoolInfo?.tickCurrent ?
+                <div>
             <div className="grid place-items-center gap-3">
                 <div className="text-xs">
                     Price: {roundNumber(currentPrice.toNumber())}
@@ -114,10 +115,17 @@ export const CLMM = ({ liquidityPool }: CLMMProps) => {
                     </KaniChip>
                 </div>
             </div>
+            </div>
+            : <div className="h-[120px] grid place-items-center">
+                <KaniSpinner />
+            </div>
+            }
             <Spacer y={6} />
             <div className="flex flex-col gap-3">
                 <div className="flex items-center justify-between">
                     <div className="text-sm text-foreground-500">Liquidity</div>
+                    {
+                        activePosition?.liquidity && tickCurrent ?
                     <div className="flex items-center gap-2">
                         <div className="text-sm">${totalBalance.toString()}</div>
                         <KaniDivider orientation="vertical" className="h-5"/>
@@ -128,8 +136,10 @@ export const CLMM = ({ liquidityPool }: CLMMProps) => {
                             {computeDenomination(amountB, tokenB?.decimals ?? 0).toString()} {tokenB?.symbol}
                         </KaniChip>
                     </div>
+                    : <KaniSkeleton className="h-5 w-[50px] rounded-md"/>
+                    }
                 </div>
-            </div>
-        </div>
+            </div> 
+        </>
     )
 }

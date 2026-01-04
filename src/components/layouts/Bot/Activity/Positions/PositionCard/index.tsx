@@ -89,7 +89,7 @@ export const PositionCard = ({ position }: PositionCardProps) => {
                         </div>
                         <div className="flex items-center gap-1 justify-end">
                             <div className="text-sm">
-                                {computePercentage(liquidityPool.fee, 1, 5)}%
+                                {computePercentage(liquidityPool.fee, 1, 5).toString()}%
                             </div>
                         </div>
                     </div>
