@@ -40,6 +40,8 @@ const query1 = gql`
             metadata
             feeAmountTarget
             feeAmountQuote
+            positionValueAtClose
+            positionValueAtOpen
         }
         count
       }

@@ -5,7 +5,6 @@ import {
     useQueryUserSwrMutationCore,
     useQueryUserWithoutRetrySwrMutationCore,
     useQueryStaticSwrCore,
-    useQueryLiquidityProvisionSwrCore,
     useQueryUserSwrCore,
     useQueryDynamicLiquidityPoolInfoSwrMutationCore,
     useCreateBotSwrMutationCore,
@@ -23,6 +22,7 @@ import {
     useQueryHistorySwrCore,
     useQueryBots2SwrCore,
     useToggleBotSwrMutationCore,
+    useQueryFeesSwrCore,
 } from "./api"
 
 export interface SwrContextType {
@@ -31,7 +31,6 @@ export interface SwrContextType {
     typeof useQueryUserWithoutRetrySwrMutationCore
   >;
   queryStaticSwr: ReturnType<typeof useQueryStaticSwrCore>;
-  queryLiquidityProvisionSwr: ReturnType<typeof useQueryLiquidityProvisionSwrCore>;
   queryUserSwr: ReturnType<typeof useQueryUserSwrCore>;
   createBotSwrMutation: ReturnType<typeof useCreateBotSwrMutationCore>;
   queryDynamicLiquidityPoolInfoSwrMutation: ReturnType<typeof useQueryDynamicLiquidityPoolInfoSwrMutationCore>;
@@ -49,6 +48,7 @@ export interface SwrContextType {
   queryHistorySwr: ReturnType<typeof useQueryHistorySwrCore>;
   queryBots2Swr: ReturnType<typeof useQueryBots2SwrCore>;
   toggleBotSwrMutation: ReturnType<typeof useToggleBotSwrMutationCore>;
+  queryFeesSwr: ReturnType<typeof useQueryFeesSwrCore>;
 }
 
 export const SwrContext = createContext<SwrContextType | null>(null)
@@ -58,7 +58,6 @@ export const SwrProvider = ({ children }: PropsWithChildren) => {
     const queryUserWithoutRetrySwrMutation =
     useQueryUserWithoutRetrySwrMutationCore()
     const queryStaticSwr = useQueryStaticSwrCore()
-    const queryLiquidityProvisionSwr = useQueryLiquidityProvisionSwrCore()
     const queryUserSwr = useQueryUserSwrCore()
     const queryDynamicLiquidityPoolInfoSwrMutation = useQueryDynamicLiquidityPoolInfoSwrMutationCore()
     const requestSignInOtpSwrMutation = useRequestSignInOtpSwrMutationCore()
@@ -76,11 +75,11 @@ export const SwrProvider = ({ children }: PropsWithChildren) => {
     const queryBots2Swr = useQueryBots2SwrCore()
     const createBotSwrMutation = useCreateBotSwrMutationCore()
     const toggleBotSwrMutation = useToggleBotSwrMutationCore()
+    const queryFeesSwr = useQueryFeesSwrCore()
     const values = useMemo(() => ({
         queryUserSwrMutation,
         queryUserWithoutRetrySwrMutation,
         queryStaticSwr,
-        queryLiquidityProvisionSwr,
         queryUserSwr,
         queryDynamicLiquidityPoolInfoSwrMutation,
         requestSignInOtpSwrMutation,
@@ -98,11 +97,11 @@ export const SwrProvider = ({ children }: PropsWithChildren) => {
         queryBots2Swr,
         createBotSwrMutation,
         toggleBotSwrMutation,
+        queryFeesSwr,
     }), [
         queryUserSwrMutation,
         queryUserWithoutRetrySwrMutation,
         queryStaticSwr,
-        queryLiquidityProvisionSwr,
         queryUserSwr,
         queryDynamicLiquidityPoolInfoSwrMutation,
         requestSignInOtpSwrMutation,
@@ -120,6 +119,7 @@ export const SwrProvider = ({ children }: PropsWithChildren) => {
         queryBots2Swr,
         createBotSwrMutation,
         toggleBotSwrMutation,
+        queryFeesSwr,
     ]
     )
     return (

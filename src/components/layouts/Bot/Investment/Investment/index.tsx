@@ -8,6 +8,7 @@ import Decimal from "decimal.js"
 import { computeDenomination } from "@/modules/utils"
 import BN from "bn.js"
 import { HistoryChart } from "./HistoryChart"
+import numeral from "numeral"
 
 export const Investment = () => {
     const tokens = useAppSelector(
@@ -26,7 +27,6 @@ export const Investment = () => {
         (token) => token.chainId === bot?.chainId
         && token.type === TokenType.Native
     ), [tokens, bot?.chainId])
-    
     const tokenPrices = useAppSelector((state) => state.socket.tokenPrices)
     const targetTokenAmount = useMemo(() => {
         if (!bot?.snapshotTargetBalanceAmount || !targetToken) {
@@ -35,6 +35,7 @@ export const Investment = () => {
         const amount = computeDenomination(new BN(bot.snapshotTargetBalanceAmount), targetToken?.decimals)
         return amount.mul(tokenPrices[targetToken.displayId] || 0)
     }, [
+        tokenPrices,
         targetToken, 
         bot?.snapshotTargetBalanceAmount
     ])
@@ -45,7 +46,7 @@ export const Investment = () => {
         }
         const amount = computeDenomination(new BN(bot.snapshotQuoteBalanceAmount), quoteToken?.decimals)
         return amount.mul(tokenPrices[quoteToken.displayId] || 0)
-    }, [quoteToken, bot?.snapshotQuoteBalanceAmount])
+    }, [tokenPrices, quoteToken, bot?.snapshotQuoteBalanceAmount])
 
     const gasTokenAmount = useMemo(() => {
         if (!bot?.snapshotGasBalanceAmount || !gasToken) {
@@ -53,8 +54,7 @@ export const Investment = () => {
         }
         const amount = computeDenomination(new BN(bot.snapshotGasBalanceAmount), gasToken?.decimals)
         return amount.mul(tokenPrices[gasToken.displayId] || 0)
-    }, [gasToken, bot?.snapshotGasBalanceAmount])
-
+    }, [tokenPrices, gasToken, bot?.snapshotGasBalanceAmount])
     const totalInvestment = useMemo(() => {
         return targetTokenAmount.add(quoteTokenAmount).add(gasTokenAmount)
     }, [targetTokenAmount, quoteTokenAmount, gasTokenAmount])
@@ -65,8 +65,9 @@ export const Investment = () => {
                 <TooltipTitle
                     title="Investment"
                     tooltipString="The investment of the bot." />
+                <Spacer y={1} />
                 <div className="text-2xl font-bold">
-                    ${totalInvestment.toString()}
+                    ${numeral(totalInvestment.toString()).format("0,0.00000")}
                 </div>
                 <Spacer y={4} />
                 <HistoryChart />

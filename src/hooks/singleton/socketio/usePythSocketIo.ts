@@ -2,7 +2,8 @@ import { useRef, useEffect } from "react"
 import { createManager } from "./utils"
 import { useAppSelector, useAppDispatch, setTokenPrice } from "@/redux"
 import EventEmitter2 from "eventemitter2"
-import { Network, ChainId, TokenId } from "@/modules/types"
+import { TokenId } from "@/modules/types"
+import superjson from "@/modules/superjson"
 
 // declare pyth socket io event emitter
 export const pythSocketIoEventEmitter = new EventEmitter2()
@@ -13,10 +14,12 @@ export enum PythSocketIoEvent {
 }
 // declare pyth prices updated event
 export interface PythPricesUpdatedEvent {
-    network: Network
+    prices: Array<PythPriceUpdated>
+}
+
+export interface PythPriceUpdated {
     tokenId: TokenId
     price: number
-    chainId: ChainId
 }
 
 export const usePythSocketIo = () => {
@@ -31,8 +34,9 @@ export const usePythSocketIo = () => {
             console.log(`[Pyth Socket] Connected — ID: ${socket.id}`)
         })
         // on pyth prices updated
-        socket.on("pyth_prices_updated", (data) => {
-            pythSocketIoEventEmitter.emit(PythSocketIoEvent.PythPricesUpdated, data)
+        socket.on<string>("pyth_prices_updated", (data) => {
+            const event = superjson.parse<PythPricesUpdatedEvent>(data)
+            pythSocketIoEventEmitter.emit(PythSocketIoEvent.PythPricesUpdated, event)
         })
         // on disconnect
         socket.on("disconnect", (reason) => {
@@ -71,10 +75,13 @@ export const usePythSocketIo = () => {
         const callback = (
             data: PythPricesUpdatedEvent
         ) => {
-            dispatch(setTokenPrice({
-                tokenId: data.tokenId,
-                price: data.price,
-            }))
+            for (const price of data.prices) {
+                console.log("price", price)
+                dispatch(setTokenPrice({
+                    tokenId: price.tokenId,
+                    price: price.price,
+                }))
+            }
         }
         pythSocketIoEventEmitter.on(
             PythSocketIoEvent.PythPricesUpdated, 
@@ -86,7 +93,7 @@ export const usePythSocketIo = () => {
                 callback
             )
         }
-    }, [tokenPrices])
+    }, [tokenPrices, dispatch])
 
     return socketRef.current
 }

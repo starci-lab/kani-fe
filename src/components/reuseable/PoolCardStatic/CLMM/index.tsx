@@ -8,6 +8,8 @@ import BN from "bn.js"
 import Decimal from "decimal.js"
 import { getAmountsFromLiquidity } from "@/modules/math"
 import { Spacer } from "@heroui/react"
+import { useQueryFeesSwr } from "@/hooks/singleton"
+import numeral from "numeral"
 
 export interface CLMMProps {
     liquidityPool: LiquidityPoolSchema;
@@ -89,6 +91,16 @@ export const CLMM = ({ liquidityPool }: CLMMProps) => {
     const totalBalance = useMemo(() => {
         return amountAValue.add(amountBValue)
     }, [amountAValue, amountBValue])
+    const queryFeesSwr = useQueryFeesSwr()
+    const tokenAFees = useMemo(() => {
+        return new Decimal(queryFeesSwr?.data?.data?.fees.data?.tokenA ?? 0)
+    }, [queryFeesSwr?.data?.data?.fees.data?.tokenA])
+    const tokenBFees = useMemo(() => {
+        return new Decimal(queryFeesSwr?.data?.data?.fees.data?.tokenB ?? 0)
+    }, [queryFeesSwr?.data?.data?.fees.data?.tokenB])
+    const totalFees = useMemo(() => {
+        return tokenAFees.add(tokenBFees)
+    }, [tokenAFees, tokenBFees])
     return (
         <>
             {dynamicLiquidityPoolInfo?.tickCurrent ?
@@ -123,11 +135,31 @@ export const CLMM = ({ liquidityPool }: CLMMProps) => {
             <Spacer y={6} />
             <div className="flex flex-col gap-3">
                 <div className="flex items-center justify-between">
+                    <div className="text-sm text-foreground-500">Yield</div>
+                    {
+                        !queryFeesSwr.isLoading ?
+                    <div className="flex items-center gap-2">
+                        <div className="text-sm">${numeral(totalFees.toNumber()).format("0,0.00000")}</div>
+                        <KaniDivider orientation="vertical" className="h-5"/>
+                        <KaniChip variant="flat">
+                            {tokenAFees.toNumber()} {tokenA?.symbol}
+                        </KaniChip>
+                        <KaniChip variant="flat">
+                            {tokenBFees.toNumber()} {tokenB?.symbol}
+                        </KaniChip>
+                    </div>
+                    : <KaniSkeleton className="h-5 w-[50px] rounded-md"/>
+                    }
+                </div>
+            </div> 
+            <Spacer y={3} />
+            <div className="flex flex-col gap-3">
+                <div className="flex items-center justify-between">
                     <div className="text-sm text-foreground-500">Liquidity</div>
                     {
                         activePosition?.liquidity && tickCurrent ?
                     <div className="flex items-center gap-2">
-                        <div className="text-sm">${totalBalance.toString()}</div>
+                        <div className="text-sm">${numeral(totalBalance.toNumber()).format("0,0.00000")}</div>
                         <KaniDivider orientation="vertical" className="h-5"/>
                         <KaniChip variant="flat">
                             {computeDenomination(amountA, tokenA?.decimals ?? 0).toString()} {tokenA?.symbol}

@@ -28,4 +28,6 @@ export interface BotSchema  {
     roi24h?: number
     pnl24h?: number
     backupPrivateKey: boolean
+    positionValueAtClose: number
+    positionValueAtOpen: number
 }

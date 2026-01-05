@@ -48,4 +48,7 @@ export interface PositionSchema {
   
     createdAt: Date;
     updatedAt: Date;
+
+    positionValueAtClose: number
+    positionValueAtOpen: number
   }

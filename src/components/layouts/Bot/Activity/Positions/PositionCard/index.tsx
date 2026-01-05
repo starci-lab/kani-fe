@@ -7,7 +7,7 @@ import {
     PoolTypeChip, 
     KaniDivider
 } from "@/components"
-import { PositionSchema } from "@/modules/types"
+import { PositionSchema, TokenId } from "@/modules/types"
 import { setSelectedPosition, useAppDispatch, useAppSelector } from "@/redux"
 import { computePercentage, roundNumber } from "@/modules/utils"
 import { Spacer } from "@heroui/react"
@@ -36,6 +36,12 @@ export const PositionCard = ({ position }: PositionCardProps) => {
         return [roi, new Decimal(roi).isPositive()]
     }, [position.roi])
     const { onOpen } = usePositionModalDisclosure()
+    const tokenPrices = useAppSelector((state) => state.socket.tokenPrices)
+
+    const targetTokenPrice = useMemo(() => {
+        return tokenPrices[tokenA?.displayId || TokenId.SolUsdc] ?? 0
+    }, [tokenPrices, tokenA?.displayId])
+
     if (!liquidityPool) return null
     return (
         <KaniCard 
@@ -99,17 +105,17 @@ export const PositionCard = ({ position }: PositionCardProps) => {
                 <Spacer y={4} />
                 <div className="flex items-center gap-4 w-full justify-between">
                     <div className="text-sm text-foreground-500">PNL</div>
-                    <div className={`text-sm ${isPositivePnl ? "text-success" : "text-danger"}`}>{pnl}%</div>
+                    <div className={`text-sm ${isPositivePnl ? "text-success" : "text-danger"}`}>{roundNumber(pnl, 5)}%</div>
                 </div>
                 <Spacer y={3} />
                 <div className="flex items-center gap-4 w-full justify-between">
                     <div className="text-sm text-foreground-500">ROI</div>
-                    <div className={`text-sm ${isPositiveRoi ? "text-success" : "text-danger"}`}>{roi}%</div>
+                    <div className={`text-sm ${isPositiveRoi ? "text-success" : "text-danger"}`}>{roundNumber(roi, 5)}%</div>
                 </div>
                 <Spacer y={3} />
                 <div className="flex items-center gap-4 w-full justify-between">
-                    <div className="text-sm text-foreground-500">VOL</div>
-                    <div className="text-sm">{123}</div>
+                    <div className="text-sm text-foreground-500">Value</div>
+                    <div className="text-sm">${roundNumber(new Decimal(position.positionValueAtOpen).mul(targetTokenPrice).toNumber(), 5)}</div>
                 </div>
             </KaniCardBody>
         </KaniCard>

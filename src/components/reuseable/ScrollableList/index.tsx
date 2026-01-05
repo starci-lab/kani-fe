@@ -10,7 +10,7 @@ export const ScrollableList = <T,>({ items, renderItem, enableScroll = true }: S
     // we render the list without scroll if enableScroll is false
     if (!enableScroll) {
         return (
-            <div className="relative gap-2 flex flex-col">
+            <div className="relative gap-3 flex flex-col">
                 {items.map(renderItem)}
             </div>
         )

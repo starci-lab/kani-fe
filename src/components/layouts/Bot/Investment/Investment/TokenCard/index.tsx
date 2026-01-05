@@ -66,7 +66,7 @@ export const TokenCard = ({
                     tooltipString="The usable amount of the token." 
                 />
                 <div className={cn(
-                    "text-2xl font-bold"
+                    "text-xl font-bold"
                 )}>
                     {computeDenomination(new BN(balanceAmount), token?.decimals).toString()} {token?.symbol}
                 </div>

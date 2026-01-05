@@ -39,7 +39,7 @@ export const LiquidityPoolCard = ({ liquidityPool, isSelected, onSelect }: Liqui
                         </KaniAvatarGroup>
                         <div>
                             <div className="text-sm">{tokenA?.name}-{tokenB?.name}</div>
-                            <div className="text-xs text-foreground-500">{computePercentage(liquidityPool.fee, 1, 5)}%</div>
+                            <div className="text-xs text-foreground-500">{computePercentage(liquidityPool.fee, 1, 5).toString()}%</div>
                         </div>
                     </div>
                     <Spacer y={2} />
