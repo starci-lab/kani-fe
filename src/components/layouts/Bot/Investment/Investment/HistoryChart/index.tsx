@@ -1,6 +1,7 @@
 import React, { useMemo } from "react"
 import { useAppSelector } from "@/redux/hooks"
 import { AreaChart } from "@/components/reuseable"
+import Decimal from "decimal.js"
 
 export const HistoryChart = () => {
     const historyResponse = useAppSelector(
@@ -10,7 +11,7 @@ export const HistoryChart = () => {
         return historyResponse?.series
             ?.map((item) => ({
                 name: item.timestamp,
-                value: item.value.targetValue,
+                value: new Decimal(item.value).toDecimalPlaces(5).toNumber(),
             })) || []
     }, [historyResponse])
     return (

@@ -19,7 +19,7 @@ export interface BotSlice {
     positions?: Array<PositionSchema>
     positionsCursor?: string
     positionsPage?: number
-    chartInterval?: ChartInterval
+    chartInterval: ChartInterval
     chartUnit?: ChartUnit
     historyResponse?: QueryHistoryResponse
     selectedPosition?: PositionSchema
@@ -29,6 +29,7 @@ export interface BotSlice {
 
 const initialState: BotSlice = {
     tab: BotTab.Wallet,
+    chartInterval: ChartInterval.OneHour,
 }
 
 export const botSlice = createSlice({

@@ -1,6 +1,6 @@
 import React, { useMemo } from "react"
-import { KaniCard, KaniCardBody } from "@/components/atomic"
-import { PoolCardStatic, TooltipTitle } from "@/components/reuseable"
+import { KaniCard, KaniCardBody } from "../../../../atomic"
+import { PoolCardStatic, TooltipTitle } from "../../../../reuseable"
 import { useAppSelector } from "@/redux"
 import { Spacer } from "@heroui/react"
 

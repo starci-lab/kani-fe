@@ -1,21 +1,21 @@
-import { DexId, LiquidityPoolSchema, TokenId } from "@/modules/types"
+import { LiquidityPoolSchema, TokenId } from "@/modules/types"
 import { useAppSelector } from "@/redux"
 import React, { useMemo } from "react"
-import { computeDenomination, roundNumber, tickIndexToPrice } from "@/modules/utils"
-import { LiquidityChart } from "@/components/reuseable/charts"
-import { KaniChip, KaniDivider, KaniSkeleton, KaniSpinner } from "@/components/atomic"
-import BN from "bn.js"
+import { binIdToPrice, roundNumber } from "@/modules/utils"
+import { LiquidityChart } from "../../charts"
+import { KaniChip, KaniDivider, KaniSkeleton, KaniSpinner } from "../../../atomic"
 import Decimal from "decimal.js"
-import { getAmountsFromLiquidity } from "@/modules/math"
 import { Spacer } from "@heroui/react"
-import { useQueryFeesSwr } from "@/hooks/singleton"
+import { useQueryFeesSwr, useQueryReservesSwr } from "@/hooks/singleton"
 import numeral from "numeral"
 
 export interface DLMMProps {
     liquidityPool: LiquidityPoolSchema;
 }
 
-export const DLMM = ({ liquidityPool }: DLMMProps) => {
+export const DLMM = (
+    { liquidityPool }: DLMMProps
+) => {
     const dynamicLiquidityPoolInfos = useAppSelector((state) => state.dynamic.dynamicLiquidityPoolInfos)
     const dynamicLiquidityPoolInfo = useMemo(() => {
         return dynamicLiquidityPoolInfos.find(
@@ -31,51 +31,28 @@ export const DLMM = ({ liquidityPool }: DLMMProps) => {
         () => tokens.find((token) => token.id === liquidityPool.tokenB),
         [tokens, liquidityPool.tokenB]
     )
-    const dexes = useAppSelector((state) => state.static.dexes)
-    const dex = useMemo(
-        () => dexes.find((dex) => dex.id === liquidityPool.dex),
-        [dexes, liquidityPool.dex]
-    )
     const activePosition = useAppSelector((state) => state.bot.bot?.activePosition)    
-    const tickLower = useMemo(() => {
-        return activePosition?.tickLower
+    const minBinId = useMemo(() => {
+        return new Decimal(activePosition?.minBinId ?? 0)
     }, [activePosition])
-    const tickUpper = useMemo(() => {
-        return activePosition?.tickUpper
+    const maxBinId = useMemo(() => {
+        return new Decimal(activePosition?.maxBinId ?? 0)
     }, [activePosition])
     const activeId = useMemo(() => {
-        return dynamicLiquidityPoolInfo?.activeId
+        return new Decimal(dynamicLiquidityPoolInfo?.activeId ?? 0)
     }, [dynamicLiquidityPoolInfo])
-    const tickLowerPrice = useMemo(() => {
-        return tickIndexToPrice(tickLower ?? 0, tokenA?.decimals ?? 0, tokenB?.decimals ?? 0 )
-    }, [tickLower, tokenA?.decimals, tokenB?.decimals])
-    const tickUpperPrice = useMemo(() => {
-        return tickIndexToPrice(tickUpper ?? 0, tokenA?.decimals ?? 0, tokenB?.decimals ?? 0 )
-    }, [tickUpper, tokenA?.decimals, tokenB?.decimals])
-    const currentPrice = useMemo(() => {
-        return tickIndexToPrice(dynamicLiquidityPoolInfo?.tickCurrent ?? 0, tokenA?.decimals ?? 0, tokenB?.decimals ?? 0 )
-    }, [dynamicLiquidityPoolInfo?.tickCurrent, tokenA?.decimals, tokenB?.decimals])
     const isInRange = useMemo(() => {
-        return currentPrice.gte(tickLowerPrice) && currentPrice.lte(tickUpperPrice)
-    }, [currentPrice, tickLowerPrice, tickUpperPrice])
-    const { amountA, amountB } = useMemo(() => {
-        return getAmountsFromLiquidity({
-            liquidity: new BN(
-                activePosition?.liquidity ?? 0
-            ),
-            tickLower: new Decimal(tickLower || 0),
-            tickUpper: new Decimal(tickUpper || 0),
-            tickCurrent: new Decimal(activeId || 0),
-            dex: dex?.displayId || DexId.Raydium,
-        }
-    )
-    }, [activePosition?.liquidity, tickLowerPrice, tickUpperPrice, currentPrice, dex, activeId])
-    const amountAFormatted = useMemo(() => {
-        return computeDenomination(amountA, tokenA?.decimals ?? 0)
-    }, [amountA, tokenA?.decimals])
-    const amountBFormatted = useMemo(() => {
-        return computeDenomination(amountB, tokenB?.decimals ?? 0)
-    }, [amountB, tokenB?.decimals])
+        return activeId && activeId.gte(minBinId) && activeId.lte(maxBinId)
+    }, [activeId, minBinId, maxBinId])
+    const minBinIdPrice = useMemo(() => {
+        return binIdToPrice({ binId: minBinId, binStep: new Decimal(liquidityPool.binStep), basisPointMax: new Decimal(liquidityPool.basisPointMax), decimalsA: new Decimal(tokenA?.decimals ?? 0), decimalsB: new Decimal(tokenB?.decimals ?? 0) })
+    }, [minBinId, liquidityPool.binStep, liquidityPool.basisPointMax, tokenA?.decimals, tokenB?.decimals])
+    const maxBinIdPrice = useMemo(() => {
+        return binIdToPrice({ binId: maxBinId, binStep: new Decimal(liquidityPool.binStep), basisPointMax: new Decimal(liquidityPool.basisPointMax), decimalsA: new Decimal(tokenA?.decimals ?? 0), decimalsB: new Decimal(tokenB?.decimals ?? 0) })
+    }, [maxBinId, liquidityPool.binStep, liquidityPool.basisPointMax, tokenA?.decimals, tokenB?.decimals])
+    const activeIdPrice = useMemo(() => {
+        return binIdToPrice({ binId: activeId, binStep: new Decimal(liquidityPool.binStep), basisPointMax: new Decimal(liquidityPool.basisPointMax), decimalsA: new Decimal(tokenA?.decimals ?? 0), decimalsB: new Decimal(tokenB?.decimals ?? 0) })
+    }, [activeId, liquidityPool.binStep, liquidityPool.basisPointMax, tokenA?.decimals, tokenB?.decimals])
     const tokenPrices = useAppSelector((state) => state.socket.tokenPrices)
     const tokenPriceA = useMemo(() => {
         return tokenPrices[tokenA?.displayId || TokenId.SolUsdc] ?? 0
@@ -83,15 +60,6 @@ export const DLMM = ({ liquidityPool }: DLMMProps) => {
     const tokenPriceB = useMemo(() => {
         return tokenPrices[tokenB?.displayId || TokenId.SolUsdc] ?? 0
     }, [tokenPrices, tokenB?.displayId])
-    const amountAValue = useMemo(() => {
-        return amountAFormatted.mul(tokenPriceA)
-    }, [amountAFormatted, tokenPriceA])
-    const amountBValue = useMemo(() => {
-        return amountBFormatted.mul(tokenPriceB)
-    }, [amountBFormatted, tokenPriceB])
-    const totalBalance = useMemo(() => {
-        return amountAValue.add(amountBValue)
-    }, [amountAValue, amountBValue])
     const queryFeesSwr = useQueryFeesSwr()
     const tokenAFees = useMemo(() => {
         return new Decimal(queryFeesSwr?.data?.data?.fees.data?.tokenA ?? 0)
@@ -102,22 +70,32 @@ export const DLMM = ({ liquidityPool }: DLMMProps) => {
     const totalFees = useMemo(() => {
         return tokenAFees.add(tokenBFees)
     }, [tokenAFees, tokenBFees])
+    const queryReservesSwr = useQueryReservesSwr()
+    const tokenAReserves = useMemo(() => {
+        return new Decimal(queryReservesSwr?.data?.data?.reserves.data?.tokenA ?? 0)
+    }, [queryReservesSwr?.data?.data?.reserves.data?.tokenA])
+    const tokenBReserves = useMemo(() => {
+        return new Decimal(queryReservesSwr?.data?.data?.reserves.data?.tokenB ?? 0)
+    }, [queryReservesSwr?.data?.data?.reserves.data?.tokenB])
+    const totalReservesInUsd = useMemo(() => {
+        return tokenAReserves.mul(tokenPriceA).add(tokenBReserves.mul(tokenPriceB))
+    }, [tokenAReserves, tokenBReserves, tokenPriceA, tokenPriceB])
     return (
         <>
-            {dynamicLiquidityPoolInfo?.tickCurrent ?
+            {dynamicLiquidityPoolInfo?.activeId ?
                 <div>
             <div className="grid place-items-center gap-3">
                 <div className="text-xs">
-                    Price: {roundNumber(currentPrice.toNumber())}
+                    Price: {roundNumber(activeIdPrice.toNumber())}
                 </div>
                 <LiquidityChart
-                    priceLower={tickLowerPrice.toNumber()}
-                    priceUpper={tickUpperPrice.toNumber()}
-                    currentPrice={currentPrice.toNumber()}
+                    priceLower={minBinIdPrice.toNumber()}
+                    priceUpper={maxBinIdPrice.toNumber()}
+                    currentPrice={activeIdPrice.toNumber()}
                 />
                 <div className="flex items-center gap-2">
                     <div className="text-xs">
-                        {roundNumber(tickLowerPrice.toNumber())} - {roundNumber(tickUpperPrice.toNumber())} <span className="text-secondary">{tokenB?.symbol}</span> per <span className="text-secondary">{tokenA?.symbol}</span>
+                        {roundNumber(minBinIdPrice.toNumber())} - {roundNumber(maxBinIdPrice.toNumber())} <span className="text-secondary">{tokenB?.symbol}</span> per <span className="text-secondary">{tokenA?.symbol}</span>
                     </div>
                     <KaniChip
                         color={isInRange ? "success" : "danger"}
@@ -160,13 +138,13 @@ export const DLMM = ({ liquidityPool }: DLMMProps) => {
                     {
                         activeId ?
                     <div className="flex items-center gap-2">
-                        <div className="text-sm">${numeral(totalBalance.toNumber()).format("0,0.00000")}</div>
+                        <div className="text-sm">${numeral(totalReservesInUsd.toNumber()).format("0,0.00000")}</div>
                         <KaniDivider orientation="vertical" className="h-5"/>
                         <KaniChip variant="flat">
-                            {computeDenomination(amountA, tokenA?.decimals ?? 0).toString()} {tokenA?.symbol}
+                            {tokenAReserves.toNumber()} {tokenA?.symbol}
                         </KaniChip>
                         <KaniChip variant="flat">
-                            {computeDenomination(amountB, tokenB?.decimals ?? 0).toString()} {tokenB?.symbol}
+                            {tokenBReserves.toNumber()} {tokenB?.symbol}
                         </KaniChip>
                     </div>
                     : <KaniSkeleton className="h-5 w-[50px] rounded-md"/>

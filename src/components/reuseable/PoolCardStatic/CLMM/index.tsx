@@ -1,14 +1,12 @@
-import { DexId, LiquidityPoolSchema, TokenId } from "@/modules/types"
+import { LiquidityPoolSchema, TokenId } from "@/modules/types"
 import { useAppSelector } from "@/redux"
 import React, { useMemo } from "react"
-import { computeDenomination, roundNumber, tickIndexToPrice } from "@/modules/utils"
+import { roundNumber, tickIndexToPrice } from "@/modules/utils"
 import { LiquidityChart } from "@/components/reuseable/charts"
 import { KaniChip, KaniDivider, KaniSkeleton, KaniSpinner } from "@/components/atomic"
-import BN from "bn.js"
 import Decimal from "decimal.js"
-import { getAmountsFromLiquidity } from "@/modules/math"
 import { Spacer } from "@heroui/react"
-import { useQueryFeesSwr } from "@/hooks/singleton"
+import { useQueryFeesSwr, useQueryReservesSwr } from "@/hooks/singleton"
 import numeral from "numeral"
 
 export interface CLMMProps {
@@ -30,11 +28,6 @@ export const CLMM = ({ liquidityPool }: CLMMProps) => {
     const tokenB = useMemo(
         () => tokens.find((token) => token.id === liquidityPool.tokenB),
         [tokens, liquidityPool.tokenB]
-    )
-    const dexes = useAppSelector((state) => state.static.dexes)
-    const dex = useMemo(
-        () => dexes.find((dex) => dex.id === liquidityPool.dex),
-        [dexes, liquidityPool.dex]
     )
     const activePosition = useAppSelector((state) => state.bot.bot?.activePosition)    
     const tickLower = useMemo(() => {
@@ -58,23 +51,6 @@ export const CLMM = ({ liquidityPool }: CLMMProps) => {
     const isInRange = useMemo(() => {
         return currentPrice.gte(tickLowerPrice) && currentPrice.lte(tickUpperPrice)
     }, [currentPrice, tickLowerPrice, tickUpperPrice])
-    const { amountA, amountB } = useMemo(() => {
-        return getAmountsFromLiquidity({
-            liquidity: new BN(
-                activePosition?.liquidity ?? 0
-            ),
-            tickLower: new Decimal(tickLower || 0),
-            tickUpper: new Decimal(tickUpper || 0),
-            tickCurrent: new Decimal(tickCurrent || 0),
-            dex: dex?.displayId || DexId.Raydium,
-        })
-    }, [activePosition?.liquidity, tickLowerPrice, tickUpperPrice, currentPrice, dex])
-    const amountAFormatted = useMemo(() => {
-        return computeDenomination(amountA, tokenA?.decimals ?? 0)
-    }, [amountA, tokenA?.decimals])
-    const amountBFormatted = useMemo(() => {
-        return computeDenomination(amountB, tokenB?.decimals ?? 0)
-    }, [amountB, tokenB?.decimals])
     const tokenPrices = useAppSelector((state) => state.socket.tokenPrices)
     const tokenPriceA = useMemo(() => {
         return tokenPrices[tokenA?.displayId || TokenId.SolUsdc] ?? 0
@@ -82,15 +58,6 @@ export const CLMM = ({ liquidityPool }: CLMMProps) => {
     const tokenPriceB = useMemo(() => {
         return tokenPrices[tokenB?.displayId || TokenId.SolUsdc] ?? 0
     }, [tokenPrices, tokenB?.displayId])
-    const amountAValue = useMemo(() => {
-        return amountAFormatted.mul(tokenPriceA)
-    }, [amountAFormatted, tokenPriceA])
-    const amountBValue = useMemo(() => {
-        return amountBFormatted.mul(tokenPriceB)
-    }, [amountBFormatted, tokenPriceB])
-    const totalBalance = useMemo(() => {
-        return amountAValue.add(amountBValue)
-    }, [amountAValue, amountBValue])
     const queryFeesSwr = useQueryFeesSwr()
     const tokenAFees = useMemo(() => {
         return new Decimal(queryFeesSwr?.data?.data?.fees.data?.tokenA ?? 0)
@@ -101,6 +68,16 @@ export const CLMM = ({ liquidityPool }: CLMMProps) => {
     const totalFees = useMemo(() => {
         return tokenAFees.add(tokenBFees)
     }, [tokenAFees, tokenBFees])
+    const queryReservesSwr = useQueryReservesSwr()
+    const tokenAReserves = useMemo(() => {
+        return new Decimal(queryReservesSwr?.data?.data?.reserves.data?.tokenA ?? 0)
+    }, [queryReservesSwr?.data?.data?.reserves.data?.tokenA])
+    const tokenBReserves = useMemo(() => {
+        return new Decimal(queryReservesSwr?.data?.data?.reserves.data?.tokenB ?? 0)
+    }, [queryReservesSwr?.data?.data?.reserves.data?.tokenB])
+    const totalReservesInUsd = useMemo(() => {
+        return tokenAReserves.mul(tokenPriceA).add(tokenBReserves.mul(tokenPriceB))
+    }, [tokenAReserves, tokenBReserves, tokenPriceA, tokenPriceB])
     return (
         <>
             {dynamicLiquidityPoolInfo?.tickCurrent ?
@@ -159,13 +136,13 @@ export const CLMM = ({ liquidityPool }: CLMMProps) => {
                     {
                         activePosition?.liquidity && tickCurrent ?
                     <div className="flex items-center gap-2">
-                        <div className="text-sm">${numeral(totalBalance.toNumber()).format("0,0.00000")}</div>
+                        <div className="text-sm">${numeral(totalReservesInUsd.toNumber()).format("0,0.00000")}</div>
                         <KaniDivider orientation="vertical" className="h-5"/>
                         <KaniChip variant="flat">
-                            {computeDenomination(amountA, tokenA?.decimals ?? 0).toString()} {tokenA?.symbol}
+                            {tokenAReserves.toNumber()} {tokenA?.symbol}
                         </KaniChip>
                         <KaniChip variant="flat">
-                            {computeDenomination(amountB, tokenB?.decimals ?? 0).toString()} {tokenB?.symbol}
+                            {tokenBReserves.toNumber()} {tokenB?.symbol}
                         </KaniChip>
                     </div>
                     : <KaniSkeleton className="h-5 w-[50px] rounded-md"/>

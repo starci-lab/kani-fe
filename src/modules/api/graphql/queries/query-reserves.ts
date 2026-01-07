@@ -3,50 +3,47 @@ import { GraphQLResponse, QueryParams } from "../types"
 import { DocumentNode, gql } from "@apollo/client"
 
 const query1 = gql`
-    query Fees($request: FeesRequest!) {
-        fees(request: $request) {
+    query Reserves($request: ReservesRequest!) {
+        reserves(request: $request) {
             data {
               tokenA
               tokenB
             }
-            error
-            message
-            success
         }
     }`
 
-export interface FeesResponse {
+export interface ReservesResponse {
   tokenA: string;
   tokenB: string;
 }
 
-export enum QueryFees {
+export enum QueryReserves {
   Query1 = "query1",
 }
 
-export interface FeesRequest {
+export interface ReservesRequest {
   botId: string;
   activePositionId: string;
 }
 
-const queryMap: Record<QueryFees, DocumentNode> = {
-    [QueryFees.Query1]: query1,
+const queryMap: Record<QueryReserves, DocumentNode> = {
+    [QueryReserves.Query1]: query1,
 }
 
-export type QueryFeesParams = QueryParams<
-  QueryFees,
-  FeesRequest
+export type QueryReservesParams = QueryParams<
+  QueryReserves,
+  ReservesRequest
 >;
 
-export const queryFees = async (
-    { query = QueryFees.Query1, request, token }: QueryFeesParams,
+export const queryReserves = async (
+    { query = QueryReserves.Query1, request, token }: QueryReservesParams,
 ) => {
     const queryDocument = queryMap[query]
     if (!token) {
         throw new Error("Token is required")
     }
     return await createNoCacheCredentialAuthClientWithToken(token).query<{
-        fees: GraphQLResponse<FeesResponse>;
+        reserves: GraphQLResponse<ReservesResponse>;
   }>({
       query: queryDocument,
       variables: {

@@ -1,5 +1,3 @@
-import { intervalConfigMap } from "@/hooks/singleton"
-import { ChartInterval } from "@/modules/api"
 import { dayjs } from "@/modules/utils"
 import { useAppSelector } from "@/redux/hooks"
 import React, { useMemo } from "react"
@@ -10,7 +8,9 @@ import {
     XAxis,
     YAxis,
     Tooltip,
+    CartesianGrid,
 } from "recharts"
+import { CustomTick } from "./CustomTick"
 
 export interface AreaChartData {
     name: string
@@ -22,22 +22,16 @@ export interface AreaChartProps {
 
 export const AreaChart = ({ data }: AreaChartProps) => {
     const interval = useAppSelector((state) => state.bot.chartInterval)
-    const intervalConfig = useMemo(
-        () => {
-            return intervalConfigMap[interval ?? ChartInterval.OneHour]
-        },
-        [interval]
-    )
     const bot = useAppSelector((state) => state.bot.bot)
     const tokens = useAppSelector((state) => state.static.tokens)
     const token = useMemo(() => {
         return tokens.find((token) => token.chainId === bot?.chainId && token.id === bot?.targetToken)
     }, [tokens, bot?.chainId, bot?.targetToken])    
     return (
-        <ResponsiveContainer width="100%" height={200}>
+        <ResponsiveContainer width="100%" height={300}>
             <RechartsAreaChart
                 data={data}
-                margin={{ top: 10, right: 10, left: 0, bottom: 10 }}
+                margin={{ top: 25, right: 25, left: 0, bottom: 25 }}
             >
                 <defs>
                     <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
@@ -45,27 +39,31 @@ export const AreaChart = ({ data }: AreaChartProps) => {
                         <stop offset="95%" stopColor="hsl(var(--heroui-primary))" stopOpacity={0} />
                     </linearGradient>
                 </defs>
+                <CartesianGrid
+                    strokeDasharray="3 3"
+                    stroke="hsl(var(--heroui-foreground-200))"
+                    vertical={false}
+                />
                 <XAxis
+                    axisLine={{ stroke: "hsl(var(--heroui-foreground-300))" }}
                     dataKey="name"
-                    interval={intervalConfig?.interval}
-                    axisLine={false}
                     tickLine={false}
-                    tickMargin={10} 
-                    tick={{ fontSize: 12 }}
-                    tickFormatter={
-                        (value, index) => {
-                            if (index === 0) return ""
-                            const localTime = dayjs(value).local()
-                            if (localTime.hour() === 0 && localTime.minute() === 0) {
-                                return localTime.format("DD/MM")
-                            }
-                            return localTime.format("HH:mm")
-                        }}
+                    tickMargin={20} 
+                    interval={0}
+                    tick={
+                        (params) => {
+                            return <CustomTick 
+                                interval={interval} 
+                                {...params}
+                            />
+                        }
+                    }
                 />
                 <YAxis
                     orientation="right"
-                    axisLine={false}
+                    axisLine={{ stroke: "hsl(var(--heroui-foreground-300))" }}
                     tickLine={false}
+                    tickMargin={10}
                     tick={{ fontSize: 12 }}
                     domain={
                         [

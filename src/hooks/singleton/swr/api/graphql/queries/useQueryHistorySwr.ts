@@ -6,10 +6,11 @@ import useSWR from "swr"
 import { dayjs } from "@/modules/utils"
 import ms from "ms"
 
-interface IntervalConfig {
+export interface IntervalConfig {
     time: ms.StringValue
     interval: number
 }
+
 export const intervalConfigMap: Record<ChartInterval, IntervalConfig> = {
     [ChartInterval.FifteenMinutes]: {
         time: "1 day",          // 96 points

@@ -24,6 +24,12 @@ export interface LiquidityPoolSchema extends AbstractSchema {
     /** Chain ID where this pool exists */
     chainId: ChainId
 
+    /** Bin step */
+    binStep: number
+
+    /** Basis point max */
+    basisPointMax: number
+
     /** URL of the pool */
     url: string
     

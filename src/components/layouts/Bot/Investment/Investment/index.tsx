@@ -9,6 +9,7 @@ import { computeDenomination } from "@/modules/utils"
 import BN from "bn.js"
 import { HistoryChart } from "./HistoryChart"
 import numeral from "numeral"
+import { IntervalTabs } from "./IntervalTabs"
 
 export const Investment = () => {
     const tokens = useAppSelector(
@@ -62,12 +63,17 @@ export const Investment = () => {
     return (
         <KaniCard>
             <KaniCardBody>
-                <TooltipTitle
-                    title="Investment"
-                    tooltipString="The investment of the bot." />
-                <Spacer y={1} />
-                <div className="text-2xl font-bold">
+                <div className="flex justify-between items-start">
+                    <div>
+                        <TooltipTitle
+                            title="Investment"
+                            tooltipString="The investment of the bot." />
+                        <Spacer y={1} />
+                        <div className="text-3xl font-bold">
                     ${numeral(totalInvestment.toString()).format("0,0.00000")}
+                        </div>
+                    </div>
+                    <IntervalTabs />
                 </div>
                 <Spacer y={4} />
                 <HistoryChart />

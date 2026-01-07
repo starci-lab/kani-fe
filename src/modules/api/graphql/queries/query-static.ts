@@ -47,6 +47,8 @@ const query1 = gql`
             tokenA
             tokenB
             url
+            binStep
+            basisPointMax
         }
     }
     dexes {

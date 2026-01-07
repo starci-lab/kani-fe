@@ -14,11 +14,7 @@ const query1 = gql`
         count
         series {
           timestamp
-          value {
-            gasValue
-            quoteValue
-            targetValue
-          }
+          value
         }
       }
     }
@@ -50,11 +46,7 @@ export interface QueryHistoryResponse {
   count: number;
   series: Array<{
     timestamp: string;
-    value: {
-      gasValue: number;
-      quoteValue: number;
-      targetValue: number;
-    };
+    value: number;
   }>;
 }
 
