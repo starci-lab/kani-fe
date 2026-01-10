@@ -19,7 +19,7 @@ export const TooltipTitle = ({ title, tooltipString, classNames, isRequired }: T
         <>
         {tooltipString ? (
             <KaniTooltip content={cn(tooltipString, classNames?.tooltipString)}>
-                <div className={cn("text-sm w-fit leading-none", classNames?.title)}>
+                <div className={cn("text-sm w-fit", classNames?.title)}>
                     {title} {isRequired && <span className="text-danger">*</span>}
                 </div>
             </KaniTooltip>

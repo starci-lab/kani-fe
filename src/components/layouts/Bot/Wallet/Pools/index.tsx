@@ -4,6 +4,7 @@ import { useAppSelector } from "@/redux"
 import { Spacer } from "@heroui/react"
 import React from "react"
 import { PoolCard } from "./PoolCard"
+import { FadersIcon } from "@phosphor-icons/react"
 
 export const Pools = () => {
     const liquidityPools = useAppSelector((state) => state.static.liquidityPools)
@@ -18,13 +19,17 @@ export const Pools = () => {
                     <TooltipTitle
                         title="Pools"
                         tooltipString="The pools selected for the bot." />
-                    <KaniLink
-                        className="leading-none"
-                        size="sm"
-                        color="primary"
-                    >
-                            Manage
-                    </KaniLink>    
+                    <div>
+                        <KaniLink
+                            className="cursor-pointer"
+                            size="sm"
+                            color="primary"
+                        >
+                            <FadersIcon 
+                                className="w-5 h-5"
+                            />
+                        </KaniLink>  
+                    </div>  
                 </div>
                 <Spacer y={3} />
                 <ScrollableList

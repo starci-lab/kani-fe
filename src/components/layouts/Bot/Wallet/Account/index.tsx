@@ -118,7 +118,7 @@ export const Account = () => {
                     title="Account"
                     tooltipString="The account address of the bot." />
                 <Spacer y={3} />
-                <KaniCard shadow="none" radius="sm" className="bg-content2">
+                <KaniCard shadow="none" className="bg-content2">
                     <KaniCardBody>
                         <div className="flex items-center gap-2">
                             <div className="flex items-center gap-3">

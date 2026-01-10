@@ -3,7 +3,7 @@ import React from "react"
 import { setBotTab, useAppDispatch, useAppSelector } from "@/redux"
 import { Investment } from "./Investment"
 import { PlayIcon, StopIcon } from "@phosphor-icons/react"
-import { KaniAlert, KaniButton, KaniDivider, WaveBars } from "@/components"
+import { KaniButton, KaniDivider, WaveBars } from "@/components"
 import { Container } from "@/components"
 import { Spacer, Tabs, Tab } from "@heroui/react"
 import { BotTab } from "@/redux"
@@ -11,6 +11,7 @@ import { Wallet } from "./Wallet"
 import { Activity } from "./Activity"
 import { useQueryBotSwr, useToggleBotSwrMutation } from "@/hooks/singleton"
 import { runGraphQLWithToast } from "@/components/toasts"
+import { BotAlert } from "./BotAlert"
 
 export const Bot = () => {
     const tabs = [
@@ -114,24 +115,8 @@ export const Bot = () => {
                 )}
             </div>
             <Spacer y={6} />
-            {!bot?.backupPrivateKey && (
-                <>
-                <KaniAlert
-                    variant="flat"
-                    color="warning"
-                    title="Irreversible Key Export Warning"
-                    description={
-                        <div>
-                            <div className="text-xs">Kani is designed to never see your bot&apos;s private key.
-                        All signing is performed exclusively inside a Trusted Execution Environment (TEE).
-                        We only allow the key to be exported once so you can store it securely.
-                            </div>
-                        </div>
-                    }
-                />
-                <Spacer y={6} />
-                </>
-            )}
+            <BotAlert />
+            <Spacer y={6} />
             <Tabs 
                 variant="underlined" 
                 selectedKey={tab}

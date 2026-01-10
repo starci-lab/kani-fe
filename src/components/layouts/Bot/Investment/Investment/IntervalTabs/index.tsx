@@ -28,7 +28,7 @@ export const IntervalTabs = () => {
     ]
     return ( 
         <div>
-            <KaniTabs variant="solid">
+            <KaniTabs variant="solid" size="sm">
                 {
                     intervals.map((interval) => (
                         <KaniTab key={interval.key} title={interval.text} />

@@ -68,8 +68,8 @@ export const Investment = () => {
                         <TooltipTitle
                             title="Investment"
                             tooltipString="The investment of the bot." />
-                        <Spacer y={1} />
-                        <div className="text-3xl font-bold">
+                        <Spacer y={3} />
+                        <div className="text-3xl font-bold leading-none">
                     ${numeral(totalInvestment.toString()).format("0,0.00000")}
                         </div>
                     </div>
