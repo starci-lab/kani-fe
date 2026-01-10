@@ -13,7 +13,9 @@ export const BotAlert = () => {
             title="Your bot is secured by Privy"
             description={
                 <div>
-                    <div className="text-xs">Under Privy&apos;s security policies, Kani Bot can only perform specific, permitted actions.
+                    <div className="text-xs">
+                        Under Privy&apos;s security policies, Kani Bot can only perform specific, permitted actions.
+                        These policies are designed to ensure system security, protect user data, and prevent any unauthorized access or malicious operations.
                     </div>
                 </div>
             }
