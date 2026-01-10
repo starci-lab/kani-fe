@@ -5,7 +5,7 @@ import { Investment } from "./Investment"
 import { PlayIcon, StopIcon } from "@phosphor-icons/react"
 import { KaniButton, KaniDivider, WaveBars } from "@/components"
 import { Container } from "@/components"
-import { Spacer, Tabs, Tab } from "@heroui/react"
+import { Spacer, Tabs, Tab, Skeleton } from "@heroui/react"
 import { BotTab } from "@/redux"
 import { Wallet } from "./Wallet"
 import { Activity } from "./Activity"
@@ -47,7 +47,12 @@ export const Bot = () => {
         <Container>
             <div className="flex justify-between items-center">
                 <div className="flex items-center gap-2">
-                    <div className="text-2xl font-bold">{bot?.name}</div>
+                    {
+                        queryBotSwr.isLoading ? (
+                            <Skeleton className="w-24 h-8 rounded-md" />
+                        ) : (
+                            <div className="text-2xl font-bold">{bot?.name}</div>
+                        )}
                     {
                         bot?.running && (
                             <WaveBars />

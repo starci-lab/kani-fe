@@ -10,7 +10,7 @@ export const BotAlert = () => {
             classNames={{
                 alertIcon: "w-6 h-6",
             }}
-            title="Your bot is secured by Privy."
+            title="Your bot is secured by Privy"
             description={
                 <div>
                     <div className="text-xs">Under Privy&apos;s security policies, Kani Bot can only perform specific, permitted actions.

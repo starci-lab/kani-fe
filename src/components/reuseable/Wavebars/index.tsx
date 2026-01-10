@@ -12,7 +12,7 @@ const scales = [
 ]
 export const WaveBars = () => {
     return (
-        <div className="px-3 py-2 bg-content2 rounded-medium">
+        <div className="px-3 py-[6px] bg-content2 rounded-medium">
             <div className="flex items-center gap-1 h-5">
                 {scales.map((scale, i) => (
                     <motion.span
