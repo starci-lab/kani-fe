@@ -1,22 +1,22 @@
-import { queryPositions } from "@/modules/api"
+import { queryPositionsV2 } from "@/modules/api"
 import { SwrContext } from "../../../SwrContext"
 import { use } from "react"
 import { setPositions, setPositionsCursor, useAppDispatch, useAppSelector } from "@/redux"
 import useSWR from "swr"
 
-export const useQueryPositionsSwrCore = () => {
+export const useQueryPositionsV2SwrCore = () => {
     const dispatch = useAppDispatch()
     const accessToken = useAppSelector((state) => state.session.accessToken)
     const id = useAppSelector((state) => state.bot.id)
     const cursor = useAppSelector((state) => state.bot.positionsCursor)
-    const isDisabled = true
     const swr = useSWR(
-        isDisabled ? null : (id && accessToken) ? ["QUERY_POSITIONS_SWR", id, cursor] : null,
+        // deprecated
+        null,
         async () => {
             if (!id) {
                 throw new Error("Id is required")
             }
-            const data = await queryPositions({
+            const data = await queryPositionsV2({
                 token: accessToken,
                 request: {
                     botId: id,
@@ -27,7 +27,7 @@ export const useQueryPositionsSwrCore = () => {
                     },
                 },
             })
-            const positions = data.data?.positions
+            const positions = data.data?.positionsV2
             if (!positions) {
                 throw new Error("Positions not found")
             }
@@ -42,7 +42,7 @@ export const useQueryPositionsSwrCore = () => {
     return swr
 }
 
-export const useQueryPositionsSwr = () => {
-    const { queryPositionsSwr } = use(SwrContext)!
-    return queryPositionsSwr
+export const useQueryPositionsV2Swr = () => {
+    const { queryPositionsV2Swr } = use(SwrContext)!
+    return queryPositionsV2Swr
 }

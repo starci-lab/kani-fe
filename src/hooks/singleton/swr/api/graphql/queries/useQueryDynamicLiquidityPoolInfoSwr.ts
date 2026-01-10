@@ -7,16 +7,11 @@ import useSWR from "swr"
 
 export const useQueryDynamicLiquidityPoolInfoSwrCore = () => {
     const dispatch = useAppDispatch()
-    const accessToken = useAppSelector((state) => state.session.accessToken)
     const liquidityPoolIds = useAppSelector((state) => state.static.liquidityPools.map((liquidityPool) => liquidityPool.displayId))
     const swr = useSWR(liquidityPoolIds ? ["QUERY_DYNAMIC_LIQUIDITY_POOL_INFO_SWR", liquidityPoolIds] : null, 
         async () => {
-            if (!accessToken) {
-                throw new Error("Access token is required")
-            }
             const data = await queryDynamicLiquidityPoolsInfo(
                 { 
-                    token: accessToken, 
                     request: { liquidityPoolIds } 
                 }
             )

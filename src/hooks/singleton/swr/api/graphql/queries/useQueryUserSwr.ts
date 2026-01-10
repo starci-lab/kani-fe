@@ -6,9 +6,10 @@ import useSWR from "swr"
 
 export const useQueryUserSwrCore = () => {
     const dispatch = useAppDispatch()
+    const isDisabled = true
     const accessToken = useAppSelector((state) => state.session.accessToken)
     const swr = useSWR(
-        accessToken ? "QUERY_USER_SWR_MUTATION" : null,
+        isDisabled ? null : (accessToken ? ["QUERY_USER_SWR", accessToken] : null),
         async () => {
             const data = await queryUser({
                 token: accessToken,

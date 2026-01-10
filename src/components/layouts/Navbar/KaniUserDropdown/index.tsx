@@ -9,39 +9,38 @@ import {
     KaniDropdownTrigger,
 } from "@/components/atomic"
 import { truncateWithEllipsis } from "@/modules/utils"
-import { signOut, useAppDispatch, useAppSelector } from "@/redux"
 import { 
     AtIcon, 
     PencilLineIcon, 
     SignOutIcon 
 } from "@phosphor-icons/react"
-import { useEnableMFAModalDisclosure } from "@/hooks/singleton"
+import { usePrivy, useMfaEnrollment, useLogout } from "@privy-io/react-auth"
 
 export const KaniUserDropdown = () => {
-    const user = useAppSelector((state) => state.session.user)
-    const { onOpen } = useEnableMFAModalDisclosure()
-    const dispatch = useAppDispatch()
+    const { user } = usePrivy()
+    const { logout } = useLogout()
+    const { showMfaEnrollmentModal } = useMfaEnrollment()
     return (
         <KaniDropdown>
             <KaniDropdownTrigger>
                 <KaniButton variant="bordered">
-                    {truncateWithEllipsis(user?.email ?? "")}
+                    {truncateWithEllipsis(user?.email?.address.toString() ?? "")}
                 </KaniButton>
             </KaniDropdownTrigger>
-            <KaniDropdownMenu aria-label="Static Actions" disabledKeys={user?.mfaEnabled ? ["enroll-in-mfa"] : []}>
+            <KaniDropdownMenu aria-label="Static Actions" disabledKeys={user?.mfaMethods.length ? ["enroll-in-mfa"] : []}>
                 <KaniDropdownSection showDivider>
                     <KaniDropdownItem 
                         isReadOnly 
                         key="your-email"
                         startContent={<AtIcon />}
                     >
-                        {user?.email ?? ""}
+                        {user?.email?.address.toString() ?? ""}
                     </KaniDropdownItem>
                     <KaniDropdownItem 
                         key="enroll-in-mfa"
                         startContent={<PencilLineIcon />}
                         onPress={() => {
-                            onOpen()
+                            showMfaEnrollmentModal()
                         }}
                     >
                     Enroll in MFA
@@ -53,7 +52,7 @@ export const KaniUserDropdown = () => {
                         key="sign-out"
                         className="text-danger"
                         onPress={() => {
-                            dispatch(signOut())
+                            logout()
                         }}
                     >
                     Sign Out

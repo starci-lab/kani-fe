@@ -2,9 +2,9 @@ import { publicEnv } from "@/modules/env"
 import { Manager } from "socket.io-client"
 
 export const createManager = () => {
-    console.log(publicEnv().apiBaseUrl.socketIo)
+    console.log(publicEnv().api.socketIo)
     return new Manager(
-        publicEnv().apiBaseUrl.socketIo, 
+        publicEnv().api.socketIo, 
         {
             transports: ["websocket"],
             reconnection: true,

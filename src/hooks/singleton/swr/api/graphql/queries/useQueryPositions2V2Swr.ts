@@ -1,22 +1,26 @@
-import { queryPositions2 } from "@/modules/api"
+import { queryPositions2V2 } from "@/modules/api"
 import { SwrContext } from "../../../SwrContext"
 import { use } from "react"
 import { setPositions, setPositionsPage, useAppDispatch, useAppSelector } from "@/redux"
 import useSWR from "swr"
+import { usePrivy } from "@privy-io/react-auth"
 
-export const useQueryPositions2SwrCore = () => {
+export const useQueryPositions2V2SwrCore = () => {
     const dispatch = useAppDispatch()
-    const accessToken = useAppSelector((state) => state.session.accessToken)
-    const isDisabled = true
+    const { getAccessToken, authenticated } = usePrivy()
     const id = useAppSelector((state) => state.bot.id)
     const page = useAppSelector((state) => state.bot.positionsPage)
     const swr = useSWR(
-        isDisabled ? null : (id && accessToken) ? ["QUERY_POSITIONS2_SWR", id, page] : null,
+        authenticated ? ["QUERY_POSITIONS2_V2_SWR", authenticated] : null,
         async () => {
             if (!id) {
                 throw new Error("Id is required")
             }
-            const data = await queryPositions2({
+            const accessToken = await getAccessToken()
+            if (!accessToken) {
+                throw new Error("Access token is required")
+            }
+            const data = await queryPositions2V2({
                 token: accessToken,
                 request: {
                     botId: id,
@@ -26,7 +30,7 @@ export const useQueryPositions2SwrCore = () => {
                     },
                 },
             })
-            const positions = data.data?.positions2
+            const positions = data.data?.positions2V2
             if (!positions) {
                 throw new Error("Positions2 not found")
             }
@@ -41,7 +45,7 @@ export const useQueryPositions2SwrCore = () => {
     return swr
 }
 
-export const useQueryPositions2Swr = () => {
-    const { queryPositions2Swr } = use(SwrContext)!
-    return queryPositions2Swr
+export const useQueryPositions2V2Swr = () => {
+    const { queryPositions2V2Swr } = use(SwrContext)!
+    return queryPositions2V2Swr
 }

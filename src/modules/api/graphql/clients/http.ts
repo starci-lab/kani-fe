@@ -3,7 +3,7 @@ import { publicEnv } from "@/modules/env"
 
 export const createHttpLink = (withCredentials = false, headers: Record<string, string> = {}) => {
     return new HttpLink({
-        uri: `${publicEnv().apiBaseUrl.graphql}`,
+        uri: `${publicEnv().api.graphql}`,
         credentials: withCredentials ? "include" : "same-origin",
         headers,
     })

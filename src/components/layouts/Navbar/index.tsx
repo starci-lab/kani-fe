@@ -7,12 +7,12 @@ import {
 import React from "react"
 import { KaniSignInButton } from "./KaniSignInButton"
 import { KaniUserDropdown } from "./KaniUserDropdown"
-import { useAppSelector } from "@/redux"
 import { SwitchThemeButton } from "../../reuseable"
 import { MobileMenuButton } from "./MobileMenuButton"
+import { usePrivy } from "@privy-io/react-auth"
 
 export const Navbar = () => {
-    const user = useAppSelector((state) => state.session.user)
+    const { user } = usePrivy()
     return (
         <KaniNavbar isBordered>
             <KaniNavbarBrand>

@@ -1,18 +1,23 @@
-import { queryBots2 } from "@/modules/api"
+import { queryBots2V2 } from "@/modules/api"
 import { SwrContext } from "../../../SwrContext"
 import { use } from "react"
 import { setBots, useAppDispatch, useAppSelector } from "@/redux"
 import useSWR from "swr"
+import { usePrivy } from "@privy-io/react-auth"
 
-export const useQueryBots2SwrCore = () => {
+export const useQueryBots2V2SwrCore = () => {
     const dispatch = useAppDispatch()
-    const accessToken = useAppSelector((state) => state.session.accessToken)
-    const isDisabled = true
     const pageNumber = useAppSelector((state) => state.bot.pageNumber)
+    const isDisabled = false
+    const { getAccessToken, authenticated } = usePrivy()
     const swr = useSWR(
-        isDisabled ? null : (accessToken) ? ["QUERY_BOTS2_SWR", pageNumber] : null,
+        isDisabled ? null : (authenticated ? ["QUERY_BOTS2_V2_SWR", authenticated] : null),
         async () => {
-            const data = await queryBots2({
+            const accessToken = await getAccessToken()
+            if (!accessToken) {
+                throw new Error("Access token is required")
+            }
+            const data = await queryBots2V2({
                 token: accessToken,
                 request: {
                     filters: {
@@ -21,7 +26,7 @@ export const useQueryBots2SwrCore = () => {
                     },
                 },
             })
-            const bots = data.data?.bots2
+            const bots = data.data?.bots2V2
             if (!bots) {
                 throw new Error("Bots not found")
             }
@@ -35,7 +40,7 @@ export const useQueryBots2SwrCore = () => {
     return swr
 }
 
-export const useQueryBots2Swr = () => {
-    const { queryBots2Swr } = use(SwrContext)!
-    return queryBots2Swr
+export const useQueryBots2V2Swr = () => {
+    const { queryBots2V2Swr } = use(SwrContext)!
+    return queryBots2V2Swr
 }

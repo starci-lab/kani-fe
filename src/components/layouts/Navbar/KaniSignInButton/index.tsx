@@ -1,17 +1,16 @@
 import React from "react"
 import { KaniButton } from "@/components/atomic"
-import { useSignInDisclosure } from "@/hooks/singleton"
+import { useLogin, usePrivy } from "@privy-io/react-auth"
 
 export const KaniSignInButton = () => {
-    const { onOpen } = useSignInDisclosure()
-    return (
-        <KaniButton 
-            color="primary"
-            onPress={
-                () => onOpen()
-            }
-        >
-            Sign In
-        </KaniButton>
-    )
+    const { ready, authenticated } = usePrivy()
+    const { login } = useLogin()
+    return <KaniButton 
+        isDisabled={
+            !ready || authenticated
+        } 
+        color="primary" 
+        onPress={() => login()}>
+        Sign In
+    </KaniButton>
 }

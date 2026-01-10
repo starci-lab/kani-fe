@@ -15,7 +15,6 @@ import {
 import { useRequestSignInOtpSwrMutation } from "@/hooks/singleton"
 import { useSignInFormik } from "@/hooks/singleton"
 import { runGraphQLWithToast } from "@/components/toasts"
-import { Spacer } from "@heroui/react"
 
 export const InputEmailPage = () => {
     const dispatch = useAppDispatch()

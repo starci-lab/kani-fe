@@ -4,8 +4,8 @@ import { GraphQLResponse, QueryParams } from "../types"
 import { DocumentNode, gql } from "@apollo/client"
 
 const query1 = gql`
-  query PositionsV2($request: PositionsV2Request!) {
-    positions(request: $request) {
+  query Positions2V2($request: Positions2V2Request!) {
+    positions2V2(request: $request) {
       message
       success
       error
@@ -40,40 +40,41 @@ const query1 = gql`
             metadata
             feeAmountTarget
             feeAmountQuote
+            positionValueAtClose
+            positionValueAtOpen
         }
-        cursor
+        count
       }
     }
   }
 `
 
-export enum QueryPositionsV2 {
+export enum QueryPositions2V2 {
   Query1 = "query1",
 }
 
-const queryMap: Record<QueryPositionsV2, DocumentNode> = {
-    [QueryPositionsV2.Query1]: query1,
+const queryMap: Record<QueryPositions2V2, DocumentNode> = {
+    [QueryPositions2V2.Query1]: query1,
 }
 
-export interface QueryPositionsV2Request {
+export interface QueryPositions2V2Request {
     botId: string;
-    filters?: PositionsV2PaginationCursorFilters;
+    filters: Positions2V2PaginationPageFilters;
 }
 
-export interface PositionsV2PaginationCursorFilters {
-    timestampAscending?: boolean
-    cursor?: string
+export interface Positions2V2PaginationPageFilters {
+    pageNumber?: number
     limit?: number
 }
 
-export interface QueryPositionsV2Response {
+export interface QueryPositions2V2Response {
     data: Array<PositionSchema>;
-    cursor: string;
+    count: number;
 }
-export type QueryPositionsV2Params = QueryParams<QueryPositionsV2, QueryPositionsV2Request>;
+export type QueryPositions2V2Params = QueryParams<QueryPositions2V2, QueryPositions2V2Request>;
 
-export const queryPositionsV2 = async (
-    { query = QueryPositionsV2.Query1, token, request }: QueryPositionsV2Params
+export const queryPositions2V2 = async (
+    { query = QueryPositions2V2.Query1, token, request }: QueryPositions2V2Params
 ) => {
     if (!token) {
         throw new Error("Token is required")
@@ -85,7 +86,7 @@ export const queryPositionsV2 = async (
     // use no cache credential to include http only cookies
     return await createNoCacheCredentialAuthClientWithToken(token)
         .query<{ 
-            positionsV2: GraphQLResponse<QueryPositionsV2Response> 
+            positions2V2: GraphQLResponse<QueryPositions2V2Response> 
         }>({
             query: queryDocument,
             variables: {

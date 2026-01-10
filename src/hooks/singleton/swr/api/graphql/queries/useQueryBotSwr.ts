@@ -8,8 +8,9 @@ export const useQueryBotSwrCore = () => {
     const dispatch = useAppDispatch()
     const accessToken = useAppSelector((state) => state.session.accessToken)
     const id = useAppSelector((state) => state.bot.id)
+    const isDisabled = true
     const swr = useSWR(
-        (id && accessToken) ? ["QUERY_BOT_SWR", id] : null,
+        isDisabled ? null : (id && accessToken) ? ["QUERY_BOT_SWR", id] : null,
         async () => {
             if (!id) {
                 throw new Error("Id is required")

@@ -3,7 +3,7 @@ import { use } from "react"
 import * as Yup from "yup"
 import { FormikContext } from "./FormikContext"
 import { ChainId, LiquidityPoolId, TokenId } from "@/modules/types"
-import { useCreateBotSwrMutation } from "../swr"
+import { useCreateBotV2SwrMutation } from "../swr"
 import { runGraphQLWithToast } from "@/components/toasts"
 import { useRouter } from "next/navigation"
 import { paths } from "@/modules/path"
@@ -36,7 +36,7 @@ const validationSchema = Yup.object({
 })
 
 export const useCreateBotFormikCore = () => {
-    const createBotMutation = useCreateBotSwrMutation()
+    const createBotV2Mutation = useCreateBotV2SwrMutation()
     const router = useRouter()
     return useFormik<CreateBotFormikValues>({
         initialValues,
@@ -48,7 +48,7 @@ export const useCreateBotFormikCore = () => {
             let botId = ""
             const success = await runGraphQLWithToast(
                 async () => {
-                    const response = await createBotMutation.trigger({
+                    const response = await createBotV2Mutation.trigger({
                         request: {
                             name: values.name,
                             chainId: values.chainId,
@@ -58,11 +58,11 @@ export const useCreateBotFormikCore = () => {
                             isExitToUsdc: values.isExitToUsdc,
                         },
                     })
-                    if (!response.data?.createBot) {
+                    if (!response.data?.createBotV2) {
                         throw new Error("Failed to create bot")
                     }
-                    botId = response.data?.createBot.data?.id ?? ""
-                    return response.data?.createBot
+                    botId = response.data?.createBotV2.data?.id ?? ""
+                    return response.data?.createBotV2
                 },
                 {
                     showSuccessToast: true,

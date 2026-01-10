@@ -1,6 +1,6 @@
 import { DocumentNode, gql } from "@apollo/client"
 import { GraphQLResponse, QueryParams } from "../types"
-import { createNoCacheCredentialAuthClientWithToken } from "../clients"
+import { noCacheClient } from "../clients"
 import { LiquidityPoolId } from "@/modules/types"
 
 export interface DynamicLiquidityPoolInfo {
@@ -52,21 +52,19 @@ export interface QueryDynamicLiquidityPoolsInfoRequest {
 export type QueryDynamicLiquidityPoolsInfoParams = QueryParams<QueryDynamicLiquidityPoolsInfo, QueryDynamicLiquidityPoolsInfoRequest>;
   
 export const queryDynamicLiquidityPoolsInfo = async (
-    { query = QueryDynamicLiquidityPoolsInfo.Query1, token, request }: QueryDynamicLiquidityPoolsInfoParams,
+    { query = QueryDynamicLiquidityPoolsInfo.Query1, request }: QueryDynamicLiquidityPoolsInfoParams,
 ) => {
-    if (!token) {
-        throw new Error("Token is required")
-    }
     if (!request) {
         throw new Error("Request is required")
     }
     const queryDocument = queryMap[query]
     // use no cache client to avoid query cache
-    return await createNoCacheCredentialAuthClientWithToken(token)
+    return await noCacheClient
         .query<QueryDynamicLiquidityPoolsInfoResponse>({
             query: queryDocument,
             variables: {
                 request
             },
-        })
+        }
+        )
 }
