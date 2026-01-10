@@ -6,7 +6,7 @@ import { LiquidityChart } from "@/components/reuseable/charts"
 import { KaniChip, KaniDivider, KaniSkeleton, KaniSpinner } from "@/components/atomic"
 import Decimal from "decimal.js"
 import { Spacer } from "@heroui/react"
-import { useQueryFeesSwr, useQueryReservesSwr } from "@/hooks/singleton"
+import { useQueryFeesV2Swr, useQueryReservesV2Swr } from "@/hooks/singleton"
 import numeral from "numeral"
 
 export interface CLMMProps {
@@ -58,23 +58,23 @@ export const CLMM = ({ liquidityPool }: CLMMProps) => {
     const tokenPriceB = useMemo(() => {
         return tokenPrices[tokenB?.displayId || TokenId.SolUsdc] ?? 0
     }, [tokenPrices, tokenB?.displayId])
-    const queryFeesSwr = useQueryFeesSwr()
+    const queryFeesV2Swr = useQueryFeesV2Swr()
     const tokenAFees = useMemo(() => {
-        return new Decimal(queryFeesSwr?.data?.data?.fees.data?.tokenA ?? 0)
-    }, [queryFeesSwr?.data?.data?.fees.data?.tokenA])
+        return new Decimal(queryFeesV2Swr?.data?.data?.feesV2.data?.tokenA ?? 0)
+    }, [queryFeesV2Swr?.data?.data?.feesV2.data?.tokenA])
     const tokenBFees = useMemo(() => {
-        return new Decimal(queryFeesSwr?.data?.data?.fees.data?.tokenB ?? 0)
-    }, [queryFeesSwr?.data?.data?.fees.data?.tokenB])
+        return new Decimal(queryFeesV2Swr?.data?.data?.feesV2.data?.tokenB ?? 0)
+    }, [queryFeesV2Swr?.data?.data?.feesV2.data?.tokenB])
     const totalFees = useMemo(() => {
         return tokenAFees.add(tokenBFees)
     }, [tokenAFees, tokenBFees])
-    const queryReservesSwr = useQueryReservesSwr()
+    const queryReservesV2Swr = useQueryReservesV2Swr()
     const tokenAReserves = useMemo(() => {
-        return new Decimal(queryReservesSwr?.data?.data?.reserves.data?.tokenA ?? 0)
-    }, [queryReservesSwr?.data?.data?.reserves.data?.tokenA])
+        return new Decimal(queryReservesV2Swr?.data?.data?.reservesV2.data?.tokenA ?? 0)
+    }, [queryReservesV2Swr?.data?.data?.reservesV2.data?.tokenA])
     const tokenBReserves = useMemo(() => {
-        return new Decimal(queryReservesSwr?.data?.data?.reserves.data?.tokenB ?? 0)
-    }, [queryReservesSwr?.data?.data?.reserves.data?.tokenB])
+        return new Decimal(queryReservesV2Swr?.data?.data?.reservesV2.data?.tokenB ?? 0)
+    }, [queryReservesV2Swr?.data?.data?.reservesV2.data?.tokenB])
     const totalReservesInUsd = useMemo(() => {
         return tokenAReserves.mul(tokenPriceA).add(tokenBReserves.mul(tokenPriceB))
     }, [tokenAReserves, tokenBReserves, tokenPriceA, tokenPriceB])
@@ -114,7 +114,7 @@ export const CLMM = ({ liquidityPool }: CLMMProps) => {
                 <div className="flex items-center justify-between">
                     <div className="text-sm text-foreground-500">Yield</div>
                     {
-                        !queryFeesSwr.isLoading ?
+                        !queryFeesV2Swr.isLoading ?
                     <div className="flex items-center gap-2">
                         <div className="text-sm">${numeral(totalFees.toNumber()).format("0,0.00000")}</div>
                         <KaniDivider orientation="vertical" className="h-5"/>

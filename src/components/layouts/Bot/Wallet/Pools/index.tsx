@@ -19,13 +19,14 @@ export const Pools = () => {
                         title="Pools"
                         tooltipString="The pools selected for the bot." />
                     <KaniLink
+                        className="leading-none"
                         size="sm"
                         color="primary"
                     >
                             Manage
                     </KaniLink>    
                 </div>
-                <Spacer y={4} />
+                <Spacer y={3} />
                 <ScrollableList
                     enableScroll={false}
                     items={filteredLiquidityPools}

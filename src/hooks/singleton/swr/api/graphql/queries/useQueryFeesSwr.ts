@@ -7,8 +7,9 @@ import useSWR from "swr"
 export const useQueryFeesSwrCore = () => {
     const accessToken = useAppSelector((state) => state.session.accessToken)
     const bot = useAppSelector((state) => state.bot.bot)
+    const isDisabled = true
     const swr = useSWR(
-        bot && bot.activePosition && accessToken ? ["QUERY_FEES_SWR", bot.activePosition.id] : null,
+        isDisabled ? null : (bot && bot.activePosition && accessToken ? ["QUERY_FEES_SWR", bot.activePosition.id] : null),
         async () => {
             if (!bot || !bot.activePosition) {
                 throw new Error("Active position is required")
@@ -16,7 +17,7 @@ export const useQueryFeesSwrCore = () => {
             const data = await queryFees({
                 token: accessToken,
                 request: {
-                    botId: bot?.id ?? "",
+                    botId: bot.id,
                     activePositionId: bot.activePosition.id,
                 },
             })

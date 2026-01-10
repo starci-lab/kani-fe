@@ -1,15 +1,15 @@
-import { queryReserves } from "@/modules/api"
+import { queryReservesV2 } from "@/modules/api"
 import { SwrContext } from "../../../SwrContext"
 import { use } from "react"
 import { useAppSelector } from "@/redux"
 import useSWR from "swr"
+import { usePrivy } from "@privy-io/react-auth"
 
-export const useQueryReservesSwrCore = () => {
-    const accessToken = useAppSelector((state) => state.session.accessToken)
+export const useQueryReservesV2SwrCore = () => {
+    const { getAccessToken, authenticated } = usePrivy()
     const bot = useAppSelector((state) => state.bot.bot)
-    const isDisabled = true
     const swr = useSWR(
-        isDisabled ? null : (bot && bot.activePosition && accessToken ? ["QUERY_RESERVES_SWR", bot.activePosition.id] : null),
+        authenticated ? ["QUERY_RESERVES_V2_SWR", authenticated] : null,
         async () => {
             if (!bot || !bot.id) {
                 throw new Error("Bot id is required")
@@ -17,7 +17,11 @@ export const useQueryReservesSwrCore = () => {
             if (!bot.activePosition) {
                 throw new Error("Active position is required")
             }
-            const data = await queryReserves({
+            const accessToken = await getAccessToken()
+            if (!accessToken) {
+                throw new Error("Access token is required")
+            }
+            const data = await queryReservesV2({
                 token: accessToken,
                 request: {
                     botId: bot.id,
@@ -30,7 +34,7 @@ export const useQueryReservesSwrCore = () => {
     return swr
 }
 
-export const useQueryReservesSwr = () => {
-    const { queryReservesSwr } = use(SwrContext)!
-    return queryReservesSwr
+export const useQueryReservesV2Swr = () => {
+    const { queryReservesV2Swr } = use(SwrContext)!
+    return queryReservesV2Swr
 }

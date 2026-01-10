@@ -22,7 +22,6 @@ import {
     useQueryHistorySwrCore,
     useQueryBots2SwrCore,
     useToggleBotSwrMutationCore,
-    useQueryFeesSwrCore,
     useQueryReservesSwrCore,
     useQueryUserV2SwrCore,
     useCreateBotV2SwrMutationCore,
@@ -32,6 +31,9 @@ import {
     useQueryPositions2V2SwrCore,
     useQueryTransactions2V2SwrCore,
     useQueryTransactionsV2SwrCore,
+    useQueryFeesV2SwrCore,
+    useQueryReservesV2SwrCore,
+    useQueryFeesSwrCore,
 } from "./api"
 
 export interface SwrContextType {
@@ -67,6 +69,8 @@ export interface SwrContextType {
     queryPositions2V2Swr: ReturnType<typeof useQueryPositions2V2SwrCore>;
     queryPositionsV2Swr: ReturnType<typeof useQueryPositionsV2SwrCore>;
     queryTransactionsV2Swr: ReturnType<typeof useQueryTransactionsV2SwrCore>;
+    queryFeesV2Swr: ReturnType<typeof useQueryFeesV2SwrCore>;
+    queryReservesV2Swr: ReturnType<typeof useQueryReservesV2SwrCore>;
 }
 
 export const SwrContext = createContext<SwrContextType | null>(null)
@@ -102,6 +106,8 @@ export const SwrProvider = ({ children }: PropsWithChildren) => {
     const queryPositions2V2Swr = useQueryPositions2V2SwrCore()
     const queryPositionsV2Swr = useQueryPositionsV2SwrCore()
     const queryTransactionsV2Swr = useQueryTransactionsV2SwrCore()
+    const queryFeesV2Swr = useQueryFeesV2SwrCore()
+    const queryReservesV2Swr = useQueryReservesV2SwrCore()
     const values = useMemo(() => ({
         queryUserSwrMutation,
         queryUserWithoutRetrySwrMutation,
@@ -133,6 +139,8 @@ export const SwrProvider = ({ children }: PropsWithChildren) => {
         toggleBotSwrMutation,
         queryFeesSwr,
         queryReservesSwr,
+        queryFeesV2Swr,
+        queryReservesV2Swr,
     }), [
         queryUserSwrMutation,
         queryUserWithoutRetrySwrMutation,
@@ -164,6 +172,8 @@ export const SwrProvider = ({ children }: PropsWithChildren) => {
         toggleBotSwrMutation,
         queryFeesSwr,
         queryReservesSwr,
+        queryFeesV2Swr,
+        queryReservesV2Swr,
     ]
     )
     return (
