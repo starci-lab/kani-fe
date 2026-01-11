@@ -7,13 +7,14 @@ import useSWR from "swr"
 export const useQueryLiquidityPools2ActivePositionSwrCore = () => {
     const bot = useAppSelector((state) => state.bot.bot)
     const swr = useSWR(
-        bot?.activePosition?.id ? [
+        bot && bot.id && bot?.activePosition?.id ? [
             "QUERY_LIQUIDITY_POOLS2_ACTIVE_POSITION_SWR", 
-            bot.activePosition.liquidityPool
+            bot.id,
+            bot.activePosition.id
         ] : null, 
         async () => {
-            if (!bot || !bot.activePosition) {
-                throw new Error("Bot or active position is required")
+            if (!bot || !bot.id || !bot.activePosition) {
+                throw new Error("Bot id or active position is required")
             }
             const data = await queryLiquidityPools2(
                 { 

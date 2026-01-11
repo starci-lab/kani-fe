@@ -15,7 +15,7 @@ export const useQueryHistoryV2SwrCore = () => {
     const chartInterval = useAppSelector((state) => state.bot.chartInterval)
     const chartUnit = useAppSelector((state) => state.bot.chartUnit)
     const swr = useSWR(
-        authenticated ? ["QUERY_HISTORY_V2_SWR", authenticated] : null,
+        authenticated && botId ? ["QUERY_HISTORY_V2_SWR", authenticated, botId] : null,
         async () => {
             if (!botId) {
                 throw new Error("Id is required")

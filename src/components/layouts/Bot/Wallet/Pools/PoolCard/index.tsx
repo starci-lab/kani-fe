@@ -11,7 +11,7 @@ import { LiquidityPoolSchema } from "@/modules/types"
 import { useAppSelector } from "@/redux"
 import { computePercentage } from "@/modules/utils"
 import { Spacer } from "@heroui/react"
-import { PoolTypeChip } from "../../../../../reuseable"
+import { PoolTypeChip, TooltipTitle } from "../../../../../reuseable"
 import numeral from "numeral"
 
 export interface PoolCardProps {
@@ -79,26 +79,26 @@ export const PoolCard = ({ liquidityPool }: PoolCardProps) => {
                 <Spacer y={3} />
                 <div className="flex flex-col gap-3">
                     <div className="flex items-center justify-between">
-                        <div className="text-sm text-foreground-500">TVL</div>
+                        <TooltipTitle title="TVL" classNames={{ title: "text-sm text-foreground-500" }} />
                         <div className="text-sm">{liquidityPool.dynamicInfo?.tvl 
                             ? `$${numeral(liquidityPool.dynamicInfo?.tvl).format("0,0")}` 
                             : <KaniSkeleton className="h-5 w-[50px] rounded-md"/>
                         }</div>
                     </div>
                     <div className="flex items-center justify-between">
-                        <div className="text-sm text-foreground-500">Fees 24H</div>
+                        <TooltipTitle title="Fees 24H" classNames={{ title: "text-sm text-foreground-500" }} />
                         <div className="text-sm">{liquidityPool.dynamicInfo?.fees24H 
                             ? `$${numeral(liquidityPool.dynamicInfo?.fees24H).format("0,0")}` 
                             : <KaniSkeleton className="h-5 w-[50px] rounded-md"/>}</div>
                     </div>
                     <div className="flex items-center justify-between">
-                        <div className="text-sm text-foreground-500">Volume 24H</div>
+                        <TooltipTitle title="Volume 24H" classNames={{ title: "text-sm text-foreground-500" }} />
                         <div className="text-sm">{liquidityPool.dynamicInfo?.volume24H 
                             ? `$${numeral(liquidityPool.dynamicInfo?.volume24H).format("0,0")}` 
                             : <KaniSkeleton className="h-5 w-[50px] rounded-md"/>}</div>
                     </div>
                     <div className="flex items-center justify-between">
-                        <div className="text-sm text-foreground-500">APR 24H</div>
+                        <TooltipTitle title="APR 24H" classNames={{ title: "text-sm text-foreground-500" }} />
                         <div className="flex items-center gap-2">
                             {liquidityPool.dynamicInfo?.apr24H 
                                 ?

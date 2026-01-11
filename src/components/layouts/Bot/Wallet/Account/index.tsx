@@ -5,6 +5,7 @@ import {
     KaniButton, 
     KaniTooltip, 
     KaniLink,
+    KaniSkeleton,
 } from "../../../../atomic"
 import { TooltipTitle, SnippetIcon } from "../../../../reuseable"
 import { centerPad } from "@/modules/utils"
@@ -26,6 +27,7 @@ import {
 } from "@/modules/blockchain"
 import { ArrowSquareOutIcon } from "@phosphor-icons/react"
 import { usePrivy, useFundWallet } from "@privy-io/react-auth"
+import { useQueryBotSwr } from "@/hooks/singleton"
 
 export interface WalletAction {
     label: string
@@ -47,7 +49,7 @@ export const Account = () => {
         type: ExplorerUrlType.AccountAddress,
         explorerId: bot?.explorerId ?? ExplorerId.Solscan,
     }), [bot?.accountAddress, bot?.chainId, bot?.explorerId])
-
+    const queryBotSwr = useQueryBotSwr()
     const actions: Array<WalletAction> = [
         {
             label: "Deposit",
@@ -119,15 +121,26 @@ export const Account = () => {
                 <Spacer y={3} />
                 <div className="flex items-center gap-2">
                     <div className="flex items-center gap-3">
-                        <KaniImage
-                            removeWrapper
-                            className="w-14 h-14 min-w-10 min-h-10"
-                            src={chainAssets.token}
-                        />
+                        {
+                            queryBotSwr.isLoading ? (
+                                <KaniSkeleton className="w-14 h-14 min-w-10 min-h-10 rounded-full"/>
+                            ) : (
+                                <KaniImage
+                                    removeWrapper
+                                    className="w-14 h-14 min-w-10 min-h-10"
+                                    src={chainAssets.token}
+                                />
+                            )
+                        }
                         <div>
-                            <div className="text-sm">
-                                {centerPad(bot?.accountAddress ?? "", 6, 4)}
-                            </div>
+                            {
+                                queryBotSwr.isLoading ? (
+                                    <KaniSkeleton className="h-5 w-[100px] rounded-md"/>
+                                ) : (
+                                    <div className="text-sm">
+                                        {centerPad(bot?.accountAddress ?? "", 6, 4)}
+                                    </div>
+                                )}
                             <Spacer y={1} />
                             <div className="flex items-center gap-2">
                                 <SnippetIcon

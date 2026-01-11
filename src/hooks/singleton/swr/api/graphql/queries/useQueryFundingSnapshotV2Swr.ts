@@ -7,11 +7,11 @@ import { usePrivy } from "@privy-io/react-auth"
 
 export const useQueryFundingSnapshotV2SwrCore = () => {
     const { getAccessToken, authenticated } = usePrivy()
-    const bot = useAppSelector((state) => state.bot.bot)
+    const botId = useAppSelector((state) => state.bot.id)
     const swr = useSWR(
-        authenticated ? ["QUERY_FUNDING_SNAPSHOT_V2_SWR", authenticated] : null,
+        authenticated && botId ? ["QUERY_FUNDING_SNAPSHOT_V2_SWR", authenticated, botId] : null,
         async () => {
-            if (!bot || !bot.id) {
+            if (!botId) {
                 throw new Error("Bot id is required")
             }
             const accessToken = await getAccessToken()
@@ -21,7 +21,7 @@ export const useQueryFundingSnapshotV2SwrCore = () => {
             const data = await queryFundingSnapshotV2({
                 token: accessToken,
                 request: {
-                    botId: bot.id,
+                    botId,
                 },
             })
             return data

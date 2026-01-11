@@ -9,7 +9,7 @@ export const useQueryFeesV2SwrCore = () => {
     const { getAccessToken, authenticated } = usePrivy()
     const bot = useAppSelector((state) => state.bot.bot)
     const swr = useSWR(
-        authenticated ? ["QUERY_FEES_V2_SWR", authenticated] : null,
+        authenticated && bot && bot.id && bot.activePosition && bot.activePosition.id ? ["QUERY_FEES_V2_SWR", authenticated, bot.id, bot.activePosition.id] : null,
         async () => {
             if (!bot || !bot.id) {
                 throw new Error("Bot id is required")

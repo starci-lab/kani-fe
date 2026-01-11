@@ -7,22 +7,22 @@ import { usePrivy } from "@privy-io/react-auth"
 
 export const useQueryBotV2SwrCore = () => {
     const dispatch = useAppDispatch()   
-    const id = useAppSelector((state) => state.bot.id)
+    const botId = useAppSelector((state) => state.bot.id)
     const { getAccessToken, authenticated } = usePrivy()
     const swr = useSWR(
-        authenticated ? ["QUERY_BOT_V2_SWR", authenticated] : null,
+        authenticated && botId ? ["QUERY_BOT_V2_SWR", authenticated, botId] : null,
         async () => {
             const accessToken = await getAccessToken()
             if (!accessToken) {
                 throw new Error("Access token is required")
             }
-            if (!id) {
+            if (!botId) {
                 throw new Error("Id is required")
             }
             const data = await queryBotV2({
                 token: accessToken,
                 request: {
-                    id,
+                    id: botId,
                 },
             })
             const bot = data.data?.botV2
