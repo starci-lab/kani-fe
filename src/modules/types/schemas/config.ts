@@ -33,3 +33,20 @@ export interface GasConfig {
 export interface AccountLimitsConfig {
     maxBotsPerAccount: number
 }
+
+export interface GasAmountRequired {
+    minOperationalAmount: string
+    targetOperationalAmount: string
+}
+
+export interface GasConfig {
+    gasAmountRequired: Partial<Record<ChainId, GasAmountRequired>>
+}
+
+export interface BalanceRequired {
+    minRequiredAmountInUsd: number
+}
+
+export interface BalanceConfig {
+    balanceRequired: Partial<Record<ChainId, BalanceRequired>>
+}

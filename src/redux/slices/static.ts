@@ -1,4 +1,4 @@
-import { TokenSchema, LiquidityPoolSchema, DexSchema, AccountLimitsConfig } from "@/modules/types"
+import { TokenSchema, LiquidityPoolSchema, DexSchema, AccountLimitsConfig, GasConfig, BalanceConfig } from "@/modules/types"
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 
 export interface StaticSlice {
@@ -6,6 +6,8 @@ export interface StaticSlice {
     liquidityPools: Array<LiquidityPoolSchema>
     dexes: Array<DexSchema>
     accountLimits?: AccountLimitsConfig
+    gasConfig?: GasConfig
+    balanceConfig?: BalanceConfig
 }
 
 const initialState: StaticSlice = {
@@ -30,8 +32,14 @@ export const staticSlice = createSlice({
         setAccountLimits: (state, action: PayloadAction<AccountLimitsConfig>) => {
             state.accountLimits = action.payload
         },
+        setGasConfig: (state, action: PayloadAction<GasConfig>) => {
+            state.gasConfig = action.payload
+        },
+        setBalanceConfig: (state, action: PayloadAction<BalanceConfig>) => {
+            state.balanceConfig = action.payload
+        },
     },
 })
 
 export const staticReducer = staticSlice.reducer
-export const { setTokens, setLiquidityPools, setDexes, setAccountLimits } = staticSlice.actions
+export const { setTokens, setLiquidityPools, setDexes, setAccountLimits, setGasConfig, setBalanceConfig } = staticSlice.actions

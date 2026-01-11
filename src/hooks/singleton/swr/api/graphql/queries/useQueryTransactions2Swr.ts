@@ -9,8 +9,9 @@ export const useQueryTransactions2SwrCore = () => {
     const accessToken = useAppSelector((state) => state.session.accessToken)
     const id = useAppSelector((state) => state.bot.id)
     const page = useAppSelector((state) => state.bot.transactionsPage)
+    const isDisabled = true
     const swr = useSWR(
-        (id && accessToken) ? ["QUERY_TRANSACTIONS2_SWR", id, page] : null,
+        isDisabled ? null : (id && accessToken) ? ["QUERY_TRANSACTIONS2_SWR", id, page] : null,
         async () => {
             if (!id) {
                 throw new Error("Id is required")

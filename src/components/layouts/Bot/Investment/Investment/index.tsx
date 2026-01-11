@@ -1,15 +1,17 @@
-import { KaniCard, KaniCardBody, TooltipTitle } from "@/components"
+import { KaniCard, KaniCardBody, KaniDivider, KaniLink, KaniSkeleton, TooltipTitle } from "@/components"
 import { useAppSelector } from "@/redux/hooks"
 import { Spacer } from "@heroui/react"
 import React, { useMemo } from "react"
 import { TokenCard, TokenCardType } from "./TokenCard"
-import { TokenType } from "@/modules/types"
-import Decimal from "decimal.js"
-import { computeDenomination } from "@/modules/utils"
-import BN from "bn.js"
+import { ChainId, TokenType } from "@/modules/types"
 import { HistoryChart } from "./HistoryChart"
 import numeral from "numeral"
 import { IntervalTabs } from "./IntervalTabs"
+import { useQueryFundingSnapshotV2Swr } from "@/hooks/singleton"
+import { ArrowsClockwiseIcon } from "@phosphor-icons/react"
+import { EligibilityStatus } from "./EligibilityStatus"
+import { computeDenomination } from "@/modules/utils"
+import BN from "bn.js"
 
 export const Investment = () => {
     const tokens = useAppSelector(
@@ -28,38 +30,18 @@ export const Investment = () => {
         (token) => token.chainId === bot?.chainId
         && token.type === TokenType.Native
     ), [tokens, bot?.chainId])
-    const tokenPrices = useAppSelector((state) => state.socket.tokenPrices)
-    const targetTokenAmount = useMemo(() => {
-        if (!bot?.snapshotTargetBalanceAmount || !targetToken) {
-            return new Decimal(0)
-        }
-        const amount = computeDenomination(new BN(bot.snapshotTargetBalanceAmount), targetToken?.decimals)
-        return amount.mul(tokenPrices[targetToken.displayId] || 0)
-    }, [
-        tokenPrices,
-        targetToken, 
-        bot?.snapshotTargetBalanceAmount
-    ])
-
-    const quoteTokenAmount = useMemo(() => {
-        if (!bot?.snapshotQuoteBalanceAmount || !quoteToken) {
-            return new Decimal(0)
-        }
-        const amount = computeDenomination(new BN(bot.snapshotQuoteBalanceAmount), quoteToken?.decimals)
-        return amount.mul(tokenPrices[quoteToken.displayId] || 0)
-    }, [tokenPrices, quoteToken, bot?.snapshotQuoteBalanceAmount])
-
-    const gasTokenAmount = useMemo(() => {
-        if (!bot?.snapshotGasBalanceAmount || !gasToken) {
-            return new Decimal(0)
-        }
-        const amount = computeDenomination(new BN(bot.snapshotGasBalanceAmount), gasToken?.decimals)
-        return amount.mul(tokenPrices[gasToken.displayId] || 0)
-    }, [tokenPrices, gasToken, bot?.snapshotGasBalanceAmount])
-    const totalInvestment = useMemo(() => {
-        return targetTokenAmount.add(quoteTokenAmount).add(gasTokenAmount)
-    }, [targetTokenAmount, quoteTokenAmount, gasTokenAmount])
-    
+    const queryFundingSnapshotV2Swr = useQueryFundingSnapshotV2Swr()
+    const gasConfig = useAppSelector(
+        (state) => state.static.gasConfig
+    )
+    const gasAmountRequired = useMemo(() => gasConfig?.gasAmountRequired?.[bot?.chainId ?? ChainId.Solana], [gasConfig, bot?.chainId])
+    const targetOperationalAmount = useMemo(() => gasAmountRequired?.targetOperationalAmount, [gasAmountRequired?.targetOperationalAmount])
+    const targetOperationalAmountDecimal = useMemo(() => computeDenomination(new BN(targetOperationalAmount ?? "0"), targetToken?.decimals ?? 9), [targetOperationalAmount, targetToken?.decimals])
+    const balanceConfig = useAppSelector(
+        (state) => state.static.balanceConfig
+    )
+    const balanceRequired = useMemo(() => balanceConfig?.balanceRequired?.[bot?.chainId ?? ChainId.Solana], [balanceConfig, bot?.chainId])
+    const minRequiredAmountInUsd = useMemo(() => balanceRequired?.minRequiredAmountInUsd, [balanceRequired?.minRequiredAmountInUsd])
     return (
         <KaniCard>
             <KaniCardBody>
@@ -70,34 +52,91 @@ export const Investment = () => {
                             tooltipString="The investment of the bot." />
                         <Spacer y={3} />
                         <div className="text-3xl font-bold leading-none">
-                    ${numeral(totalInvestment.toString()).format("0,0.00000")}
+                            {
+                                queryFundingSnapshotV2Swr.isLoading ? (
+                                    <KaniSkeleton className="h-[30px] w-[120px] rounded-md"/>
+                                ) : (
+                                    <div className="text-3xl font-bold leading-none">
+                                    ${numeral(queryFundingSnapshotV2Swr.data?.data?.fundingSnapshotV2?.data?.balanceIncludingGasInUsdc?.toString() || "0").format("0,0.00000")}
+                                    </div>
+                                )}
                         </div>
                     </div>
                     <IntervalTabs />
                 </div>
+                <EligibilityStatus />
                 <Spacer y={4} />
                 <HistoryChart />
                 <Spacer y={4} />
-                <TooltipTitle
-                    title="Assets"
-                    tooltipString="The assets of the bot." />
-                <Spacer y={4} />
+                <div className="flex justify-between items-center">
+                    <TooltipTitle
+                        title="Assets"
+                        tooltipString="The assets of the bot." 
+                    />
+                    <KaniLink
+                        color="primary"
+                        className="cursor-pointer"
+                        onPress={() => {
+                            queryFundingSnapshotV2Swr.mutate()
+                        }}
+                    >
+                        <ArrowsClockwiseIcon className="w-5 h-5 cursor-pointer" />
+                    </KaniLink>
+                </div>
+                <Spacer y={3} />
                 <div className="flex gap-2">
                     <TokenCard
                         token={targetToken}
                         type={TokenCardType.TargetToken}
-                        balanceAmount={bot?.snapshotTargetBalanceAmount?.toString() || "0"}
+                        balanceAmount={queryFundingSnapshotV2Swr.data?.data?.fundingSnapshotV2?.data?.targetBalanceAmount?.toString() || "0"}
+                        isLoading={queryFundingSnapshotV2Swr.isLoading}
                     />
                     <TokenCard
                         token={quoteToken}
                         type={TokenCardType.QuoteToken}
-                        balanceAmount={bot?.snapshotQuoteBalanceAmount?.toString() || "0"}
+                        balanceAmount={queryFundingSnapshotV2Swr.data?.data?.fundingSnapshotV2?.data?.quoteBalanceAmount?.toString() || "0"}
+                        isLoading={queryFundingSnapshotV2Swr.isLoading}
                     />
                     <TokenCard
                         token={gasToken}
                         type={TokenCardType.GasToken}
-                        balanceAmount={bot?.snapshotGasBalanceAmount?.toString() || "0"}
+                        balanceAmount={queryFundingSnapshotV2Swr.data?.data?.fundingSnapshotV2?.data?.gasBalanceAmount?.toString() || "0"}
+                        isLoading={queryFundingSnapshotV2Swr.isLoading}
                     />
+                </div>
+                <Spacer y={4} />
+                <div className="flex gap-2">
+                    <div className="flex items-center gap-4">
+                        <div className="flex gap-2 items-center">
+                            <TooltipTitle
+                                title="Minimum Balance (Excl. Gas)"
+                                classNames={{
+                                    title: "text-xs text-foreground-500",
+                                    questionMarkIconClassName: "w-3 h-3",
+                                }}
+                                tooltipString="The minimum trading balance (excluding gas) required for the bot to open and manage positions."
+                                showQuestionMark={true}
+                            />
+                            <div className="text-xs">
+                                {minRequiredAmountInUsd} USD
+                            </div>
+                        </div>
+                        <KaniDivider orientation="vertical" className="h-4"/>
+                        <div className="flex gap-2 items-center">
+                            <TooltipTitle
+                                title="Minimum Gas Balance"
+                                classNames={{
+                                    title: "text-xs text-foreground-500",
+                                    questionMarkIconClassName: "w-3 h-3",
+                                }}
+                                showQuestionMark={true}
+                                tooltipString="The minimum gas balance required for the bot to execute transactions on the network."
+                            />
+                            <div className="text-xs">
+                                {targetOperationalAmountDecimal.toString()} {targetToken?.symbol}
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </KaniCardBody>
         </KaniCard>

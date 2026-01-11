@@ -1,10 +1,8 @@
 import { TokenSchema } from "@/modules/types"
 import React from "react"
-import { KaniAvatar, KaniChip, KaniLink } from "@/components"
+import { KaniAvatar, KaniChip, KaniLink, KaniSkeleton } from "@/components"
 import { Spacer, cn } from "@heroui/react"
 import { TooltipTitle } from "@/components"
-import { computeDenomination } from "@/modules/utils"
-import BN from "bn.js"
 
 export enum TokenCardType {
     TargetToken = "targetToken",
@@ -16,12 +14,14 @@ export interface TokenCardProps {
     token?: TokenSchema
     type: TokenCardType
     balanceAmount: string
+    isLoading: boolean
 }
 
 export const TokenCard = ({ 
     token, 
     type, 
-    balanceAmount 
+    balanceAmount,
+    isLoading
 }: TokenCardProps) => {
     const renderChips = () => {
         switch (type) {
@@ -65,11 +65,18 @@ export const TokenCard = ({
                     title="Usable Amount" 
                     tooltipString="The usable amount of the token." 
                 />
-                <div className={cn(
-                    "text-xl font-bold"
-                )}>
-                    {computeDenomination(new BN(balanceAmount), token?.decimals).toString()} {token?.symbol}
-                </div>
+                <Spacer y={1} />
+                {
+                    isLoading ? (
+                        <KaniSkeleton className="h-5 w-[50px] my-1 rounded-md"/>
+                    ) : (
+                        <div className={cn(
+                            "text-xl font-bold"
+                        )}>
+                            {balanceAmount} {token?.symbol}
+                        </div>
+                    )   
+                }
                 <KaniLink
                     color="primary"
                     className="cursor-pointer"

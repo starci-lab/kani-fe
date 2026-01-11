@@ -5,11 +5,11 @@ import { ShieldCheckIcon } from "@phosphor-icons/react"
 export const BotAlert = () => {
     return (
         <KaniAlert
-            variant="flat"
             icon={<ShieldCheckIcon weight="fill" />}
             classNames={{
                 alertIcon: "w-6 h-6",
             }}
+            color="secondary"
             title="Your bot is secured by Privy"
             description={
                 <div>

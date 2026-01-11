@@ -34,6 +34,8 @@ import {
     useQueryFeesV2SwrCore,
     useQueryReservesV2SwrCore,
     useQueryFeesSwrCore,
+    useQueryFundingSnapshotV2SwrCore,
+    useQueryHistoryV2SwrCore,
 } from "./api"
 
 export interface SwrContextType {
@@ -71,6 +73,8 @@ export interface SwrContextType {
     queryTransactionsV2Swr: ReturnType<typeof useQueryTransactionsV2SwrCore>;
     queryFeesV2Swr: ReturnType<typeof useQueryFeesV2SwrCore>;
     queryReservesV2Swr: ReturnType<typeof useQueryReservesV2SwrCore>;
+    queryFundingSnapshotV2Swr: ReturnType<typeof useQueryFundingSnapshotV2SwrCore>;
+    queryHistoryV2Swr: ReturnType<typeof useQueryHistoryV2SwrCore>;
 }
 
 export const SwrContext = createContext<SwrContextType | null>(null)
@@ -108,6 +112,8 @@ export const SwrProvider = ({ children }: PropsWithChildren) => {
     const queryTransactionsV2Swr = useQueryTransactionsV2SwrCore()
     const queryFeesV2Swr = useQueryFeesV2SwrCore()
     const queryReservesV2Swr = useQueryReservesV2SwrCore()
+    const queryFundingSnapshotV2Swr = useQueryFundingSnapshotV2SwrCore()
+    const queryHistoryV2Swr = useQueryHistoryV2SwrCore()
     const values = useMemo(() => ({
         queryUserSwrMutation,
         queryUserWithoutRetrySwrMutation,
@@ -141,6 +147,8 @@ export const SwrProvider = ({ children }: PropsWithChildren) => {
         queryReservesSwr,
         queryFeesV2Swr,
         queryReservesV2Swr,
+        queryFundingSnapshotV2Swr,
+        queryHistoryV2Swr,
     }), [
         queryUserSwrMutation,
         queryUserWithoutRetrySwrMutation,
@@ -174,8 +182,9 @@ export const SwrProvider = ({ children }: PropsWithChildren) => {
         queryReservesSwr,
         queryFeesV2Swr,
         queryReservesV2Swr,
-    ]
-    )
+        queryFundingSnapshotV2Swr,
+        queryHistoryV2Swr,
+    ])
     return (
         <SwrContext.Provider
             value={values}
