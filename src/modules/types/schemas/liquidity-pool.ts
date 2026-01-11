@@ -32,6 +32,20 @@ export interface LiquidityPoolSchema extends AbstractSchema {
 
     /** URL of the pool */
     url: string
-    
+
     type: LiquidityPoolType;
+
+    /** Dynamic information */
+    dynamicInfo: GraphQLDynamicLiquidityPoolInfo
+}
+
+export interface GraphQLDynamicLiquidityPoolInfo {
+    tickCurrent?: number
+    activeId?: number
+    liquidity?: string
+    price?: number
+    volume24H?: number
+    fees24H?: number
+    apr24H?: number
+    tvl?: string
 }

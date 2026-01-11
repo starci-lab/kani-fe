@@ -1,17 +1,13 @@
 import { KaniCard, KaniCardBody, KaniLink } from "@/components/atomic"
 import { ScrollableList, TooltipTitle } from "@/components/reuseable"
-import { useAppSelector } from "@/redux"
 import { Spacer } from "@heroui/react"
 import React from "react"
 import { PoolCard } from "./PoolCard"
 import { FadersIcon } from "@phosphor-icons/react"
+import { useQueryLiquidityPools2BotSwr } from "@/hooks/singleton"
 
 export const Pools = () => {
-    const liquidityPools = useAppSelector((state) => state.static.liquidityPools)
-    const bot = useAppSelector((state) => state.bot.bot)
-    const filteredLiquidityPools = liquidityPools.filter((liquidityPool) => {
-        return bot?.liquidityPools?.includes(liquidityPool.id)
-    })
+    const { data } = useQueryLiquidityPools2BotSwr()
     return (
         <KaniCard>
             <KaniCardBody>
@@ -34,7 +30,7 @@ export const Pools = () => {
                 <Spacer y={3} />
                 <ScrollableList
                     enableScroll={false}
-                    items={filteredLiquidityPools}
+                    items={data?.liquidityPools2.data?.data || []}
                     renderItem={(liquidityPool) => {
                         return (
                             <PoolCard 

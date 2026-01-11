@@ -9,7 +9,7 @@ import {
 import React from "react"
 import { LiquidityPoolSchema } from "@/modules/types"
 import { useAppSelector } from "@/redux"
-import { computePercentage, roundNumber } from "@/modules/utils"
+import { computePercentage } from "@/modules/utils"
 import { Spacer } from "@heroui/react"
 import { PoolTypeChip } from "../../../../../reuseable"
 import numeral from "numeral"
@@ -24,9 +24,6 @@ export const PoolCard = ({ liquidityPool }: PoolCardProps) => {
     const tokenB = tokens.find((token) => token.id === liquidityPool.tokenB)
     const dexes = useAppSelector((state) => state.static.dexes)
     const dex = dexes.find((dex) => dex.id === liquidityPool.dex)
-    const dynamicLiquidityPoolInfos = useAppSelector((state) => state.dynamic.dynamicLiquidityPoolInfos)
-    const dynamicLiquidityPoolInfo = dynamicLiquidityPoolInfos.find((dynamicLiquidityPoolInfo) => dynamicLiquidityPoolInfo.id === liquidityPool.id)
-    
     return (
         <KaniCard 
             isPressable>
@@ -83,30 +80,30 @@ export const PoolCard = ({ liquidityPool }: PoolCardProps) => {
                 <div className="flex flex-col gap-3">
                     <div className="flex items-center justify-between">
                         <div className="text-sm text-foreground-500">TVL</div>
-                        <div className="text-sm">{dynamicLiquidityPoolInfo?.tvl 
-                            ? `$${numeral(roundNumber(dynamicLiquidityPoolInfo?.tvl, 2)).format("0,0")}` 
+                        <div className="text-sm">{liquidityPool.dynamicInfo?.tvl 
+                            ? `$${numeral(liquidityPool.dynamicInfo?.tvl).format("0,0")}` 
                             : <KaniSkeleton className="h-5 w-[50px] rounded-md"/>
                         }</div>
                     </div>
                     <div className="flex items-center justify-between">
                         <div className="text-sm text-foreground-500">Fees 24H</div>
-                        <div className="text-sm">{dynamicLiquidityPoolInfo?.fees24H 
-                            ? `$${numeral(roundNumber(dynamicLiquidityPoolInfo?.fees24H ?? 0, 2)).format("0,0")}` 
+                        <div className="text-sm">{liquidityPool.dynamicInfo?.fees24H 
+                            ? `$${numeral(liquidityPool.dynamicInfo?.fees24H).format("0,0")}` 
                             : <KaniSkeleton className="h-5 w-[50px] rounded-md"/>}</div>
                     </div>
                     <div className="flex items-center justify-between">
                         <div className="text-sm text-foreground-500">Volume 24H</div>
-                        <div className="text-sm">{dynamicLiquidityPoolInfo?.volume24H 
-                            ? `$${numeral(roundNumber(dynamicLiquidityPoolInfo?.volume24H ?? 0, 2)).format("0,0")}` 
+                        <div className="text-sm">{liquidityPool.dynamicInfo?.volume24H 
+                            ? `$${numeral(liquidityPool.dynamicInfo?.volume24H).format("0,0")}` 
                             : <KaniSkeleton className="h-5 w-[50px] rounded-md"/>}</div>
                     </div>
                     <div className="flex items-center justify-between">
                         <div className="text-sm text-foreground-500">APR 24H</div>
                         <div className="flex items-center gap-2">
-                            {dynamicLiquidityPoolInfo?.apr24H 
+                            {liquidityPool.dynamicInfo?.apr24H 
                                 ?
                                 <div className="text-sm">
-                                    {`${roundNumber(computePercentage(dynamicLiquidityPoolInfo?.apr24H ?? 0, 1, 2).toNumber(), 2)}%`}
+                                    {`${computePercentage(liquidityPool.dynamicInfo?.apr24H ?? 0, 1, 2).toString()}%`}
                                 </div>
                                 : <KaniSkeleton className="h-5 w-[50px] rounded-md"/>}
                         </div>

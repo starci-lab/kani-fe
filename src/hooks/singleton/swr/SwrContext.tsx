@@ -6,7 +6,6 @@ import {
     useQueryUserWithoutRetrySwrMutationCore,
     useQueryStaticSwrCore,
     useQueryUserSwrCore,
-    useQueryDynamicLiquidityPoolInfoSwrCore,
     useCreateBotSwrMutationCore,
     useRequestSignInOtpSwrMutationCore,
     useVerifySignInOtpSwrMutationCore,
@@ -36,6 +35,8 @@ import {
     useQueryFeesSwrCore,
     useQueryFundingSnapshotV2SwrCore,
     useQueryHistoryV2SwrCore,
+    useQueryLiquidityPools2BotSwrCore,
+    useQueryLiquidityPools2ActivePositionSwrCore,
 } from "./api"
 
 export interface SwrContextType {
@@ -46,7 +47,6 @@ export interface SwrContextType {
     queryStaticSwr: ReturnType<typeof useQueryStaticSwrCore>;
     queryUserSwr: ReturnType<typeof useQueryUserSwrCore>;
     createBotSwrMutation: ReturnType<typeof useCreateBotSwrMutationCore>;
-    queryDynamicLiquidityPoolInfoSwr: ReturnType<typeof useQueryDynamicLiquidityPoolInfoSwrCore>;
     requestSignInOtpSwrMutation: ReturnType<typeof useRequestSignInOtpSwrMutationCore>;
     verifySignInOtpSwrMutation: ReturnType<typeof useVerifySignInOtpSwrMutationCore>;
     queryTotpSecretSwrMutation: ReturnType<typeof useQueryTotpSecretSwrMutationCore>;
@@ -75,6 +75,8 @@ export interface SwrContextType {
     queryReservesV2Swr: ReturnType<typeof useQueryReservesV2SwrCore>;
     queryFundingSnapshotV2Swr: ReturnType<typeof useQueryFundingSnapshotV2SwrCore>;
     queryHistoryV2Swr: ReturnType<typeof useQueryHistoryV2SwrCore>;
+    queryLiquidityPools2BotSwr: ReturnType<typeof useQueryLiquidityPools2BotSwrCore>;
+    queryLiquidityPools2ActivePositionSwr: ReturnType<typeof useQueryLiquidityPools2ActivePositionSwrCore>;
 }
 
 export const SwrContext = createContext<SwrContextType | null>(null)
@@ -104,7 +106,6 @@ export const SwrProvider = ({ children }: PropsWithChildren) => {
     const toggleBotSwrMutation = useToggleBotSwrMutationCore()
     const queryFeesSwr = useQueryFeesSwrCore()
     const queryReservesSwr = useQueryReservesSwrCore()
-    const queryDynamicLiquidityPoolInfoSwr = useQueryDynamicLiquidityPoolInfoSwrCore()
     const queryBotV2Swr = useQueryBotV2SwrCore()
     const queryTransactions2V2Swr = useQueryTransactions2V2SwrCore()
     const queryPositions2V2Swr = useQueryPositions2V2SwrCore()
@@ -114,12 +115,13 @@ export const SwrProvider = ({ children }: PropsWithChildren) => {
     const queryReservesV2Swr = useQueryReservesV2SwrCore()
     const queryFundingSnapshotV2Swr = useQueryFundingSnapshotV2SwrCore()
     const queryHistoryV2Swr = useQueryHistoryV2SwrCore()
+    const queryLiquidityPools2BotSwr = useQueryLiquidityPools2BotSwrCore()
+    const queryLiquidityPools2ActivePositionSwr = useQueryLiquidityPools2ActivePositionSwrCore()
     const values = useMemo(() => ({
         queryUserSwrMutation,
         queryUserWithoutRetrySwrMutation,
         queryStaticSwr,
         queryUserSwr,
-        queryDynamicLiquidityPoolInfoSwr,
         queryUserV2Swr,
         queryBots2V2Swr,
         queryBotV2Swr,
@@ -149,12 +151,13 @@ export const SwrProvider = ({ children }: PropsWithChildren) => {
         queryReservesV2Swr,
         queryFundingSnapshotV2Swr,
         queryHistoryV2Swr,
+        queryLiquidityPools2BotSwr,
+        queryLiquidityPools2ActivePositionSwr,
     }), [
         queryUserSwrMutation,
         queryUserWithoutRetrySwrMutation,
         queryStaticSwr,
         queryUserSwr,
-        queryDynamicLiquidityPoolInfoSwr,
         queryUserV2Swr,
         createBotV2SwrMutation,
         requestSignInOtpSwrMutation,
@@ -184,6 +187,8 @@ export const SwrProvider = ({ children }: PropsWithChildren) => {
         queryReservesV2Swr,
         queryFundingSnapshotV2Swr,
         queryHistoryV2Swr,
+        queryLiquidityPools2BotSwr,
+        queryLiquidityPools2ActivePositionSwr,
     ])
     return (
         <SwrContext.Provider
