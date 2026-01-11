@@ -5,7 +5,6 @@ import {
     KaniButton, 
     KaniTooltip, 
     KaniLink,
-    KaniDivider
 } from "../../../../atomic"
 import { TooltipTitle, SnippetIcon } from "../../../../reuseable"
 import { centerPad } from "@/modules/utils"
@@ -118,56 +117,49 @@ export const Account = () => {
                     title="Account"
                     tooltipString="The account address of the bot." />
                 <Spacer y={3} />
-                <KaniCard shadow="none" className="bg-content2">
-                    <KaniCardBody>
-                        <div className="flex items-center gap-2">
-                            <div className="flex items-center gap-3">
-                                <KaniImage
-                                    removeWrapper
-                                    className="w-14 h-14 min-w-10 min-h-10"
-                                    src={chainAssets.token}
-                                />
-                                <div>
-                                    <div className="text-sm">
-                                        {centerPad(bot?.accountAddress ?? "", 6, 4)}
-                                    </div>
-                                    <Spacer y={1} />
-                                    <div className="flex items-center gap-2">
-                                        <SnippetIcon
-                                            copyString={bot?.accountAddress ?? ""}
-                                            classNames={{ checkIcon: "w-4 h-4 text-foreground-500", copyIcon: "w-4 h-4 text-foreground-500" }}
-                                        />
-                                        <KaniLink onPress={() => window.open(explorerUrl, "_blank")}>
-                                            <ArrowSquareOutIcon className="w-4 h-4 cursor-pointer text-foreground-500" />
-                                        </KaniLink>
-                                    </div>
-                                </div>
+                <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-3">
+                        <KaniImage
+                            removeWrapper
+                            className="w-14 h-14 min-w-10 min-h-10"
+                            src={chainAssets.token}
+                        />
+                        <div>
+                            <div className="text-sm">
+                                {centerPad(bot?.accountAddress ?? "", 6, 4)}
                             </div>
-                    
+                            <Spacer y={1} />
+                            <div className="flex items-center gap-2">
+                                <SnippetIcon
+                                    copyString={bot?.accountAddress ?? ""}
+                                    classNames={{ checkIcon: "w-4 h-4 text-foreground-500", copyIcon: "w-4 h-4 text-foreground-500" }}
+                                />
+                                <KaniLink onPress={() => window.open(explorerUrl, "_blank")}>
+                                    <ArrowSquareOutIcon className="w-4 h-4 cursor-pointer text-foreground-500" />
+                                </KaniLink>
+                            </div>
                         </div>
-                        <Spacer y={4} />
-                        <KaniDivider />
-                        <Spacer y={4} />
-                        <div className="flex items-center gap-2">
-                            {actions.map((action) => (
-                                <KaniTooltip key={action.label} content={action.tooltip}>
-                                    <div>
-                                        <KaniButton 
-                                            color={action.color} 
-                                            variant="flat" 
-                                            isDisabled={action.disabled}
-                                            onPress={action.onPress}
-                                            isIconOnly 
-                                            key={action.label}
-                                        >
-                                            <action.icon className="w-5 h-5" />
-                                        </KaniButton>
-                                    </div>
-                                </KaniTooltip>
-                            ))}
-                        </div>  
-                    </KaniCardBody>
-                </KaniCard>
+                    </div>  
+                </div>
+                <Spacer y={4} />
+                <div className="flex items-center gap-2">
+                    {actions.map((action) => (
+                        <KaniTooltip key={action.label} content={action.tooltip}>
+                            <div>
+                                <KaniButton 
+                                    color={action.color} 
+                                    variant="flat" 
+                                    isDisabled={action.disabled}
+                                    onPress={action.onPress}
+                                    isIconOnly 
+                                    key={action.label}
+                                >
+                                    <action.icon className="w-5 h-5" />
+                                </KaniButton>
+                            </div>
+                        </KaniTooltip>
+                    ))}
+                </div>  
             </KaniCardBody>
         </KaniCard>
     )

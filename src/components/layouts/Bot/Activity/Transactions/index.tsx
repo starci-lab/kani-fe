@@ -79,7 +79,7 @@ export const Transactions = () => {
                 <KaniTable 
                     shadow="none" 
                     classNames={{
-                        wrapper: "min-h-[250px] p-0 overflow-hidden",
+                        wrapper: "min-h-[250px] p-0 overflow-hidden bg-background",
                     }}
                     radius="sm"
                     bottomContent={

@@ -1,6 +1,6 @@
 import { TokenSchema } from "@/modules/types"
 import React from "react"
-import { KaniAvatar, KaniChip, KaniLink, KaniSkeleton } from "@/components"
+import { KaniAvatar, KaniCard, KaniCardBody, KaniChip, KaniLink, KaniSkeleton } from "../../../../../atomic"
 import { Spacer, cn } from "@heroui/react"
 import { TooltipTitle } from "@/components"
 
@@ -43,8 +43,8 @@ export const TokenCard = ({
         }
     }
     return (
-        <div className="bg-content2 rounded-large min-w-[200px]">
-            <div className="px-3 py-2">
+        <KaniCard className="bg-content2/50 w-full border-none">
+            <KaniCardBody className="px-3 py-2">
                 <div className="flex justify-between items-start">
                     <div className="flex items-center gap-2">
                         <KaniAvatar src={token?.iconUrl}/>
@@ -85,7 +85,7 @@ export const TokenCard = ({
                         Deposit
                     </div>
                 </KaniLink>
-            </div>
-        </div>
+            </KaniCardBody>
+        </KaniCard>
     )
 }

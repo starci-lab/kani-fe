@@ -29,8 +29,6 @@ export const PoolCard = ({ liquidityPool }: PoolCardProps) => {
     
     return (
         <KaniCard 
-            shadow="none" 
-            className="bg-content2" 
             isPressable>
             <KaniCardBody>
                 <div className="flex items-center gap-4 justify-between">
@@ -79,9 +77,9 @@ export const PoolCard = ({ liquidityPool }: PoolCardProps) => {
                         </div>
                     </div>
                 </div>
-                <Spacer y={4} />
+                <Spacer y={3} />
                 <KaniDivider />
-                <Spacer y={4} />
+                <Spacer y={3} />
                 <div className="flex flex-col gap-3">
                     <div className="flex items-center justify-between">
                         <div className="text-sm text-foreground-500">TVL</div>
