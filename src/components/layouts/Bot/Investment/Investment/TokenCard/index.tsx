@@ -43,7 +43,7 @@ export const TokenCard = ({
         }
     }
     return (
-        <KaniCard className="bg-content2/50 w-full border-none">
+        <KaniCard className="w-full">
             <KaniCardBody className="px-3 py-2">
                 <div className="flex justify-between items-start">
                     <div className="flex items-center gap-2">

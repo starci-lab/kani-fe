@@ -1,7 +1,3 @@
-import {
-    KaniCard,
-    KaniCardBody,
-} from "@/components/atomic"
 import { TooltipTitle } from "@/components/reuseable"
 import { useAppSelector } from "@/redux"
 import { Spacer } from "@heroui/react"
@@ -34,17 +30,15 @@ export const Positions = () => {
         return <EmptyContent description="We couldn&apos;t find any positions." />
     }
     return (
-        <KaniCard>
-            <KaniCardBody>
-                <TooltipTitle
-                    title="Positions"
-                    tooltipString="The transactions of the bot."
-                />
-                <Spacer y={3} />
-                <div className="min-h-[250px] grid place-items-center">
-                    {renderContent()}
-                </div>
-            </KaniCardBody>
-        </KaniCard>
+        <div>
+            <TooltipTitle
+                title="Positions"
+                tooltipString="The transactions of the bot."
+            />
+            <Spacer y={3} />
+            <div className="min-h-[250px] grid place-items-center">
+                {renderContent()}
+            </div>
+        </div>
     )
 }

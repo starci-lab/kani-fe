@@ -1,4 +1,4 @@
-import { KaniCard, KaniCardBody, KaniDivider, KaniLink, KaniSkeleton, TooltipTitle } from "@/components"
+import { KaniDivider, KaniLink, KaniSkeleton, TooltipTitle } from "@/components"
 import { useAppSelector } from "@/redux/hooks"
 import { Spacer } from "@heroui/react"
 import React, { useMemo } from "react"
@@ -47,114 +47,111 @@ export const Investment = () => {
     }, [queryFundingSnapshotV2Swr.isLoading, queryFundingSnapshotV2Swr.data, bot])
     const staticSwr = useQueryStaticSwr()
     return (
-        <KaniCard>
-            <KaniCardBody>
-                <div className="flex justify-between items-start">
-                    <div>
-                        <TooltipTitle
-                            title="Investment"
-                            tooltipString="The investment of the bot." />
-                        <Spacer y={1} />
-                        <div className="text-3xl font-bold leading-none">
-                            {
-                                isLoading ? (
-                                    <KaniSkeleton className="h-[30px] w-[120px] rounded-md"/>
-                                ) : (
-                                    <div className="text-3xl font-bold leading-none">
-                                    ${numeral(queryFundingSnapshotV2Swr.data?.data?.fundingSnapshotV2?.data?.balanceIncludingGasInUsdc?.toString() || "0").format("0,0.00000")}
-                                    </div>
-                                )}
-                        </div>
-                    </div>
-                    <IntervalTabs />
-                </div>
-                <EligibilityStatus />
-                <Spacer y={4} />
-                <HistoryChart />
-                <Spacer y={4} />
-                <div className="flex justify-between items-center">
+        <div>
+            <div className="flex justify-between items-start">
+                <div>
                     <TooltipTitle
-                        title="Assets"
-                        tooltipString="The assets of the bot." 
+                        title="Investment"
                     />
-                    <KaniLink
-                        color="primary"
-                        className="cursor-pointer"
-                        onPress={() => {
-                            queryFundingSnapshotV2Swr.mutate()
-                        }}
-                    >
-                        <ArrowsClockwiseIcon className="w-5 h-5 cursor-pointer" />
-                    </KaniLink>
+                    <Spacer y={1} />
+                    <div className="text-3xl font-bold leading-none">
+                        {
+                            isLoading ? (
+                                <KaniSkeleton className="h-[30px] w-[120px] rounded-md"/>
+                            ) : (
+                                <div className="text-3xl font-bold leading-none">
+                                    ${numeral(queryFundingSnapshotV2Swr.data?.data?.fundingSnapshotV2?.data?.balanceIncludingGasInUsdc?.toString() || "0").format("0,0.00000")}
+                                </div>
+                            )}
+                    </div>
                 </div>
-                <Spacer y={3} />
-                <div className="flex gap-2">
-                    <TokenCard
-                        token={targetToken}
-                        type={TokenCardType.TargetToken}
-                        balanceAmount={queryFundingSnapshotV2Swr.data?.data?.fundingSnapshotV2?.data?.targetBalanceAmount?.toString() || "0"}
-                        isLoading={isLoading}
-                    />
-                    <TokenCard
-                        token={quoteToken}
-                        type={TokenCardType.QuoteToken}
-                        balanceAmount={queryFundingSnapshotV2Swr.data?.data?.fundingSnapshotV2?.data?.quoteBalanceAmount?.toString() || "0"}
-                        isLoading={isLoading}
-                    />
-                    <TokenCard
-                        token={gasToken}
-                        type={TokenCardType.GasToken}
-                        balanceAmount={queryFundingSnapshotV2Swr.data?.data?.fundingSnapshotV2?.data?.gasBalanceAmount?.toString() || "0"}
-                        isLoading={isLoading}
-                    />
-                </div>
-                <Spacer y={4} />
-                <div className="flex gap-2">
-                    <div className="flex items-center gap-4">
-                        <div className="flex gap-2 items-center">
-                            <TooltipTitle
-                                title="Minimum Balance (Excl. Gas)"
-                                classNames={{
-                                    title: "text-xs text-foreground-500",
-                                    questionMarkIconClassName: "w-3 h-3",
-                                }}
-                                tooltipString="The minimum trading balance (excluding gas) required for the bot to open and manage positions."
-                                showQuestionMark={true}
-                            />
-                            <div className="text-xs">
-                                {
-                                    staticSwr.isLoading ? (
-                                        <KaniSkeleton className="h-[14px] w-[40px] rounded-md"/>
-                                    ) : (
-                                        `${minRequiredAmountInUsd} USD`
-                                    )
-                                }
-                            </div>
-                        </div>
-                        <KaniDivider orientation="vertical" className="h-4"/>
-                        <div className="flex gap-2 items-center">
-                            <TooltipTitle
-                                title="Minimum Gas Balance"
-                                classNames={{
-                                    title: "text-xs text-foreground-500",
-                                    questionMarkIconClassName: "w-3 h-3",
-                                }}
-                                showQuestionMark={true}
-                                tooltipString="The minimum gas balance required for the bot to execute transactions on the network."
-                            />
+                <IntervalTabs />
+            </div>
+            <EligibilityStatus />
+            <Spacer y={4} />
+            <HistoryChart />
+            <Spacer y={8} />
+            <div className="flex justify-between items-center">
+                <TooltipTitle
+                    title="Assets" 
+                />
+                <KaniLink
+                    color="primary"
+                    className="cursor-pointer"
+                    onPress={() => {
+                        queryFundingSnapshotV2Swr.mutate()
+                    }}
+                >
+                    <ArrowsClockwiseIcon className="w-5 h-5 cursor-pointer" />
+                </KaniLink>
+            </div>
+            <Spacer y={3} />
+            <div className="flex gap-2">
+                <TokenCard
+                    token={targetToken}
+                    type={TokenCardType.TargetToken}
+                    balanceAmount={queryFundingSnapshotV2Swr.data?.data?.fundingSnapshotV2?.data?.targetBalanceAmount?.toString() || "0"}
+                    isLoading={isLoading}
+                />
+                <TokenCard
+                    token={quoteToken}
+                    type={TokenCardType.QuoteToken}
+                    balanceAmount={queryFundingSnapshotV2Swr.data?.data?.fundingSnapshotV2?.data?.quoteBalanceAmount?.toString() || "0"}
+                    isLoading={isLoading}
+                />
+                <TokenCard
+                    token={gasToken}
+                    type={TokenCardType.GasToken}
+                    balanceAmount={queryFundingSnapshotV2Swr.data?.data?.fundingSnapshotV2?.data?.gasBalanceAmount?.toString() || "0"}
+                    isLoading={isLoading}
+                />
+            </div>
+            <Spacer y={4} />
+            <div className="flex gap-2">
+                <div className="flex items-center gap-4">
+                    <div className="flex gap-2 items-center">
+                        <TooltipTitle
+                            title="Minimum Balance (Excl. Gas)"
+                            classNames={{
+                                title: "text-xs text-foreground-500",
+                                questionMarkIconClassName: "w-3 h-3",
+                            }}
+                            tooltipString="The minimum trading balance (excluding gas) required for the bot to open and manage positions."
+                            showQuestionMark={true}
+                        />
+                        <div className="text-xs">
                             {
                                 staticSwr.isLoading ? (
                                     <KaniSkeleton className="h-[14px] w-[40px] rounded-md"/>
                                 ) : (
-                                    <div className="text-xs">
-                                        {targetOperationalAmountDecimal.toString()} {targetToken?.symbol}
-                                    </div>
+                                    `${minRequiredAmountInUsd} USD`
                                 )
                             }
                         </div>
                     </div>
+                    <KaniDivider orientation="vertical" className="h-4"/>
+                    <div className="flex gap-2 items-center">
+                        <TooltipTitle
+                            title="Minimum Gas Balance"
+                            classNames={{
+                                title: "text-xs text-foreground-500",
+                                questionMarkIconClassName: "w-3 h-3",
+                            }}
+                            showQuestionMark={true}
+                            tooltipString="The minimum gas balance required for the bot to execute transactions on the network."
+                        />
+                        {
+                            staticSwr.isLoading ? (
+                                <KaniSkeleton className="h-[14px] w-[40px] rounded-md"/>
+                            ) : (
+                                <div className="text-xs">
+                                    {targetOperationalAmountDecimal.toString()} {targetToken?.symbol}
+                                </div>
+                            )
+                        }
+                    </div>
                 </div>
-            </KaniCardBody>
-        </KaniCard>
+            </div>
+        </div>
     )
 }

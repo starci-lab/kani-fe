@@ -1,7 +1,8 @@
-import { KaniButton, KaniLink, KaniModal, KaniModalBody, KaniModalContent, KaniModalFooter, KaniModalHeader } from "@/components/atomic"
-import { Spacer } from "@heroui/react"
+import { KaniButton, KaniInput, KaniModal, KaniModalBody, KaniModalContent, KaniModalFooter, KaniModalHeader, KaniLink } from "@/components/atomic"
 import React from "react"
 import { useUpdatePoolsDisclosure } from "@/hooks/singleton"
+import { FunnelIcon } from "@phosphor-icons/react"
+import { Spacer } from "@heroui/react"
 
 export const UpdatePoolsModal = () => {
     const { isOpen, onOpenChange } = useUpdatePoolsDisclosure()
@@ -14,16 +15,15 @@ export const UpdatePoolsModal = () => {
                         endContent={
                             <KaniLink
                                 as="button"
-                                color="secondary"
+                                color="primary"
                             >
-                                <FadersIcon/>
+                                <FunnelIcon className="w-5 h-5 cursor-pointer"/>
                             </KaniLink>
                         }
                         placeholder="Search for a pool"
                         className="w-full"
                     />
                     <Spacer y={4} />
-                    {!filteredLiquidityPools.length ? <PoolNotFound /> : <PoolsScrollShadow/>}
                 </KaniModalBody>
                 <KaniModalFooter>
                     <KaniButton variant="flat" fullWidth onPress={onOpenChange}>Close</KaniButton>

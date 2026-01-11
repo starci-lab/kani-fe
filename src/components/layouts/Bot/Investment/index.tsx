@@ -7,7 +7,7 @@ export const Investment = () => {
     return (
         <>
             <InvestmentComponent />
-            <Spacer y={4} />
+            <Spacer y={8} />
             <Position />
         </>
     )

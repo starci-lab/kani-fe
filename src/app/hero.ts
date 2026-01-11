@@ -38,7 +38,6 @@ export default heroui({
                 primary: {
                     DEFAULT: "hsl(330, 70%, 58%)",
                     foreground: "hsl(0, 0%, 98%)",
-
                     50: "hsl(330, 40%, 12%)",
                     100: "hsl(330, 45%, 18%)",
                     200: "hsl(330, 50%, 26%)",

@@ -7,7 +7,7 @@ export const Wallet = () => {
     return (
         <div>
             <Account />
-            <Spacer y={4} />
+            <Spacer y={8} />
             <Pools />
         </div>
     )

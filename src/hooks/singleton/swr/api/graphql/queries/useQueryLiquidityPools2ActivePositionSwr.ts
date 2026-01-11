@@ -3,14 +3,17 @@ import { SwrContext } from "../../../SwrContext"
 import { use } from "react"
 import { useAppSelector } from "@/redux"
 import useSWR from "swr"
+import { usePrivy } from "@privy-io/react-auth"
 
 export const useQueryLiquidityPools2ActivePositionSwrCore = () => {
     const bot = useAppSelector((state) => state.bot.bot)
+    const { authenticated } = usePrivy()
     const swr = useSWR(
-        bot && bot.id && bot?.activePosition?.id ? [
+        authenticated && bot && bot.id && bot?.activePosition?.id ? [
             "QUERY_LIQUIDITY_POOLS2_ACTIVE_POSITION_SWR", 
             bot.id,
-            bot.activePosition.id
+            bot.activePosition.id,
+            authenticated
         ] : null, 
         async () => {
             if (!bot || !bot.id || !bot.activePosition) {

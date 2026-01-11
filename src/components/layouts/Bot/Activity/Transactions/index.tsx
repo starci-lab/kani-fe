@@ -1,6 +1,4 @@
 import {
-    KaniCard,
-    KaniCardBody,
     KaniChip,
     KaniLink,
     KaniPagination,
@@ -69,69 +67,64 @@ export const Transactions = () => {
     const currentTransactionsPage = useAppSelector((state) => state.bot.currentTransactionsPage)
     const transactionsPage = useAppSelector((state) => state.bot.transactionsPage)
     return (
-        <KaniCard>
-            <KaniCardBody>
-                <TooltipTitle
-                    title="Transactions"
-                    tooltipString="The transactions of the bot."
-                />
-                <Spacer y={3} />
-                <KaniTable 
-                    shadow="none" 
-                    classNames={{
-                        wrapper: "min-h-[250px] p-0 overflow-hidden bg-background",
-                    }}
-                    radius="sm"
-                    bottomContent={
-                        transactionsPage && transactionsPage > 0 ? (
-                            <div className="flex w-full justify-center">
-                                <KaniPagination
-                                    isCompact
-                                    showControls
-                                    showShadow
-                                    color="primary"
-                                    page={currentTransactionsPage}
-                                    total={transactionsPage}
-                                    onChange={(page) => dispatch(setCurrentTransactionsPage(page))}
-                                />
-                            </div>
-                        ) : null
-                    }
+        <div>
+            <TooltipTitle
+                title="Transactions"
+            />
+            <Spacer y={3} />
+            <KaniTable 
+                classNames={{
+                    wrapper: "min-h-[250px] p-3",
+                }}
+                bottomContent={
+                    transactionsPage && transactionsPage > 0 ? (
+                        <div className="flex w-full justify-center">
+                            <KaniPagination
+                                isCompact
+                                showControls
+                                showShadow
+                                color="primary"
+                                page={currentTransactionsPage}
+                                total={transactionsPage}
+                                onChange={(page) => dispatch(setCurrentTransactionsPage(page))}
+                            />
+                        </div>
+                    ) : null
+                }
+            >
+                <KaniTableHeader>
+                    {headers.map((header) => (
+                        <KaniTableColumn key={header.key}>{header.label}</KaniTableColumn>
+                    ))}
+                </KaniTableHeader>
+                <KaniTableBody 
+                    loadingContent={<Spinner />}
+                    loadingState={queryTransactionsV2Swr.isLoading ? "loading" : "idle"}
+                    emptyContent={<EmptyContent description="We couldn&apos;t find any transactions." />}
                 >
-                    <KaniTableHeader>
-                        {headers.map((header) => (
-                            <KaniTableColumn key={header.key}>{header.label}</KaniTableColumn>
-                        ))}
-                    </KaniTableHeader>
-                    <KaniTableBody 
-                        loadingContent={<Spinner />}
-                        loadingState={queryTransactionsV2Swr.isLoading ? "loading" : "idle"}
-                        emptyContent={<EmptyContent description="We couldn&apos;t find any transactions." />}
-                    >
-                        {
-                            (
-                                transactions || []).map((transaction) => (
-                                <KaniTableRow key={transaction.id}>
-                                    <KaniTableCell>{renderType(transaction.type)}</KaniTableCell>
-                                    <KaniTableCell>{centerPad(transaction.txHash, 10, 6)}</KaniTableCell>
-                                    <KaniTableCell>{dayjs(transaction.timestamp).format("DD/MM/YYYY HH:mm:ss")}</KaniTableCell>
-                                    <KaniTableCell>
-                                        <KaniLink
-                                            href={explorerUrl(transaction)}
-                                            target="_blank"
-                                            color="secondary"
-                                        >
-                                            <ArrowSquareOutIcon
-                                                className="w-5 h-5"
-                                            />
-                                        </KaniLink>
-                                    </KaniTableCell>
-                                </KaniTableRow>
-                            ))
-                        }
-                    </KaniTableBody>
-                </KaniTable>
-            </KaniCardBody>
-        </KaniCard>
+                    {
+                        (
+                            transactions || []).map((transaction) => (
+                            <KaniTableRow key={transaction.id}>
+                                <KaniTableCell>{renderType(transaction.type)}</KaniTableCell>
+                                <KaniTableCell>{centerPad(transaction.txHash, 10, 6)}</KaniTableCell>
+                                <KaniTableCell>{dayjs(transaction.timestamp).format("DD/MM/YYYY HH:mm:ss")}</KaniTableCell>
+                                <KaniTableCell>
+                                    <KaniLink
+                                        href={explorerUrl(transaction)}
+                                        target="_blank"
+                                        color="secondary"
+                                    >
+                                        <ArrowSquareOutIcon
+                                            className="w-5 h-5"
+                                        />
+                                    </KaniLink>
+                                </KaniTableCell>
+                            </KaniTableRow>
+                        ))
+                    }
+                </KaniTableBody>
+            </KaniTable>
+        </div>
     )
 }
