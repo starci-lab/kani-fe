@@ -1,8 +1,10 @@
-import { TokenSchema } from "@/modules/types"
+import { TokenId, TokenSchema } from "@/modules/types"
 import React from "react"
 import { KaniAvatar, KaniCard, KaniCardBody, KaniChip, KaniLink, KaniSkeleton } from "../../../../../atomic"
 import { Spacer, cn } from "@heroui/react"
 import { TooltipTitle } from "@/components"
+import { useDepositDisclosure } from "@/hooks/singleton"
+import { useAppDispatch, setDepositModalTokenId } from "@/redux"
 
 export enum TokenCardType {
     TargetToken = "targetToken",
@@ -23,6 +25,8 @@ export const TokenCard = ({
     balanceAmount,
     isLoading
 }: TokenCardProps) => {
+    const dispatch = useAppDispatch()
+    const depositDisclosure = useDepositDisclosure()
     const renderChips = () => {
         switch (type) {
         case TokenCardType.TargetToken: {
@@ -63,9 +67,8 @@ export const TokenCard = ({
                         title: "text-xs text-foreground-500", 
                     }}
                     title="Usable Amount" 
-                    tooltipString="The usable amount of the token." 
                 />
-                <Spacer y={1} />
+                <Spacer y={2} />
                 {
                     isLoading ? (
                         <KaniSkeleton className="h-5 w-[50px] my-1 rounded-md"/>
@@ -77,9 +80,16 @@ export const TokenCard = ({
                         </div>
                     )   
                 }
+                <Spacer y={1} />
                 <KaniLink
                     color="primary"
                     className="cursor-pointer"
+                    onPress={
+                        () => {
+                            dispatch(setDepositModalTokenId(token?.displayId ?? TokenId.SolNative))
+                            depositDisclosure.onOpen()
+                        }
+                    }
                 >
                     <div className="text-xs">
                         Deposit

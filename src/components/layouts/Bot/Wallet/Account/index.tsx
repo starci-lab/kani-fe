@@ -24,8 +24,9 @@ import {
     ExplorerUrlType 
 } from "@/modules/blockchain"
 import { ArrowSquareOutIcon } from "@phosphor-icons/react"
-import { usePrivy, useFundWallet } from "@privy-io/react-auth"
+import { usePrivy } from "@privy-io/react-auth"
 import { useQueryBotSwr } from "@/hooks/singleton"
+import { useDepositDisclosure } from "@/hooks/singleton"
 
 export interface WalletAction {
     label: string
@@ -40,7 +41,7 @@ export const Account = () => {
     const bot = useAppSelector((state) => state.bot.bot)
     const chainAssets = useMemo(() => getChainAssets(bot?.chainId ?? ChainId.Solana), [bot?.chainId])
     const { exportWallet } = usePrivy()
-    const { fundWallet } = useFundWallet()
+    const depositDisclosure = useDepositDisclosure()
     const explorerUrl = useMemo(() => getExplorerUrl({
         chainId: bot?.chainId ?? ChainId.Solana,
         value: bot?.accountAddress ?? "",
@@ -55,16 +56,7 @@ export const Account = () => {
             color: "default",
             tooltip: "Generate a QR code or address to deposit funds into this bot.",
             onPress: () => {
-                if (!bot?.accountAddress) return
-                fundWallet(
-                    {
-                        address: bot.accountAddress,
-                        options: {
-                            chain: {
-                                id: 2,
-                            },
-                        },
-                    })
+                depositDisclosure.onOpen()
             },
         },
         {

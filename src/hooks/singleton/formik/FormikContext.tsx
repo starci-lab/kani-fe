@@ -7,6 +7,7 @@ import { useCreateBotFormikCore } from "./useCreateBotFormik"
 import { useSignInFormikCore } from "./useSignInFormik"
 import { useVerifyFormikCore } from "./useVerifyFormik"
 import { useUpdateBotLiquidityPoolsFormikCore } from "./useUpdateBotLiquidityPoolsFormik"
+import { useUpdateBotNameFormikCore } from "./useUpdateBotNameFormik"
 
 export interface FormikContextType {
     enableMFAFormik: ReturnType<typeof useEnableMFAFormikCore>
@@ -15,6 +16,7 @@ export interface FormikContextType {
     signInFormik: ReturnType<typeof useSignInFormikCore>
     verifyFormik: ReturnType<typeof useVerifyFormikCore>
     updateBotLiquidityPoolsFormik: ReturnType<typeof useUpdateBotLiquidityPoolsFormikCore>
+    updateBotNameFormik: ReturnType<typeof useUpdateBotNameFormikCore>
 }
 
 export const FormikContext = createContext<FormikContextType | null>(null)
@@ -27,6 +29,7 @@ export const FormikProvider = ({ children }: PropsWithChildren) => {
     const signInFormik = useSignInFormikCore()
     const verifyFormik = useVerifyFormikCore()
     const updateBotLiquidityPoolsFormik = useUpdateBotLiquidityPoolsFormikCore()
+    const updateBotNameFormik = useUpdateBotNameFormikCore()
     const value = useMemo(
         () => (
             {
@@ -35,14 +38,16 @@ export const FormikProvider = ({ children }: PropsWithChildren) => {
                 createBotFormik,
                 signInFormik,
                 verifyFormik,
-                updateBotLiquidityPoolsFormik
+                updateBotLiquidityPoolsFormik,
+                updateBotNameFormik
             }), [
             enableMFAFormik, 
             confirmTotpFormik, 
             createBotFormik, 
             signInFormik, 
             verifyFormik,
-            updateBotLiquidityPoolsFormik
+            updateBotLiquidityPoolsFormik,
+            updateBotNameFormik
         ]
     )
 

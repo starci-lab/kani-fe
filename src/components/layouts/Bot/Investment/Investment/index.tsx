@@ -48,24 +48,20 @@ export const Investment = () => {
     const staticSwr = useQueryStaticSwr()
     return (
         <div>
-            <div className="flex justify-between items-start">
-                <div>
-                    <TooltipTitle
-                        title="Investment"
-                    />
-                    <Spacer y={1} />
-                    <div className="text-3xl font-bold leading-none">
-                        {
-                            isLoading ? (
-                                <KaniSkeleton className="h-[30px] w-[120px] rounded-md"/>
-                            ) : (
-                                <div className="text-3xl font-bold leading-none">
-                                    ${numeral(queryFundingSnapshotV2Swr.data?.data?.fundingSnapshotV2?.data?.balanceIncludingGasInUsdc?.toString() || "0").format("0,0.00000")}
-                                </div>
-                            )}
-                    </div>
-                </div>
-                <IntervalTabs />
+            <TooltipTitle
+                title="Investment"
+            />
+            <Spacer y={3} />
+            <div className="flex justify-between items-center">
+                {
+                    isLoading ? (
+                        <KaniSkeleton className="h-[30px] w-[120px] rounded-md"/>
+                    ) : (
+                        <div className="text-4xl font-bold leading-none">
+                            ${numeral(queryFundingSnapshotV2Swr.data?.data?.fundingSnapshotV2?.data?.balanceIncludingGasInUsdc?.toString() || "0").format("0,0.00000")}
+                        </div>
+                    )}
+                <IntervalTabs />  
             </div>
             <EligibilityStatus />
             <Spacer y={4} />

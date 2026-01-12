@@ -7,6 +7,7 @@ export enum BotTab {
     Investment = "investment",
     Wallet = "wallet",
     Activity = "activity",
+    Settings = "settings",
 }
 
 export type UpdatePoolsFilters = Partial<{
@@ -114,6 +115,14 @@ export const botSlice = createSlice({
                 ...action.payload
             }
         },
+        setBotIsExitToUsdc: (state, action: PayloadAction<boolean>) => {
+            if (state.bot) {
+                state.bot = {
+                    ...state.bot,
+                    isExitToUsdc: action.payload,
+                }
+            }
+        }
     },
 })
 
@@ -136,5 +145,6 @@ export const {
     setBotsPageNumber,
     setCurrentTransactionsPage,
     setCurrentPositionsPage,
-    setUpdatePoolsFilters
+    setUpdatePoolsFilters,
+    setBotIsExitToUsdc
 } = botSlice.actions

@@ -3,53 +3,52 @@ import { use } from "react"
 import * as Yup from "yup"
 import { FormikContext } from "./FormikContext"
 import { runGraphQLWithToast } from "@/components/toasts"
-import { useUpdateBotLiquidityPoolsV2SwrMutation } from "../swr"
+import { useUpdateBotSettingsV2SwrMutation } from "../swr"
 import { useQueryBotV2Swr } from "../swr"
 import { useAppSelector } from "@/redux"
 
-export interface UpdateBotLiquidityPoolsFormikValues {
-    liquidityPoolIds: Array<string>
+export interface UpdateBotSettingsFormikValues {
+    name?: string;
 }
 
-const initialValues: UpdateBotLiquidityPoolsFormikValues = {
-    liquidityPoolIds: [],
+const initialValues: UpdateBotSettingsFormikValues = {
 }
 
 const validationSchema = Yup.object({
-    liquidityPoolIds: Yup.array().of(Yup.string()).required("Liquidity pool IDs are required"),
+    name: Yup.string().nullable().optional(),
 })
 
-export const useUpdateBotLiquidityPoolsFormikCore = () => {
+export const useUpdateBotNameFormikCore = () => {
     const botId = useAppSelector((state) => state.bot.bot?.id)
     const bot = useAppSelector((state) => state.bot.bot)
-    const updateBotLiquidityPoolsV2Mutation = useUpdateBotLiquidityPoolsV2SwrMutation()
+    const updateBotSettingsV2Mutation = useUpdateBotSettingsV2SwrMutation()
     const queryBotV2Swr = useQueryBotV2Swr()
-    const formik = useFormik<UpdateBotLiquidityPoolsFormikValues>({
+    const formik = useFormik<UpdateBotSettingsFormikValues>({
         initialValues: {
             ...initialValues,
-            liquidityPoolIds: bot?.liquidityPools ?? [],
+            name: bot?.name,
         },
         validationSchema,
         enableReinitialize: true,
         onSubmit: async (values, { resetForm }) => {
-            if (!values.liquidityPoolIds.length) {
-                throw new Error("Liquidity pool IDs are required")
+            if (!values.name) {
+                throw new Error("Name is required")
             }
             const success = await runGraphQLWithToast(
                 async () => {
                     if (!botId) {
                         throw new Error("Bot ID is required")
                     }
-                    const response = await updateBotLiquidityPoolsV2Mutation.trigger({
+                    const response = await updateBotSettingsV2Mutation.trigger({
                         request: {
                             id: botId,
-                            liquidityPoolIds: values.liquidityPoolIds,
+                            name: values.name,
                         },
                     })
-                    if (!response.data?.updateBotLiquidityPoolsV2) {
-                        throw new Error("Failed to update bot liquidity pools")
+                    if (!response.data?.updateBotSettingsV2) {
+                        throw new Error("Failed to update bot settings")
                     }
-                    return response.data?.updateBotLiquidityPoolsV2
+                    return response.data?.updateBotSettingsV2
                 }, 
                 {
                     showSuccessToast: true,
@@ -64,7 +63,7 @@ export const useUpdateBotLiquidityPoolsFormikCore = () => {
     return formik
 }
 
-export const useUpdateBotLiquidityPoolsFormik = () => {
-    const { updateBotLiquidityPoolsFormik } = use(FormikContext)!
-    return updateBotLiquidityPoolsFormik
+export const useUpdateBotNameFormik = () => {
+    const { updateBotNameFormik } = use(FormikContext)!
+    return updateBotNameFormik
 }

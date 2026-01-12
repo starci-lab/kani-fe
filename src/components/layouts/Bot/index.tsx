@@ -12,6 +12,7 @@ import { Activity } from "./Activity"
 import { useQueryBotV2Swr, useToggleBotV2SwrMutation } from "@/hooks/singleton"
 import { runGraphQLWithToast } from "@/components/toasts"
 import { BotAlert } from "./BotAlert"
+import { Settings } from "./Settings"
 
 export const Bot = () => {
     const tabs = [
@@ -26,7 +27,11 @@ export const Bot = () => {
         {
             key: BotTab.Activity,
             title: "Activity",
-        }   
+        },
+        {
+            key: BotTab.Settings,
+            title: "Settings",
+        },
     ]
     const bot = useAppSelector((state) => state.bot.bot)
     const tab = useAppSelector((state) => state.bot.tab)
@@ -41,6 +46,8 @@ export const Bot = () => {
             return <Wallet />
         case BotTab.Activity:
             return <Activity />
+        case BotTab.Settings:
+            return <Settings />
         }
     }
     return (
@@ -51,7 +58,7 @@ export const Bot = () => {
                         queryBotV2Swr.isLoading ? (
                             <Skeleton className="w-24 h-8 rounded-md" />
                         ) : (
-                            <div className="text-2xl font-bold">{bot?.name}</div>
+                            <div className="text-2xl font-bold leading-none">{bot?.name}</div>
                         )}
                     {
                         bot?.running && (
@@ -59,65 +66,67 @@ export const Bot = () => {
                         )
                     }
                 </div>
-                {bot?.running ? (
-                    <KaniButton
-                        startContent={<StopIcon />}
-                        color="primary"
-                        onPress={
-                            async () => {
-                                await runGraphQLWithToast(
-                                    async () => {
-                                        const response = await toggleBotV2SwrMutation.trigger({
-                                            request: {
-                                                id: bot?.id ?? "",
-                                                running: false,
-                                            },
-                                        })  
-                                        if (!response.data?.toggleBotV2) {
-                                            throw new Error("Failed to toggle bot v2")
+                <div className="flex items-center gap-2">
+                    {bot?.running ? (
+                        <KaniButton
+                            startContent={<StopIcon />}
+                            color="primary"
+                            onPress={
+                                async () => {
+                                    await runGraphQLWithToast(
+                                        async () => {
+                                            const response = await toggleBotV2SwrMutation.trigger({
+                                                request: {
+                                                    id: bot?.id ?? "",
+                                                    running: false,
+                                                },
+                                            })  
+                                            if (!response.data?.toggleBotV2) {
+                                                throw new Error("Failed to toggle bot v2")
+                                            }
+                                            // refetch bot
+                                            await queryBotV2Swr.mutate()
+                                            return response.data.toggleBotV2
+                                        }, {
+                                            showSuccessToast: true,
+                                            showErrorToast: true,
                                         }
-                                        // refetch bot
-                                        await queryBotV2Swr.mutate()
-                                        return response.data.toggleBotV2
-                                    }, {
-                                        showSuccessToast: true,
-                                        showErrorToast: true,
-                                    }
-                                )
+                                    )
+                                }
                             }
-                        }
-                    >
+                        >
             Stop Bot
-                    </KaniButton>
-                ) : (
-                    <KaniButton
-                        startContent={<PlayIcon />}
-                        color="primary"
-                        onPress={
-                            async () => {
-                                await runGraphQLWithToast(
-                                    async () => {
-                                        const response = await toggleBotV2SwrMutation.trigger({
-                                            request: {
-                                                id: bot?.id ?? "",
-                                                running: true,
-                                            },
+                        </KaniButton>
+                    ) : (
+                        <KaniButton
+                            startContent={<PlayIcon />}
+                            color="primary"
+                            onPress={
+                                async () => {
+                                    await runGraphQLWithToast(
+                                        async () => {
+                                            const response = await toggleBotV2SwrMutation.trigger({
+                                                request: {
+                                                    id: bot?.id ?? "",
+                                                    running: true,
+                                                },
+                                            })
+                                            if (!response.data?.toggleBotV2) {
+                                                throw new Error("Failed to toggle bot")
+                                            }
+                                            // refetch bot
+                                            await queryBotV2Swr.mutate()
+                                            return response.data.toggleBotV2
+                                        }, {
+                                            showSuccessToast: true,
+                                            showErrorToast: true,
                                         })
-                                        if (!response.data?.toggleBotV2) {
-                                            throw new Error("Failed to toggle bot")
-                                        }
-                                        // refetch bot
-                                        await queryBotV2Swr.mutate()
-                                        return response.data.toggleBotV2
-                                    }, {
-                                        showSuccessToast: true,
-                                        showErrorToast: true,
-                                    })
-                            }}
-                    >
+                                }}
+                        >
             Run Bot
-                    </KaniButton>
-                )}
+                        </KaniButton>
+                    )}
+                </div>
             </div>
             <Spacer y={6} />
             <BotAlert />
