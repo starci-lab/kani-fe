@@ -2,7 +2,7 @@ import { useFormik } from "formik"
 import { use } from "react"
 import * as Yup from "yup"
 import { FormikContext } from "./FormikContext"
-import { ChainId, LiquidityPoolId, TokenId } from "@/modules/types"
+import { ChainId } from "@/modules/types"
 import { useCreateBotV2SwrMutation } from "../swr"
 import { runGraphQLWithToast } from "@/components/toasts"
 import { useRouter } from "next/navigation"
@@ -12,9 +12,9 @@ export interface CreateBotFormikValues {
     name: string
     chainId: ChainId
     isTargetTokenSelected: boolean
-    targetTokenId?: TokenId
-    quoteTokenId?: TokenId
-    liquidityPoolIds: Array<LiquidityPoolId>
+    targetTokenId?: string
+    quoteTokenId?: string
+    liquidityPoolIds: Array<string>
     isExitToUsdc: boolean
 }
 

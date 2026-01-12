@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
-import { BotSchema, DexId, PositionSchema, TransactionSchema } from "@/modules/types"
+import { BotSchema, PositionSchema, TransactionSchema } from "@/modules/types"
 import { QueryHistoryResponse } from "@/modules"
 import { ChartInterval, ChartUnit, LiquidityPools2SortBy } from "@/modules/api"
 
@@ -11,7 +11,7 @@ export enum BotTab {
 }
 
 export type UpdatePoolsFilters = Partial<{
-    dexIds?: Array<DexId>
+    dexIds?: Array<string>
     sortBy?: LiquidityPools2SortBy
     asc?: boolean
     watchlist?: boolean

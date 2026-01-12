@@ -17,7 +17,7 @@ export const DexSelect = ({ dexes, selectedKeys, onSelectionChange }: DexSelectP
             className="w-[150px]"
         >
             {dexes.map((dex) => (
-                <KaniSelectItem key={dex.displayId} startContent={<KaniImage src={dex.iconUrl} radius="full" className="w-5 h-5" />}>
+                <KaniSelectItem key={dex.id} startContent={<KaniImage src={dex.iconUrl} radius="full" className="w-5 h-5" />}>
                     {dex.name}
                 </KaniSelectItem>
             ))}

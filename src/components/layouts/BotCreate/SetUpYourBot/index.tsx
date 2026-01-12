@@ -15,8 +15,8 @@ export const SetUpYourBot = () => {
     return (
         <div>
             <div className="text-2xl font-bold">Set Up Your Bot</div>
-            <Spacer y={12} />
-            <div className="flex flex-col gap-4">
+            <Spacer y={6} />
+            <div className="flex flex-col gap-3">
                 <TooltipTitle
                     title="Bot Name"
                     tooltipString="This is the name of your bot"
@@ -32,10 +32,9 @@ export const SetUpYourBot = () => {
                 />
             </div>
             <Spacer y={6} />
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-3">
                 <TooltipTitle
                     title="Chain"
-                    tooltipString="This is the chain of your bot"
                     isRequired
                 />
                 <div className="w-fit">
@@ -57,7 +56,7 @@ export const SetUpYourBot = () => {
                 <div className="text-xs text-foreground-500">
                 If enabled, your bot will automatically move to USDC when a major price drop is detected.
                 </div>
-                <Spacer y={4} />
+                <Spacer y={3} />
                 <KaniSwitch
                     isSelected={formik.values.isExitToUsdc}
                     onValueChange={(value) => formik.setFieldValue("isExitToUsdc", value)}

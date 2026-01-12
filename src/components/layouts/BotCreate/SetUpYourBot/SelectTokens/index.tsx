@@ -19,10 +19,10 @@ export const SelectTokens = () => {
                 tooltipString="This is the tokens of your bot"
                 isRequired
             />
-            <Spacer y={4} />
+            <Spacer y={3} />
             <KaniAlert
                 variant="flat"
-                color="secondary"
+                color="default"
                 title="How Target and Quote Tokens Work"
                 description={
                     <div>
@@ -34,11 +34,12 @@ export const SelectTokens = () => {
                     </div>
                 }
             />
-            <Spacer y={4} />
+            <Spacer y={3} />
             <div className="flex items-center gap-4">
                 <div className="flex flex-col gap-2">
                     <KaniButton
                         variant="flat"
+                        color="primary"
                         onPress={() => {
                             formik.setFieldValue("isTargetTokenSelected", true)
                             onOpen()
@@ -58,6 +59,7 @@ export const SelectTokens = () => {
                 <div className="flex flex-col gap-2">
                     <KaniButton
                         variant="flat"
+                        color="secondary"
                         onPress={() => {
                             formik.setFieldValue("isTargetTokenSelected", false)
                             onOpen()

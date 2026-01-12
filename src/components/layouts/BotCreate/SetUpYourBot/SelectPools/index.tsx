@@ -37,7 +37,7 @@ export const SelectPools = () => {
                     </>
                 ) : (
                     <div>
-                        <Spacer y={4} />
+                        <Spacer y={3} />
                         <div className="flex flex-col gap-3">
                             {selectedLiquidityPools.map((liquidityPool) => (
                                 <PoolCard
@@ -53,7 +53,7 @@ export const SelectPools = () => {
                     </div>
                 )}
             </div>
-            <Spacer y={4} />
+            <Spacer y={3} />
             <div className="flex items-center gap-2">
                 <KaniButton
                     isDisabled={

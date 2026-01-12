@@ -1,13 +1,15 @@
-import React from "react";
-import { TokenSchema } from "@/modules/types";
+import React from "react"
+import { TokenSchema } from "@/modules/types"
 import {
-  KaniAvatar,
-  KaniCard,
-  KaniCardBody,
-  KaniSnippet,
-} from "@/components/atomic";
-import { centerPad } from "@/modules/utils";
-import { cn } from "@heroui/react";
+    KaniAvatar,
+    KaniCard,
+    KaniCardBody,
+    KaniBadge,
+} from "@/components/atomic"
+import { centerPad } from "@/modules/utils"
+import { cn } from "@heroui/react"
+import { SnippetIcon } from "../SnippetIcon"
+import { SealCheckIcon } from "@phosphor-icons/react"
 
 export interface TokenCardProps {
   token: TokenSchema;
@@ -19,60 +21,84 @@ export interface TokenCardProps {
 }
 
 export const TokenCard = ({
-  token,
-  onSelect,
-  isSelected,
-  isOtherSideSelected,
-  isDisabled,
-  isPrimarySide,
+    token,
+    onSelect,
+    isSelected,
+    isOtherSideSelected,
+    isDisabled,
+    isPrimarySide,
 }: TokenCardProps) => {
-  return (
-    <KaniCard
-      isDisabled={isDisabled}
-      onPress={() => onSelect(token)}
-      isPressable={!isDisabled}
-      shadow="none"
-      className={cn(
-        "border border-default",
-        isPrimarySide ?
-        {
-            "border-primary": isSelected,
-            "border-secondary": isOtherSideSelected,
-        } :
-        {
-            "border-secondary": isSelected,
-            "border-primary": isOtherSideSelected,
-        }
-      )}
-    >
-      <KaniCardBody>
-        <div className="flex justify-between items-center">
-          <div className="flex items-center gap-2 grid grid-cols-3">
-            <div className="flex items-center gap-2">
-              <KaniAvatar
-                src={token.iconUrl}
-                classNames={{
-                  base: "w-10 h-10 min-w-10 min-h-10",
-                }}
-                radius="full"
-              />
-              <div className="flex flex-col gap-1">
-                <div className="text-sm">{token.name}</div>
-                <div className="text-xs text-foreground-500">
-                  {token.symbol}
-                </div>
-              </div>
-            </div>
-          </div>
-          {token.tokenAddress && (
-            <>
-              <KaniSnippet codeString={token.tokenAddress} hideSymbol>
-                {centerPad(token.tokenAddress, 6, 4)}
-              </KaniSnippet>
-            </>
-          )}
-        </div>
-      </KaniCardBody>
-    </KaniCard>
-  );
-};
+    const renderContent = () => {
+        return (
+            <KaniCard
+                isDisabled={isDisabled}
+                onPress={() => onSelect(token)}
+                isPressable={!isDisabled}
+                shadow="none"
+                className={cn(
+                    "bg-content2 w-full",
+                    isPrimarySide ?
+                        {
+                            "ring-2 ring-primary": isSelected,
+                            "ring-2 ring-secondary": isOtherSideSelected,
+                        } :
+                        {
+                            "ring-2 ring-secondary": isSelected,
+                            "ring-2 ring-primary": isOtherSideSelected,
+                        }
+                )}
+            >
+                <KaniCardBody>
+                    <div className="flex justify-between items-center">
+                        <div className="flex items-center gap-2 grid grid-cols-3">
+                            <div className="flex items-center gap-2">
+                                <KaniAvatar
+                                    src={token.iconUrl}
+                                    classNames={{
+                                        base: "w-10 h-10 min-w-10 min-h-10",
+                                    }}
+                                    radius="full"
+                                />
+                                <div className="flex flex-col gap-1">
+                                    <div className="text-sm">{token.name}</div>
+                                    <div className="text-xs text-foreground-500">
+                                        {token.symbol}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {token.tokenAddress && (
+                            <div className="flex items-center gap-2"  
+                                onClick={
+                                    (event) => {
+                                        event.stopPropagation()
+                                    }
+                                }>
+                                <div className="text-sm text-foreground-500">{centerPad(token.tokenAddress, 6, 4)}</div>
+                                <SnippetIcon copyString={token.tokenAddress ?? ""} classNames={{ checkIcon: "w-5 h-5 text-foreground-500", copyIcon: "w-5 h-5 text-foreground-500" }}/>
+                            </div>
+                        )}
+                    </div>
+                </KaniCardBody>
+            </KaniCard>
+        )
+    }
+    return (
+        isSelected || isOtherSideSelected ? (
+            <KaniBadge content={
+                <SealCheckIcon weight="fill" className={
+                    cn(
+                        "w-8 h-8 min-w-8 min-h-8 max-w-8 max-h-8 text-primary", {
+                            "text-primary": isSelected,
+                            "text-secondary": isOtherSideSelected,
+                        }
+                    )
+                } />
+            } placement="top-left" classNames={{
+                badge: "top-1 left-1 min-w-4 min-h-4 max-w-4 max-h-4 bg-foreground border-none",
+            }}>
+                {renderContent()}
+            </KaniBadge>
+        ) : renderContent()
+    )
+}

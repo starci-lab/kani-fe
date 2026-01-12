@@ -8,38 +8,30 @@ import {
     KaniDrawerHeader 
 } from "../../atomic"
 import React, { useMemo } from "react"
-import { useQueryLiquidityPools2UpdatePoolsSwr, useUpdatePoolsDisclosure } from "@/hooks/singleton"
+import { useQueryLiquidityPools2SelectPoolsSwr, useSelectPoolsDisclosure } from "@/hooks/singleton"
 import { Spacer } from "@heroui/react"
-import { setUpdatePoolsFilters, useAppDispatch, useAppSelector } from "@/redux"
+import { setSelectPoolsFilters, setUpdatePoolsFilters, useAppDispatch, useAppSelector } from "@/redux"
 import { DexSelect, EmptyContent, PoolCard, PoolCardSkeleton, SortByDropdown, TextCheckbox, TextSwitch } from "../../reuseable"
 import { ArrowClockwiseIcon } from "@phosphor-icons/react"
 import { LiquidityPools2SortBy } from "@/modules/api"
-import { useUpdateBotLiquidityPoolsFormik } from "@/hooks/singleton"
-
-export const UpdatePoolsDrawer = () => {
-    const { isOpen, onOpenChange } = useUpdatePoolsDisclosure()
+import { useCreateBotFormik } from "@/hooks/singleton"
+export const SelectPoolsDrawer = () => {
+    const { isOpen, onOpenChange } = useSelectPoolsDisclosure()
     const dexes = useAppSelector(state => state.static.dexes)
-    const bot = useAppSelector(state => state.bot.bot)
-    const updatePoolsFilters = useAppSelector(state => state.bot.updatePoolsFilters)
-    const { data, isLoading } = useQueryLiquidityPools2UpdatePoolsSwr()
+    const selectPoolsFilters = useAppSelector(state => state.createBot.selectPoolsFilters)
+    const { data, isLoading } = useQueryLiquidityPools2SelectPoolsSwr()
+    const createBotFormik = useCreateBotFormik()
     const filteredDexes = useMemo(() => {
-        if (!bot) {
-            return []
-        }
-        return dexes.filter(dex => dex?.chainIds?.includes(bot?.chainId))
-    }, [dexes, bot])
+        return dexes.filter(dex => dex?.chainIds?.includes(createBotFormik.values.chainId))
+    }, [dexes, selectPoolsFilters.liquidityPools])
     const dispatch = useAppDispatch()
-    const updateBotLiquidityPoolsFormik = useUpdateBotLiquidityPoolsFormik()
-    const isNoPoolsSelected = useMemo(() => {
-        return updateBotLiquidityPoolsFormik.values.liquidityPoolIds.length === 0
-    }, [updateBotLiquidityPoolsFormik.values.liquidityPoolIds])
     return (
         <KaniDrawer 
             isOpen={isOpen} 
             onOpenChange={onOpenChange} 
             onClose={
                 () => {
-                    updateBotLiquidityPoolsFormik.resetForm()
+                    createBotFormik.resetForm()
                 }
             }
         >
@@ -53,25 +45,26 @@ export const UpdatePoolsDrawer = () => {
                             <div className="flex gap-4 items-center justify-between">
                                 <TextCheckbox
                                     text="Watchlist"
-                                    isSelected={updatePoolsFilters?.watchlist ?? false}
+                                    isSelected={selectPoolsFilters?.watchlist ?? false}
                                     onValueChange={(value) => {
                                         dispatch(
-                                            setUpdatePoolsFilters({
-                                                ...updatePoolsFilters,
+                                            setSelectPoolsFilters({
+                                                ...selectPoolsFilters,
                                                 watchlist: value
-                                            }))
+                                            }
+                                            )
+                                        )
                                     }}
                                 />
                                 <div className="flex gap-2 items-center">
                                     <TextSwitch
                                         text="Incentivized"
-                                        isSelected={updatePoolsFilters?.incentivized ?? true}
+                                        isSelected={selectPoolsFilters?.incentivized ?? true}
                                         onValueChange={(value) => {
-                                            dispatch(
-                                                setUpdatePoolsFilters({
-                                                    ...updatePoolsFilters,
-                                                    incentivized: value
-                                                }))
+                                            dispatch(setSelectPoolsFilters({
+                                                ...selectPoolsFilters,
+                                                incentivized: value
+                                            }))
                                         }}
                                     />
                                 </div>
@@ -84,11 +77,11 @@ export const UpdatePoolsDrawer = () => {
                             <div className="flex justify-between items-center gap-4">
                                 <DexSelect  
                                     dexes={filteredDexes} selectedKeys={
-                                        new Set(updatePoolsFilters.dexIds ?? [])} 
+                                        new Set(selectPoolsFilters.dexIds ?? [])} 
                                     onSelectionChange={(keys) => {
                                         dispatch(
-                                            setUpdatePoolsFilters({
-                                                ...updatePoolsFilters,
+                                            setSelectPoolsFilters({
+                                                ...selectPoolsFilters,
                                                 dexIds: [...keys] as Array<string>
                                             }
                                             )
@@ -98,14 +91,14 @@ export const UpdatePoolsDrawer = () => {
                                 />
                                 <div className="flex items-center gap-2">
                                     <SortByDropdown 
-                                        sortBy={updatePoolsFilters?.sortBy ?? LiquidityPools2SortBy.Apr} asc={updatePoolsFilters?.asc ?? true} onSortByChange={(sortBy) => {
-                                            dispatch(setUpdatePoolsFilters({
-                                                ...updatePoolsFilters,
+                                            sortBy={selectPoolsFilters?.sortBy ?? LiquidityPools2SortBy.Apr} asc={selectPoolsFilters?.asc ?? true} onSortByChange={(sortBy) => {
+                                            dispatch(setSelectPoolsFilters({
+                                                ...selectPoolsFilters,
                                                 sortBy
                                             }))
                                         }} onAscChange={(asc) => {
-                                            dispatch(setUpdatePoolsFilters({
-                                                ...updatePoolsFilters,
+                                            dispatch(setSelectPoolsFilters({
+                                                ...selectPoolsFilters,
                                                 asc
                                             }))
                                         }} 
@@ -136,18 +129,18 @@ export const UpdatePoolsDrawer = () => {
                                                 key={liquidityPool.id} 
                                                 className="bg-content2"
                                                 liquidityPool={liquidityPool} 
-                                                isSelected={updateBotLiquidityPoolsFormik.values.liquidityPoolIds.includes(liquidityPool.id)}
+                                                isSelected={createBotFormik.values.liquidityPoolIds.includes(liquidityPool.id)}
                                                 onPress={
                                                     (liquidityPool) => {
-                                                        if (updateBotLiquidityPoolsFormik.values.liquidityPoolIds.includes(liquidityPool.id)) {
-                                                            updateBotLiquidityPoolsFormik.setFieldValue(
+                                                        if (createBotFormik.values.liquidityPoolIds.includes(liquidityPool.id)) {
+                                                            createBotFormik.setFieldValue(
                                                                 "liquidityPoolIds", 
-                                                                updateBotLiquidityPoolsFormik.values.liquidityPoolIds.filter((id) => id !== liquidityPool.id)
+                                                                createBotFormik.values.liquidityPoolIds.filter((id) => id !== liquidityPool.id)
                                                             )
                                                         } else {
-                                                            updateBotLiquidityPoolsFormik.setFieldValue(
+                                                            createBotFormik.setFieldValue(
                                                                 "liquidityPoolIds", 
-                                                                [...(updateBotLiquidityPoolsFormik.values.liquidityPoolIds ?? []), liquidityPool.id]
+                                                                [...(createBotFormik.values.liquidityPoolIds ?? []), liquidityPool.id]
                                                             )
                                                         }
                                                     }}
@@ -165,16 +158,16 @@ export const UpdatePoolsDrawer = () => {
                 </KaniDrawerBody>
                 <KaniDrawerFooter>
                     <KaniButton 
-                        isDisabled={isNoPoolsSelected} 
+                        isDisabled={createBotFormik.values.liquidityPoolIds.length === 0} 
                         color="primary" 
                         fullWidth 
                         onPress={() => {
-                            updateBotLiquidityPoolsFormik.submitForm()
+                            createBotFormik.submitForm()
                         }}
-                        isLoading={updateBotLiquidityPoolsFormik.isSubmitting}
+                        isLoading={createBotFormik.isSubmitting}
                     >
                         {
-                            isNoPoolsSelected ? "Select pools to continue" : "Confirm"
+                            createBotFormik.values.liquidityPoolIds.length === 0 ? "Select pools to continue" : "Confirm"
                         }
                     </KaniButton>
                 </KaniDrawerFooter>

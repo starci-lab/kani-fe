@@ -1,8 +1,6 @@
 import {
-    DexId,
     LiquidityPoolId,
     LiquidityPoolSchema,
-    TokenId,
 } from "@/modules/types"
 import { noCacheClient } from "../clients"
 import {
@@ -74,11 +72,11 @@ export interface QueryLiquidityPools2Request {
     filters: Partial<{
         pageNumber: number;
         limit: number;
-        tokenIds: Array<TokenId>;
+        tokenIds: Array<string>;
         ids: Array<string>;
         displayIds: Array<LiquidityPoolId>;
         addresses: Array<string>;
-        dexIds: Array<DexId>;
+        dexIds: Array<string>;
         sortBy: LiquidityPools2SortBy;
         asc: boolean;
         watchlist: boolean;

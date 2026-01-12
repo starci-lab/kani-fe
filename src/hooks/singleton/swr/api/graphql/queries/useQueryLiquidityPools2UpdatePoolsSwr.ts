@@ -37,8 +37,8 @@ export const useQueryLiquidityPools2UpdatePoolsSwrCore = () => {
                             asc: updatePoolsFilters.asc,
                             pageNumber: updatePoolsFilters.pageNumber,
                             tokenIds: [
-                                targetToken.displayId, 
-                                quoteToken.displayId
+                                targetToken.id, 
+                                quoteToken.id
                             ],
                         },
                     } 

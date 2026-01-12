@@ -15,6 +15,7 @@ import {
     botReducer,
     verifyModalReducer,
     depositModalReducer,
+    createBotReducer,
 } from "./slices"
 
 export const store = configureStore({
@@ -31,6 +32,7 @@ export const store = configureStore({
             bots: botsReducer,
         }),
         bot: botReducer,
+        createBot: createBotReducer,
         modals: combineReducers({
             deposit: depositModalReducer,
             signIn: signInModalReducer,
