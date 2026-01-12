@@ -5,6 +5,6 @@ import { DiscloresureContext } from "./DiscloresureContext"
 export const useConfirmTOTPDisclosureCore = () => useDisclosure()
 
 export const useConfirmTOTPDisclosure = () => {
-    const { confirmTOTPModal } = use(DiscloresureContext)!
-    return confirmTOTPModal
+    const { confirmTOTP } = use(DiscloresureContext)!
+    return confirmTOTP
 }

@@ -12,10 +12,10 @@ import {
     KaniImage,
 } from "../../atomic"
 import { Divider, Spacer } from "@heroui/react"
-import { useConnectModalDisclosure } from "@/hooks/singleton"
+import { useConnectDisclosure } from "@/hooks/singleton"
 
 export const ConnectModal = () => {
-    const { isOpen, onOpenChange } = useConnectModalDisclosure()
+    const { isOpen, onOpenChange } = useConnectDisclosure()
     return (
         <KaniModal isOpen={isOpen} onOpenChange={onOpenChange}>
             <KaniModalContent>

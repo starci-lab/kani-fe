@@ -5,6 +5,6 @@ import { DiscloresureContext } from "./DiscloresureContext"
 export const useUpdateExplorerDisclosureCore = () => useDisclosure()
 
 export const useUpdateExplorerDisclosure = () => {
-    const { updateExplorerModal } = use(DiscloresureContext)!
-    return updateExplorerModal
+    const { updateExplorer } = use(DiscloresureContext)!
+    return updateExplorer
 }

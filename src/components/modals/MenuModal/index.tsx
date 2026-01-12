@@ -7,7 +7,7 @@ import {
     KaniListbox, 
     KaniListboxItem,
 } from "../../atomic"
-import { useMenuModalDisclosure } from "@/hooks/singleton"
+import { useMenuDisclosure } from "@/hooks/singleton"
 import React from "react"
 import { SwitchThemeButton } from "../../reuseable"
 import { Spacer, LinkIcon } from "@heroui/react"
@@ -16,7 +16,7 @@ import { setSidebarTab, SidebarTab, useAppDispatch, useAppSelector } from "@/red
 import { RobotIcon, UserIcon, BookIcon, LifebuoyIcon } from "@phosphor-icons/react"
 
 export const MenuModal = () => {
-    const { isOpen, onOpenChange } = useMenuModalDisclosure()
+    const { isOpen, onOpenChange } = useMenuDisclosure()
     const sidebarTab = useAppSelector((state) => state.routes.sidebarTab)
     const dispatch = useAppDispatch()
     const tabs1: Array<SidebarItem> = [

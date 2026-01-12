@@ -5,6 +5,6 @@ import { DiscloresureContext } from "./DiscloresureContext"
 export const useSignInDisclosureCore = () => useDisclosure() 
 
 export const useSignInDisclosure = () => {
-    const { signInModal } = use(DiscloresureContext)!
-    return signInModal
+    const { signIn } = use(DiscloresureContext)!
+    return signIn
 }

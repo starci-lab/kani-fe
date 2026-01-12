@@ -71,6 +71,7 @@ const query1 = gql`
             description
             website
             iconUrl
+            chainIds
         }
     } 
     accountLimits {

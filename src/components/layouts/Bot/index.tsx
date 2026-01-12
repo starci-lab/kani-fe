@@ -9,7 +9,7 @@ import { Spacer, Tabs, Tab, Skeleton } from "@heroui/react"
 import { BotTab } from "@/redux"
 import { Wallet } from "./Wallet"
 import { Activity } from "./Activity"
-import { useQueryBotSwr, useToggleBotSwrMutation } from "@/hooks/singleton"
+import { useQueryBotV2Swr, useToggleBotV2SwrMutation } from "@/hooks/singleton"
 import { runGraphQLWithToast } from "@/components/toasts"
 import { BotAlert } from "./BotAlert"
 
@@ -31,8 +31,8 @@ export const Bot = () => {
     const bot = useAppSelector((state) => state.bot.bot)
     const tab = useAppSelector((state) => state.bot.tab)
     const dispatch = useAppDispatch()
-    const toggleBotSwrMutation = useToggleBotSwrMutation()
-    const queryBotSwr = useQueryBotSwr()
+    const toggleBotV2SwrMutation = useToggleBotV2SwrMutation()
+    const queryBotV2Swr = useQueryBotV2Swr()
     const renderTab = () => {
         switch (tab) {
         case BotTab.Investment:
@@ -48,7 +48,7 @@ export const Bot = () => {
             <div className="flex justify-between items-center">
                 <div className="flex items-center gap-2">
                     {
-                        queryBotSwr.isLoading ? (
+                        queryBotV2Swr.isLoading ? (
                             <Skeleton className="w-24 h-8 rounded-md" />
                         ) : (
                             <div className="text-2xl font-bold">{bot?.name}</div>
@@ -67,18 +67,18 @@ export const Bot = () => {
                             async () => {
                                 await runGraphQLWithToast(
                                     async () => {
-                                        const response = await toggleBotSwrMutation.trigger({
+                                        const response = await toggleBotV2SwrMutation.trigger({
                                             request: {
                                                 id: bot?.id ?? "",
                                                 running: false,
                                             },
                                         })  
-                                        if (!response.data?.toggleBot) {
-                                            throw new Error("Failed to toggle bot")
+                                        if (!response.data?.toggleBotV2) {
+                                            throw new Error("Failed to toggle bot v2")
                                         }
                                         // refetch bot
-                                        await queryBotSwr.mutate()
-                                        return response.data.toggleBot
+                                        await queryBotV2Swr.mutate()
+                                        return response.data.toggleBotV2
                                     }, {
                                         showSuccessToast: true,
                                         showErrorToast: true,
@@ -97,18 +97,18 @@ export const Bot = () => {
                             async () => {
                                 await runGraphQLWithToast(
                                     async () => {
-                                        const response = await toggleBotSwrMutation.trigger({
+                                        const response = await toggleBotV2SwrMutation.trigger({
                                             request: {
                                                 id: bot?.id ?? "",
                                                 running: true,
                                             },
                                         })
-                                        if (!response.data?.toggleBot) {
+                                        if (!response.data?.toggleBotV2) {
                                             throw new Error("Failed to toggle bot")
                                         }
                                         // refetch bot
-                                        await queryBotSwr.mutate()
-                                        return response.data.toggleBot
+                                        await queryBotV2Swr.mutate()
+                                        return response.data.toggleBotV2
                                     }, {
                                         showSuccessToast: true,
                                         showErrorToast: true,

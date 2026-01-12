@@ -1,13 +1,22 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
-import { BotSchema, PositionSchema, TransactionSchema } from "@/modules/types"
+import { BotSchema, DexId, PositionSchema, TransactionSchema } from "@/modules/types"
 import { QueryHistoryResponse } from "@/modules"
-import { ChartInterval, ChartUnit } from "@/modules/api"
+import { ChartInterval, ChartUnit, LiquidityPools2SortBy } from "@/modules/api"
 
 export enum BotTab {
     Investment = "investment",
     Wallet = "wallet",
     Activity = "activity",
 }
+
+export type UpdatePoolsFilters = Partial<{
+    dexIds?: Array<DexId>
+    sortBy?: LiquidityPools2SortBy
+    asc?: boolean
+    watchlist?: boolean
+    pageNumber?: number
+    incentivized?: boolean
+}>
 
 export interface BotSlice {
     id?: string
@@ -27,11 +36,19 @@ export interface BotSlice {
     selectedPosition?: PositionSchema
     bots?: Array<BotSchema>
     pageNumber?: number
+    updatePoolsFilters: UpdatePoolsFilters
 }
 
 const initialState: BotSlice = {
     tab: BotTab.Wallet,
     chartInterval: ChartInterval.OneHour,
+    updatePoolsFilters: {
+        asc: false,
+        sortBy: LiquidityPools2SortBy.Apr,
+        pageNumber: 1,
+        watchlist: false,
+        incentivized: false,
+    },
 }
 
 export const botSlice = createSlice({
@@ -89,6 +106,13 @@ export const botSlice = createSlice({
         setBotsPageNumber: (state, action: PayloadAction<number>) => {
             state.pageNumber = action.payload
         },
+        setUpdatePoolsFilters: (state, action: PayloadAction<UpdatePoolsFilters>) => {
+            // update partial filters
+            state.updatePoolsFilters = {
+                ...state.updatePoolsFilters,
+                ...action.payload
+            }
+        },
     },
 })
 
@@ -110,5 +134,6 @@ export const {
     setBots,
     setBotsPageNumber,
     setCurrentTransactionsPage,
-    setCurrentPositionsPage
+    setCurrentPositionsPage,
+    setUpdatePoolsFilters
 } = botSlice.actions

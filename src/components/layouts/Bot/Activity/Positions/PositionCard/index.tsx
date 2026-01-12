@@ -12,7 +12,7 @@ import { setSelectedPosition, useAppDispatch, useAppSelector } from "@/redux"
 import { computePercentage, roundNumber } from "@/modules/utils"
 import { Spacer } from "@heroui/react"
 import Decimal from "decimal.js"
-import { usePositionModalDisclosure } from "@/hooks/singleton"
+import { usePositionDisclosure } from "@/hooks/singleton"
 
 export interface PositionCardProps {
     position: PositionSchema
@@ -35,7 +35,7 @@ export const PositionCard = ({ position }: PositionCardProps) => {
         const roi = new Decimal(roundNumber(position.roi ?? 0)).toNumber()
         return [roi, new Decimal(roi).isPositive()]
     }, [position.roi])
-    const { onOpen } = usePositionModalDisclosure()
+    const { onOpen } = usePositionDisclosure()
     const tokenPrices = useAppSelector((state) => state.socket.tokenPrices)
 
     const targetTokenPrice = useMemo(() => {

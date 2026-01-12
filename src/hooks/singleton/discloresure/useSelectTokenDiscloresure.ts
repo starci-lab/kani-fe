@@ -5,6 +5,6 @@ import { DiscloresureContext } from "./DiscloresureContext"
 export const useSelectTokenDisclosureCore = () => useDisclosure()
 
 export const useSelectTokenDisclosure = () => {
-    const { selectTokenModal } = use(DiscloresureContext)!
-    return selectTokenModal
+    const { selectToken } = use(DiscloresureContext)!
+    return selectToken
 }

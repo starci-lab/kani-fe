@@ -5,6 +5,6 @@ import { DiscloresureContext } from "./DiscloresureContext"
 export const useUpdateRpcsDisclosureCore = () => useDisclosure()
 
 export const useUpdateRpcsDisclosure = () => {
-    const { updateRpcsModal } = use(DiscloresureContext)!
-    return updateRpcsModal
+    const { updateRpcs } = use(DiscloresureContext)!
+    return updateRpcs
 }

@@ -1,71 +1,75 @@
 "use client"
 import React, { PropsWithChildren } from "react"
 import { createContext } from "react"
-import { useConnectModalDisclosureCore } from "./useConnectModalDiscloresure"
-import { useExportPrivateKeyModalDisclosureCore } from "./useExportPrivateKeyDiscloresure"
+import { useConnectDisclosureCore } from "./useConnectDiscloresure"
+import { useExportPrivateKeyDisclosureCore } from "./useExportPrivateKeyDiscloresure"
 import { useConfirmTOTPDisclosureCore } from "./useConfirmTOTPDiscloresure"
-import { useDepositModalDisclosureCore } from "./useDepositModalDiscloreusre"
+import { useDepositDisclosureCore } from "./useDepositDiscloreusre"
 import { useUpdateExplorerDisclosureCore } from "./useUpdateExplorerDiscloresure"
 import { useUpdateRpcsDisclosureCore } from "./useUpdateRpcsDiscloresure"
 import { useSelectPoolsDisclosureCore } from "./useSelectPoolsDiscloresure"
 import { useSelectTokenDisclosureCore } from "./useSelectTokenDiscloresure"
 import { useSignInDisclosureCore } from "./useSignInDiscloresure"
-import { useEnableMFAModalDisclosureCore } from "./useEnableMFADiscloresure"
+import { useEnableMFADisclosureCore } from "./useEnableMFADiscloresure"
 import { useVerifyDisclosureCore } from "./useVerifyDiscloresure"
-import { usePositionModalDisclosureCore } from "./usePositionModal"
-import { useMenuModalDisclosureCore } from "./useMenuModalDisclosure"
+import { usePositionDisclosureCore } from "./usePosition"
+import { useMenuDisclosureCore } from "./useMenuDisclosure"
 import { useUpdatePoolsDisclosureCore } from "./useUpdatePoolsDiscloresure"
+import { useSortByDisclosureCore } from "./useSortByDiscloresure"
 
 export interface DiscloresureContextType {
-    connectModal: ReturnType<typeof useConnectModalDisclosureCore>
-    exportPrivateKeyModal: ReturnType<typeof useExportPrivateKeyModalDisclosureCore>
-    confirmTOTPModal: ReturnType<typeof useConfirmTOTPDisclosureCore>
-    depositModal: ReturnType<typeof useDepositModalDisclosureCore>
-    updateExplorerModal: ReturnType<typeof useUpdateExplorerDisclosureCore>
-    updateRpcsModal: ReturnType<typeof useUpdateRpcsDisclosureCore>
-    selectPoolsModal: ReturnType<typeof useSelectPoolsDisclosureCore>
-    selectTokenModal: ReturnType<typeof useSelectTokenDisclosureCore>
-    signInModal: ReturnType<typeof useSignInDisclosureCore>
-    enableMFAModal: ReturnType<typeof useEnableMFAModalDisclosureCore>
-    verifyModal: ReturnType<typeof useVerifyDisclosureCore>
-    positionModal: ReturnType<typeof usePositionModalDisclosureCore>
-    menuModal: ReturnType<typeof useMenuModalDisclosureCore>
-    updatePoolsModal: ReturnType<typeof useUpdatePoolsDisclosureCore>
+    connect: ReturnType<typeof useConnectDisclosureCore>
+    exportPrivateKey: ReturnType<typeof useExportPrivateKeyDisclosureCore>
+    confirmTOTP: ReturnType<typeof useConfirmTOTPDisclosureCore>
+    deposit: ReturnType<typeof useDepositDisclosureCore>
+    updateExplorer: ReturnType<typeof useUpdateExplorerDisclosureCore>
+    updateRpcs: ReturnType<typeof useUpdateRpcsDisclosureCore>
+    selectPools: ReturnType<typeof useSelectPoolsDisclosureCore>
+    selectToken: ReturnType<typeof useSelectTokenDisclosureCore>
+    signIn: ReturnType<typeof useSignInDisclosureCore>
+    enableMFA: ReturnType<typeof useEnableMFADisclosureCore>
+    verify: ReturnType<typeof useVerifyDisclosureCore>
+    position: ReturnType<typeof usePositionDisclosureCore>
+    menu: ReturnType<typeof useMenuDisclosureCore>
+    updatePools: ReturnType<typeof useUpdatePoolsDisclosureCore>
+    sortBy: ReturnType<typeof useSortByDisclosureCore>
 }
 
 export const DiscloresureContext = createContext<DiscloresureContextType | null>(null)
 
 export const DiscloresureProvider = ({ children }: PropsWithChildren) => {
-    const connectModal = useConnectModalDisclosureCore()
-    const exportPrivateKeyModal = useExportPrivateKeyModalDisclosureCore()
-    const confirmTOTPModal = useConfirmTOTPDisclosureCore()
-    const depositModal = useDepositModalDisclosureCore()
-    const updateExplorerModal = useUpdateExplorerDisclosureCore()
-    const updateRpcsModal = useUpdateRpcsDisclosureCore()
-    const selectPoolsModal = useSelectPoolsDisclosureCore()
-    const selectTokenModal = useSelectTokenDisclosureCore()
-    const signInModal = useSignInDisclosureCore()
-    const enableMFAModal = useEnableMFAModalDisclosureCore()
-    const verifyModal = useVerifyDisclosureCore()
-    const positionModal = usePositionModalDisclosureCore()
-    const menuModal = useMenuModalDisclosureCore()
-    const updatePoolsModal = useUpdatePoolsDisclosureCore()
+    const connect = useConnectDisclosureCore()
+    const exportPrivateKey = useExportPrivateKeyDisclosureCore()
+    const confirmTOTP = useConfirmTOTPDisclosureCore()
+    const deposit = useDepositDisclosureCore()
+    const updateExplorer = useUpdateExplorerDisclosureCore()
+    const updateRpcs = useUpdateRpcsDisclosureCore()
+    const selectPools = useSelectPoolsDisclosureCore()
+    const selectToken = useSelectTokenDisclosureCore()
+    const signIn = useSignInDisclosureCore()
+    const enableMFA = useEnableMFADisclosureCore()
+    const verify = useVerifyDisclosureCore()
+    const position = usePositionDisclosureCore()
+    const menu = useMenuDisclosureCore()
+    const updatePools = useUpdatePoolsDisclosureCore()
+    const sortBy = useSortByDisclosureCore()
     return (
         <DiscloresureContext.Provider value={{ 
-            connectModal, 
-            exportPrivateKeyModal, 
-            confirmTOTPModal, 
-            depositModal, 
-            updateExplorerModal, 
-            updateRpcsModal,
-            selectPoolsModal,
-            selectTokenModal,
-            signInModal,
-            enableMFAModal,
-            verifyModal,
-            positionModal,
-            menuModal,
-            updatePoolsModal
+            connect, 
+            exportPrivateKey, 
+            confirmTOTP, 
+            deposit, 
+            updateExplorer, 
+            updateRpcs,
+            selectPools,
+            selectToken,
+            signIn,
+            enableMFA,
+            verify,
+            position,
+            menu,
+            updatePools,
+            sortBy
         }}>
             {children}
         </DiscloresureContext.Provider>

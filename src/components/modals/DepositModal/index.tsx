@@ -7,7 +7,7 @@ import {
     KaniImage, 
     KaniSnippet 
 } from "../../atomic"
-import { useDepositModalDisclosure } from "@/hooks/singleton"
+import { useDepositDisclosure } from "@/hooks/singleton"
 import { QRCode } from "../../reuseable"
 import { useAppSelector } from "@/redux"
 import { getChainAssets } from "@/assets"
@@ -19,7 +19,7 @@ import {
 import { getChainMetadata } from "@/modules"
 
 export const DepositModal = () => {
-    const { isOpen, onOpenChange } = useDepositModalDisclosure()
+    const { isOpen, onOpenChange } = useDepositDisclosure()
     const bot = useAppSelector((state) => state.bot.bot)
     const chainAssets = useMemo(() => getChainAssets(bot?.chainId ?? ChainId.Solana), [bot?.chainId])
     const chainMetadata = useMemo(() => getChainMetadata(bot?.chainId ?? ChainId.Solana), [bot?.chainId])

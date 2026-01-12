@@ -7,11 +7,11 @@ import {
     KaniModalFooter, 
     KaniButton 
 } from "@/components"
-import { usePositionModalDisclosure } from "@/hooks/singleton"
+import { usePositionDisclosure } from "@/hooks/singleton"
 import { useAppSelector } from "@/redux"
 
 export const PositionModal = () => {
-    const { isOpen, onOpenChange } = usePositionModalDisclosure()
+    const { isOpen, onOpenChange } = usePositionDisclosure()
     const selectedPosition = useAppSelector((state) => state.bot.selectedPosition)
     return (
         <KaniModal size="sm" isOpen={isOpen} onOpenChange={onOpenChange}>

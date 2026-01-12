@@ -1,5 +1,6 @@
 import { DexId } from "./enums"
 import { AbstractSchema } from "./abstract"
+import { ChainId } from "../blockchain"
 
 export interface DexSchema extends AbstractSchema {
     /** Unique identifier of the DEX (mapped from DexId enum) */
@@ -17,4 +18,6 @@ export interface DexSchema extends AbstractSchema {
     /** The icon URL of the DEX, used for displaying logos in the UI (optional) */
     iconUrl?: string
 
+    /** The chain IDs of the DEX */
+    chainIds: Array<ChainId>
 }

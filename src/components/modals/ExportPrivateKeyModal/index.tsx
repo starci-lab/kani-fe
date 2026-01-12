@@ -9,13 +9,13 @@ import {
     KaniModalFooter,
     KaniAlert,
 } from "../../atomic"
-import { useExportPrivateKeyModalDisclosure } from "@/hooks/singleton/discloresure"
+import { useExportPrivateKeyDisclosure } from "@/hooks/singleton/discloresure"
 import { useAppSelector } from "@/redux"
 import { Spacer } from "@heroui/react"
 import { SnippetIcon } from "@/components/reuseable"
 
 export const ExportPrivateKeyModal = () => {
-    const { isOpen, onOpenChange } = useExportPrivateKeyModalDisclosure()
+    const { isOpen, onOpenChange } = useExportPrivateKeyDisclosure()
     const exportPrivateKey = useAppSelector((state) => state.modals.exportPrivateKey.privateKey)
     return (
         <KaniModal size="sm" isOpen={isOpen} onOpenChange={onOpenChange}>

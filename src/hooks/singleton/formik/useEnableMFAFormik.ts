@@ -5,7 +5,7 @@ import { FormikContext } from "./FormikContext"
 import { useEnableMFASwrMutation } from "../swr"
 import { runGraphQLWithToast } from "@/components"
 import { GraphQLHeadersKey } from "@/modules/api"
-import { useEnableMFAModalDisclosure } from "../discloresure"
+import { useEnableMFADisclosure } from "../discloresure"
 import { 
     EnableMFAPage, 
     setEnableMFAPage, 
@@ -32,7 +32,7 @@ const initialValues: EnableMFAFormikValues = {
 // Core hook — creates the Formik instance for the TOTP form
 export const useEnableMFAFormikCore = () => {
     const enableMFASwrMutation = useEnableMFASwrMutation()
-    const { onClose } = useEnableMFAModalDisclosure()
+    const { onClose } = useEnableMFADisclosure()
     const dispatch = useAppDispatch()
     return useFormik<EnableMFAFormikValues>({
         initialValues,

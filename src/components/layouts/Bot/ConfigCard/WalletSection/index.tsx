@@ -18,9 +18,9 @@ import {
     ExplorerUrlType,
 } from "@/modules/blockchain"
 import {
-    useDepositModalDisclosure,
+    useDepositDisclosure,
     useConfirmTOTPDisclosure,
-    useExportPrivateKeyModalDisclosure,
+    useExportPrivateKeyDisclosure,
     useConfirmTotpFormik,
     useBackupBotPrivateKeySwrMutation,
 } from "@/hooks/singleton"
@@ -35,10 +35,10 @@ export const WalletSection = () => {
         liquidityProvisionBot?.chainId ?? ChainId.Solana
     )
     const bot = useAppSelector((state) => state.bot.bot)
-    const { onOpen } = useDepositModalDisclosure()
+    const { onOpen } = useDepositDisclosure()
     const { onOpen: onOpenConfirmTOTP } = useConfirmTOTPDisclosure()
     const { onOpen: onOpenExportPrivateKey } =
-    useExportPrivateKeyModalDisclosure()
+    useExportPrivateKeyDisclosure()
     const formik = useConfirmTotpFormik()
     const backupBotPrivateKeySwrMutation = useBackupBotPrivateKeySwrMutation()
 

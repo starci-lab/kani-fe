@@ -18,9 +18,10 @@ import { TooltipTitle } from "../TooltipTitle"
 
 export interface PoolCardProps {
     liquidityPool: LiquidityPoolSchema
+    className?: string
 }
 
-export const PoolCard = ({ liquidityPool }: PoolCardProps) => {
+export const PoolCard = ({ liquidityPool, className }: PoolCardProps) => {
     const tokens = useAppSelector((state) => state.static.tokens)
     const tokenA = tokens.find((token) => token.id === liquidityPool.tokenA)
     const tokenB = tokens.find((token) => token.id === liquidityPool.tokenB)
@@ -28,7 +29,9 @@ export const PoolCard = ({ liquidityPool }: PoolCardProps) => {
     const dex = dexes.find((dex) => dex.id === liquidityPool.dex)
     return (
         <KaniCard 
-            isPressable>
+            isPressable
+            className={className}
+        >
             <KaniCardBody>
                 <div className="flex items-center gap-4 justify-between">
                     <div className="flex items-center gap-2 justify-start">

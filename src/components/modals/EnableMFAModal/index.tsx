@@ -3,13 +3,13 @@ import {
     KaniModal, 
     KaniModalContent, 
 } from "../../atomic"
-import { useEnableMFAModalDisclosure } from "@/hooks/singleton"
+import { useEnableMFADisclosure } from "@/hooks/singleton"
 import { EnableMFAPage, useAppSelector } from "@/redux"
 import { ScanQRPage } from "./ScanQRPage"
 import { InputTOTPPage } from "./InputTOTPPage"
 
 export const EnableMFAModal = () => {
-    const { isOpen, onOpenChange } = useEnableMFAModalDisclosure()
+    const { isOpen, onOpenChange } = useEnableMFADisclosure()
     // const user = useAppSelector((state) => state.session.user)
     // const queryTotpSecretMutation = useQueryTotpSecretSwrMutation()
     // const accessToken = useAppSelector((state) => state.session.accessToken)

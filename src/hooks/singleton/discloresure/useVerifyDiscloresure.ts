@@ -5,6 +5,6 @@ import { DiscloresureContext } from "./DiscloresureContext"
 export const useVerifyDisclosureCore = () => useDisclosure()
 
 export const useVerifyDisclosure = () => {
-    const { verifyModal } = use(DiscloresureContext)!
-    return verifyModal
+    const { verify } = use(DiscloresureContext)!
+    return verify
 }

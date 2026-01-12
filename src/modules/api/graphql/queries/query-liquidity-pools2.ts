@@ -1,4 +1,5 @@
 import {
+    DexId,
     LiquidityPoolId,
     LiquidityPoolSchema,
     TokenId,
@@ -62,16 +63,26 @@ const queryMap: Record<QueryLiquidityPools2, DocumentNode> = {
     [QueryLiquidityPools2.Query1]: query1,
 }
 
+export enum LiquidityPools2SortBy {
+    Apr = "apr",
+    Volume = "volume",
+    Fees = "fees",
+    Liquidity = "liquidity",
+}
+
 export interface QueryLiquidityPools2Request {
     filters: Partial<{
         pageNumber: number;
         limit: number;
-        tokenA?: TokenId;
-        tokenB?: TokenId;
-        ids?: Array<string>;
-        displayIds?: Array<LiquidityPoolId>;
-        addresses?: Array<string>;
-        aprDescending?: boolean;
+        tokenIds: Array<TokenId>;
+        ids: Array<string>;
+        displayIds: Array<LiquidityPoolId>;
+        addresses: Array<string>;
+        dexIds: Array<DexId>;
+        sortBy: LiquidityPools2SortBy;
+        asc: boolean;
+        watchlist: boolean;
+        incentivized: boolean;
     }>
 }
 

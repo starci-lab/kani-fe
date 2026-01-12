@@ -37,7 +37,10 @@ import {
     useQueryHistoryV2SwrCore,
     useQueryLiquidityPools2BotSwrCore,
     useQueryLiquidityPools2ActivePositionSwrCore,
+    useQueryLiquidityPools2UpdatePoolsSwrCore,
 } from "./api"
+import { useToggleBotV2SwrMutationCore } from "./api/graphql/mutations/useToggleBotV2SwrMutation"
+import { useUpdateBotLiquidityPoolsV2SwrMutationCore } from "./api/graphql/mutations/useUpdateBotLiquidityPoolsV2SwrMutation"
 
 export interface SwrContextType {
     queryUserSwrMutation: ReturnType<typeof useQueryUserSwrMutationCore>;
@@ -77,6 +80,9 @@ export interface SwrContextType {
     queryHistoryV2Swr: ReturnType<typeof useQueryHistoryV2SwrCore>;
     queryLiquidityPools2BotSwr: ReturnType<typeof useQueryLiquidityPools2BotSwrCore>;
     queryLiquidityPools2ActivePositionSwr: ReturnType<typeof useQueryLiquidityPools2ActivePositionSwrCore>;
+    queryLiquidityPools2UpdatePoolsSwr: ReturnType<typeof useQueryLiquidityPools2UpdatePoolsSwrCore>;
+    toggleBotV2SwrMutation: ReturnType<typeof useToggleBotV2SwrMutationCore>;
+    updateBotLiquidityPoolsV2SwrMutation: ReturnType<typeof useUpdateBotLiquidityPoolsV2SwrMutationCore>;
 }
 
 export const SwrContext = createContext<SwrContextType | null>(null)
@@ -117,6 +123,9 @@ export const SwrProvider = ({ children }: PropsWithChildren) => {
     const queryHistoryV2Swr = useQueryHistoryV2SwrCore()
     const queryLiquidityPools2BotSwr = useQueryLiquidityPools2BotSwrCore()
     const queryLiquidityPools2ActivePositionSwr = useQueryLiquidityPools2ActivePositionSwrCore()
+    const queryLiquidityPools2UpdatePoolsSwr = useQueryLiquidityPools2UpdatePoolsSwrCore()
+    const toggleBotV2SwrMutation = useToggleBotV2SwrMutationCore()
+    const updateBotLiquidityPoolsV2SwrMutation = useUpdateBotLiquidityPoolsV2SwrMutationCore()
     const values = useMemo(() => ({
         queryUserSwrMutation,
         queryUserWithoutRetrySwrMutation,
@@ -153,6 +162,9 @@ export const SwrProvider = ({ children }: PropsWithChildren) => {
         queryHistoryV2Swr,
         queryLiquidityPools2BotSwr,
         queryLiquidityPools2ActivePositionSwr,
+        queryLiquidityPools2UpdatePoolsSwr,
+        toggleBotV2SwrMutation,
+        updateBotLiquidityPoolsV2SwrMutation,
     }), [
         queryUserSwrMutation,
         queryUserWithoutRetrySwrMutation,
@@ -189,6 +201,9 @@ export const SwrProvider = ({ children }: PropsWithChildren) => {
         queryHistoryV2Swr,
         queryLiquidityPools2BotSwr,
         queryLiquidityPools2ActivePositionSwr,
+        queryLiquidityPools2UpdatePoolsSwr,
+        toggleBotV2SwrMutation,
+        updateBotLiquidityPoolsV2SwrMutation,
     ])
     return (
         <SwrContext.Provider

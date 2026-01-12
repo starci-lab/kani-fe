@@ -10,7 +10,7 @@ import { EnableMFAModal } from "./EnableMFAModal"
 import { VerifyModal } from "./VerifyModal"
 import { PositionModal } from "./PositionModal"
 import { MenuModal } from "./MenuModal"
-import { UpdatePoolsModal } from "./UpdatePoolsModal"
+import { SortByModal } from "./SortByModal"
 
 export const ModalContainer = () => {
     return (
@@ -26,7 +26,7 @@ export const ModalContainer = () => {
             <VerifyModal />
             <PositionModal />
             <MenuModal />
-            <UpdatePoolsModal />
+            <SortByModal />
         </>
     )
 }
