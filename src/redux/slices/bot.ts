@@ -4,7 +4,7 @@ import { QueryHistoryResponse } from "@/modules"
 import { ChartInterval, ChartUnit, LiquidityPools2SortBy } from "@/modules/api"
 
 export enum BotTab {
-    Investment = "investment",
+    Overview = "overview",
     Wallet = "wallet",
     Activity = "activity",
     Settings = "settings",

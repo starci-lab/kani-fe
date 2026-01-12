@@ -2,7 +2,7 @@ import React from "react"
 import { KaniAlert } from "@/components"
 import { ShieldCheckIcon } from "@phosphor-icons/react"
 
-export const BotAlert = () => {
+export const PrivySecurityAlert = () => {
     return (
         <KaniAlert
             icon={<ShieldCheckIcon weight="fill" />}

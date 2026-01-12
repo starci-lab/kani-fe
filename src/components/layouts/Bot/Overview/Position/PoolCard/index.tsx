@@ -65,7 +65,7 @@ export const PoolCard = (
                             <KaniSkeleton className="h-[28px] w-[120px] rounded-md" />
                         ) : (
                             <div className="flex items-center gap-2 justify-center">
-                                <div className="flex items-center gap-1 justify-center">
+                                <div className="flex items-center gap-2 justify-center">
                                     <KaniAvatarGroup>
                                         <KaniAvatar
                                             src={tokenA?.iconUrl}

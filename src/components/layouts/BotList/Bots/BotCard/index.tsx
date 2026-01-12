@@ -81,12 +81,12 @@ export const BotCard = ({ bot }: BotCardProps) => {
                             {roi24hString}
                         </div>
                     </div>
-                    <div className="flex justify-between items-center gap-4">
+                    <div className="flex justify-between items-center gap-3">
                         <TooltipTitle
                             classNames={{
                                 title: "text-sm text-foreground-500",
                             }}
-                            title="P&L"
+                            title="PNL"
                             tooltipString="The total profit or loss made by the bot, measured in USDC."
                         />
                         <div className={
@@ -101,12 +101,12 @@ export const BotCard = ({ bot }: BotCardProps) => {
                         </div>
                     </div>
                 </div>
-                <Spacer y={4} />
+                <Spacer y={3} />
                 <KaniDivider/>
-                <Spacer y={4} />
-                <div className="flex items-center gap-4">
+                <Spacer y={3} />
+                <div className="flex items-center gap-3">
                     <div className="flex flex-col gap-3 w-full">
-                        <div className="flex justify-between items-center gap-4">
+                        <div className="flex justify-between items-center gap-3">
                             <TooltipTitle
                                 classNames={{
                                     title: "text-sm text-foreground-500",

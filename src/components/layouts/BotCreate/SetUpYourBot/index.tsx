@@ -14,7 +14,7 @@ export const SetUpYourBot = () => {
     const formik = useCreateBotFormik()
     return (
         <div>
-            <div className="text-2xl font-bold text-primary">Set Up Your Bot</div>
+            <div className="text-2xl font-bold">Set Up Your Bot</div>
             <Spacer y={12} />
             <div className="flex flex-col gap-4">
                 <TooltipTitle

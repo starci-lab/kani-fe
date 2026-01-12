@@ -1,12 +1,12 @@
 import React from "react"
 import { Spacer } from "@heroui/react"
-import { Investment as InvestmentComponent } from "./Investment"
+import { Investment } from "./Investment"
 import { Position } from "./Position"
 
-export const Investment = () => {
+export const Overview = () => {
     return (
         <>
-            <InvestmentComponent />
+            <Investment />
             <Spacer y={8} />
             <Position />
         </>

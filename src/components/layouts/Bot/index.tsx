@@ -1,36 +1,42 @@
 "use client"
 import React from "react"
 import { setBotTab, useAppDispatch, useAppSelector } from "@/redux"
-import { Investment } from "./Investment"
-import { PlayIcon, StopIcon } from "@phosphor-icons/react"
-import { KaniButton, KaniDivider, WaveBars } from "@/components"
-import { Container } from "@/components"
+import { Overview } from "./Overview"
+import { ChartLineIcon, GearSixIcon, PlayIcon, SquaresFourIcon, StopIcon, WalletIcon } from "@phosphor-icons/react"
+import { KaniBreadcrumb, KaniBreadcrumbItem, KaniButton, KaniDivider } from "../../atomic"
+import { WaveBars } from "../../reuseable"
 import { Spacer, Tabs, Tab, Skeleton } from "@heroui/react"
 import { BotTab } from "@/redux"
-import { Wallet } from "./Wallet"
+import { Wallet } from "./Portfolio"
 import { Activity } from "./Activity"
 import { useQueryBotV2Swr, useToggleBotV2SwrMutation } from "@/hooks/singleton"
 import { runGraphQLWithToast } from "@/components/toasts"
-import { BotAlert } from "./BotAlert"
+import { PrivySecurityAlert } from "./PrivySecurityAlert"
 import { Settings } from "./Settings"
+import { useRouter } from "next/navigation"
+import { paths } from "@/modules"
 
 export const Bot = () => {
     const tabs = [
         {
-            key: BotTab.Investment,
-            title: "Investment",
+            key: BotTab.Overview,
+            title: "Overview",
+            icon: SquaresFourIcon
         },
         {
             key: BotTab.Wallet,
             title: "Wallet",
+            icon: WalletIcon
         },
         {
             key: BotTab.Activity,
             title: "Activity",
+            icon: ChartLineIcon
         },
         {
             key: BotTab.Settings,
             title: "Settings",
+            icon: GearSixIcon
         },
     ]
     const bot = useAppSelector((state) => state.bot.bot)
@@ -40,8 +46,8 @@ export const Bot = () => {
     const queryBotV2Swr = useQueryBotV2Swr()
     const renderTab = () => {
         switch (tab) {
-        case BotTab.Investment:
-            return <Investment />
+        case BotTab.Overview:
+            return <Overview />
         case BotTab.Wallet:
             return <Wallet />
         case BotTab.Activity:
@@ -50,8 +56,18 @@ export const Bot = () => {
             return <Settings />
         }
     }
+    const router = useRouter()
     return (
-        <Container>
+        <div>
+            <KaniBreadcrumb>
+                <KaniBreadcrumbItem onPress={
+                    () => router.push(
+                        paths().bots().base()
+                    )
+                }>Bots</KaniBreadcrumbItem>
+                <KaniBreadcrumbItem>{bot?.name}</KaniBreadcrumbItem>
+            </KaniBreadcrumb>
+            <Spacer y={6}/>
             <div className="flex justify-between items-center">
                 <div className="flex items-center gap-2">
                     {
@@ -129,10 +145,11 @@ export const Bot = () => {
                 </div>
             </div>
             <Spacer y={6} />
-            <BotAlert />
+            <PrivySecurityAlert />
             <Spacer y={6} />
             <Tabs 
                 variant="underlined" 
+                color="primary"
                 selectedKey={tab}
                 onSelectionChange={(value) => {
                     dispatch(setBotTab(value as BotTab))
@@ -142,12 +159,17 @@ export const Bot = () => {
                     tabList: "pb-0",
                 }}>
                 {tabs.map((tab) => (
-                    <Tab key={tab.key} title={tab.title} />
+                    <Tab key={tab.key} title={
+                        <div className="flex items-center gap-2">
+                            <tab.icon className="w-5 h-5 min-w-5 min-h-5" />
+                            {tab.title}
+                        </div>
+                    } />
                 ))}
             </Tabs>
             <KaniDivider/>
             <Spacer y={6} />
             {renderTab()}
-        </Container>
+        </div>
     )
 }
