@@ -72,6 +72,7 @@ export const Transactions = () => {
             />
             <Spacer y={3} />
             <KaniTable 
+                shadow="none"
                 radius="sm"
                 classNames={{
                     wrapper: "min-h-[300px] p-0 bg-transparent overflow-hidden",
@@ -112,7 +113,7 @@ export const Transactions = () => {
                     {
                         (
                             transactions || []).map((transaction) => (
-                            <KaniTableRow key={transaction.id}>
+                            <KaniTableRow key={transaction.id} className="border-b border-divider last:border-b-0">
                                 <KaniTableCell>{renderType(transaction.type)}</KaniTableCell>
                                 <KaniTableCell>
                                     <div className="flex items-center gap-2">

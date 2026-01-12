@@ -40,8 +40,8 @@ export const Positions = () => {
             label: "Pool"
         },
         {
-            key: "action",
-            label: "Action"
+            key: "view",
+            label: "View"
         },
     ]
     const tokens = useAppSelector((state) => state.static.tokens)
@@ -55,6 +55,8 @@ export const Positions = () => {
             />
             <Spacer y={3} />
             <KaniTable 
+                shadow="none"
+                radius="sm"
                 classNames={{
                     wrapper: "min-h-[300px] p-0 bg-transparent overflow-hidden",
                 }}
@@ -89,7 +91,7 @@ export const Positions = () => {
                     {
                         (
                             positions || []).map((position) => (
-                            <KaniTableRow key={position.id}>
+                            <KaniTableRow key={position.id} className="border-b border-divider last:border-b-0">
                                 <KaniTableCell>
                                     {(() => {
                                         const tokenA = tokens.find((token) => token.id === position.associatedLiquidityPool.tokenA)
