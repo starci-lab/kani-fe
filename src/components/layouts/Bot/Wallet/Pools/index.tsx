@@ -2,7 +2,7 @@ import { KaniLink } from "../../../../atomic"
 import { PoolCardSkeleton, ScrollableList, TooltipTitle, PoolCard } from "../../../../reuseable"
 import { Spacer } from "@heroui/react"
 import React from "react"
-import { ArrowsClockwiseIcon, FadersIcon } from "@phosphor-icons/react"
+import { ArrowClockwiseIcon, FadersIcon } from "@phosphor-icons/react"
 import { useQueryLiquidityPools2BotSwr, useUpdatePoolsDisclosure } from "@/hooks/singleton"
 
 export const Pools = () => {
@@ -34,7 +34,7 @@ export const Pools = () => {
                                 mutate()
                             }}
                         >
-                            <ArrowsClockwiseIcon 
+                            <ArrowClockwiseIcon 
                                 className="w-5 h-5"
                             />
                         </KaniLink>  

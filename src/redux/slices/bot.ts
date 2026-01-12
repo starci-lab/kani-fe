@@ -16,6 +16,7 @@ export type UpdatePoolsFilters = Partial<{
     watchlist?: boolean
     pageNumber?: number
     incentivized?: boolean
+    liquidityPools?: Array<string>
 }>
 
 export interface BotSlice {

@@ -10,6 +10,7 @@ export interface DexSelectProps {
 export const DexSelect = ({ dexes, selectedKeys, onSelectionChange }: DexSelectProps) => {
     return (
         <KaniSelect 
+            placeholder="Select DEXs"
             selectionMode="multiple"
             selectedKeys={selectedKeys}
             onSelectionChange={onSelectionChange}

@@ -1,7 +1,6 @@
 import { DocumentNode, gql } from "@apollo/client"
 import { createNoCacheCredentialAuthClientWithToken } from "../clients"
 import { GraphQLResponse, MutationParams } from "../types"
-import { LiquidityPoolId } from "@/modules/types"
 
 const mutation1 = gql`
   mutation UpdateBotLiquidityPoolsV2(
@@ -17,7 +16,7 @@ const mutation1 = gql`
 
 export interface MutationUpdateBotLiquidityPoolsV2Request {
     id: string;
-    liquidityPoolIds: Array<LiquidityPoolId>;
+    liquidityPoolIds: Array<string>;
 }
 
 export enum MutationUpdateBotLiquidityPoolsV2 {

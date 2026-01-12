@@ -3,7 +3,7 @@ import { KaniLink } from "../../../../atomic"
 import { TooltipTitle } from "../../../../reuseable"
 import { PoolCard } from "./PoolCard"
 import { Spacer } from "@heroui/react"
-import { ArrowsClockwiseIcon } from "@phosphor-icons/react"
+import { ArrowClockwiseIcon } from "@phosphor-icons/react"
 import { useQueryFeesV2Swr, useQueryLiquidityPools2ActivePositionSwr, useQueryReservesV2Swr } from "@/hooks/singleton"
 
 export const Position = () => {
@@ -25,7 +25,7 @@ export const Position = () => {
                         queryReservesV2Swr.mutate()
                     }}
                 >
-                    <ArrowsClockwiseIcon className="w-5 h-5"/>
+                    <ArrowClockwiseIcon className="w-5 h-5"/>
                 </KaniLink>
             </div>
             <Spacer y={3} />

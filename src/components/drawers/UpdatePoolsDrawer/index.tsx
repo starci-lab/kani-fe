@@ -15,6 +15,7 @@ import { DexSelect, EmptyContent, PoolCard, PoolCardSkeleton, SortByDropdown, Te
 import { DexId } from "@/modules/types"
 import { ArrowClockwiseIcon } from "@phosphor-icons/react"
 import { LiquidityPools2SortBy } from "@/modules/api"
+import { useUpdateBotLiquidityPoolsFormik } from "@/hooks/singleton"
 
 export const UpdatePoolsDrawer = () => {
     const { isOpen, onOpenChange } = useUpdatePoolsDisclosure()
@@ -29,8 +30,20 @@ export const UpdatePoolsDrawer = () => {
         return dexes.filter(dex => dex?.chainIds?.includes(bot?.chainId))
     }, [dexes, bot])
     const dispatch = useAppDispatch()
+    const updateBotLiquidityPoolsFormik = useUpdateBotLiquidityPoolsFormik()
+    const isNoPoolsSelected = useMemo(() => {
+        return updateBotLiquidityPoolsFormik.values.liquidityPoolIds.length === 0
+    }, [updateBotLiquidityPoolsFormik.values.liquidityPoolIds])
     return (
-        <KaniDrawer isOpen={isOpen} onOpenChange={onOpenChange}>
+        <KaniDrawer 
+            isOpen={isOpen} 
+            onOpenChange={onOpenChange} 
+            onClose={
+                () => {
+                    updateBotLiquidityPoolsFormik.resetForm()
+                }
+            }
+        >
             <KaniDrawerContent>
                 <KaniDrawerHeader>
                     Update Pools
@@ -122,6 +135,21 @@ export const UpdatePoolsDrawer = () => {
                                                 key={liquidityPool.id} 
                                                 className="bg-content2"
                                                 liquidityPool={liquidityPool} 
+                                                isSelected={updateBotLiquidityPoolsFormik.values.liquidityPoolIds.includes(liquidityPool.id)}
+                                                onPress={
+                                                    (liquidityPool) => {
+                                                        if (updateBotLiquidityPoolsFormik.values.liquidityPoolIds.includes(liquidityPool.id)) {
+                                                            updateBotLiquidityPoolsFormik.setFieldValue(
+                                                                "liquidityPoolIds", 
+                                                                updateBotLiquidityPoolsFormik.values.liquidityPoolIds.filter((id) => id !== liquidityPool.id)
+                                                            )
+                                                        } else {
+                                                            updateBotLiquidityPoolsFormik.setFieldValue(
+                                                                "liquidityPoolIds", 
+                                                                [...(updateBotLiquidityPoolsFormik.values.liquidityPoolIds ?? []), liquidityPool.id]
+                                                            )
+                                                        }
+                                                    }}
                                             />
                                         ))}
                                     </div>
@@ -135,7 +163,19 @@ export const UpdatePoolsDrawer = () => {
                     )}
                 </KaniDrawerBody>
                 <KaniDrawerFooter>
-                    <KaniButton color="primary" fullWidth onPress={onOpenChange}>Confirm</KaniButton>
+                    <KaniButton 
+                        isDisabled={isNoPoolsSelected} 
+                        color="primary" 
+                        fullWidth 
+                        onPress={() => {
+                            updateBotLiquidityPoolsFormik.submitForm()
+                        }}
+                        isLoading={updateBotLiquidityPoolsFormik.isSubmitting}
+                    >
+                        {
+                            isNoPoolsSelected ? "Select pools to continue" : "Confirm"
+                        }
+                    </KaniButton>
                 </KaniDrawerFooter>
             </KaniDrawerContent>
         </KaniDrawer>    

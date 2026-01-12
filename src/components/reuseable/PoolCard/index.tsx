@@ -1,36 +1,43 @@
-import { 
-    KaniAvatar, 
-    KaniAvatarGroup, 
-    KaniCard, 
-    KaniCardBody, 
-    KaniDivider, 
-    KaniLink, 
+import {
+    KaniAvatar,
+    KaniAvatarGroup,
+    KaniBadge,
+    KaniCard,
+    KaniCardBody,
+    KaniDivider,
+    KaniLink,
     KaniSkeleton
 } from "../../atomic"
 import React from "react"
 import { LiquidityPoolSchema } from "@/modules/types"
 import { useAppSelector } from "@/redux"
 import { centerPad, computePercentage } from "@/modules/utils"
-import { Spacer } from "@heroui/react"
+import { cn, Spacer } from "@heroui/react"
 import numeral from "numeral"
 import { PoolTypeChip } from "../PoolTypeChip"
 import { TooltipTitle } from "../TooltipTitle"
+import { SealCheckIcon } from "@phosphor-icons/react"
 
 export interface PoolCardProps {
     liquidityPool: LiquidityPoolSchema
     className?: string
+    isSelected?: boolean
+    onPress?: (liquidityPool: LiquidityPoolSchema) => void
 }
 
-export const PoolCard = ({ liquidityPool, className }: PoolCardProps) => {
+export const PoolCard = ({ liquidityPool, className, isSelected, onPress }: PoolCardProps) => {
     const tokens = useAppSelector((state) => state.static.tokens)
     const tokenA = tokens.find((token) => token.id === liquidityPool.tokenA)
     const tokenB = tokens.find((token) => token.id === liquidityPool.tokenB)
     const dexes = useAppSelector((state) => state.static.dexes)
     const dex = dexes.find((dex) => dex.id === liquidityPool.dex)
-    return (
-        <KaniCard 
+    const renderContent = () => {
+        return <KaniCard
             isPressable
-            className={className}
+            className={cn(className, "w-full", {
+                "ring-2 ring-primary": isSelected,
+            })}
+            onPress={() => onPress?.(liquidityPool)}
         >
             <KaniCardBody>
                 <div className="flex items-center gap-4 justify-between">
@@ -85,35 +92,35 @@ export const PoolCard = ({ liquidityPool, className }: PoolCardProps) => {
                 <div className="flex flex-col gap-3">
                     <div className="flex items-center justify-between">
                         <TooltipTitle title="TVL" classNames={{ title: "text-sm text-foreground-500" }} />
-                        <div className="text-sm">{liquidityPool.dynamicInfo?.tvl 
-                            ? `$${numeral(liquidityPool.dynamicInfo?.tvl).format("0,0")}` 
-                            : <KaniSkeleton className="h-5 w-[50px] rounded-md"/>
+                        <div className="text-sm">{liquidityPool.dynamicInfo?.tvl
+                            ? `$${numeral(liquidityPool.dynamicInfo?.tvl).format("0,0")}`
+                            : <KaniSkeleton className="h-5 w-[50px] rounded-md" />
                         }</div>
                     </div>
                     <div className="flex items-center justify-between">
                         <TooltipTitle title="Fees 24H" classNames={{ title: "text-sm text-foreground-500" }} />
-                        <div className="text-sm">{liquidityPool.dynamicInfo?.fees24H 
-                            ? `$${numeral(liquidityPool.dynamicInfo?.fees24H).format("0,0")}` 
-                            : <KaniSkeleton className="h-5 w-[50px] rounded-md"/>}</div>
+                        <div className="text-sm">{liquidityPool.dynamicInfo?.fees24H
+                            ? `$${numeral(liquidityPool.dynamicInfo?.fees24H).format("0,0")}`
+                            : <KaniSkeleton className="h-5 w-[50px] rounded-md" />}</div>
                     </div>
                     <div className="flex items-center justify-between">
                         <TooltipTitle title="Volume 24H" classNames={{ title: "text-sm text-foreground-500" }} />
-                        <div className="text-sm">{liquidityPool.dynamicInfo?.volume24H 
-                            ? `$${numeral(liquidityPool.dynamicInfo?.volume24H).format("0,0")}` 
-                            : <KaniSkeleton className="h-5 w-[50px] rounded-md"/>}</div>
+                        <div className="text-sm">{liquidityPool.dynamicInfo?.volume24H
+                            ? `$${numeral(liquidityPool.dynamicInfo?.volume24H).format("0,0")}`
+                            : <KaniSkeleton className="h-5 w-[50px] rounded-md" />}</div>
                     </div>
                     <div className="flex items-center justify-between">
                         <TooltipTitle title="APR 24H" classNames={{ title: "text-sm text-foreground-500" }} />
                         <div className="flex items-center gap-2">
-                            {liquidityPool.dynamicInfo?.apr24H 
+                            {liquidityPool.dynamicInfo?.apr24H
                                 ?
                                 <div className="text-sm">
                                     {`${computePercentage(liquidityPool.dynamicInfo?.apr24H ?? 0, 1, 2).toString()}%`}
                                 </div>
-                                : <KaniSkeleton className="h-5 w-[50px] rounded-md"/>}
+                                : <KaniSkeleton className="h-5 w-[50px] rounded-md" />}
                         </div>
                     </div>
-                </div>  
+                </div>
                 <Spacer y={3} />
                 <KaniDivider />
                 <Spacer y={3} />
@@ -128,5 +135,16 @@ export const PoolCard = ({ liquidityPool, className }: PoolCardProps) => {
                 </KaniLink>
             </KaniCardBody>
         </KaniCard>
+    }
+    return (
+        isSelected ? (
+            <KaniBadge content={
+                <SealCheckIcon weight="fill" className="w-8 h-8 min-w-8 min-h-8 max-w-8 max-h-8 text-primary" />
+            } placement="top-left" classNames={{
+                badge: "top-1 left-1 min-w-4 min-h-4 max-w-4 max-h-4 bg-foreground border-none",
+            }}>
+                {renderContent()}
+            </KaniBadge>
+        ) : renderContent()
     )
 }

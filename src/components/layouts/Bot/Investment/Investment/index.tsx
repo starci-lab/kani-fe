@@ -8,7 +8,7 @@ import { HistoryChart } from "./HistoryChart"
 import numeral from "numeral"
 import { IntervalTabs } from "./IntervalTabs"
 import { useQueryFundingSnapshotV2Swr, useQueryStaticSwr } from "@/hooks/singleton"
-import { ArrowsClockwiseIcon } from "@phosphor-icons/react"
+import { ArrowClockwiseIcon } from "@phosphor-icons/react"
 import { EligibilityStatus } from "./EligibilityStatus"
 import { computeDenomination } from "@/modules/utils"
 import BN from "bn.js"
@@ -82,7 +82,7 @@ export const Investment = () => {
                         queryFundingSnapshotV2Swr.mutate()
                     }}
                 >
-                    <ArrowsClockwiseIcon className="w-5 h-5 cursor-pointer" />
+                    <ArrowClockwiseIcon className="w-5 h-5 cursor-pointer" />
                 </KaniLink>
             </div>
             <Spacer y={3} />
