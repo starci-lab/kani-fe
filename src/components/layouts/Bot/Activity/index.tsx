@@ -7,7 +7,7 @@ export const Activity = () => {
     return (
         <>
             <Transactions />
-            <Spacer y={8} />
+            <Spacer y={8} />   
             <Positions />
         </>
     )

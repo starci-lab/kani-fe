@@ -1,17 +1,18 @@
 import { queryPositions2V2 } from "@/modules/api"
 import { SwrContext } from "../../../SwrContext"
 import { use } from "react"
-import { setPositions, setPositionsPage, useAppDispatch, useAppSelector } from "@/redux"
+import { setPositions, setPositionsPages, useAppDispatch, useAppSelector } from "@/redux"
 import useSWR from "swr"
 import { usePrivy } from "@privy-io/react-auth"
 
+export const POSITIONS_2_V2_PAGE_SIZE = 20
 export const useQueryPositions2V2SwrCore = () => {
     const dispatch = useAppDispatch()
     const { getAccessToken, authenticated } = usePrivy()
     const id = useAppSelector((state) => state.bot.id)
-    const page = useAppSelector((state) => state.bot.positionsPage)
+    const filters = useAppSelector((state) => state.bot.positionsFilters)
     const swr = useSWR(
-        authenticated ? ["QUERY_POSITIONS2_V2_SWR", authenticated] : null,
+        authenticated ? ["QUERY_POSITIONS2_V2_SWR", authenticated, filters] : null,
         async () => {
             if (!id) {
                 throw new Error("Id is required")
@@ -24,10 +25,7 @@ export const useQueryPositions2V2SwrCore = () => {
                 token: accessToken,
                 request: {
                     botId: id,
-                    filters: {
-                        pageNumber: page || 1,
-                        limit: 10,
-                    },
+                    filters
                 },
             })
             const positions = data.data?.positions2V2
@@ -38,7 +36,10 @@ export const useQueryPositions2V2SwrCore = () => {
                 throw new Error("Positions2 data not found")
             }
             dispatch(setPositions(positions.data.data))
-            dispatch(setPositionsPage(positions.data.count))
+            dispatch(setPositionsPages({
+                currentPage: filters.pageNumber || 1,
+                totalPages: Math.ceil(positions.data.count / POSITIONS_2_V2_PAGE_SIZE),
+            }))
             return data
         }
     )

@@ -40,6 +40,7 @@ export interface QueryTransactions2V2Request {
 export interface Transactions2V2PaginationPageFilters {
     pageNumber?: number
     limit?: number
+    asc?: boolean
 }
 
 export interface QueryTransactions2V2Response {

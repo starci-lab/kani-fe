@@ -1,17 +1,18 @@
 import { queryPositions2 } from "@/modules/api"
 import { SwrContext } from "../../../SwrContext"
 import { use } from "react"
-import { setPositions, setPositionsPage, useAppDispatch, useAppSelector } from "@/redux"
+import { setPositions, setPositionsPages, useAppDispatch, useAppSelector } from "@/redux"
 import useSWR from "swr"
 
+export const POSITIONS_2_PAGE_SIZE = 20
 export const useQueryPositions2SwrCore = () => {
     const dispatch = useAppDispatch()
     const accessToken = useAppSelector((state) => state.session.accessToken)
     const isDisabled = true
     const id = useAppSelector((state) => state.bot.id)
-    const page = useAppSelector((state) => state.bot.positionsPage)
+    const filters = useAppSelector((state) => state.bot.positionsFilters)
     const swr = useSWR(
-        isDisabled ? null : (id && accessToken) ? ["QUERY_POSITIONS2_SWR", id, page] : null,
+        isDisabled ? null : (id && accessToken) ? ["QUERY_POSITIONS2_SWR", id, filters] : null,
         async () => {
             if (!id) {
                 throw new Error("Id is required")
@@ -20,10 +21,7 @@ export const useQueryPositions2SwrCore = () => {
                 token: accessToken,
                 request: {
                     botId: id,
-                    filters: {
-                        pageNumber: page || 1,
-                        limit: 10,
-                    },
+                    filters
                 },
             })
             const positions = data.data?.positions2
@@ -34,7 +32,10 @@ export const useQueryPositions2SwrCore = () => {
                 throw new Error("Positions2 data not found")
             }
             dispatch(setPositions(positions.data.data))
-            dispatch(setPositionsPage(positions.data.count))
+            dispatch(setPositionsPages({
+                currentPage: filters.pageNumber || 1,
+                totalPages: Math.ceil(positions.data.count / POSITIONS_2_PAGE_SIZE),
+            }))
             return data
         }
     )

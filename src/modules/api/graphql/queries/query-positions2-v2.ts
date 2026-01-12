@@ -42,6 +42,13 @@ const query1 = gql`
             feeAmountQuote
             positionValueAtClose
             positionValueAtOpen
+            associatedLiquidityPool {
+              tokenA
+              tokenB
+              fee
+              dex
+              url
+            }
         }
         count
       }
@@ -65,6 +72,7 @@ export interface QueryPositions2V2Request {
 export interface Positions2V2PaginationPageFilters {
     pageNumber?: number
     limit?: number
+    asc?: boolean
 }
 
 export interface QueryPositions2V2Response {

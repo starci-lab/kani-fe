@@ -63,7 +63,7 @@ export const PoolCard = ({ liquidityPool }: PoolCardProps) => {
                         />
                         <div className="text-sm">{dex?.name}</div>
                     </div>
-                    <div className="flex items-center gap-1 justify-center">
+                    <div className="flex items-center gap-2 justify-center">
                         <KaniAvatarGroup>
                             <KaniAvatar
                                 src={tokenA?.iconUrl}

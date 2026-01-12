@@ -4,6 +4,7 @@ import { use } from "react"
 import { setPositions, setPositionsCursor, useAppDispatch, useAppSelector } from "@/redux"
 import useSWR from "swr"
 
+export const POSITIONS_V2_PAGE_SIZE = 20
 export const useQueryPositionsV2SwrCore = () => {
     const dispatch = useAppDispatch()
     const accessToken = useAppSelector((state) => state.session.accessToken)

@@ -1,17 +1,18 @@
 import { queryTransactions2 } from "@/modules/api"
 import { SwrContext } from "../../../SwrContext"
 import { use } from "react"
-import { setTransactions, setTransactionsPage, useAppDispatch, useAppSelector } from "@/redux"
+import { setTransactions, setTransactionsPages, useAppDispatch, useAppSelector } from "@/redux"
 import useSWR from "swr"
 
+export const TRANSACTIONS_2_PAGE_SIZE = 20
 export const useQueryTransactions2SwrCore = () => {
     const dispatch = useAppDispatch()
     const accessToken = useAppSelector((state) => state.session.accessToken)
     const id = useAppSelector((state) => state.bot.id)
-    const page = useAppSelector((state) => state.bot.transactionsPage)
+    const filters = useAppSelector((state) => state.bot.transactionsFilters)
     const isDisabled = true
     const swr = useSWR(
-        isDisabled ? null : (id && accessToken) ? ["QUERY_TRANSACTIONS2_SWR", id, page] : null,
+        isDisabled ? null : (id && accessToken) ? ["QUERY_TRANSACTIONS2_SWR", id, filters] : null,
         async () => {
             if (!id) {
                 throw new Error("Id is required")
@@ -20,10 +21,7 @@ export const useQueryTransactions2SwrCore = () => {
                 token: accessToken,
                 request: {
                     botId: id,
-                    filters: {
-                        pageNumber: page || 1,
-                        limit: 10,
-                    },
+                    filters
                 },
             })
             const transactions = data.data?.transactions2
@@ -34,7 +32,10 @@ export const useQueryTransactions2SwrCore = () => {
                 throw new Error("Transactions2 data not found")
             }
             dispatch(setTransactions(transactions.data.data))
-            dispatch(setTransactionsPage(transactions.data.count))
+            dispatch(setTransactionsPages({
+                currentPage: filters.pageNumber || 1,
+                totalPages: Math.ceil(transactions.data.count / TRANSACTIONS_2_PAGE_SIZE),
+            }))
             return data
         }
     )

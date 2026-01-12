@@ -1,4 +1,5 @@
 import { ChainId } from "../blockchain"
+import { LiquidityPoolSchema } from "./liquidity-pool"
 
 export interface PositionSchema {
     id: string; // Mongo _id
@@ -51,4 +52,6 @@ export interface PositionSchema {
 
     positionValueAtClose: number
     positionValueAtOpen: number
+
+    associatedLiquidityPool: LiquidityPoolSchema;
   }

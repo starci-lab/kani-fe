@@ -20,18 +20,31 @@ export type UpdatePoolsFilters = Partial<{
     liquidityPools?: Array<string>
 }>
 
+export type TransactionsFilters = Partial<{
+    pageNumber?: number
+}>
+
+export type PositionsFilters = Partial<{
+    pageNumber?: number
+}>
+
+export interface TransactionsPages {
+    currentPage: number
+    totalPages: number
+}
+
+export interface PositionsPages {
+    currentPage: number
+    totalPages: number
+}
 export interface BotSlice {
     id?: string
     bot?: BotSchema
     tab: BotTab
     transactions?: Array<TransactionSchema>
     transactionsCursor?: string
-    transactionsPage?: number
-    currentTransactionsPage?: number
     positions?: Array<PositionSchema>
     positionsCursor?: string
-    positionsPage?: number
-    currentPositionsPage?: number
     chartInterval: ChartInterval
     chartUnit?: ChartUnit
     historyResponse?: QueryHistoryResponse
@@ -39,6 +52,10 @@ export interface BotSlice {
     bots?: Array<BotSchema>
     pageNumber?: number
     updatePoolsFilters: UpdatePoolsFilters
+    transactionsFilters: TransactionsFilters
+    positionsFilters: PositionsFilters
+    transactionsPages: TransactionsPages
+    positionsPages: PositionsPages
 }
 
 const initialState: BotSlice = {
@@ -50,6 +67,20 @@ const initialState: BotSlice = {
         pageNumber: 1,
         watchlist: false,
         incentivized: false,
+    },
+    transactionsFilters: {
+        pageNumber: 1,
+    },
+    positionsFilters: {
+        pageNumber: 1,
+    },
+    transactionsPages: {
+        currentPage: 1,
+        totalPages: 1,
+    },
+    positionsPages: {
+        currentPage: 1,
+        totalPages: 1,
     },
 }
 
@@ -78,17 +109,19 @@ export const botSlice = createSlice({
         setPositionsCursor: (state, action: PayloadAction<string>) => {
             state.positionsCursor = action.payload
         },
-        setTransactionsPage: (state, action: PayloadAction<number>) => {
-            state.transactionsPage = action.payload
+        setTransactionsPages: (state, action: PayloadAction<Partial<TransactionsPages>>) => {
+            // update partial pages
+            state.transactionsPages = {
+                ...state.transactionsPages,
+                ...action.payload
+            }
         },
-        setCurrentTransactionsPage: (state, action: PayloadAction<number>) => {
-            state.currentTransactionsPage = action.payload
-        },
-        setPositionsPage: (state, action: PayloadAction<number>) => {
-            state.positionsPage = action.payload
-        },
-        setCurrentPositionsPage: (state, action: PayloadAction<number>) => {
-            state.currentPositionsPage = action.payload
+        setPositionsPages: (state, action: PayloadAction<Partial<PositionsPages>>) => {
+            // update partial pages
+            state.positionsPages = {
+                ...state.positionsPages,
+                ...action.payload
+            }
         },
         setSelectedPosition: (state, action: PayloadAction<PositionSchema>) => {
             state.selectedPosition = action.payload
@@ -122,7 +155,13 @@ export const botSlice = createSlice({
                     isExitToUsdc: action.payload,
                 }
             }
-        }
+        },
+        setTransactionsFilters: (state, action: PayloadAction<TransactionsFilters>) => {
+            state.transactionsFilters = action.payload
+        },
+        setPositionsFilters: (state, action: PayloadAction<PositionsFilters>) => {
+            state.positionsFilters = action.payload
+        },
     },
 })
 
@@ -133,18 +172,18 @@ export const {
     setBotTab, 
     setTransactions, 
     setTransactionsCursor,
+    setTransactionsFilters,
     setPositions,
     setPositionsCursor,
-    setTransactionsPage,
-    setPositionsPage,
+    setTransactionsPages,
+    setPositionsFilters,
+    setPositionsPages,
     setSelectedPosition,
     setChartInterval,
     setChartUnit,
     setHistoryResponse,
     setBots,
     setBotsPageNumber,
-    setCurrentTransactionsPage,
-    setCurrentPositionsPage,
     setUpdatePoolsFilters,
     setBotIsExitToUsdc
 } = botSlice.actions

@@ -9,7 +9,7 @@ import {
     KaniTableHeader,
     KaniTableRow
 } from "@/components/atomic"
-import { EmptyContent, TooltipTitle } from "@/components/reuseable"
+import { EmptyContent, SnippetIcon, TooltipTitle } from "@/components/reuseable"
 import { ExplorerId, ExplorerUrlType, getExplorerUrl } from "@/modules/blockchain"
 import { TransactionSchema, TransactionType } from "@/modules/types"
 import { centerPad } from "@/modules/utils"
@@ -19,7 +19,7 @@ import { ArrowSquareOutIcon } from "@phosphor-icons/react"
 import { dayjs } from "@/modules/utils"
 import React, { useCallback } from "react"
 import { useQueryTransactionsV2Swr } from "@/hooks/singleton"
-import { setCurrentTransactionsPage } from "@/redux"
+import { setTransactionsPages } from "@/redux"
 
 export const Transactions = () => {
     const dispatch = useAppDispatch()
@@ -31,7 +31,7 @@ export const Transactions = () => {
         },
         {
             key: "txHash",
-            label: "Transaction Hash"
+            label: "Tx Hash"
         },
         {
             key: "timestamp",
@@ -64,8 +64,7 @@ export const Transactions = () => {
         }), []
     )
     const queryTransactionsV2Swr = useQueryTransactionsV2Swr()
-    const currentTransactionsPage = useAppSelector((state) => state.bot.currentTransactionsPage)
-    const transactionsPage = useAppSelector((state) => state.bot.transactionsPage)
+    const transactionsPages = useAppSelector((state) => state.bot.transactionsPages)
     return (
         <div>
             <TooltipTitle
@@ -73,20 +72,28 @@ export const Transactions = () => {
             />
             <Spacer y={3} />
             <KaniTable 
+                radius="sm"
                 classNames={{
-                    wrapper: "min-h-[250px] p-3",
+                    wrapper: "min-h-[300px] p-0 bg-transparent overflow-hidden",
                 }}
                 bottomContent={
-                    transactionsPage && transactionsPage > 0 ? (
+                    transactionsPages.totalPages && transactionsPages.totalPages > 0 ? (
                         <div className="flex w-full justify-center">
                             <KaniPagination
+                                variant="flat"
                                 isCompact
                                 showControls
                                 showShadow
                                 color="primary"
-                                page={currentTransactionsPage}
-                                total={transactionsPage}
-                                onChange={(page) => dispatch(setCurrentTransactionsPage(page))}
+                                page={transactionsPages.currentPage}
+                                total={transactionsPages.totalPages}
+                                onChange={(page) => dispatch(
+                                    setTransactionsPages({
+                                        currentPage: page,
+                                    }
+                                    )
+                                )
+                                }
                             />
                         </div>
                     ) : null
@@ -107,17 +114,21 @@ export const Transactions = () => {
                             transactions || []).map((transaction) => (
                             <KaniTableRow key={transaction.id}>
                                 <KaniTableCell>{renderType(transaction.type)}</KaniTableCell>
-                                <KaniTableCell>{centerPad(transaction.txHash, 10, 6)}</KaniTableCell>
+                                <KaniTableCell>
+                                    <div className="flex items-center gap-2">
+                                        {centerPad(transaction.txHash, 10, 6)}
+                                        <SnippetIcon
+                                            copyString={transaction.txHash}
+                                            classNames={{
+                                                checkIcon: "w-4 h-4 text-foreground-500",
+                                                copyIcon: "w-4 h-4 text-foreground-500",
+                                            }}/>
+                                    </div>
+                                </KaniTableCell>
                                 <KaniTableCell>{dayjs(transaction.timestamp).format("DD/MM/YYYY HH:mm:ss")}</KaniTableCell>
                                 <KaniTableCell>
-                                    <KaniLink
-                                        href={explorerUrl(transaction)}
-                                        target="_blank"
-                                        color="secondary"
-                                    >
-                                        <ArrowSquareOutIcon
-                                            className="w-5 h-5"
-                                        />
+                                    <KaniLink color="secondary" onPress={() => window.open(explorerUrl(transaction), "_blank")}>
+                                        <ArrowSquareOutIcon className="w-5 h-5 cursor-pointer" />
                                     </KaniLink>
                                 </KaniTableCell>
                             </KaniTableRow>

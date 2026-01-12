@@ -57,7 +57,7 @@ export const PoolCard = ({ liquidityPool, className, isSelected, onPress }: Pool
                         />
                     </div>
                     <div className="flex items-center gap-2 justify-center">
-                        <div className="flex items-center gap-1 justify-center">
+                        <div className="flex items-center gap-2 justify-center">
                             <KaniAvatarGroup>
                                 <KaniAvatar
                                     src={tokenA?.iconUrl}
@@ -77,7 +77,6 @@ export const PoolCard = ({ liquidityPool, className, isSelected, onPress }: Pool
                             <div className="text-sm">
                                 {tokenA?.name}-{tokenB?.name}
                             </div>
-                            <div className="flex items-center gap-1"></div>
                         </div>
                         <div className="flex items-center gap-1 justify-end">
                             <div className="text-sm">
