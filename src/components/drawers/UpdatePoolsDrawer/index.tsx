@@ -134,7 +134,7 @@ export const UpdatePoolsDrawer = () => {
                                         {data?.liquidityPools2.data?.data?.map((liquidityPool) => (
                                             <PoolCard 
                                                 key={liquidityPool.id} 
-                                                className="bg-content2"
+                                                className="bg-content2 shadow-none"
                                                 liquidityPool={liquidityPool} 
                                                 isSelected={updateBotLiquidityPoolsFormik.values.liquidityPoolIds.includes(liquidityPool.id)}
                                                 onPress={

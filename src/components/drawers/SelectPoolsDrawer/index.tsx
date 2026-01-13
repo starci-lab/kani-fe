@@ -4,7 +4,6 @@ import {
     KaniDrawer, 
     KaniDrawerBody, 
     KaniDrawerContent, 
-    KaniDrawerFooter, 
     KaniDrawerHeader 
 } from "../../atomic"
 import React, { useMemo } from "react"
@@ -122,7 +121,7 @@ export const SelectPoolsDrawer = () => {
                                         {data?.liquidityPools2.data?.data?.map((liquidityPool) => (
                                             <PoolCard 
                                                 key={liquidityPool.id} 
-                                                className="bg-content2"
+                                                className="bg-content2 shadow-none"
                                                 liquidityPool={liquidityPool} 
                                                 isSelected={createBotFormik.values.liquidityPoolIds.includes(liquidityPool.id)}
                                                 onPress={
@@ -151,21 +150,6 @@ export const SelectPoolsDrawer = () => {
                             )
                     )}
                 </KaniDrawerBody>
-                <KaniDrawerFooter>
-                    <KaniButton 
-                        isDisabled={createBotFormik.values.liquidityPoolIds.length === 0} 
-                        color="primary" 
-                        fullWidth 
-                        onPress={() => {
-                            createBotFormik.submitForm()
-                        }}
-                        isLoading={createBotFormik.isSubmitting}
-                    >
-                        {
-                            createBotFormik.values.liquidityPoolIds.length === 0 ? "Select pools to continue" : "Confirm"
-                        }
-                    </KaniButton>
-                </KaniDrawerFooter>
             </KaniDrawerContent>
         </KaniDrawer>    
     )
