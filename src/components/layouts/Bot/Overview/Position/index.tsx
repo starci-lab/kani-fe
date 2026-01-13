@@ -28,7 +28,7 @@ export const Position = () => {
                     <ArrowClockwiseIcon className="w-5 h-5"/>
                 </KaniLink>
             </div>
-            <Spacer y={3} />
+            <Spacer y={4} />
             <PoolCard />
         </div>
     )

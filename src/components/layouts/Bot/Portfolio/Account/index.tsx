@@ -106,7 +106,7 @@ export const Account = () => {
         <div>
             <TooltipTitle
                 title="Account" />
-            <Spacer y={3} />
+            <Spacer y={4} />
             <div className="flex items-center gap-2">
                 <div className="flex items-center gap-3">
                     {

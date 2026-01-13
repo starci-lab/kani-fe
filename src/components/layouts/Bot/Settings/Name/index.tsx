@@ -15,7 +15,7 @@ export const Name = () => {
             <div className="text-xs text-foreground-500">
             A descriptive name to help you recognize this bot. Only visible to you.
             </div>
-            <Spacer y={3} />
+            <Spacer y={4} />
             <KaniInput
                 label=""
                 labelPlacement="outside"
@@ -26,7 +26,7 @@ export const Name = () => {
                 isInvalid={!!(formik.errors.name && formik.touched.name)}
                 errorMessage={formik.errors.name}
             />
-            <Spacer y={3} />
+            <Spacer y={4} />
             <div className="flex gap-2">
                 <KaniButton color="primary" variant="flat" onPress={() => formik.submitForm()}>
                     Save

@@ -70,7 +70,7 @@ export const Transactions = () => {
             <TooltipTitle
                 title="Transactions"
             />
-            <Spacer y={3} />
+            <Spacer y={4} />
             <KaniTable 
                 shadow="none"
                 radius="sm"

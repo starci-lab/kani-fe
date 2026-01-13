@@ -51,7 +51,7 @@ export const Investment = () => {
             <TooltipTitle
                 title="Investment"
             />
-            <Spacer y={3} />
+            <Spacer y={4} />
             <div className="flex justify-between items-center">
                 {
                     isLoading ? (
@@ -81,7 +81,7 @@ export const Investment = () => {
                     <ArrowClockwiseIcon className="w-5 h-5 cursor-pointer" />
                 </KaniLink>
             </div>
-            <Spacer y={3} />
+            <Spacer y={4} />
             <div className="flex gap-2">
                 <TokenCard
                     token={targetToken}

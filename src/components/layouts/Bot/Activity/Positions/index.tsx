@@ -53,7 +53,7 @@ export const Positions = () => {
             <TooltipTitle
                 title="Positions"
             />
-            <Spacer y={3} />
+            <Spacer y={4} />
             <KaniTable 
                 shadow="none"
                 radius="sm"
