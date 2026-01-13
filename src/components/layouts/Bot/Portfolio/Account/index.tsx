@@ -97,7 +97,9 @@ export const Account = () => {
                 //         }
                 //     ))
                 // onOpenVerify()
-                exportWallet()
+                exportWallet({
+                    address: bot?.accountAddress ?? "",
+                })
             },
         }
     ]
