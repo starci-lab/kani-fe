@@ -3,6 +3,7 @@ import {
     KaniInput,
     KaniButton,
     KaniSwitch,
+    KaniCheckbox,
 } from "@/components/atomic"
 import { Spacer } from "@heroui/react"
 import { TooltipTitle } from "@/components/reuseable"
@@ -62,7 +63,17 @@ export const SetUpYourBot = () => {
                     onValueChange={(value) => formik.setFieldValue("isExitToUsdc", value)}
                 />
             </div>
-            <Spacer y={12} />
+            <Spacer y={8} />
+            <div className="flex gap-2">
+                <KaniCheckbox
+                    isSelected={formik.values.isTermsOfServiceAccepted}
+                    onValueChange={(value) => formik.setFieldValue("isTermsOfServiceAccepted", value)}
+                />
+                <div className="text-xs text-foreground-500">
+                    I accept the Terms of Service and acknowledge the risks involved.
+                </div>
+            </div>
+            <Spacer y={4} />
             <KaniButton 
                 isDisabled={!formik.isValid}
                 size="lg"

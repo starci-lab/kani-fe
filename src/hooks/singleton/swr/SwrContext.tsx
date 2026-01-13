@@ -41,7 +41,8 @@ import {
     useQueryLiquidityPools2UpdatePoolsSwrCore,
     useUpdateBotSettingsV2SwrMutationCore,
     useToggleBotV2SwrMutationCore,
-    useUpdateBotLiquidityPoolsV2SwrMutationCore
+    useUpdateBotLiquidityPoolsV2SwrMutationCore,
+    useQueryLiquidityPools2SelectedPoolsSwrCore
 } from "./api"
 
 export interface SwrContextType {
@@ -84,6 +85,7 @@ export interface SwrContextType {
     queryLiquidityPools2ActivePositionSwr: ReturnType<typeof useQueryLiquidityPools2ActivePositionSwrCore>;
     queryLiquidityPools2UpdatePoolsSwr: ReturnType<typeof useQueryLiquidityPools2UpdatePoolsSwrCore>;
     queryLiquidityPools2SelectPoolsSwr: ReturnType<typeof useQueryLiquidityPools2SelectPoolsSwrCore>;
+    queryLiquidityPools2SelectedPoolsSwr: ReturnType<typeof useQueryLiquidityPools2SelectedPoolsSwrCore>;
     toggleBotV2SwrMutation: ReturnType<typeof useToggleBotV2SwrMutationCore>;
     updateBotLiquidityPoolsV2SwrMutation: ReturnType<typeof useUpdateBotLiquidityPoolsV2SwrMutationCore>;
     updateBotSettingsV2SwrMutation: ReturnType<typeof useUpdateBotSettingsV2SwrMutationCore>;
@@ -129,6 +131,7 @@ export const SwrProvider = ({ children }: PropsWithChildren) => {
     const queryLiquidityPools2ActivePositionSwr = useQueryLiquidityPools2ActivePositionSwrCore()
     const queryLiquidityPools2UpdatePoolsSwr = useQueryLiquidityPools2UpdatePoolsSwrCore()
     const queryLiquidityPools2SelectPoolsSwr = useQueryLiquidityPools2SelectPoolsSwrCore()
+    const queryLiquidityPools2SelectedPoolsSwr = useQueryLiquidityPools2SelectedPoolsSwrCore()
     const toggleBotV2SwrMutation = useToggleBotV2SwrMutationCore()
     const updateBotLiquidityPoolsV2SwrMutation = useUpdateBotLiquidityPoolsV2SwrMutationCore()
     const updateBotSettingsV2SwrMutation = useUpdateBotSettingsV2SwrMutationCore()
@@ -170,6 +173,7 @@ export const SwrProvider = ({ children }: PropsWithChildren) => {
         queryLiquidityPools2ActivePositionSwr,
         queryLiquidityPools2UpdatePoolsSwr,
         queryLiquidityPools2SelectPoolsSwr,
+        queryLiquidityPools2SelectedPoolsSwr,
         toggleBotV2SwrMutation,
         updateBotLiquidityPoolsV2SwrMutation,
         updateBotSettingsV2SwrMutation,
@@ -211,6 +215,7 @@ export const SwrProvider = ({ children }: PropsWithChildren) => {
         queryLiquidityPools2ActivePositionSwr,
         queryLiquidityPools2UpdatePoolsSwr,
         queryLiquidityPools2SelectPoolsSwr,
+        queryLiquidityPools2SelectedPoolsSwr,
         toggleBotV2SwrMutation,
         updateBotLiquidityPoolsV2SwrMutation,
         updateBotSettingsV2SwrMutation,

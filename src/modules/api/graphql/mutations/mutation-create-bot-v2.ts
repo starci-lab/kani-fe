@@ -1,8 +1,7 @@
 import { DocumentNode, gql } from "@apollo/client"
 import { createNoCacheCredentialAuthClientWithToken } from "../clients"
 import { GraphQLResponse, MutationParams } from "../types"
-import { ChainId, TokenId } from "@/modules/types"
-import { LiquidityPoolId } from "@/modules/types"
+import { ChainId } from "@/modules/types"
 
 const mutation1 = gql`
   mutation CreateBotV2($request: CreateBotV2Request!) {
@@ -25,9 +24,9 @@ export interface MutationCreateBotV2Response {
 export interface MutationCreateBotV2Request {
     name: string;
     chainId: ChainId;
-    targetTokenId: TokenId;
-    quoteTokenId: TokenId;
-    liquidityPoolIds?: Array<LiquidityPoolId>;
+    targetTokenId: string;
+    quoteTokenId: string;
+    liquidityPoolIds?: Array<string>;
     isExitToUsdc: boolean;
 }
 

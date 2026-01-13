@@ -28,11 +28,11 @@ export const Name = () => {
             />
             <Spacer y={3} />
             <div className="flex gap-2">
+                <KaniButton color="primary" variant="flat" onPress={() => formik.submitForm()}>
+                    Save
+                </KaniButton>
                 <KaniButton color="primary" variant="light" onPress={() => formik.resetForm()}>
                 Reset
-                </KaniButton>
-                <KaniButton color="primary" variant="flat" onPress={() => formik.submitForm()}>
-                Save
                 </KaniButton>
             </div>
         </div>

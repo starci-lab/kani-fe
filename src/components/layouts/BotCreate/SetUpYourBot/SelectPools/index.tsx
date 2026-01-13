@@ -1,23 +1,22 @@
-import { TooltipTitle } from "@/components/reuseable"
+import { PoolCard, PoolCardSkeleton, TooltipTitle } from "../../../../reuseable"
 import {
     useCreateBotFormik,
+    useQueryLiquidityPools2SelectedPoolsSwr,
     useSelectPoolsDisclosure,
 } from "@/hooks/singleton"
-import { useAppSelector } from "@/redux"
 import React, { useMemo } from "react"
-import { PoolCard } from "./PoolCard"
 import { Spacer } from "@heroui/react"
-import { KaniButton } from "@/components/atomic"
+import { KaniButton } from "../../../../atomic" 
 
 export const SelectPools = () => {
     const { onOpen } = useSelectPoolsDisclosure()
     const formik = useCreateBotFormik()
-    const liquidityPools = useAppSelector((state) => state.static.liquidityPools)
+    const { data, isLoading } = useQueryLiquidityPools2SelectedPoolsSwr()
     const selectedLiquidityPools = useMemo(() => {
-        return liquidityPools.filter((liquidityPool) =>
-            formik.values.liquidityPoolIds?.includes(liquidityPool.displayId)
+        return data?.liquidityPools2.data?.data?.filter((liquidityPool) =>
+            formik.values.liquidityPoolIds?.includes(liquidityPool.id)
         );
-    }, [liquidityPools, formik.values.liquidityPoolIds])
+    }, [data?.liquidityPools2.data?.data, formik.values.liquidityPoolIds])
     return (
         <div className="flex flex-col">
             <TooltipTitle
@@ -25,11 +24,11 @@ export const SelectPools = () => {
                 tooltipString="This is the pools of your bot"
                 isRequired
             />
+            <Spacer y={2} />
             <div>
                 {
                     !formik.values.liquidityPoolIds.length ? (
-                    <>
-                        <Spacer y={3} />
+                    <>      
                         <div className="text-xs text-foreground-500">
                             Kani automatically selects the best-performing pools for you. You
                             can still choose manually if you prefer.
@@ -37,23 +36,30 @@ export const SelectPools = () => {
                     </>
                 ) : (
                     <div>
-                        <Spacer y={3} />
-                        <div className="flex flex-col gap-3">
-                            {selectedLiquidityPools.map((liquidityPool) => (
-                                <PoolCard
-                                    key={liquidityPool.id}
-                                    liquidityPool={liquidityPool}
-                                />
-                            ))}
-                        </div>
-                        <Spacer y={3} />
                         <div className="text-xs text-foreground-500">
                             You can only select up to 3 pools.
                         </div>
+                        <Spacer y={4} />
+                        <div className="flex flex-col gap-3">
+                            {(isLoading || !data) ? (
+                                <div className="flex flex-col gap-3">
+                                    {Array.from({ length: 2 }).map((_, index) => (
+                                        <PoolCardSkeleton key={index} />
+                                    ))}
+                                </div>
+                            ) : (
+                                selectedLiquidityPools?.map((liquidityPool) => (
+                                <PoolCard
+                                    key={liquidityPool.id}
+                                    liquidityPool={liquidityPool}
+                                    />
+                                ))
+                            )}
+                        </div>      
                     </div>
                 )}
             </div>
-            <Spacer y={3} />
+            <Spacer y={4} />
             <div className="flex items-center gap-2">
                 <KaniButton
                     isDisabled={
@@ -67,7 +73,6 @@ export const SelectPools = () => {
                 {formik.values.liquidityPoolIds.length > 0 && (
                     <KaniButton
                         variant="light"
-                        color="danger"
                         onPress={() => {
                             formik.setFieldValue("liquidityPoolIds", []);
                         }}

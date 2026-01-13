@@ -19,6 +19,7 @@ export interface CreateBotSlice {
     selectPoolsFilters: SelectPoolsFilters
     targetTokenId?: TokenId
     quoteTokenId?: TokenId
+    liquidityPoolIds?: Array<string>
 }
 
 const initialState: CreateBotSlice = {
@@ -52,8 +53,11 @@ export const createBotSlice = createSlice({
         setQuoteTokenId: (state, action) => {
             state.quoteTokenId = action.payload
         },
+        setLiquidityPoolIds: (state, action) => {
+            state.liquidityPoolIds = action.payload
+        },
     },
 })
 
 export const createBotReducer = createBotSlice.reducer
-export const { setTokenSearchQuery, setFilteredTokens, setSelectPoolsFilters, setTargetTokenId, setQuoteTokenId } = createBotSlice.actions
+export const { setTokenSearchQuery, setFilteredTokens, setSelectPoolsFilters, setTargetTokenId, setQuoteTokenId, setLiquidityPoolIds } = createBotSlice.actions

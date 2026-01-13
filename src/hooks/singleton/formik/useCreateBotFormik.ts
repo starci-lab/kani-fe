@@ -1,5 +1,5 @@
 import { useFormik } from "formik"
-import { use } from "react"
+import { use, useEffect } from "react"
 import * as Yup from "yup"
 import { FormikContext } from "./FormikContext"
 import { ChainId } from "@/modules/types"
@@ -7,6 +7,7 @@ import { useCreateBotV2SwrMutation } from "../swr"
 import { runGraphQLWithToast } from "@/components/toasts"
 import { useRouter } from "next/navigation"
 import { paths } from "@/modules/path"
+import { setLiquidityPoolIds, setQuoteTokenId, setTargetTokenId, useAppDispatch } from "@/redux"
 
 export interface CreateBotFormikValues {
     name: string
@@ -16,6 +17,7 @@ export interface CreateBotFormikValues {
     quoteTokenId?: string
     liquidityPoolIds: Array<string>
     isExitToUsdc: boolean
+    isTermsOfServiceAccepted: boolean
 }
 
 const initialValues: CreateBotFormikValues = {
@@ -24,6 +26,7 @@ const initialValues: CreateBotFormikValues = {
     isTargetTokenSelected: false,
     liquidityPoolIds: [],
     isExitToUsdc: false,
+    isTermsOfServiceAccepted: false,
 }
 
 const validationSchema = Yup.object({
@@ -33,12 +36,13 @@ const validationSchema = Yup.object({
     quoteTokenId: Yup.string().required("Quote token ID is required"),
     liquidityPoolIds: Yup.array().of(Yup.string()).required("Liquidity pool IDs are required"),
     isExitToUsdc: Yup.boolean().required("Exit to USDC is required"),
+    isTermsOfServiceAccepted: Yup.boolean().required("Terms of service acceptance is required").oneOf([true], "Terms of service acceptance is required"),
 })
 
 export const useCreateBotFormikCore = () => {
     const createBotV2Mutation = useCreateBotV2SwrMutation()
     const router = useRouter()
-    return useFormik<CreateBotFormikValues>({
+    const formik = useFormik<CreateBotFormikValues>({
         initialValues,
         validationSchema,
         onSubmit: async (values, { resetForm }) => {
@@ -75,6 +79,22 @@ export const useCreateBotFormikCore = () => {
             }
         }
     })
+
+    // update the target token, quote token and liquidity pool ids in the redux store
+    const dispatch = useAppDispatch()
+    
+    useEffect(() => {
+        dispatch(setTargetTokenId(formik.values.targetTokenId))
+    }, [formik.values.targetTokenId])
+
+    useEffect(() => {
+        dispatch(setQuoteTokenId(formik.values.quoteTokenId))
+    }, [formik.values.quoteTokenId])
+
+    useEffect(() => {
+        dispatch(setLiquidityPoolIds(formik.values.liquidityPoolIds))
+    }, [formik.values.liquidityPoolIds])
+    return formik
 }   
 
 export const useCreateBotFormik = () => {

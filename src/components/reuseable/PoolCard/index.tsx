@@ -138,7 +138,7 @@ export const PoolCard = ({ liquidityPool, className, isSelected, onPress }: Pool
     return (
         isSelected ? (
             <KaniBadge content={
-                <SealCheckIcon weight="fill" className="w-8 h-8 min-w-8 min-h-8 max-w-8 max-h-8 text-primary" />
+                <SealCheckIcon weight="fill" className="w-6 h-6 min-w-6 min-h-6 max-w-6 max-h-6 text-primary" />
             } placement="top-left" classNames={{
                 badge: "top-1 left-1 min-w-4 min-h-4 max-w-4 max-h-4 bg-foreground border-none",
             }}>

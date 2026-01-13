@@ -3,7 +3,6 @@ import { ConnectModal } from "./ConnectModal"
 import { DepositModal } from "./DepositModal"
 import { ConfirmTOTPModal } from "./ConfirmTOTPModal"
 import { ExportPrivateKeyModal } from "./ExportPrivateKeyModal"
-import { SelectPoolsModal } from "./SelectPoolsModal"
 import { SignInModal } from "./SignInModal"
 import { EnableMFAModal } from "./EnableMFAModal"
 import { VerifyModal } from "./VerifyModal"
@@ -18,7 +17,6 @@ export const ModalContainer = () => {
             <DepositModal />
             <ConfirmTOTPModal />
             <ExportPrivateKeyModal />
-            <SelectPoolsModal />
             <SignInModal />
             <EnableMFAModal />
             <VerifyModal />

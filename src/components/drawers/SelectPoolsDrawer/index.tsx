@@ -8,13 +8,13 @@ import {
     KaniDrawerHeader 
 } from "../../atomic"
 import React, { useMemo } from "react"
-import { useQueryLiquidityPools2SelectPoolsSwr, useSelectPoolsDisclosure } from "@/hooks/singleton"
+import { useQueryLiquidityPools2SelectPoolsSwr, useSelectPoolsDisclosure, useCreateBotFormik } from "@/hooks/singleton"
 import { Spacer } from "@heroui/react"
-import { setSelectPoolsFilters, setUpdatePoolsFilters, useAppDispatch, useAppSelector } from "@/redux"
+import { setSelectPoolsFilters, useAppDispatch, useAppSelector } from "@/redux"
 import { DexSelect, EmptyContent, PoolCard, PoolCardSkeleton, SortByDropdown, TextCheckbox, TextSwitch } from "../../reuseable"
 import { ArrowClockwiseIcon } from "@phosphor-icons/react"
 import { LiquidityPools2SortBy } from "@/modules/api"
-import { useCreateBotFormik } from "@/hooks/singleton"
+
 export const SelectPoolsDrawer = () => {
     const { isOpen, onOpenChange } = useSelectPoolsDisclosure()
     const dexes = useAppSelector(state => state.static.dexes)
@@ -29,11 +29,6 @@ export const SelectPoolsDrawer = () => {
         <KaniDrawer 
             isOpen={isOpen} 
             onOpenChange={onOpenChange} 
-            onClose={
-                () => {
-                    createBotFormik.resetForm()
-                }
-            }
         >
             <KaniDrawerContent>
                 <KaniDrawerHeader>
@@ -91,7 +86,7 @@ export const SelectPoolsDrawer = () => {
                                 />
                                 <div className="flex items-center gap-2">
                                     <SortByDropdown 
-                                            sortBy={selectPoolsFilters?.sortBy ?? LiquidityPools2SortBy.Apr} asc={selectPoolsFilters?.asc ?? true} onSortByChange={(sortBy) => {
+                                        sortBy={selectPoolsFilters?.sortBy ?? LiquidityPools2SortBy.Apr} asc={selectPoolsFilters?.asc ?? true} onSortByChange={(sortBy) => {
                                             dispatch(setSelectPoolsFilters({
                                                 ...selectPoolsFilters,
                                                 sortBy

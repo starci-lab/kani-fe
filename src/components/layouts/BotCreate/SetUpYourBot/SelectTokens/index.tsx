@@ -10,8 +10,8 @@ export const SelectTokens = () => {
     const { onOpen } = useSelectTokenDisclosure()
     const formik = useCreateBotFormik()
     const tokens = useAppSelector(state => state.static.tokens)
-    const targetToken = tokens.find(token => token.displayId === formik.values.targetTokenId)
-    const quoteToken = tokens.find(token => token.displayId === formik.values.quoteTokenId)
+    const targetToken = tokens.find(token => token.id === formik.values.targetTokenId)
+    const quoteToken = tokens.find(token => token.id === formik.values.quoteTokenId)
     return (
         <div>
             <TooltipTitle

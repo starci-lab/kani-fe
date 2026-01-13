@@ -88,10 +88,17 @@ export const TokenCard = ({
             <KaniBadge content={
                 <SealCheckIcon weight="fill" className={
                     cn(
-                        "w-8 h-8 min-w-8 min-h-8 max-w-8 max-h-8 text-primary", {
-                            "text-primary": isSelected,
-                            "text-secondary": isOtherSideSelected,
-                        }
+                        "w-6 h-6 min-w-6 min-h-6 max-w-6 max-h-6", 
+                        isPrimarySide ?
+                            {
+                                "text-primary": isSelected,
+                                "text-secondary": isOtherSideSelected,
+                            }
+                            :
+                            {
+                                "text-secondary": isSelected,
+                                "text-primary": isOtherSideSelected,
+                            }
                     )
                 } />
             } placement="top-left" classNames={{
