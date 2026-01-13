@@ -8,7 +8,7 @@ import Decimal from "decimal.js"
 import { Spacer } from "@heroui/react"
 import {
     useQueryFeesV2Swr,
-    useQueryLiquidityPools2ActivePositionSwr,
+    useQueryLiquidityPoolsActivePositionSwr,
     useQueryReservesV2Swr
 } from "@/hooks/singleton"
 import numeral from "numeral"
@@ -18,7 +18,7 @@ export interface CLMMProps {
 }
 
 export const CLMM = ({ liquidityPool }: CLMMProps) => {
-    const queryLiquidityPools2ActivePositionSwr = useQueryLiquidityPools2ActivePositionSwr()
+    const queryliquidityPoolsActivePositionSwr = useQueryLiquidityPoolsActivePositionSwr()
     const tokens = useAppSelector((state) => state.static.tokens)
     const tokenA = useMemo(
         () => tokens.find((token) => token.id === liquidityPool?.tokenA),
@@ -78,8 +78,8 @@ export const CLMM = ({ liquidityPool }: CLMMProps) => {
         return tokenAReserves.mul(tokenPriceA).add(tokenBReserves.mul(tokenPriceB))
     }, [tokenAReserves, tokenBReserves, tokenPriceA, tokenPriceB])
     const isLoading = useMemo(() => {
-        return queryLiquidityPools2ActivePositionSwr.isLoading || !liquidityPool
-    }, [queryLiquidityPools2ActivePositionSwr.isLoading, liquidityPool])
+        return queryliquidityPoolsActivePositionSwr.isLoading || !liquidityPool
+    }, [queryliquidityPoolsActivePositionSwr.isLoading, liquidityPool])
     return (
         <>
             {!isLoading ?

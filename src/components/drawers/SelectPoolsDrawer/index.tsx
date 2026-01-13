@@ -7,18 +7,18 @@ import {
     KaniDrawerHeader 
 } from "../../atomic"
 import React, { useMemo } from "react"
-import { useQueryLiquidityPools2SelectPoolsSwr, useSelectPoolsDisclosure, useCreateBotFormik } from "@/hooks/singleton"
+import { useQueryLiquidityPoolsSelectPoolsSwr, useSelectPoolsDisclosure, useCreateBotFormik } from "@/hooks/singleton"
 import { Spacer } from "@heroui/react"
 import { setSelectPoolsFilters, useAppDispatch, useAppSelector } from "@/redux"
 import { DexSelect, EmptyContent, PoolCard, PoolCardSkeleton, SortByDropdown, TextCheckbox, TextSwitch } from "../../reuseable"
 import { ArrowClockwiseIcon } from "@phosphor-icons/react"
-import { LiquidityPools2SortBy } from "@/modules/api"
+import { LiquidityPoolsSortBy } from "@/modules/api"
 
 export const SelectPoolsDrawer = () => {
     const { isOpen, onOpenChange } = useSelectPoolsDisclosure()
     const dexes = useAppSelector(state => state.static.dexes)
     const selectPoolsFilters = useAppSelector(state => state.createBot.selectPoolsFilters)
-    const { data, isLoading } = useQueryLiquidityPools2SelectPoolsSwr()
+    const { data, isLoading } = useQueryLiquidityPoolsSelectPoolsSwr()
     const createBotFormik = useCreateBotFormik()
     const filteredDexes = useMemo(() => {
         return dexes.filter(dex => dex?.chainIds?.includes(createBotFormik.values.chainId))
@@ -85,7 +85,7 @@ export const SelectPoolsDrawer = () => {
                                 />
                                 <div className="flex items-center gap-2">
                                     <SortByDropdown 
-                                        sortBy={selectPoolsFilters?.sortBy ?? LiquidityPools2SortBy.Apr} asc={selectPoolsFilters?.asc ?? true} onSortByChange={(sortBy) => {
+                                        sortBy={selectPoolsFilters?.sortBy ?? LiquidityPoolsSortBy.Apr} asc={selectPoolsFilters?.asc ?? true} onSortByChange={(sortBy) => {
                                             dispatch(setSelectPoolsFilters({
                                                 ...selectPoolsFilters,
                                                 sortBy
@@ -113,12 +113,12 @@ export const SelectPoolsDrawer = () => {
                             ))}
                         </div>
                     ) : (
-                        data?.liquidityPools2.data?.data?.length 
-                        && data?.liquidityPools2.data?.data?.length > 0 
+                        data?.liquidityPools.data?.data?.length 
+                        && data?.liquidityPools.data?.data?.length > 0 
                             ? (
                                 <div>
                                     <div className="flex flex-col gap-3">
-                                        {data?.liquidityPools2.data?.data?.map((liquidityPool) => (
+                                        {data?.liquidityPools.data?.data?.map((liquidityPool) => (
                                             <PoolCard 
                                                 key={liquidityPool.id} 
                                                 className="bg-content2 shadow-none"

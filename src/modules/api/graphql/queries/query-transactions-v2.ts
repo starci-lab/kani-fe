@@ -18,7 +18,7 @@ const query1 = gql`
             type
             timestamp
         }
-        cursor
+        count
       }
     }
   }
@@ -34,18 +34,18 @@ const queryMap: Record<QueryTransactionsV2, DocumentNode> = {
 
 export interface QueryTransactionsV2Request {
     botId: string;
-    filters: TransactionsV2PaginationCursorFilters;
+    filters: TransactionsV2PaginationPageFilters;
 }
 
-export interface TransactionsV2PaginationCursorFilters {
-    timestampAscending?: boolean
-    cursor?: string
+export interface TransactionsV2PaginationPageFilters {
+    pageNumber?: number
     limit?: number
+    asc?: boolean
 }
 
 export interface QueryTransactionsV2Response {
     data: Array<TransactionSchema>;
-    cursor: string;
+    count: number;
 }
 export type QueryTransactionsV2Params = QueryParams<QueryTransactionsV2, QueryTransactionsV2Request>;
 
@@ -68,5 +68,6 @@ export const queryTransactionsV2 = async (
             variables: {
                 request
             },
-        })
+        }
+        )
 }

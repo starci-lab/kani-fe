@@ -1,10 +1,10 @@
-import { LiquidityPools2SortBy } from "@/modules/api"
+import { LiquidityPoolsSortBy } from "@/modules/api"
 import { DexId, TokenId, TokenSchema } from "@/modules/types"
 import { createSlice } from "@reduxjs/toolkit"
 
 export type SelectPoolsFilters = Partial<{
     dexIds?: Array<DexId>
-    sortBy?: LiquidityPools2SortBy
+    sortBy?: LiquidityPoolsSortBy
     asc?: boolean
     watchlist?: boolean
     pageNumber?: number
@@ -27,7 +27,7 @@ const initialState: CreateBotSlice = {
     filteredTokens: [],
     selectPoolsFilters: {
         asc: false,
-        sortBy: LiquidityPools2SortBy.Apr,
+        sortBy: LiquidityPoolsSortBy.Apr,
         pageNumber: 1,
         watchlist: false,
         incentivized: false,

@@ -6,7 +6,7 @@ import { LiquidityChart } from "../../../../../../reuseable/charts"
 import { KaniChip, KaniDivider, KaniSkeleton, KaniSpinner } from "../../../../../../atomic"
 import Decimal from "decimal.js"
 import { Spacer } from "@heroui/react"
-import { useQueryFeesV2Swr, useQueryLiquidityPools2ActivePositionSwr, useQueryReservesV2Swr } from "@/hooks/singleton"
+import { useQueryFeesV2Swr, useQueryLiquidityPoolsActivePositionSwr, useQueryReservesV2Swr } from "@/hooks/singleton"
 import numeral from "numeral"
 
 export interface DLMMProps {
@@ -16,7 +16,7 @@ export interface DLMMProps {
 export const DLMM = (
     { liquidityPool }: DLMMProps
 ) => {
-    const queryLiquidityPools2ActivePositionSwr = useQueryLiquidityPools2ActivePositionSwr()
+    const queryliquidityPoolsActivePositionSwr = useQueryLiquidityPoolsActivePositionSwr()
     const tokens = useAppSelector((state) => state.static.tokens)
     const tokenA = useMemo(
         () => tokens.find((token) => token.id === liquidityPool?.tokenA),
@@ -76,8 +76,8 @@ export const DLMM = (
         return tokenAReserves.mul(tokenPriceA).add(tokenBReserves.mul(tokenPriceB))
     }, [tokenAReserves, tokenBReserves, tokenPriceA, tokenPriceB])
     const isLoading = useMemo(() => {
-        return queryLiquidityPools2ActivePositionSwr.isLoading || !liquidityPool
-    }, [queryLiquidityPools2ActivePositionSwr.isLoading, liquidityPool])
+        return queryliquidityPoolsActivePositionSwr.isLoading || !liquidityPool
+    }, [queryliquidityPoolsActivePositionSwr.isLoading, liquidityPool])
     return (
         <>
             {!isLoading ?

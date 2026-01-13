@@ -1,7 +1,6 @@
 import { DocumentNode, gql } from "@apollo/client"
 import { GraphQLResponse, QueryParams } from "../types"
 import { 
-    LiquidityPoolSchema, 
     TokenSchema, 
     DexSchema, 
     AccountLimitsConfig, 
@@ -35,27 +34,6 @@ const query1 = gql`
             cexSymbols
             type
             pythFeedId
-        }
-    }
-    liquidityPools {
-        success
-        message
-        error
-        data {
-            id
-            createdAt
-            updatedAt
-            displayId
-            poolAddress
-            type
-            fee
-            chainId
-            dex
-            tokenA
-            tokenB
-            url
-            binStep
-            basisPointMax
         }
     }
     dexes {
@@ -104,7 +82,6 @@ const queryMap: Record<QueryStatic, DocumentNode> = {
   
 export interface QueryStaticResponse {
     tokens: GraphQLResponse<Array<TokenSchema>>
-    liquidityPools: GraphQLResponse<Array<LiquidityPoolSchema>>
     dexes: GraphQLResponse<Array<DexSchema>>
     gasConfig: GraphQLResponse<GasConfig>
     accountLimits: GraphQLResponse<AccountLimitsConfig>

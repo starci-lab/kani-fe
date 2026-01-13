@@ -1,7 +1,7 @@
 import { PoolCard, PoolCardSkeleton, TooltipTitle } from "../../../../reuseable"
 import {
     useCreateBotFormik,
-    useQueryLiquidityPools2SelectedPoolsSwr,
+    useQueryLiquidityPoolsSelectedPoolsSwr,
     useSelectPoolsDisclosure,
 } from "@/hooks/singleton"
 import React, { useMemo } from "react"
@@ -11,12 +11,12 @@ import { KaniButton } from "../../../../atomic"
 export const SelectPools = () => {
     const { onOpen } = useSelectPoolsDisclosure()
     const formik = useCreateBotFormik()
-    const { data, isLoading } = useQueryLiquidityPools2SelectedPoolsSwr()
+    const { data, isLoading } = useQueryLiquidityPoolsSelectedPoolsSwr()
     const selectedLiquidityPools = useMemo(() => {
-        return data?.liquidityPools2.data?.data?.filter((liquidityPool) =>
+        return data?.liquidityPools.data?.data?.filter((liquidityPool) =>
             formik.values.liquidityPoolIds?.includes(liquidityPool.id)
         );
-    }, [data?.liquidityPools2.data?.data, formik.values.liquidityPoolIds])
+    }, [data?.liquidityPools.data?.data, formik.values.liquidityPoolIds])
     return (
         <div className="flex flex-col">
             <TooltipTitle

@@ -2,223 +2,165 @@
 import React, { PropsWithChildren, useMemo } from "react"
 import { createContext } from "react"
 import {
-    useQueryUserSwrMutationCore,
-    useQueryUserWithoutRetrySwrMutationCore,
     useQueryStaticSwrCore,
-    useQueryUserSwrCore,
     useCreateBotSwrMutationCore,
     useRequestSignInOtpSwrMutationCore,
     useVerifySignInOtpSwrMutationCore,
-    useQueryTotpSecretSwrMutationCore,
     useEnableMFASwrMutationCore,
-    useQueryBotSwrCore,
     useRequestSend2FactorOtpSwrMutationCore,
     useBackupBotPrivateKeySwrMutationCore,
-    useQueryTransactionsSwrCore,
-    useQueryPositionsSwrCore,
-    useQueryPositions2SwrCore,
-    useQueryTransactions2SwrCore,
-    useQueryLiquidityPools2SelectPoolsSwrCore,
-    useQueryHistorySwrCore,
-    useQueryBots2SwrCore,
     useToggleBotSwrMutationCore,
-    useQueryReservesSwrCore,
     useQueryUserV2SwrCore,
     useCreateBotV2SwrMutationCore,
-    useQueryBots2V2SwrCore,
-    useQueryBotV2SwrCore,
-    useQueryPositionsV2SwrCore,
-    useQueryPositions2V2SwrCore,
-    useQueryTransactions2V2SwrCore,
-    useQueryTransactionsV2SwrCore,
     useQueryFeesV2SwrCore,
     useQueryReservesV2SwrCore,
-    useQueryFeesSwrCore,
-    useQueryFundingSnapshotV2SwrCore,
-    useQueryHistoryV2SwrCore,
-    useQueryLiquidityPools2BotSwrCore,
-    useQueryLiquidityPools2ActivePositionSwrCore,
-    useQueryLiquidityPools2UpdatePoolsSwrCore,
     useUpdateBotSettingsV2SwrMutationCore,
     useToggleBotV2SwrMutationCore,
     useUpdateBotLiquidityPoolsV2SwrMutationCore,
-    useQueryLiquidityPools2SelectedPoolsSwrCore
-} from "./api"
+    useQueryLiquidityPoolsActivePositionSwrCore,
+    useQueryLiquidityPoolsBotSwrCore,
+    useQueryLiquidityPoolsUpdatePoolsSwrCore,
+    useQueryLiquidityPoolsSelectPoolsSwrCore,
+    useQueryTransactionsSwrCore,
+    useQueryPositionsSwrCore,
+    useQueryTransactionsV2SwrCore,
+    useQueryBotsV2SwrCore,
+    useQueryFundingSnapshotV2SwrCore,
+    useQueryHistoryV2SwrCore,
+    useQueryTotpSecretSwrMutationCore,
+    useQueryBotV2SwrCore,
+    useQueryLiquidityPoolsSelectedPoolsSwrCore,
+    useQueryPositionsV2SwrCore,
+} from "./core"
 
 export interface SwrContextType {
-    queryUserSwrMutation: ReturnType<typeof useQueryUserSwrMutationCore>;
-    queryUserWithoutRetrySwrMutation: ReturnType<
-        typeof useQueryUserWithoutRetrySwrMutationCore
-    >;
     queryStaticSwr: ReturnType<typeof useQueryStaticSwrCore>;
-    queryUserSwr: ReturnType<typeof useQueryUserSwrCore>;
     createBotSwrMutation: ReturnType<typeof useCreateBotSwrMutationCore>;
     requestSignInOtpSwrMutation: ReturnType<typeof useRequestSignInOtpSwrMutationCore>;
     verifySignInOtpSwrMutation: ReturnType<typeof useVerifySignInOtpSwrMutationCore>;
-    queryTotpSecretSwrMutation: ReturnType<typeof useQueryTotpSecretSwrMutationCore>;
     enableMFASwrMutation: ReturnType<typeof useEnableMFASwrMutationCore>;
-    queryBotSwr: ReturnType<typeof useQueryBotSwrCore>;
     requestSend2FactorOtpSwrMutation: ReturnType<typeof useRequestSend2FactorOtpSwrMutationCore>;
     backupBotPrivateKeySwrMutation: ReturnType<typeof useBackupBotPrivateKeySwrMutationCore>;
-    queryTransactionsSwr: ReturnType<typeof useQueryTransactionsSwrCore>;
-    queryPositionsSwr: ReturnType<typeof useQueryPositionsSwrCore>;
-    queryPositions2Swr: ReturnType<typeof useQueryPositions2SwrCore>;
-    queryTransactions2Swr: ReturnType<typeof useQueryTransactions2SwrCore>;
-    queryHistorySwr: ReturnType<typeof useQueryHistorySwrCore>;
-    queryBots2Swr: ReturnType<typeof useQueryBots2SwrCore>;
     toggleBotSwrMutation: ReturnType<typeof useToggleBotSwrMutationCore>;
-    queryFeesSwr: ReturnType<typeof useQueryFeesSwrCore>;
-    queryReservesSwr: ReturnType<typeof useQueryReservesSwrCore>;
     queryUserV2Swr: ReturnType<typeof useQueryUserV2SwrCore>;
     createBotV2SwrMutation: ReturnType<typeof useCreateBotV2SwrMutationCore>;
-    queryBots2V2Swr: ReturnType<typeof useQueryBots2V2SwrCore>;
-    queryBotV2Swr: ReturnType<typeof useQueryBotV2SwrCore>;
-    queryTransactions2V2Swr: ReturnType<typeof useQueryTransactions2V2SwrCore>;
-    queryPositions2V2Swr: ReturnType<typeof useQueryPositions2V2SwrCore>;
-    queryPositionsV2Swr: ReturnType<typeof useQueryPositionsV2SwrCore>;
-    queryTransactionsV2Swr: ReturnType<typeof useQueryTransactionsV2SwrCore>;
     queryFeesV2Swr: ReturnType<typeof useQueryFeesV2SwrCore>;
     queryReservesV2Swr: ReturnType<typeof useQueryReservesV2SwrCore>;
     queryFundingSnapshotV2Swr: ReturnType<typeof useQueryFundingSnapshotV2SwrCore>;
     queryHistoryV2Swr: ReturnType<typeof useQueryHistoryV2SwrCore>;
-    queryLiquidityPools2BotSwr: ReturnType<typeof useQueryLiquidityPools2BotSwrCore>;
-    queryLiquidityPools2ActivePositionSwr: ReturnType<typeof useQueryLiquidityPools2ActivePositionSwrCore>;
-    queryLiquidityPools2UpdatePoolsSwr: ReturnType<typeof useQueryLiquidityPools2UpdatePoolsSwrCore>;
-    queryLiquidityPools2SelectPoolsSwr: ReturnType<typeof useQueryLiquidityPools2SelectPoolsSwrCore>;
-    queryLiquidityPools2SelectedPoolsSwr: ReturnType<typeof useQueryLiquidityPools2SelectedPoolsSwrCore>;
+    queryTotpSecretSwrMutation: ReturnType<typeof useQueryTotpSecretSwrMutationCore>;
+    queryLiquidityPoolsActivePositionSwr: ReturnType<typeof useQueryLiquidityPoolsActivePositionSwrCore>;
+    queryLiquidityPoolsBotSwr: ReturnType<typeof useQueryLiquidityPoolsBotSwrCore>;
+    queryLiquidityPoolsUpdatePoolsSwr: ReturnType<typeof useQueryLiquidityPoolsUpdatePoolsSwrCore>;
+    queryLiquidityPoolsSelectPoolsSwr: ReturnType<typeof useQueryLiquidityPoolsSelectPoolsSwrCore>;
+    queryLiquidityPoolsSelectedPoolsSwr: ReturnType<typeof useQueryLiquidityPoolsSelectedPoolsSwrCore>;
     toggleBotV2SwrMutation: ReturnType<typeof useToggleBotV2SwrMutationCore>;
     updateBotLiquidityPoolsV2SwrMutation: ReturnType<typeof useUpdateBotLiquidityPoolsV2SwrMutationCore>;
     updateBotSettingsV2SwrMutation: ReturnType<typeof useUpdateBotSettingsV2SwrMutationCore>;
+    queryBotsV2Swr: ReturnType<typeof useQueryBotsV2SwrCore>;
+    queryBotV2Swr: ReturnType<typeof useQueryBotV2SwrCore>;
+    queryPositionsSwr: ReturnType<typeof useQueryPositionsSwrCore>;
+    queryPositionsV2Swr: ReturnType<typeof useQueryPositionsV2SwrCore>;
+    queryTransactionsSwr: ReturnType<typeof useQueryTransactionsSwrCore>;
+    queryTransactionsV2Swr: ReturnType<typeof useQueryTransactionsV2SwrCore>;
 }
 
 export const SwrContext = createContext<SwrContextType | null>(null)
 
 export const SwrProvider = ({ children }: PropsWithChildren) => {
-    const queryUserSwrMutation = useQueryUserSwrMutationCore()
-    const queryUserWithoutRetrySwrMutation = useQueryUserWithoutRetrySwrMutationCore()
     const queryStaticSwr = useQueryStaticSwrCore()
-    const queryUserSwr = useQueryUserSwrCore()
     const queryUserV2Swr = useQueryUserV2SwrCore()
     const createBotV2SwrMutation = useCreateBotV2SwrMutationCore()
     const requestSignInOtpSwrMutation = useRequestSignInOtpSwrMutationCore()
     const verifySignInOtpSwrMutation = useVerifySignInOtpSwrMutationCore()
-    const queryTotpSecretSwrMutation = useQueryTotpSecretSwrMutationCore()
     const enableMFASwrMutation = useEnableMFASwrMutationCore()
-    const queryBotSwr = useQueryBotSwrCore()
     const requestSend2FactorOtpSwrMutation = useRequestSend2FactorOtpSwrMutationCore()
     const backupBotPrivateKeySwrMutation = useBackupBotPrivateKeySwrMutationCore()
-    const queryTransactionsSwr = useQueryTransactionsSwrCore()
-    const queryPositionsSwr = useQueryPositionsSwrCore()
-    const queryPositions2Swr = useQueryPositions2SwrCore()
-    const queryTransactions2Swr = useQueryTransactions2SwrCore()
-    const queryHistorySwr = useQueryHistorySwrCore()
-    const queryBots2Swr = useQueryBots2SwrCore()
-    const queryBots2V2Swr = useQueryBots2V2SwrCore()
+    const queryTotpSecretSwrMutation = useQueryTotpSecretSwrMutationCore()
     const createBotSwrMutation = useCreateBotSwrMutationCore()
     const toggleBotSwrMutation = useToggleBotSwrMutationCore()
-    const queryFeesSwr = useQueryFeesSwrCore()
-    const queryReservesSwr = useQueryReservesSwrCore()
-    const queryBotV2Swr = useQueryBotV2SwrCore()
-    const queryTransactions2V2Swr = useQueryTransactions2V2SwrCore()
-    const queryPositions2V2Swr = useQueryPositions2V2SwrCore()
     const queryPositionsV2Swr = useQueryPositionsV2SwrCore()
     const queryTransactionsV2Swr = useQueryTransactionsV2SwrCore()
-    const queryFeesV2Swr = useQueryFeesV2SwrCore()
-    const queryReservesV2Swr = useQueryReservesV2SwrCore()
     const queryFundingSnapshotV2Swr = useQueryFundingSnapshotV2SwrCore()
     const queryHistoryV2Swr = useQueryHistoryV2SwrCore()
-    const queryLiquidityPools2BotSwr = useQueryLiquidityPools2BotSwrCore()
-    const queryLiquidityPools2ActivePositionSwr = useQueryLiquidityPools2ActivePositionSwrCore()
-    const queryLiquidityPools2UpdatePoolsSwr = useQueryLiquidityPools2UpdatePoolsSwrCore()
-    const queryLiquidityPools2SelectPoolsSwr = useQueryLiquidityPools2SelectPoolsSwrCore()
-    const queryLiquidityPools2SelectedPoolsSwr = useQueryLiquidityPools2SelectedPoolsSwrCore()
     const toggleBotV2SwrMutation = useToggleBotV2SwrMutationCore()
     const updateBotLiquidityPoolsV2SwrMutation = useUpdateBotLiquidityPoolsV2SwrMutationCore()
     const updateBotSettingsV2SwrMutation = useUpdateBotSettingsV2SwrMutationCore()
+    const queryFeesV2Swr = useQueryFeesV2SwrCore()
+    const queryReservesV2Swr = useQueryReservesV2SwrCore()
+    const queryLiquidityPoolsActivePositionSwr = useQueryLiquidityPoolsActivePositionSwrCore()
+    const queryLiquidityPoolsBotSwr = useQueryLiquidityPoolsBotSwrCore()
+    const queryLiquidityPoolsUpdatePoolsSwr = useQueryLiquidityPoolsUpdatePoolsSwrCore()
+    const queryLiquidityPoolsSelectPoolsSwr = useQueryLiquidityPoolsSelectPoolsSwrCore()
+    const queryBotsV2Swr = useQueryBotsV2SwrCore()
+    const queryBotV2Swr = useQueryBotV2SwrCore()
+    const queryLiquidityPoolsSelectedPoolsSwr = useQueryLiquidityPoolsSelectedPoolsSwrCore()
+    const queryPositionsSwr = useQueryPositionsSwrCore()    
+    const queryTransactionsSwr = useQueryTransactionsSwrCore()
+
     const values = useMemo(() => ({
-        queryUserSwrMutation,
-        queryUserWithoutRetrySwrMutation,
         queryStaticSwr,
-        queryUserSwr,
         queryUserV2Swr,
-        queryBots2V2Swr,
-        queryBotV2Swr,
         createBotV2SwrMutation,
         requestSignInOtpSwrMutation,
         verifySignInOtpSwrMutation,
-        queryTotpSecretSwrMutation,
         enableMFASwrMutation,
-        queryBotSwr,
         requestSend2FactorOtpSwrMutation,
         backupBotPrivateKeySwrMutation,
+        queryTotpSecretSwrMutation,
         queryTransactionsSwr,
         queryPositionsSwr,
-        queryPositions2Swr,
-        queryTransactions2Swr,
-        queryTransactions2V2Swr,
-        queryPositions2V2Swr,
         queryPositionsV2Swr,
         queryTransactionsV2Swr,
-        queryHistorySwr,
-        queryBots2Swr,
         createBotSwrMutation,
         toggleBotSwrMutation,
-        queryFeesSwr,
-        queryReservesSwr,
         queryFeesV2Swr,
         queryReservesV2Swr,
         queryFundingSnapshotV2Swr,
         queryHistoryV2Swr,
-        queryLiquidityPools2BotSwr,
-        queryLiquidityPools2ActivePositionSwr,
-        queryLiquidityPools2UpdatePoolsSwr,
-        queryLiquidityPools2SelectPoolsSwr,
-        queryLiquidityPools2SelectedPoolsSwr,
         toggleBotV2SwrMutation,
         updateBotLiquidityPoolsV2SwrMutation,
         updateBotSettingsV2SwrMutation,
+        queryLiquidityPoolsActivePositionSwr,
+        queryLiquidityPoolsBotSwr,
+        queryLiquidityPoolsUpdatePoolsSwr,
+        queryLiquidityPoolsSelectPoolsSwr,
+        queryBotsV2Swr,
+        queryBotV2Swr,
+        queryLiquidityPoolsSelectedPoolsSwr,
     }), [
-        queryUserSwrMutation,
-        queryUserWithoutRetrySwrMutation,
         queryStaticSwr,
-        queryUserSwr,
         queryUserV2Swr,
         createBotV2SwrMutation,
         requestSignInOtpSwrMutation,
         verifySignInOtpSwrMutation,
-        queryTotpSecretSwrMutation,
         enableMFASwrMutation,
-        queryBotSwr,
         requestSend2FactorOtpSwrMutation,
         backupBotPrivateKeySwrMutation,
+        queryTotpSecretSwrMutation,
         queryTransactionsSwr,
         queryPositionsSwr,
-        queryPositions2Swr,
-        queryTransactions2Swr,
-        queryTransactions2V2Swr,
-        queryPositions2V2Swr,
         queryPositionsV2Swr,
         queryTransactionsV2Swr,
-        queryHistorySwr,
-        queryBots2Swr,
-        queryBots2V2Swr,
-        queryBotV2Swr,
         createBotSwrMutation,
         toggleBotSwrMutation,
-        queryFeesSwr,
-        queryReservesSwr,
         queryFeesV2Swr,
         queryReservesV2Swr,
         queryFundingSnapshotV2Swr,
         queryHistoryV2Swr,
-        queryLiquidityPools2BotSwr,
-        queryLiquidityPools2ActivePositionSwr,
-        queryLiquidityPools2UpdatePoolsSwr,
-        queryLiquidityPools2SelectPoolsSwr,
-        queryLiquidityPools2SelectedPoolsSwr,
         toggleBotV2SwrMutation,
         updateBotLiquidityPoolsV2SwrMutation,
         updateBotSettingsV2SwrMutation,
+        queryLiquidityPoolsActivePositionSwr,
+        queryLiquidityPoolsBotSwr,
+        queryLiquidityPoolsUpdatePoolsSwr,
+        queryLiquidityPoolsSelectPoolsSwr,
+        queryBotsV2Swr,
+        queryBotV2Swr,
+        queryLiquidityPoolsSelectedPoolsSwr,
+        queryPositionsSwr,
+        queryPositionsV2Swr,
+        queryTransactionsSwr,
     ])
     return (
         <SwrContext.Provider

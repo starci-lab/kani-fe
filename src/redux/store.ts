@@ -7,8 +7,6 @@ import {
     socketReducer,
     rpcReducer,
     routesReducer,
-    botsReducer,
-    dynamicReducer,
     signInModalReducer,
     exportPrivateKeyReducer,
     enableMFAModalReducer,
@@ -24,13 +22,9 @@ export const store = configureStore({
         api: apiReducer,
         session: sessionReducer,
         static: staticReducer,
-        dynamic: dynamicReducer,
         socket: socketReducer,
         rpc: rpcReducer,
         routes: routesReducer,
-        pages: combineReducers({
-            bots: botsReducer,
-        }),
         bot: botReducer,
         createBot: createBotReducer,
         modals: combineReducers({

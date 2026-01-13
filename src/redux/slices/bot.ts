@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 import { BotSchema, PositionSchema, TransactionSchema } from "@/modules/types"
 import { QueryHistoryResponse } from "@/modules"
-import { ChartInterval, ChartUnit, LiquidityPools2SortBy } from "@/modules/api"
+import { ChartInterval, ChartUnit, LiquidityPoolsSortBy } from "@/modules/api"
 
 export enum BotTab {
     Overview = "overview",
@@ -10,9 +10,14 @@ export enum BotTab {
     Settings = "settings",
 }
 
+export enum BotDisplayMode {
+    Grid = "grid",
+    List = "list",
+}
+
 export type UpdatePoolsFilters = Partial<{
     dexIds?: Array<string>
-    sortBy?: LiquidityPools2SortBy
+    sortBy?: LiquidityPoolsSortBy
     asc?: boolean
     watchlist?: boolean
     pageNumber?: number
@@ -56,6 +61,7 @@ export interface BotSlice {
     positionsFilters: PositionsFilters
     transactionsPages: TransactionsPages
     positionsPages: PositionsPages
+    displayMode: BotDisplayMode
 }
 
 const initialState: BotSlice = {
@@ -63,7 +69,7 @@ const initialState: BotSlice = {
     chartInterval: ChartInterval.OneHour,
     updatePoolsFilters: {
         asc: false,
-        sortBy: LiquidityPools2SortBy.Apr,
+        sortBy: LiquidityPoolsSortBy.Apr,
         pageNumber: 1,
         watchlist: false,
         incentivized: false,
@@ -82,6 +88,7 @@ const initialState: BotSlice = {
         currentPage: 1,
         totalPages: 1,
     },
+    displayMode: BotDisplayMode.List,
 }
 
 export const botSlice = createSlice({
@@ -162,6 +169,9 @@ export const botSlice = createSlice({
         setPositionsFilters: (state, action: PayloadAction<PositionsFilters>) => {
             state.positionsFilters = action.payload
         },
+        setDisplayMode: (state, action: PayloadAction<BotDisplayMode>) => {
+            state.displayMode = action.payload
+        },
     },
 })
 
@@ -185,5 +195,6 @@ export const {
     setBots,
     setBotsPageNumber,
     setUpdatePoolsFilters,
-    setBotIsExitToUsdc
+    setBotIsExitToUsdc,
+    setDisplayMode
 } = botSlice.actions

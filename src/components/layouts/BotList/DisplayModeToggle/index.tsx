@@ -11,7 +11,7 @@ export interface DisplayModeToggleTab {
     ariaLabel: string
 }
 export const DisplayModeToggle = () => {
-    const displayMode = useAppSelector(state => state.pages.bots.displayMode)
+    const displayMode = useAppSelector(state => state.bot.displayMode)
     const dispatch = useAppDispatch()
     const tabs: Array<DisplayModeToggleTab> = [
         {

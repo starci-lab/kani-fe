@@ -15,14 +15,14 @@ import { EmptyContent, TooltipTitle } from "../../../../reuseable"
 import { useAppDispatch, useAppSelector } from "@/redux"
 import { Spacer, Spinner } from "@heroui/react"
 import React from "react"
-import { useQueryPositions2V2Swr } from "@/hooks/singleton"
+import { useQueryPositionsV2Swr } from "@/hooks/singleton"
 import { setPositionsPages } from "@/redux"
 import { computePercentage, roundNumber } from "@/modules/utils"
 import { Performance } from "./Performance"
 import { EyeIcon } from "@phosphor-icons/react"
 
 export const Positions = () => {
-    const queryPositions2V2Swr = useQueryPositions2V2Swr()
+    const queryPositionsV2Swr = useQueryPositionsV2Swr()
     const dispatch = useAppDispatch()
     const positions = useAppSelector((state) => state.bot.positions)
     const positionsPages = useAppSelector((state) => state.bot.positionsPages)
@@ -85,7 +85,7 @@ export const Positions = () => {
                 </KaniTableHeader>
                 <KaniTableBody 
                     loadingContent={<Spinner />}
-                    loadingState={queryPositions2V2Swr.isLoading ? "loading" : "idle"}
+                    loadingState={queryPositionsV2Swr.isLoading ? "loading" : "idle"}
                     emptyContent={<EmptyContent description="We couldn&apos;t find any transactions." />}
                 >
                     {
@@ -103,6 +103,9 @@ export const Positions = () => {
                                             </div>
                                         )
                                     })()}
+                                </KaniTableCell>
+                                <KaniTableCell>
+                                    <Performance position={position} />
                                 </KaniTableCell>
                                 <KaniTableCell>
                                     {
@@ -145,9 +148,6 @@ export const Positions = () => {
                                             )
                                         })()
                                     }
-                                </KaniTableCell>
-                                <KaniTableCell>
-                                    <Performance position={position} />
                                 </KaniTableCell>
                                 <KaniTableCell>
                                     <KaniLink color="secondary">

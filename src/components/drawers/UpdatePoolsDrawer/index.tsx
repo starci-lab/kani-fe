@@ -8,12 +8,12 @@ import {
     KaniDrawerHeader 
 } from "../../atomic"
 import React, { useMemo } from "react"
-import { useQueryLiquidityPools2UpdatePoolsSwr, useUpdatePoolsDisclosure } from "@/hooks/singleton"
+import { useQueryLiquidityPoolsUpdatePoolsSwr, useUpdatePoolsDisclosure } from "@/hooks/singleton"
 import { Spacer } from "@heroui/react"
 import { setUpdatePoolsFilters, useAppDispatch, useAppSelector } from "@/redux"
 import { DexSelect, EmptyContent, PoolCard, PoolCardSkeleton, SortByDropdown, TextCheckbox, TextSwitch } from "../../reuseable"
 import { ArrowClockwiseIcon } from "@phosphor-icons/react"
-import { LiquidityPools2SortBy } from "@/modules/api"
+import { LiquidityPoolsSortBy } from "@/modules/api"
 import { useUpdateBotLiquidityPoolsFormik } from "@/hooks/singleton"
 
 export const UpdatePoolsDrawer = () => {
@@ -21,7 +21,7 @@ export const UpdatePoolsDrawer = () => {
     const dexes = useAppSelector(state => state.static.dexes)
     const bot = useAppSelector(state => state.bot.bot)
     const updatePoolsFilters = useAppSelector(state => state.bot.updatePoolsFilters)
-    const { data, isLoading } = useQueryLiquidityPools2UpdatePoolsSwr()
+    const { data, isLoading } = useQueryLiquidityPoolsUpdatePoolsSwr()
     const filteredDexes = useMemo(() => {
         if (!bot) {
             return []
@@ -98,7 +98,7 @@ export const UpdatePoolsDrawer = () => {
                                 />
                                 <div className="flex items-center gap-2">
                                     <SortByDropdown 
-                                        sortBy={updatePoolsFilters?.sortBy ?? LiquidityPools2SortBy.Apr} asc={updatePoolsFilters?.asc ?? true} onSortByChange={(sortBy) => {
+                                        sortBy={updatePoolsFilters?.sortBy ?? LiquidityPoolsSortBy.Apr} asc={updatePoolsFilters?.asc ?? true} onSortByChange={(sortBy) => {
                                             dispatch(setUpdatePoolsFilters({
                                                 ...updatePoolsFilters,
                                                 sortBy
@@ -126,12 +126,12 @@ export const UpdatePoolsDrawer = () => {
                             ))}
                         </div>
                     ) : (
-                        data?.liquidityPools2.data?.data?.length 
-                        && data?.liquidityPools2.data?.data?.length > 0 
+                        data?.liquidityPools.data?.data?.length 
+                        && data?.liquidityPools.data?.data?.length > 0 
                             ? (
                                 <div>
                                     <div className="flex flex-col gap-3">
-                                        {data?.liquidityPools2.data?.data?.map((liquidityPool) => (
+                                        {data?.liquidityPools.data?.data?.map((liquidityPool) => (
                                             <PoolCard 
                                                 key={liquidityPool.id} 
                                                 className="bg-content2 shadow-none"

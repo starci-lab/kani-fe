@@ -1,21 +1,23 @@
 "use client"
-import React, { PropsWithChildren } from "react"
+import React, { PropsWithChildren, useMemo } from "react"
 import { createContext } from "react"
-import { useConnectDisclosureCore } from "./useConnectDiscloresure"
-import { useExportPrivateKeyDisclosureCore } from "./useExportPrivateKeyDiscloresure"
-import { useConfirmTOTPDisclosureCore } from "./useConfirmTOTPDiscloresure"
-import { useDepositDisclosureCore } from "./useDepositDiscloreusre"
-import { useUpdateExplorerDisclosureCore } from "./useUpdateExplorerDiscloresure"
-import { useUpdateRpcsDisclosureCore } from "./useUpdateRpcsDiscloresure"
-import { useSelectPoolsDisclosureCore } from "./useSelectPoolsDiscloresure"
-import { useSelectTokenDisclosureCore } from "./useSelectTokenDiscloresure"
-import { useSignInDisclosureCore } from "./useSignInDiscloresure"
-import { useEnableMFADisclosureCore } from "./useEnableMFADiscloresure"
-import { useVerifyDisclosureCore } from "./useVerifyDiscloresure"
-import { usePositionDisclosureCore } from "./usePosition"
-import { useMenuDisclosureCore } from "./useMenuDisclosure"
-import { useUpdatePoolsDisclosureCore } from "./useUpdatePoolsDiscloresure"
-import { useSortByDisclosureCore } from "./useSortByDiscloresure"
+import {
+    useConnectDisclosureCore,
+    useExportPrivateKeyDisclosureCore,
+    useConfirmTOTPDisclosureCore,
+    useDepositDisclosureCore,
+    useUpdateExplorerDisclosureCore,
+    useUpdateRpcsDisclosureCore,
+    useSelectPoolsDisclosureCore,
+    useSelectTokenDisclosureCore,
+    useSignInDisclosureCore,
+    useEnableMFADisclosureCore,
+    useVerifyDisclosureCore,
+    usePositionDisclosureCore,
+    useMenuDisclosureCore,
+    useUpdatePoolsDisclosureCore,
+    useSortByDisclosureCore,
+} from "./core"
 
 export interface DiscloresureContextType {
     connect: ReturnType<typeof useConnectDisclosureCore>
@@ -53,24 +55,41 @@ export const DiscloresureProvider = ({ children }: PropsWithChildren) => {
     const menu = useMenuDisclosureCore()
     const updatePools = useUpdatePoolsDisclosureCore()
     const sortBy = useSortByDisclosureCore()
+    const value = useMemo(() => ({
+        connect, 
+        exportPrivateKey, 
+        confirmTOTP, 
+        deposit, 
+        updateExplorer, 
+        updateRpcs,
+        selectPools,
+        selectToken,
+        signIn,
+        enableMFA,
+        verify,
+        position,
+        menu,
+        updatePools,
+        sortBy
+    }), [
+        connect, 
+        exportPrivateKey, 
+        confirmTOTP, 
+        deposit, 
+        updateExplorer, 
+        updateRpcs,
+        selectPools,
+        selectToken,
+        signIn,
+        enableMFA,
+        verify,
+        position,
+        menu,
+        updatePools,
+        sortBy
+    ])
     return (
-        <DiscloresureContext.Provider value={{ 
-            connect, 
-            exportPrivateKey, 
-            confirmTOTP, 
-            deposit, 
-            updateExplorer, 
-            updateRpcs,
-            selectPools,
-            selectToken,
-            signIn,
-            enableMFA,
-            verify,
-            position,
-            menu,
-            updatePools,
-            sortBy
-        }}>
+        <DiscloresureContext.Provider value={value}>
             {children}
         </DiscloresureContext.Provider>
     )

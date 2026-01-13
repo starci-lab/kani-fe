@@ -25,8 +25,7 @@ import {
 } from "@/modules/blockchain"
 import { ArrowSquareOutIcon } from "@phosphor-icons/react"
 import { usePrivy } from "@privy-io/react-auth"
-import { useQueryBotSwr } from "@/hooks/singleton"
-import { useDepositDisclosure } from "@/hooks/singleton"
+import { useDepositDisclosure, useQueryBotsV2Swr } from "@/hooks/singleton"
 
 export interface WalletAction {
     label: string
@@ -48,7 +47,7 @@ export const Account = () => {
         type: ExplorerUrlType.AccountAddress,
         explorerId: bot?.explorerId ?? ExplorerId.Solscan,
     }), [bot?.accountAddress, bot?.chainId, bot?.explorerId])
-    const queryBotSwr = useQueryBotSwr()
+    const queryBotsV2Swr = useQueryBotsV2Swr()
     const actions: Array<WalletAction> = [
         {
             label: "Deposit",
@@ -110,7 +109,7 @@ export const Account = () => {
             <div className="flex items-center gap-2">
                 <div className="flex items-center gap-3">
                     {
-                        queryBotSwr.isLoading ? (
+                        queryBotsV2Swr.isLoading ? (
                             <KaniSkeleton className="w-14 h-14 min-w-10 min-h-10 rounded-full"/>
                         ) : (
                             <KaniImage
@@ -122,7 +121,7 @@ export const Account = () => {
                     }
                     <div>
                         {
-                            queryBotSwr.isLoading ? (
+                            queryBotsV2Swr.isLoading ? (
                                 <KaniSkeleton className="h-5 w-[100px] rounded-md"/>
                             ) : (
                                 <div className="text-sm">
@@ -133,10 +132,10 @@ export const Account = () => {
                         <div className="flex items-center gap-2">
                             <SnippetIcon
                                 copyString={bot?.accountAddress ?? ""}
-                                classNames={{ checkIcon: "w-4 h-4 text-foreground-500", copyIcon: "w-4 h-4 text-foreground-500" }}
+                                classNames={{ checkIcon: "w-5 h-5 text-foreground-500", copyIcon: "w-5 h-5 text-foreground-500" }}
                             />
                             <KaniLink onPress={() => window.open(explorerUrl, "_blank")}>
-                                <ArrowSquareOutIcon className="w-4 h-4 cursor-pointer text-foreground-500" />
+                                <ArrowSquareOutIcon className="w-5 h-5 cursor-pointer text-foreground-500" />
                             </KaniLink>
                         </div>
                     </div>

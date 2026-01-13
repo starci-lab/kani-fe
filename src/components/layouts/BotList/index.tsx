@@ -1,7 +1,7 @@
 import React from "react"
 import { BotNotFound } from "./BotNotFound"
 import { Bots } from "./Bots"
-import { useQueryBots2Swr } from "@/hooks/singleton"
+import { useQueryBotsV2Swr } from "@/hooks/singleton"
 import { BotsSkeleton } from "./BotsSkeleton"
 import { useAppSelector } from "@/redux"
 import { KaniButton, KaniInput } from "../../atomic"
@@ -11,13 +11,13 @@ import { Spacer } from "@heroui/react"
 import { FunnelIcon, PlusIcon, SortAscendingIcon } from "@phosphor-icons/react"
 import { MagnifyingGlassIcon } from "@phosphor-icons/react/dist/ssr"
 export const BotList = () => {
-    const swr = useQueryBots2Swr()
+    const queryBotsV2Swr = useQueryBotsV2Swr()
     const bots = useAppSelector((state) => state.bot.bots)
     const router = useRouter()
     const accountLimits = useAppSelector((state) => state.static.accountLimits)
     // render bots based on the display mode
     const renderBots = () => {
-        if (swr.isLoading) {
+        if (queryBotsV2Swr.isLoading) {
             return <BotsSkeleton/>
         }
         if (!bots?.length) {

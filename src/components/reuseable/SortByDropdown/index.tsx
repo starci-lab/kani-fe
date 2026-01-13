@@ -1,30 +1,30 @@
 import { SortAscendingIcon, SortDescendingIcon } from "@phosphor-icons/react"
 import { KaniButton, KaniDivider, KaniDropdown, KaniDropdownItem, KaniDropdownMenu, KaniDropdownTrigger } from "@/components/atomic"
 import React from "react"
-import { LiquidityPools2SortBy } from "@/modules/api"
+import { LiquidityPoolsSortBy } from "@/modules/api"
 
 export interface SortByDropdownProps {
-    sortBy: LiquidityPools2SortBy
+    sortBy: LiquidityPoolsSortBy
     asc: boolean
-    onSortByChange: (sortBy: LiquidityPools2SortBy) => void
+    onSortByChange: (sortBy: LiquidityPoolsSortBy) => void
     onAscChange: (asc: boolean) => void
 }
 export const SortByDropdown = ({ sortBy, asc, onSortByChange, onAscChange }: SortByDropdownProps) => {
     const items = [
         {
-            key: LiquidityPools2SortBy.Fees,
+            key: LiquidityPoolsSortBy.Fees,
             label: "Fees",
         },
         {
-            key: LiquidityPools2SortBy.Liquidity,
+            key: LiquidityPoolsSortBy.Liquidity,
             label: "Liquidity",
         },
         {
-            key: LiquidityPools2SortBy.Volume,
+            key: LiquidityPoolsSortBy.Volume,
             label: "Volume",
         },
         {
-            key: LiquidityPools2SortBy.Apr,
+            key: LiquidityPoolsSortBy.Apr,
             label: "APR",
         },
     ]
@@ -45,7 +45,7 @@ export const SortByDropdown = ({ sortBy, asc, onSortByChange, onAscChange }: Sor
                             return
                         }
                         const selectedKeys = Array.from(value)
-                        onSortByChange(selectedKeys[0] as LiquidityPools2SortBy)
+                        onSortByChange(selectedKeys[0] as LiquidityPoolsSortBy)
                     }}
                 >
                     {items.map((item) => (

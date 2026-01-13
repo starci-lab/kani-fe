@@ -10,8 +10,7 @@ export interface PerformanceProps {
 }
 
 export const Performance = ({ position }: PerformanceProps) => {
-    const liquidityPools = useAppSelector((state) => state.static.liquidityPools)
-    const liquidityPool = liquidityPools.find((pool) => pool.id === position.liquidityPool)
+    const liquidityPool = useMemo(() => position.associatedLiquidityPool, [position.associatedLiquidityPool])
     const [pnl, isPositivePnl] = useMemo(() => {
         const pnl = new Decimal(roundNumber(position.pnl ?? 0)).toNumber()
         return [pnl, new Decimal(pnl).isPositive()]
@@ -24,7 +23,6 @@ export const Performance = ({ position }: PerformanceProps) => {
         const roi = new Decimal(roundNumber(position.roi ?? 0)).toNumber()
         return [roi, new Decimal(roi).isPositive()]
     }, [position.roi])  
-    if (!liquidityPool) return null
     return (
         <div>
             <div className="flex items-center gap-2 w-full">

@@ -16,24 +16,24 @@ import { PoolTypeChip } from "../../../../../reuseable/PoolTypeChip"
 import { CLMM } from "./CLMM"
 import { DLMM } from "./DLMM"
 import numeral from "numeral"
-import { useQueryLiquidityPools2ActivePositionSwr } from "@/hooks/singleton"
+import { useQueryLiquidityPoolsActivePositionSwr } from "@/hooks/singleton"
 
 export const PoolCard = (
 ) => {
-    const { data, isLoading } = useQueryLiquidityPools2ActivePositionSwr()
+    const { data, isLoading } = useQueryLiquidityPoolsActivePositionSwr()
     const tokens = useAppSelector((state) => state.static.tokens)
     const tokenA = useMemo(
-        () => tokens.find((token) => token.id === data?.liquidityPools2.data?.data[0].tokenA),
-        [tokens, data?.liquidityPools2.data?.data[0].tokenA]
+        () => tokens.find((token) => token.id === data?.liquidityPools.data?.data[0].tokenA),
+        [tokens, data?.liquidityPools.data?.data[0].tokenA]
     )
     const tokenB = useMemo(
-        () => tokens.find((token) => token.id === data?.liquidityPools2.data?.data[0].tokenB),
-        [tokens, data?.liquidityPools2.data?.data[0].tokenB]
+        () => tokens.find((token) => token.id === data?.liquidityPools.data?.data[0].tokenB),
+        [tokens, data?.liquidityPools.data?.data[0].tokenB]
     )
     const dexes = useAppSelector((state) => state.static.dexes)
     const dex = useMemo(
-        () => dexes.find((dex) => dex.id === data?.liquidityPools2.data?.data[0].dex),
-        [dexes, data?.liquidityPools2.data?.data[0].dex]
+        () => dexes.find((dex) => dex.id === data?.liquidityPools.data?.data[0].dex),
+        [dexes, data?.liquidityPools.data?.data[0].dex]
     )
     return (
         <KaniCard>
@@ -55,7 +55,7 @@ export const PoolCard = (
                                     <div className="text-sm">{dex?.name}</div>
                                 </div>
                                 <PoolTypeChip
-                                    type={data?.liquidityPools2.data?.data[0].type ?? LiquidityPoolType.Clmm}
+                                    type={data?.liquidityPools.data?.data[0].type ?? LiquidityPoolType.Clmm}
                                 />
                             </div>
                         )
@@ -89,7 +89,7 @@ export const PoolCard = (
                                 </div>
                                 <div className="flex items-center gap-1 justify-end">
                                     <div className="text-sm">
-                                        {computePercentage(data?.liquidityPools2.data?.data[0].fee ?? 0, 1, 5).toString()}%
+                                        {computePercentage(data?.liquidityPools.data?.data[0].fee ?? 0, 1, 5).toString()}%
                                     </div>
                                 </div>
                             </div>
@@ -100,9 +100,9 @@ export const PoolCard = (
                 <KaniDivider />
                 <Spacer y={3} />
                 {
-                    data?.liquidityPools2.data?.data[0].type === LiquidityPoolType.Dlmm 
-                        ? <DLMM liquidityPool={data?.liquidityPools2.data?.data[0]} /> 
-                        : <CLMM liquidityPool={data?.liquidityPools2.data?.data[0]} />
+                    data?.liquidityPools.data?.data[0].type === LiquidityPoolType.Dlmm 
+                        ? <DLMM liquidityPool={data?.liquidityPools.data?.data[0]} /> 
+                        : <CLMM liquidityPool={data?.liquidityPools.data?.data[0]} />
                 }
                 <Spacer y={3} />
                 <KaniDivider />
@@ -111,7 +111,7 @@ export const PoolCard = (
                     <div className="flex items-center justify-between">
                         <div className="text-sm text-foreground-500">TVL</div>
                         <div className="text-sm">{
-                            !isLoading ? `$${numeral(data?.liquidityPools2.data?.data[0].dynamicInfo?.tvl).format("0,0")}`
+                            !isLoading ? `$${numeral(data?.liquidityPools.data?.data[0].dynamicInfo?.tvl).format("0,0")}`
                                 : <KaniSkeleton className="h-5 w-[50px] rounded-md" />
                         }</div>
                     </div>
@@ -119,7 +119,7 @@ export const PoolCard = (
                         <div className="text-sm text-foreground-500">Fees 24H</div>
                         <div className="text-sm">{
                             !isLoading 
-                                ? `$${numeral(data?.liquidityPools2.data?.data[0].dynamicInfo?.fees24H).format("0,0")}`
+                                ? `$${numeral(data?.liquidityPools.data?.data[0].dynamicInfo?.fees24H).format("0,0")}`
                                 : <KaniSkeleton className="h-5 w-[50px] rounded-md" />
                         }</div>
                     </div>
@@ -127,7 +127,7 @@ export const PoolCard = (
                         <div className="text-sm text-foreground-500">Volume 24H</div>
                         <div className="text-sm">{
                             !isLoading 
-                                ? `$${numeral(data?.liquidityPools2.data?.data[0].dynamicInfo?.volume24H).format("0,0")}`
+                                ? `$${numeral(data?.liquidityPools.data?.data[0].dynamicInfo?.volume24H).format("0,0")}`
                                 : <KaniSkeleton className="h-5 w-[50px] rounded-md" />}</div>
                     </div>
                     <div className="flex items-center justify-between">
@@ -135,7 +135,7 @@ export const PoolCard = (
                         <div className="flex items-center gap-2">
                             {
                                 !isLoading 
-                                    ? `$${numeral(data?.liquidityPools2.data?.data[0].dynamicInfo?.apr24H).format("0,0")}`
+                                    ? `$${numeral(data?.liquidityPools.data?.data[0].dynamicInfo?.apr24H).format("0,0")}`
                                     : <KaniSkeleton className="h-5 w-[50px] rounded-md" />}
                         </div>
                     </div>
@@ -149,8 +149,8 @@ export const PoolCard = (
                         size="sm"
                         isExternal
                         showAnchorIcon={true}
-                        href={data?.liquidityPools2.data?.data[0].url ?? ""}>{
-                            centerPad(data?.liquidityPools2.data?.data[0].url ?? "", 18, 6)
+                        href={data?.liquidityPools.data?.data[0].url ?? ""}>{
+                            centerPad(data?.liquidityPools.data?.data[0].url ?? "", 18, 6)
                         }
                     </KaniLink>
                 ) : (
