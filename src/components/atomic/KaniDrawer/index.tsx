@@ -20,6 +20,6 @@ export const KaniDrawerHeader = (props: DrawerHeaderProps) => {
     return <DrawerHeader className="text-lg font-bold" {...props} />
 }
 export const KaniDrawerBody = (props: DrawerBodyProps) => {
-    return <DrawerBody {...props} className={cn("overflow-visible", props.className)} />
+    return <DrawerBody {...props} className={cn(props.className)} />
 }
 export const KaniDrawerFooter = DrawerFooter

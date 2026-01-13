@@ -53,7 +53,7 @@ export const SetUpYourBot = () => {
                     tooltipString="This is the exit to USDC of your bot"
                     isRequired
                 />
-                <Spacer y={3} />
+                <Spacer y={2} />
                 <div className="text-xs text-foreground-500">
                 If enabled, your bot will automatically move to USDC when a major price drop is detected.
                 </div>
@@ -73,7 +73,7 @@ export const SetUpYourBot = () => {
                     I accept the Terms of Service and acknowledge the risks involved.
                 </div>
             </div>
-            <Spacer y={4} />
+            <Spacer y={3} />
             <KaniButton 
                 isDisabled={!formik.isValid}
                 size="lg"

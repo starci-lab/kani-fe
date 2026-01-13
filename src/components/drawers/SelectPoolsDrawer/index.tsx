@@ -32,10 +32,10 @@ export const SelectPoolsDrawer = () => {
         >
             <KaniDrawerContent>
                 <KaniDrawerHeader>
-                    Update Pools
+                    Select Pools
                 </KaniDrawerHeader>
                 <KaniDrawerBody className="flex-none">
-                    <div className="mb-3">
+                    <div className="mb-2">
                         <div>
                             <div className="flex gap-4 items-center justify-between">
                                 <TextCheckbox

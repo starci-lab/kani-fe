@@ -1,4 +1,4 @@
-import { KaniAlert, KaniAvatar, KaniButton } from "@/components/atomic"
+import { KaniAvatar, KaniButton } from "@/components/atomic"
 import { TooltipTitle } from "@/components/reuseable"
 import { useCreateBotFormik, useSelectTokenDisclosure } from "@/hooks/singleton"
 import { useAppSelector } from "@/redux"
@@ -19,21 +19,12 @@ export const SelectTokens = () => {
                 tooltipString="This is the tokens of your bot"
                 isRequired
             />
-            <Spacer y={3} />
-            <KaniAlert
-                variant="flat"
-                color="default"
-                title="How Target and Quote Tokens Work"
-                description={
-                    <div>
-                        <div className="text-xs flex flex-col">
+            <Spacer y={2} />
+            <div className="text-xs text-foreground-500">
                             Kani bot always operates on a liquidity pool that consists of exactly two tokens.
                             Target Token is the token you want to earn — for example, if you farm SOL, then SOL is the target token.
                             Quote Token is the token paired with the target to form the LP — for example, in a SOL-USDC pair, USDC is the quote token.
-                        </div>
-                    </div>
-                }
-            />
+            </div>
             <Spacer y={3} />
             <div className="flex items-center gap-4">
                 <div className="flex flex-col gap-2">
