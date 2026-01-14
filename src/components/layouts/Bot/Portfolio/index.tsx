@@ -3,7 +3,7 @@ import { Spacer } from "@heroui/react"
 import { Account } from "./Account"
 import { Pools } from "./Pools"
 
-export const Wallet = () => {
+export const Portfolio = () => {
     return (
         <div>
             <Account />

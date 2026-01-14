@@ -24,8 +24,7 @@ import {
     ExplorerUrlType 
 } from "@/modules/blockchain"
 import { ArrowSquareOutIcon } from "@phosphor-icons/react"
-import { usePrivy } from "@privy-io/react-auth"
-import { useDepositDisclosure, useQueryBotsV2Swr } from "@/hooks/singleton"
+import { useBackupBotPrivateKeyV2SwrMutation, useDepositDisclosure, useQueryBotsV2Swr } from "@/hooks/singleton"
 
 export interface WalletAction {
     label: string
@@ -39,7 +38,7 @@ export interface WalletAction {
 export const Account = () => {
     const bot = useAppSelector((state) => state.bot.bot)
     const chainAssets = useMemo(() => getChainAssets(bot?.chainId ?? ChainId.Solana), [bot?.chainId])
-    const { exportWallet } = usePrivy()
+    const backupBotPrivateKeyV2SwrMutation = useBackupBotPrivateKeyV2SwrMutation()
     const depositDisclosure = useDepositDisclosure()
     const explorerUrl = useMemo(() => getExplorerUrl({
         chainId: bot?.chainId ?? ChainId.Solana,
@@ -67,39 +66,7 @@ export const Account = () => {
                 ? "Private key has already been exported."
                 : "Export the bot's private key. Keep it secure and never share it.",
             onPress: () => {
-                // dispatch(
-                //     setVerifyModalOnAction(
-                //         async ({ emailOtp, totp }: VerifyModalOnActionParams) => {
-                //             const success = await runGraphQLWithToast(
-                //                 async () => {
-                //                     const response = await backupBotPrivateKeySwrMutation.trigger({
-                //                         emailOtp,
-                //                         totp,
-                //                     })
-                //                     if (!response.data?.backupBotPrivateKey) {
-                //                         throw new Error("Failed to backup bot private key")
-                //                     }
-                //                     dispatch(setExportPrivateKey(
-                //                         response.data.backupBotPrivateKey.data?.privateKey ?? "")
-                //                     )
-                //                     await queryBotSwr.mutate()
-                //                     return response.data.backupBotPrivateKey
-                //                 },
-                //                 {
-                //                     showSuccessToast: false,
-                //                     showErrorToast: true,
-                //                 }
-                //             )
-                //             if (success) {
-                //                 onOpenExportPrivateKey()
-                //             }
-                //             return success
-                //         }
-                //     ))
-                // onOpenVerify()
-                exportWallet({
-                    address: bot?.accountAddress ?? "",
-                })
+                backupBotPrivateKeyV2SwrMutation.trigger()
             },
         }
     ]

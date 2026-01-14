@@ -7,7 +7,7 @@ import { KaniBreadcrumb, KaniBreadcrumbItem, KaniButton, KaniDivider } from "../
 import { WaveBars } from "../../reuseable"
 import { Spacer, Tabs, Tab, Skeleton } from "@heroui/react"
 import { BotTab } from "@/redux"
-import { Wallet } from "./Portfolio"
+import { Portfolio } from "./Portfolio"
 import { Activity } from "./Activity"
 import { useQueryBotV2Swr, useToggleBotV2SwrMutation } from "@/hooks/singleton"
 import { runGraphQLWithToast } from "@/components/toasts"
@@ -24,8 +24,8 @@ export const Bot = () => {
             icon: SquaresFourIcon
         },
         {
-            key: BotTab.Wallet,
-            title: "Wallet",
+            key: BotTab.Portfolio,
+            title: "Portfolio",
             icon: WalletIcon
         },
         {
@@ -48,8 +48,8 @@ export const Bot = () => {
         switch (tab) {
         case BotTab.Overview:
             return <Overview />
-        case BotTab.Wallet:
-            return <Wallet />
+        case BotTab.Portfolio:
+            return <Portfolio />
         case BotTab.Activity:
             return <Activity />
         case BotTab.Settings:

@@ -141,7 +141,7 @@ export const Investment = () => {
                                 <KaniSkeleton className="h-[14px] w-[40px] rounded-md"/>
                             ) : (
                                 <div className="text-xs">
-                                    {targetOperationalAmountDecimal.toString()} {targetToken?.symbol}
+                                    {targetOperationalAmountDecimal.toString()} {gasToken?.symbol}
                                 </div>
                             )
                         }

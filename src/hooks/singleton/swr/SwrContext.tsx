@@ -31,6 +31,7 @@ import {
     useQueryBotV2SwrCore,
     useQueryLiquidityPoolsSelectedPoolsSwrCore,
     useQueryPositionsV2SwrCore,
+    useBackupBotPrivateKeyV2SwrMutationCore,
 } from "./core"
 
 export interface SwrContextType {
@@ -41,6 +42,7 @@ export interface SwrContextType {
     enableMFASwrMutation: ReturnType<typeof useEnableMFASwrMutationCore>;
     requestSend2FactorOtpSwrMutation: ReturnType<typeof useRequestSend2FactorOtpSwrMutationCore>;
     backupBotPrivateKeySwrMutation: ReturnType<typeof useBackupBotPrivateKeySwrMutationCore>;
+    backupBotPrivateKeyV2SwrMutation: ReturnType<typeof useBackupBotPrivateKeyV2SwrMutationCore>;
     toggleBotSwrMutation: ReturnType<typeof useToggleBotSwrMutationCore>;
     queryUserV2Swr: ReturnType<typeof useQueryUserV2SwrCore>;
     createBotV2SwrMutation: ReturnType<typeof useCreateBotV2SwrMutationCore>;
@@ -76,6 +78,7 @@ export const SwrProvider = ({ children }: PropsWithChildren) => {
     const enableMFASwrMutation = useEnableMFASwrMutationCore()
     const requestSend2FactorOtpSwrMutation = useRequestSend2FactorOtpSwrMutationCore()
     const backupBotPrivateKeySwrMutation = useBackupBotPrivateKeySwrMutationCore()
+    const backupBotPrivateKeyV2SwrMutation = useBackupBotPrivateKeyV2SwrMutationCore()
     const queryTotpSecretSwrMutation = useQueryTotpSecretSwrMutationCore()
     const createBotSwrMutation = useCreateBotSwrMutationCore()
     const toggleBotSwrMutation = useToggleBotSwrMutationCore()
@@ -107,6 +110,7 @@ export const SwrProvider = ({ children }: PropsWithChildren) => {
         enableMFASwrMutation,
         requestSend2FactorOtpSwrMutation,
         backupBotPrivateKeySwrMutation,
+        backupBotPrivateKeyV2SwrMutation,
         queryTotpSecretSwrMutation,
         queryTransactionsSwr,
         queryPositionsSwr,
@@ -137,6 +141,7 @@ export const SwrProvider = ({ children }: PropsWithChildren) => {
         enableMFASwrMutation,
         requestSend2FactorOtpSwrMutation,
         backupBotPrivateKeySwrMutation,
+        backupBotPrivateKeyV2SwrMutation,
         queryTotpSecretSwrMutation,
         queryTransactionsSwr,
         queryPositionsSwr,

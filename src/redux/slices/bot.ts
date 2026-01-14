@@ -5,7 +5,7 @@ import { ChartInterval, ChartUnit, LiquidityPoolsSortBy } from "@/modules/api"
 
 export enum BotTab {
     Overview = "overview",
-    Wallet = "wallet",
+    Portfolio = "portfolio",
     Activity = "activity",
     Settings = "settings",
 }
@@ -65,7 +65,7 @@ export interface BotSlice {
 }
 
 const initialState: BotSlice = {
-    tab: BotTab.Wallet,
+    tab: BotTab.Overview,
     chartInterval: ChartInterval.OneHour,
     updatePoolsFilters: {
         asc: false,

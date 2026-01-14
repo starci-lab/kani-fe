@@ -18,6 +18,9 @@ export const useCreateBotV2SwrMutationCore = () => {
             if (!accessToken) {
                 throw new Error("Access token is required")
             }
+            if (!arg.request) {
+                throw new Error("Request is required")
+            }
             const data = await mutationCreateBotV2({
                 request: arg.request,
                 token: accessToken,
