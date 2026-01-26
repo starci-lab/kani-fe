@@ -41,7 +41,7 @@ export const DisplayModeToggle = () => {
             {tabs.map((tab) => (
                 <KaniTab aria-label={tab.ariaLabel} key={tab.key} title={
                     <div className="flex items-center gap-2">
-                        <tab.icon className="min-size-5" />
+                        <tab.icon className="min-size-5 w-5 h-5" />
                         {tab.text}
                     </div>
                 }/>

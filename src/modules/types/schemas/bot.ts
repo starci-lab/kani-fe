@@ -1,33 +1,35 @@
-import { ExplorerId } from "@/modules/blockchain"
 import { ChainId } from "../blockchain"
-import { PositionSchema } from "./position"
+import { AppVersion } from "../enums"
+import { BotActivePositionSchema } from "./bot-active-position"
+import { BotSnapshotsSchema } from "./bot-snapshots"
+import { ActiveJobSchema } from "./active-job"
+import { PrivyMetadataSchema } from "./privy-metadata"
+import { AbstractSchema } from "./abstract"
 
-export interface BotSchema  {
-    id: string
-    accountAddress?: string
-    encryptedPrivateKey?: string
+export interface BotPerformance24H {
+    roi: number
+    pnl: number
+    roiInUsd: number
+    pnlInUsd: number
+}
+
+export interface BotSchema extends AbstractSchema {
+    accountAddress: string
+    encryptedPrivateKeyPayload?: unknown
+    encryptedPrivySignerPrivateKeyPayload?: unknown
+    privyMetadata?: PrivyMetadataSchema
     chainId: ChainId
     user: string
-    name?: string
-    priorityToken?: string
-    liquidityPools: Array<string>   
-    initialized: boolean
-    rpcUrls: Array<string>
-    explorerId: ExplorerId
+    name: string
+    liquidityPools: Array<string>
     running: boolean
-    lastRunAt: Date
-    stoppedAt: Date
+    lastRunAt?: Date
     targetToken: string
     quoteToken: string
-    snapshotTargetBalanceAmount?: string
-    snapshotQuoteBalanceAmount?: string
-    snapshotGasBalanceAmount?: string
-    lastBalancesSnapshotAt?: Date
+    balanceSnapshots?: BotSnapshotsSchema
     isExitToUsdc: boolean
-    activePosition?: PositionSchema
-    roi24h?: number
-    pnl24h?: number
-    backupPrivateKey: boolean
-    positionValueAtClose: number
-    positionValueAtOpen: number
+    version: AppVersion
+    activePosition?: BotActivePositionSchema
+    activeJob?: ActiveJobSchema
+    performance24h?: BotPerformance24H
 }

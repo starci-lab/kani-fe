@@ -1,57 +1,42 @@
 import { ChainId } from "../blockchain"
+import { PositionClmmStateSchema } from "./position-clmm-state"
+import { PositionDlmmStateSchema } from "./position-dlmm-state"
+import { PositionFeesSchema } from "./position-fees"
+import { PositionSnapshotsSchema } from "./position-snapshots"
+import { PositionPerformanceSchema } from "./position-performance"
+import { PositionSettlementSchema } from "./position-settlement"
 import { LiquidityPoolSchema } from "./liquidity-pool"
+import { AbstractSchema } from "./abstract"
 
-export interface PositionSchema {
-    id: string; // Mongo _id
-  
-    openTxHash: string;
-  
-    liquidityPool: string; // ObjectId as string or expanded object if populated
-  
-    snapshotTargetBalanceAmountBeforeOpen: string;
-    snapshotQuoteBalanceAmountBeforeOpen: string;
-    snapshotGasBalanceAmountBeforeOpen?: string;
-  
-    snapshotTargetBalanceAmountAfterClose?: string;
-    snapshotQuoteBalanceAmountAfterClose?: string;
-    snapshotGasBalanceAmountAfterClose?: string;
-  
-    liquidity?: string;
-    tickLower?: number;
-    tickUpper?: number;
-  
-    amountA?: string;
-    amountB?: string;
-  
-    minBinId?: number;
-    maxBinId?: number;
-  
-    bot: string; // ObjectId as string or expanded object if populated
-    chainId: ChainId;
-    targetIsA: boolean;
-  
-    positionOpenedAt: Date;
-    positionId?: string;
-    isActive?: boolean;
-  
-    closeTxHash?: string;
-    positionClosedAt?: Date;
-  
-    roi?: number;
-    pnl?: number;
-  
-    metadata?: unknown; // flexible JSON
-  
-    feeAmountTarget: string;
-    feeAmountQuote: string;
-  
-    isSimulated?: boolean;
-  
-    createdAt: Date;
-    updatedAt: Date;
+export interface PositionSchema extends AbstractSchema {
+    openTxHash: string
+    liquidityPool: string
+    clmmState?: PositionClmmStateSchema
+    dlmmState?: PositionDlmmStateSchema
+    bot: string
+    chainId: ChainId
+    positionId?: string
+    isActive: boolean
+    closeTxHash?: string
+    openSnapshot?: PositionSnapshotsSchema
+    closeSnapshot?: PositionSnapshotsSchema
+    performance?: PositionPerformanceSchema
+    metadata?: unknown
+    fees: PositionFeesSchema
+    positionSettlement?: PositionSettlementSchema
+    associatedLiquidityPool?: LiquidityPoolSchema
+}
 
-    positionValueAtClose: number
-    positionValueAtOpen: number
+export interface RaydiumPositionMetadata {
+    nftMintAddress: string
+    ataAddress: string
+}
 
-    associatedLiquidityPool: LiquidityPoolSchema;
-  }
+export interface OrcaPositionMetadata {
+    nftMintAddress: string
+    ataAddress: string
+}
+
+export interface MeteoraPositionMetadata {
+    ataAddress: string
+}

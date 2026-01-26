@@ -1,7 +1,7 @@
-import { BotSchema } from "@/modules/types"
 import { createNoCacheCredentialAuthClientWithToken } from "../clients"
 import { GraphQLResponse, QueryParams } from "../types"
 import { DocumentNode, gql } from "@apollo/client"
+import { BotSchema } from "@/modules/types"
 
 const query1 = gql`
   query BotsV2($request: BotsV2Request!) {
@@ -13,23 +13,31 @@ const query1 = gql`
         count
         data {
             id
+            createdAt
+            updatedAt
             accountAddress
             chainId
+            user
             name
             liquidityPools
-            initialized
-            explorerId
             running
+            lastRunAt
             targetToken
             quoteToken
-            snapshotTargetBalanceAmount
-            snapshotQuoteBalanceAmount
-            snapshotGasBalanceAmount
-            lastBalancesSnapshotAt
             isExitToUsdc
-            roi24h
-            pnl24h
-            backupPrivateKey
+            version
+            activePosition {
+              id
+              type
+              liquidityPool
+              position
+            }
+            performance24h {
+              roi
+              pnl
+              roiInUsd
+              pnlInUsd
+            }
           }
       }
     }

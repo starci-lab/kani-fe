@@ -1,25 +1,24 @@
-import { ConfigId } from "./enums"
+import { ConfigId } from "../enums"
 import { ChainId } from "../blockchain"
+import { AbstractSchema } from "./abstract"
 
-export interface ConfigSchema {
-    /** Unique ID of the config, matches one of the predefined enum values */
+export interface ConfigSchema extends AbstractSchema {
     displayId: ConfigId
-
-    /** Value can be object, array, or primitive depending on config type */
-    value: unknown
-}
-
-export interface AccountLimitsConfig {
-    maxBotsPerAccount: number
-}
-
-export interface GasAmountRequired {
-    minOperationalAmount: string
-    targetOperationalAmount: string
+    value: Record<string, unknown>
 }
 
 export interface GasConfig {
     gasAmountRequired: Partial<Record<ChainId, GasAmountRequired>>
+}
+
+export interface GasAmountRequired {
+    minOperationalAmount: number
+    targetOperationalAmount: number
+    swapAmount: number
+}
+
+export interface ConfigRecord<T> {
+    value: T
 }
 
 export interface BalanceRequired {
@@ -28,4 +27,12 @@ export interface BalanceRequired {
 
 export interface BalanceConfig {
     balanceRequired: Partial<Record<ChainId, BalanceRequired>>
+}
+
+export interface ProfitConfig {
+    accountLimits: Partial<Record<ChainId, AccountLimitsConfig>>
+}
+
+export interface AccountLimitsConfig {
+    maxBotsPerAccount: number
 }

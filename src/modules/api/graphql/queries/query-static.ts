@@ -16,24 +16,20 @@ const query1 = gql`
         message
         error
         data {
-            id
-            createdAt
-            updatedAt
-            displayId
-            name
-            symbol
-            decimals
-            tokenAddress
-            coinMarketCapId
-            coinGeckoId
-            iconUrl
             chainId
+            createdAt
+            decimals
+            displayId
+            iconUrl
+            id
+            is2022Token
+            marketListings {
+                priority
+                symbol
+            }
+            name
             projectUrl
-            cexIds
-            whichCex
-            cexSymbols
-            type
-            pythFeedId
+            selectable
         }
     }
     dexes {

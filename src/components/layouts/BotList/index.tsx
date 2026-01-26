@@ -8,8 +8,9 @@ import { KaniButton, KaniInput } from "../../atomic"
 import { useRouter } from "next/navigation"
 import { paths } from "@/modules"
 import { Spacer } from "@heroui/react"
-import { FunnelIcon, PlusIcon, SortAscendingIcon } from "@phosphor-icons/react"
+import { PlusIcon, SortAscendingIcon } from "@phosphor-icons/react"
 import { MagnifyingGlassIcon } from "@phosphor-icons/react/dist/ssr"
+import { DisplayModeToggle } from "./DisplayModeToggle"
 export const BotList = () => {
     const queryBotsV2Swr = useQueryBotsV2Swr()
     const bots = useAppSelector((state) => state.bot.bots)
@@ -29,6 +30,12 @@ export const BotList = () => {
         <div> 
             <div className="flex items-center justify-between">
                 <div className="text-2xl font-bold">Bots</div>
+            </div>
+            <Spacer y={4} />
+            <div className="text-sm text-foreground-500">Individual users can create and run up to {accountLimits?.maxBotsPerAccount}  bots at the same time.</div>
+            <Spacer y={12} />
+            <div className="flex items-center justify-between">
+                <DisplayModeToggle />
                 <div className="flex items-center gap-4">
                     <div className="flex items-center">
                         <KaniInput
@@ -40,9 +47,6 @@ export const BotList = () => {
                             value={""}
                             onValueChange={() => {}}
                         />
-                        <KaniButton variant="flat" isIconOnly className="rounded-none" onPress={() => router.push(paths().bots().create())}>
-                            <FunnelIcon className="w-5 h-5 text-foreground-500"/>
-                        </KaniButton>
                         <KaniButton variant="flat" isIconOnly className="rounded-l-none" onPress={() => router.push(paths().bots().create())}>
                             <SortAscendingIcon className="w-5 h-5 text-foreground-500"/>
                         </KaniButton>
@@ -53,8 +57,6 @@ export const BotList = () => {
                 </div>
             </div>
             <Spacer y={6} />
-            <div className="text-sm text-foreground-500">Individual users can create and run up to {accountLimits?.maxBotsPerAccount}  bots at the same time.</div>
-            <Spacer y={12} />
             {renderBots()}
         </div>
     )

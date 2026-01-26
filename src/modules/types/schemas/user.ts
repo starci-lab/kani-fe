@@ -1,5 +1,14 @@
-export interface UserSchema {
-    id: string
+import { AppVersion } from "../enums"
+import { AbstractSchema } from "./abstract"
+
+export interface UserSchema extends AbstractSchema {
+    email?: string
+    username?: string
+    picture?: string
+    encryptedTotpSecretPayload?: unknown
+    referralCode?: string
+    temporaryTotpToken?: string
     mfaEnabled: boolean
-    email: string
+    privyUserId?: string
+    version: AppVersion
 }
