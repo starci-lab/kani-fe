@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
-import { BotSchema, PositionSchema, TransactionSchema } from "@/modules/types"
+import { BotSchema, PerformanceDisplayMode, PositionSchema, TransactionSchema } from "@/modules/types"
 import { QueryHistoryResponse } from "@/modules"
 import { ChartInterval, ChartUnit, LiquidityPoolsSortBy } from "@/modules/api"
 
@@ -172,6 +172,16 @@ export const botSlice = createSlice({
         setDisplayMode: (state, action: PayloadAction<BotDisplayMode>) => {
             state.displayMode = action.payload
         },
+        updateBotPerformanceDisplayMode: (state, action: PayloadAction<UpdateBotPerformanceDisplayModePayload>) => {
+            if (state.bots) {
+                state.bots = state.bots.map((bot) => {
+                    if (bot.id === action.payload.id) {
+                        return { ...bot, performanceDisplayMode: action.payload.performanceDisplayMode }
+                    }
+                    return bot
+                })
+            }
+        },
     },
 })
 
@@ -196,5 +206,11 @@ export const {
     setBotsPageNumber,
     setUpdatePoolsFilters,
     setBotIsExitToUsdc,
-    setDisplayMode
+    setDisplayMode,
+    updateBotPerformanceDisplayMode,
 } = botSlice.actions
+
+export interface UpdateBotPerformanceDisplayModePayload {
+    id: string
+    performanceDisplayMode: PerformanceDisplayMode
+}

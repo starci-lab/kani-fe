@@ -1,159 +1,124 @@
 import React, { useMemo } from "react"
-import { BotSchema, TokenType } from "@/modules/types"
-import { KaniCard, KaniCardBody, KaniChip, KaniDivider, KaniImage } from "@/components/atomic"
-import { cn, Spacer } from "@heroui/react"
+import { BotSchema, PerformanceDisplayMode } from "@/modules/types"
+import { KaniChip } from "@/components/atomic"
 import { useAppSelector } from "@/redux"
-import { computeDenomination, roundNumber } from "@/modules/utils"
-import BN from "bn.js"
+import { roundNumber } from "@/modules/utils"
 import { useRouter } from "next/navigation"
-import { paths } from "@/modules"
+import { getChainMetadata, paths } from "@/modules"
 import Decimal from "decimal.js"
-import { TooltipTitle } from "@/components/reuseable"
+import { BotDisplayMode } from "@/redux/slices/bot"
+import { BotCardGrid } from "./Grid"
+import { BotCardList } from "./List"
 
 export interface BotCardProps {
     bot: BotSchema
 }
+
 export const BotCard = ({ bot }: BotCardProps) => {
     const router = useRouter()
-    const tokens = useAppSelector(
-        (state) => state.static.tokens)
+    const displayMode = useAppSelector((state) => state.bot.displayMode)
+    const tokens = useAppSelector((state) => state.static.tokens)
+    
     const targetToken = useMemo(
-        () => tokens?.find((token) => token.id === bot.targetToken), [tokens, bot.targetToken]
+        () => tokens?.find((token) => token.id === bot.targetToken), 
+        [tokens, bot.targetToken]
     )
     const quoteToken = useMemo(
-        () => tokens?.find((token) => token.id === bot.quoteToken), [tokens, bot.quoteToken]
+        () => tokens?.find((token) => token.id === bot.quoteToken), 
+        [tokens, bot.quoteToken]
     )
-    const gasToken = useMemo(
-        () => tokens?.find((token) => token.chainId === bot.chainId && token.type === TokenType.Native), 
-        [tokens, bot.chainId]
-    )
+    
     const [roi24hString, isPositiveRoi24h] = useMemo(
         () => {
-            const isPositiveRoi24h = new Decimal(roundNumber(bot.roi24h || 0)).isPositive()
-            const roi = `${isPositiveRoi24h ? "+" : "-"}${new Decimal(roundNumber(bot.roi24h || 0)).abs().toString()}%`
+            const isPositiveRoi24h = new Decimal(roundNumber(bot.performance24h?.roi || 0)).isPositive()
+            const roi = `${isPositiveRoi24h ? "+" : "-"}${new Decimal(roundNumber(bot.performance24h?.roi || 0)).abs().toString()}%`
             return [roi, isPositiveRoi24h]
-        }, [bot.roi24h]
+        }, 
+        [bot.performance24h?.roi]
     )
+    
     const [pnl24hString, isPositivePnl24h] = useMemo(
         () => {
-            const isPositivePnl24h = new Decimal(roundNumber(bot.pnl24h || 0)).isPositive()
-            const pnl = `${isPositivePnl24h ? "+" : "-"}${new Decimal(roundNumber(bot.pnl24h || 0)).abs().toString()}%`
+            const isPositivePnl24h = new Decimal(roundNumber(bot.performance24h?.pnl || 0)).isPositive()
+            const pnl = `${isPositivePnl24h ? "+" : "-"}${new Decimal(roundNumber(bot.performance24h?.pnl || 0)).abs().toString()} ${targetToken?.symbol}`
             return [pnl, isPositivePnl24h]
-        }, [bot.pnl24h]
+        }, 
+        [bot.performance24h?.pnl, targetToken?.symbol]
     )
-    return (
-        <KaniCard isPressable onPress={() => router.push(paths().bots().bot(bot.id))}>
-            <KaniCardBody>
-                <div className="flex items-center justify-between gap-4">
-                    <div className="font-bold">
-                        {bot.name}
-                    </div>
-                    {
-                        bot.running ?(
-                            <KaniChip color="primary" size="sm" variant="flat">
-                        Active
-                            </KaniChip>
-                        ) : (
-                            <KaniChip color="secondary" size="sm" variant="flat">
-                        Inactive
-                            </KaniChip>
-                        )
-                    }
+    
+    const [roi24hInUsdString, isPositiveRoi24hInUsd] = useMemo(
+        () => {
+            const isPositiveRoi24hInUsd = new Decimal(roundNumber(bot.performance24h?.roiInUsd || 0)).isPositive()
+            const roiInUsd = `${isPositiveRoi24hInUsd ? "+" : "-"}${new Decimal(roundNumber(bot.performance24h?.roiInUsd || 0)).abs().toString()}%`
+            return [roiInUsd, isPositiveRoi24hInUsd]
+        }, 
+        [bot.performance24h?.roiInUsd]
+    )
+    
+    const [pnl24hInUsdString, isPositivePnl24hInUsd] = useMemo(
+        () => {
+            const isPositivePnl24hInUsd = new Decimal(roundNumber(bot.performance24h?.pnlInUsd || 0)).isPositive()
+            const pnlInUsd = `${isPositivePnl24hInUsd ? "+" : "-"}${new Decimal(roundNumber(bot.performance24h?.pnlInUsd || 0)).abs().toString()} USD`
+            return [pnlInUsd, isPositivePnl24hInUsd]
+        }, 
+        [bot.performance24h?.pnlInUsd]
+    )
+    
+    const roiString = bot.performanceDisplayMode === PerformanceDisplayMode.Usd ? roi24hInUsdString : roi24hString
+    const isPositiveRoi = bot.performanceDisplayMode === PerformanceDisplayMode.Usd ? isPositiveRoi24hInUsd : isPositiveRoi24h
+    const pnlString = bot.performanceDisplayMode === PerformanceDisplayMode.Usd ? pnl24hInUsdString : pnl24hString
+    const isPositivePnl = bot.performanceDisplayMode === PerformanceDisplayMode.Usd ? isPositivePnl24hInUsd : isPositivePnl24h
+    
+    const renderLiquidityStatusChip = () => {
+        return (
+            <div className="flex items-center gap-2 animate-pulse">
+                <span className="w-2 h-2 rounded-full bg-success" />
+                <div className="text-sm text-success">
+                    In Range
                 </div>
-                <Spacer y={6} />
-                <div className="flex flex-col gap-3 w-full">
-                    <div className="flex justify-between items-center gap-4">
-                        <TooltipTitle
-                            classNames={{
-                                title: "text-sm text-foreground-500",
-                            }}
-                            title="ROI"
-                            tooltipString="The return on investment, showing how much profit or loss the bot made compared to the initial position value."
-                        />
-                        <div className={
-                            cn(
-                                "text-sm", {
-                                    "text-success": isPositiveRoi24h,
-                                    "text-danger": !isPositiveRoi24h,
-                                }
-                            )
-                        }>
-                            {roi24hString}
-                        </div>
-                    </div>
-                    <div className="flex justify-between items-center gap-3">
-                        <TooltipTitle
-                            classNames={{
-                                title: "text-sm text-foreground-500",
-                            }}
-                            title="PNL"
-                            tooltipString="The total profit or loss made by the bot, measured in USDC."
-                        />
-                        <div className={
-                            cn(
-                                "text-sm", {
-                                    "text-success": isPositivePnl24h,
-                                    "text-danger": !isPositivePnl24h,
-                                }
-                            )
-                        }>
-                            {pnl24hString}
-                        </div>
-                    </div>
-                </div>
-                <Spacer y={3} />
-                <KaniDivider/>
-                <Spacer y={3} />
-                <div className="flex items-center gap-3">
-                    <div className="flex flex-col gap-3 w-full">
-                        <div className="flex justify-between items-center gap-3">
-                            <TooltipTitle
-                                classNames={{
-                                    title: "text-sm text-foreground-500",
-                                }}
-                                title="Target"
-                                tooltipString="The target token of the bot."
-                            />
-                            <div className="flex items-center gap-2">
-                                <div className="text-sm text-right">
-                                    {computeDenomination(new BN(bot.snapshotTargetBalanceAmount || "0"), targetToken?.decimals || 8).toString()}
-                                </div>
-                                <KaniImage src={targetToken?.iconUrl} className="w-5 h-5"/>
-                            </div>
-                        </div>
-                        <div className="flex justify-between items-center">
-                            <TooltipTitle
-                                classNames={{
-                                    title: "text-sm text-foreground-500",
-                                }}
-                                title="Quote"
-                                tooltipString="The quote token of the bot."
-                            />
-                            <div className="flex items-center gap-2">
-                                <div className="text-sm text-right">
-                                    {computeDenomination(new BN(bot.snapshotQuoteBalanceAmount || "0"), quoteToken?.decimals || 8).toString()}
-                                </div>
-                                <KaniImage src={quoteToken?.iconUrl} className="w-5 h-5"/>
-                            </div>
-                        </div>
-                        <div className="flex justify-between items-center">
-                            <TooltipTitle
-                                classNames={{
-                                    title: "text-sm text-foreground-500",
-                                }}
-                                title="Gas"
-                                tooltipString="The gas token of the bot."
-                            />
-                            <div className="flex items-center gap-2">
-                                <div className="text-sm text-right">
-                                    {computeDenomination(new BN(bot.snapshotGasBalanceAmount || "0"), gasToken?.decimals || 8).toString()}
-                                </div>
-                                <KaniImage src={gasToken?.iconUrl} className="w-5 h-5"/>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </KaniCardBody>
-        </KaniCard>
+            </div>
+        )
+        return (
+            <KaniChip color="danger" variant="flat">
+                Out of Range
+            </KaniChip>
+        )
+        return (
+            <KaniChip color="warning" variant="flat">
+                Idle
+            </KaniChip>
+        )
+    }
+    
+    const chainMetadata = useMemo(() => getChainMetadata(bot.chainId), [bot.chainId])
+    const capitalString = "50,000 USDC" // TODO: Calculate actual capital
+    
+    if (!targetToken || !quoteToken) {
+        return null
+    }
+    
+    const cardProps = {
+        bot,
+        targetToken,
+        quoteToken,
+        botName: bot.name,
+        isRunning: bot.running,
+        roiString,
+        isPositiveRoi,
+        pnlString,
+        isPositivePnl,
+        capitalString,
+        liquidityStatusChip: renderLiquidityStatusChip(),
+        chainIconUrl: chainMetadata?.iconUrl,
+        chainName: chainMetadata?.name,
+        accountAddress: bot.accountAddress ?? "",
+        poolAddress: bot.activePosition?.associatedLiquidityPool?.poolAddress,
+        onCardPress: () => router.push(paths().bots().bot(bot.id)),
+    }
+    
+    return displayMode === BotDisplayMode.Grid ? (
+        <BotCardGrid {...cardProps} />
+    ) : (
+        <BotCardList {...cardProps} />
     )
 }

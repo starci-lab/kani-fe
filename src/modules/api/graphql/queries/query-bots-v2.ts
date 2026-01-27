@@ -25,12 +25,44 @@ const query1 = gql`
             targetToken
             quoteToken
             isExitToUsdc
+            performanceDisplayMode
             version
             activePosition {
               id
               type
               liquidityPool
               position
+              associatedPosition {
+                id
+                createdAt
+                updatedAt
+                openTxHash
+                liquidityPool
+                bot
+                chainId
+                positionId
+                isActive
+                closeTxHash
+                metadata
+              }
+              associatedLiquidityPool {
+                id
+                createdAt
+                updatedAt
+                displayId
+                dex
+                poolAddress
+                tokenA
+                tokenB
+                fee
+                chainId
+                type
+                isActive
+                metadata
+                url
+                wsIdleTimeoutMs
+                staleMs
+              }
             }
             performance24h {
               roi
@@ -56,15 +88,23 @@ export interface BotsV2PaginationPageFilters {
   pageNumber?: number
   limit?: number
 }
+
+export interface BotsV2AssociateOptions {
+  activePosition?: {
+    liquidityPool?: boolean;
+    position?: boolean;
+  }
+}
 export type QueryBotsV2Params = QueryParams<QueryBotsV2, QueryBotsV2Request>;
 
 export interface QueryBotsV2Request {
-    filters?: BotsV2PaginationPageFilters;
+  filters?: BotsV2PaginationPageFilters;
+  associate?: BotsV2AssociateOptions;
 }
 
 export interface QueryBotsV2Response {
-    data: Array<BotSchema>;
-    count: number;
+  data: Array<BotSchema>;
+  count: number;
 }
 
 export const queryBotsV2 = async ({

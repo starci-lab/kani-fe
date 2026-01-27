@@ -43,3 +43,8 @@ export enum AppVersion {
 export enum PositionSettlementReason {
     OutOfRange = "outOfRange",
 }
+
+export enum PerformanceDisplayMode {
+    Target = "target",
+    Usd = "usd",
+}

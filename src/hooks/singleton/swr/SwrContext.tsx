@@ -32,6 +32,7 @@ import {
     useQueryLiquidityPoolsSelectedPoolsSwrCore,
     useQueryPositionsV2SwrCore,
     useBackupBotPrivateKeyV2SwrMutationCore,
+    useUpdateBotPerformanceDisplayModeV2SwrMutationCore,
 } from "./core"
 
 export interface SwrContextType {
@@ -65,6 +66,7 @@ export interface SwrContextType {
     queryPositionsV2Swr: ReturnType<typeof useQueryPositionsV2SwrCore>;
     queryTransactionsSwr: ReturnType<typeof useQueryTransactionsSwrCore>;
     queryTransactionsV2Swr: ReturnType<typeof useQueryTransactionsV2SwrCore>;
+    updateBotPerformanceDisplayModeV2SwrMutation: ReturnType<typeof useUpdateBotPerformanceDisplayModeV2SwrMutationCore>;
 }
 
 export const SwrContext = createContext<SwrContextType | null>(null)
@@ -89,6 +91,7 @@ export const SwrProvider = ({ children }: PropsWithChildren) => {
     const toggleBotV2SwrMutation = useToggleBotV2SwrMutationCore()
     const updateBotLiquidityPoolsV2SwrMutation = useUpdateBotLiquidityPoolsV2SwrMutationCore()
     const updateBotSettingsV2SwrMutation = useUpdateBotSettingsV2SwrMutationCore()
+    const updateBotPerformanceDisplayModeV2SwrMutation = useUpdateBotPerformanceDisplayModeV2SwrMutationCore()
     const queryFeesV2Swr = useQueryFeesV2SwrCore()
     const queryReservesV2Swr = useQueryReservesV2SwrCore()
     const queryLiquidityPoolsActivePositionSwr = useQueryLiquidityPoolsActivePositionSwrCore()
@@ -125,6 +128,7 @@ export const SwrProvider = ({ children }: PropsWithChildren) => {
         toggleBotV2SwrMutation,
         updateBotLiquidityPoolsV2SwrMutation,
         updateBotSettingsV2SwrMutation,
+        updateBotPerformanceDisplayModeV2SwrMutation,
         queryLiquidityPoolsActivePositionSwr,
         queryLiquidityPoolsBotSwr,
         queryLiquidityPoolsUpdatePoolsSwr,
@@ -156,6 +160,7 @@ export const SwrProvider = ({ children }: PropsWithChildren) => {
         toggleBotV2SwrMutation,
         updateBotLiquidityPoolsV2SwrMutation,
         updateBotSettingsV2SwrMutation,
+        updateBotPerformanceDisplayModeV2SwrMutation,
         queryLiquidityPoolsActivePositionSwr,
         queryLiquidityPoolsBotSwr,
         queryLiquidityPoolsUpdatePoolsSwr,

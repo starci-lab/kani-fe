@@ -14,14 +14,22 @@ export const useQueryBotsV2SwrCore = () => {
             if (!accessToken) {
                 throw new Error("Access token is required")
             }
-            const data = await queryBotsV2({
-                token: accessToken,
-                request: {
-                    filters: {
-                        pageNumber,
+            const data = await queryBotsV2(
+                {
+                    token: accessToken,
+                    request: {
+                        filters: {
+                            pageNumber,
+                        },
+                        associate: {
+                            activePosition: {
+                                liquidityPool: true,
+                                position: true,
+                            },
+                        },
                     },
-                },
-            })
+                }
+            )
             const bots = data.data?.botsV2
             if (!bots) {
                 throw new Error("Bots not found")

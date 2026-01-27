@@ -15,16 +15,16 @@ export const DisplayModeToggle = () => {
     const dispatch = useAppDispatch()
     const tabs: Array<DisplayModeToggleTab> = [
         {
-            ariaLabel: "List",
-            key: BotDisplayMode.List,
-            text: "List",
-            icon: ListIcon,
-        },
-        {
             ariaLabel: "Grid",
             key: BotDisplayMode.Grid,
             text: "Grid",
             icon: GridFourIcon,
+        },
+        {
+            ariaLabel: "List",
+            key: BotDisplayMode.List,
+            text: "List",
+            icon: ListIcon,
         }
     ]
     return (

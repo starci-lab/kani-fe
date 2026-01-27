@@ -1,5 +1,5 @@
 import { ChainId } from "../blockchain"
-import { AppVersion } from "../enums"
+import { AppVersion, PerformanceDisplayMode } from "../enums"
 import { BotActivePositionSchema } from "./bot-active-position"
 import { BotSnapshotsSchema } from "./bot-snapshots"
 import { ActiveJobSchema } from "./active-job"
@@ -32,4 +32,5 @@ export interface BotSchema extends AbstractSchema {
     activePosition?: BotActivePositionSchema
     activeJob?: ActiveJobSchema
     performance24h?: BotPerformance24H
+    performanceDisplayMode: PerformanceDisplayMode
 }

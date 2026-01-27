@@ -11,53 +11,25 @@ const query1 = gql`
       error
       data {
         id
+        createdAt
+        updatedAt
         accountAddress
         chainId
+        user
         name
         liquidityPools
-        initialized
-        explorerId
         running
+        lastRunAt
         targetToken
         quoteToken
-        snapshotTargetBalanceAmount
-        snapshotQuoteBalanceAmount
-        snapshotGasBalanceAmount
-        lastBalancesSnapshotAt
         isExitToUsdc
-        backupPrivateKey
-        activePosition { 
-          id
-          openTxHash
-          liquidityPool
-          snapshotTargetBalanceAmountBeforeOpen
-          snapshotQuoteBalanceAmountBeforeOpen
-          snapshotGasBalanceAmountBeforeOpen
-          snapshotTargetBalanceAmountAfterClose
-          snapshotQuoteBalanceAmountAfterClose
-          snapshotGasBalanceAmountAfterClose
-          liquidity
-          tickLower
-          tickUpper
-          amountA
-          amountB
-          minBinId
-          maxBinId
-          bot
-          chainId
-          targetIsA
-          positionOpenedAt
-          positionId
-          isActive
-          closeTxHash
-          positionClosedAt
+        performanceDisplayMode
+        version
+        performance24h {
           roi
           pnl
-          metadata
-          feeAmountTarget
-          feeAmountQuote
-          createdAt
-          updatedAt
+          roiInUsd
+          pnlInUsd
         }
       }
     }
@@ -72,9 +44,11 @@ const queryMap: Record<QueryBotV2, DocumentNode> = {
     [QueryBotV2.Query1]: query1,
 }
 
+
 export interface QueryBotV2Request {
     id: string;
 }
+
 export type QueryBotV2Params = QueryParams<QueryBotV2, QueryBotV2Request>;
 
 export const queryBotV2 = async (

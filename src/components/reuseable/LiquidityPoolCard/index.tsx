@@ -43,7 +43,13 @@ export const LiquidityPoolCard = ({ liquidityPool, isSelected, onSelect }: Liqui
                         </div>
                     </div>
                     <Spacer y={2} />
-                    <SnippetIcon copyString={liquidityPool.poolAddress ?? ""} classNames={{ checkIcon: "text-secondary w-5 h-5", copyIcon: "text-secondary w-5 h-5" }}/>
+                    <SnippetIcon 
+                        copyString={liquidityPool.poolAddress ?? ""} 
+                        classNames={{ 
+                            checkIcon: "text-secondary w-5 h-5", 
+                            copyIcon: "text-secondary w-5 h-5" 
+                        }}
+                    />
                 </div>
                 <div className="flex items-center gap-2">
                     <div className="flex items-center gap-2">
