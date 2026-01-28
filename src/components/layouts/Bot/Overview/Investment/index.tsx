@@ -7,7 +7,7 @@ import { ChainId, TokenType } from "@/modules/types"
 import { HistoryChart } from "./HistoryChart"
 import numeral from "numeral"
 import { IntervalTabs } from "./IntervalTabs"
-import { useQueryFundingSnapshotV2Swr, useQueryStaticSwr } from "@/hooks/singleton"
+import { useQueryPortfolioValueV2Swr, useQueryStaticSwr } from "@/hooks/singleton"
 import { ArrowClockwiseIcon } from "@phosphor-icons/react"
 import { EligibilityStatus } from "./EligibilityStatus"
 import { computeDenomination } from "@/modules/utils"
@@ -30,7 +30,7 @@ export const Investment = () => {
         (token) => token.chainId === bot?.chainId
         && token.type === TokenType.Native
     ), [tokens, bot?.chainId])
-    const queryFundingSnapshotV2Swr = useQueryFundingSnapshotV2Swr()
+    const queryPortfolioValueV2Swr = useQueryPortfolioValueV2Swr()
     const gasConfig = useAppSelector(
         (state) => state.static.gasConfig
     )
@@ -43,8 +43,8 @@ export const Investment = () => {
     const balanceRequired = useMemo(() => balanceConfig?.balanceRequired?.[bot?.chainId ?? ChainId.Solana], [balanceConfig, bot?.chainId])
     const minRequiredAmountInUsd = useMemo(() => balanceRequired?.minRequiredAmountInUsd, [balanceRequired?.minRequiredAmountInUsd])
     const isLoading = useMemo(() => {
-        return queryFundingSnapshotV2Swr.isLoading || !queryFundingSnapshotV2Swr.data || !bot
-    }, [queryFundingSnapshotV2Swr.isLoading, queryFundingSnapshotV2Swr.data, bot])
+        return queryPortfolioValueV2Swr.isLoading || !queryPortfolioValueV2Swr.data || !bot
+    }, [queryPortfolioValueV2Swr.isLoading, queryPortfolioValueV2Swr.data, bot])
     const staticSwr = useQueryStaticSwr()
     return (
         <div>
@@ -58,7 +58,7 @@ export const Investment = () => {
                         <KaniSkeleton className="h-[30px] w-[120px] rounded-md"/>
                     ) : (
                         <div className="text-4xl font-bold leading-none">
-                            ${numeral(queryFundingSnapshotV2Swr.data?.data?.fundingSnapshotV2?.data?.balanceIncludingGasInUsdc?.toString() || "0").format("0,0.00000")}
+                            ${numeral(queryPortfolioValueV2Swr.data?.data?.portfolioValueV2?.data?.portfolioValueInUsd?.includingGas?.toString() || "0").format("0,0.00000")}
                         </div>
                     )}
                 <IntervalTabs />  
@@ -75,7 +75,7 @@ export const Investment = () => {
                     color="primary"
                     className="cursor-pointer"
                     onPress={() => {
-                        queryFundingSnapshotV2Swr.mutate()
+                        queryPortfolioValueV2Swr.mutate()
                     }}
                 >
                     <ArrowClockwiseIcon className="w-5 h-5 cursor-pointer" />
@@ -86,19 +86,19 @@ export const Investment = () => {
                 <TokenCard
                     token={targetToken}
                     type={TokenCardType.TargetToken}
-                    balanceAmount={queryFundingSnapshotV2Swr.data?.data?.fundingSnapshotV2?.data?.targetBalanceAmount?.toString() || "0"}
+                    balanceAmount={queryPortfolioValueV2Swr.data?.data?.portfolioValueV2?.data?.targetBalanceAmount?.toString() || "0"}
                     isLoading={isLoading}
                 />
                 <TokenCard
                     token={quoteToken}
                     type={TokenCardType.QuoteToken}
-                    balanceAmount={queryFundingSnapshotV2Swr.data?.data?.fundingSnapshotV2?.data?.quoteBalanceAmount?.toString() || "0"}
+                    balanceAmount={queryPortfolioValueV2Swr.data?.data?.portfolioValueV2?.data?.quoteBalanceAmount?.toString() || "0"}
                     isLoading={isLoading}
                 />
                 <TokenCard
                     token={gasToken}
                     type={TokenCardType.GasToken}
-                    balanceAmount={queryFundingSnapshotV2Swr.data?.data?.fundingSnapshotV2?.data?.gasBalanceAmount?.toString() || "0"}
+                    balanceAmount={queryPortfolioValueV2Swr.data?.data?.portfolioValueV2?.data?.gasBalanceAmount?.toString() || "0"}
                     isLoading={isLoading}
                 />
             </div>

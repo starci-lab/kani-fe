@@ -25,7 +25,7 @@ import {
     useQueryPositionsSwrCore,
     useQueryTransactionsV2SwrCore,
     useQueryBotsV2SwrCore,
-    useQueryFundingSnapshotV2SwrCore,
+    useQueryPortfolioValueV2SwrCore,
     useQueryHistoryV2SwrCore,
     useQueryTotpSecretSwrMutationCore,
     useQueryBotV2SwrCore,
@@ -49,7 +49,7 @@ export interface SwrContextType {
     createBotV2SwrMutation: ReturnType<typeof useCreateBotV2SwrMutationCore>;
     queryFeesV2Swr: ReturnType<typeof useQueryFeesV2SwrCore>;
     queryReservesV2Swr: ReturnType<typeof useQueryReservesV2SwrCore>;
-    queryFundingSnapshotV2Swr: ReturnType<typeof useQueryFundingSnapshotV2SwrCore>;
+    queryPortfolioValueV2Swr: ReturnType<typeof useQueryPortfolioValueV2SwrCore>;
     queryHistoryV2Swr: ReturnType<typeof useQueryHistoryV2SwrCore>;
     queryTotpSecretSwrMutation: ReturnType<typeof useQueryTotpSecretSwrMutationCore>;
     queryLiquidityPoolsActivePositionSwr: ReturnType<typeof useQueryLiquidityPoolsActivePositionSwrCore>;
@@ -86,7 +86,7 @@ export const SwrProvider = ({ children }: PropsWithChildren) => {
     const toggleBotSwrMutation = useToggleBotSwrMutationCore()
     const queryPositionsV2Swr = useQueryPositionsV2SwrCore()
     const queryTransactionsV2Swr = useQueryTransactionsV2SwrCore()
-    const queryFundingSnapshotV2Swr = useQueryFundingSnapshotV2SwrCore()
+    const queryPortfolioValueV2Swr = useQueryPortfolioValueV2SwrCore()
     const queryHistoryV2Swr = useQueryHistoryV2SwrCore()
     const toggleBotV2SwrMutation = useToggleBotV2SwrMutationCore()
     const updateBotLiquidityPoolsV2SwrMutation = useUpdateBotLiquidityPoolsV2SwrMutationCore()
@@ -123,7 +123,7 @@ export const SwrProvider = ({ children }: PropsWithChildren) => {
         toggleBotSwrMutation,
         queryFeesV2Swr,
         queryReservesV2Swr,
-        queryFundingSnapshotV2Swr,
+        queryPortfolioValueV2Swr,
         queryHistoryV2Swr,
         toggleBotV2SwrMutation,
         updateBotLiquidityPoolsV2SwrMutation,
@@ -155,7 +155,7 @@ export const SwrProvider = ({ children }: PropsWithChildren) => {
         toggleBotSwrMutation,
         queryFeesV2Swr,
         queryReservesV2Swr,
-        queryFundingSnapshotV2Swr,
+        queryPortfolioValueV2Swr,
         queryHistoryV2Swr,
         toggleBotV2SwrMutation,
         updateBotLiquidityPoolsV2SwrMutation,

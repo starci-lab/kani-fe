@@ -11,44 +11,23 @@ const query1 = gql`
       error
       data {
         data {
-            id
-            openTxHash
-            liquidityPool
-            snapshotTargetBalanceAmountBeforeOpen
-            snapshotQuoteBalanceAmountBeforeOpen
-            snapshotGasBalanceAmountBeforeOpen
-            snapshotTargetBalanceAmountAfterClose
-            snapshotQuoteBalanceAmountAfterClose
-            snapshotGasBalanceAmountAfterClose
+          id
+          createdAt
+          updatedAt
+          openTxHash
+          bot
+          chainId
+          positionId
+          isActive
+          clmmState {
             liquidity
             tickLower
             tickUpper
-            amountA
-            amountB
+          }
+          dlmmState {
             minBinId
             maxBinId
-            bot
-            chainId
-            targetIsA
-            positionOpenedAt
-            positionId
-            isActive
-            closeTxHash
-            positionClosedAt
-            roi
-            pnl
-            metadata
-            feeAmountTarget
-            feeAmountQuote
-            positionValueAtClose
-            positionValueAtOpen
-            associatedLiquidityPool {
-              tokenA
-              tokenB
-              fee
-              dex
-              url
-            }
+          }
         }
         count
       }

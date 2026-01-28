@@ -1,6 +1,6 @@
 import React, { useMemo } from "react"
-import { useQueryFundingSnapshotV2Swr } from "@/hooks/singleton"
-import { ChainId, TokenType } from "@/modules/types"
+import { useQueryPortfolioValueV2Swr } from "@/hooks/singleton"
+import { BalanceEligibilityStatus, ChainId, TokenType } from "@/modules/types"
 import { KaniAlert } from "@/components/atomic"
 import { Spacer } from "@heroui/react"
 import { useAppSelector } from "@/redux"
@@ -8,21 +8,9 @@ import { computeDenomination } from "@/modules/utils"
 import { BN } from "bn.js"
 
 export const EligibilityStatus = () => {
-    const queryFundingSnapshotV2Swr = useQueryFundingSnapshotV2Swr()
-    const balanceEligibilityStatus = queryFundingSnapshotV2Swr.data?.data?.fundingSnapshotV2?.data?.balanceEligibilityStatus
-    const bot = useAppSelector((state) => state.bot.bot)
-    const tokens = useAppSelector((state) => state.static.tokens)
-    const targetToken = useMemo(() => tokens.find((token) => token.id === bot?.targetToken), [tokens, bot?.targetToken])
-    const gasConfig = useAppSelector((state) => state.static.gasConfig)
-    const gasAmountRequired = useMemo(() => gasConfig?.gasAmountRequired?.[bot?.chainId ?? ChainId.Solana], [gasConfig, bot?.chainId])
-    const targetOperationalAmount = useMemo(() => gasAmountRequired?.targetOperationalAmount, [gasAmountRequired?.targetOperationalAmount])
-    const targetOperationalAmountDecimal = useMemo(() => computeDenomination(new BN(targetOperationalAmount ?? "0"), targetToken?.decimals ?? 9), [targetOperationalAmount, targetToken?.decimals])
-    const balanceConfig = useAppSelector(
-        (state) => state.static.balanceConfig
-    )
-    const gasToken = useMemo(() => tokens.find((token) => token.chainId === bot?.chainId && token.type === TokenType.Native), [tokens, bot?.chainId])
-    const balanceRequired = useMemo(() => balanceConfig?.balanceRequired?.[bot?.chainId ?? ChainId.Solana], [balanceConfig, bot?.chainId])
-    const minRequiredAmountInUsd = useMemo(() => balanceRequired?.minRequiredAmountInUsd, [balanceRequired?.minRequiredAmountInUsd])
+    const queryPortfolioValueV2Swr = useQueryPortfolioValueV2Swr()
+    const balanceEligibilityStatus = queryPortfolioValueV2Swr.data?.data?.portfolioValueV2?.data?.status
+
     // const renderEligibilityStatus = () => {
     //     switch (balanceEligibilityStatus) {
     //         case BalanceEligibilityStatus.Ok:

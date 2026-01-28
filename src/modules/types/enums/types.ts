@@ -48,3 +48,11 @@ export enum PerformanceDisplayMode {
     Target = "target",
     Usd = "usd",
 }
+
+export enum BalanceEvalStatus {
+    Ok = "ok",
+    InsufficientFunding = "insufficientFunding",
+    InsufficientGas = "insufficientGas",
+    TargetUnderweighted = "targetUnderweighted",
+    TargetOverweighted  = "targetOverweighted",
+}
