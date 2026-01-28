@@ -1,5 +1,5 @@
-import { LiquidityPoolSchema, TokenId } from "@/modules/types"
-import { useAppSelector } from "@/redux"
+import { LiquidityPoolSchema } from "@/modules/types"
+import { DynamicDlmmLiquidityPoolInfoCacheResult, useAppSelector } from "@/redux"
 import React, { useMemo } from "react"
 import { binIdToPrice, roundNumber } from "@/modules/utils"
 import { LiquidityChart } from "../../../../../../reuseable/charts"
@@ -28,33 +28,35 @@ export const DLMM = (
     )
     const activePosition = useAppSelector((state) => state.bot.bot?.activePosition)    
     const minBinId = useMemo(() => {
-        return new Decimal(activePosition?.minBinId ?? 0)
+        return new Decimal(activePosition?.associatedPosition?.dlmmState?.minBinId ?? 0)
     }, [activePosition])
     const maxBinId = useMemo(() => {
-        return new Decimal(activePosition?.maxBinId ?? 0)
+        return new Decimal(activePosition?.associatedPosition?.dlmmState?.maxBinId ?? 0)
     }, [activePosition])
+    const dynamicLiquidityPoolInfos = useAppSelector((state) => state.socket.dynamicLiquidityPoolInfos)
     const activeId = useMemo(() => {
-        return new Decimal(liquidityPool?.dynamicInfo?.activeId ?? 0)
-    }, [activePosition])
+        const dynamicLiquidityPoolInfo = dynamicLiquidityPoolInfos[activePosition?.associatedLiquidityPool?.id ?? ""] as DynamicDlmmLiquidityPoolInfoCacheResult
+        return dynamicLiquidityPoolInfo?.activeId.toNumber()
+    }, [activePosition, dynamicLiquidityPoolInfos])
     const isInRange = useMemo(() => {
-        return activeId && activeId.gte(minBinId) && activeId.lte(maxBinId)
+        return activeId && new Decimal(activeId).gte(minBinId) && new Decimal(activeId).lte(maxBinId)
     }, [activeId, minBinId, maxBinId])
     const minBinIdPrice = useMemo(() => {
-        return binIdToPrice({ binId: minBinId, binStep: new Decimal(liquidityPool?.binStep ?? 0), basisPointMax: new Decimal(liquidityPool?.basisPointMax ?? 0      ), decimalsA: new Decimal(tokenA?.decimals ?? 0), decimalsB: new Decimal(tokenB?.decimals ?? 0) })
-    }, [minBinId, liquidityPool?.binStep, liquidityPool?.basisPointMax, tokenA?.decimals, tokenB?.decimals])
+        return binIdToPrice({ binId: minBinId, binStep: new Decimal(activePosition?.associatedLiquidityPool?.dlmmState?.binStep ?? 0), basisPointMax: new Decimal(activePosition?.associatedLiquidityPool?.dlmmState?.basisPointMax ?? 0      ), decimalsA: new Decimal(tokenA?.decimals ?? 0), decimalsB: new Decimal(tokenB?.decimals ?? 0) })
+    }, [minBinId, activePosition?.associatedLiquidityPool?.dlmmState?.binStep ?? 0, activePosition?.associatedLiquidityPool?.dlmmState?.basisPointMax ?? 0, tokenA?.decimals ?? 0, tokenB?.decimals ?? 0])
     const maxBinIdPrice = useMemo(() => {
-        return binIdToPrice({ binId: maxBinId, binStep: new Decimal(liquidityPool?.binStep ?? 0), basisPointMax: new Decimal(liquidityPool?.basisPointMax ?? 0  ), decimalsA: new Decimal(tokenA?.decimals ?? 0), decimalsB: new Decimal(tokenB?.decimals ?? 0) })
-    }, [maxBinId, liquidityPool?.binStep, liquidityPool?.basisPointMax, tokenA?.decimals, tokenB?.decimals])
+        return binIdToPrice({ binId: maxBinId, binStep: new Decimal(activePosition?.associatedLiquidityPool?.dlmmState?.binStep ?? 0), basisPointMax: new Decimal(activePosition?.associatedLiquidityPool?.dlmmState?.basisPointMax ?? 0  ), decimalsA: new Decimal(tokenA?.decimals ?? 0), decimalsB: new Decimal(tokenB?.decimals ?? 0) })
+    }, [maxBinId, activePosition?.associatedLiquidityPool?.dlmmState?.binStep ?? 0, activePosition?.associatedLiquidityPool?.dlmmState?.basisPointMax ?? 0, tokenA?.decimals ?? 0, tokenB?.decimals ?? 0])
     const activeIdPrice = useMemo(() => {
-        return binIdToPrice({ binId: activeId, binStep: new Decimal(liquidityPool?.binStep ?? 0), basisPointMax: new Decimal(liquidityPool?.basisPointMax ?? 0  ), decimalsA: new Decimal(tokenA?.decimals ?? 0), decimalsB: new Decimal(tokenB?.decimals ?? 0) })
-    }, [activeId, liquidityPool?.binStep, liquidityPool?.basisPointMax, tokenA?.decimals, tokenB?.decimals])
-    const tokenPrices = useAppSelector((state) => state.socket.tokenPrices)
+        return binIdToPrice({ binId: new Decimal(activeId), binStep: new Decimal(activePosition?.associatedLiquidityPool?.dlmmState?.binStep ?? 0), basisPointMax: new Decimal(activePosition?.associatedLiquidityPool?.dlmmState?.basisPointMax ?? 0  ), decimalsA: new Decimal(tokenA?.decimals ?? 0), decimalsB: new Decimal(tokenB?.decimals ?? 0) })
+    }, [activeId, activePosition?.associatedLiquidityPool?.dlmmState?.binStep ?? 0, activePosition?.associatedLiquidityPool?.dlmmState?.basisPointMax ?? 0, tokenA?.decimals ?? 0, tokenB?.decimals ?? 0])
+    const tokenPrices = useAppSelector((state) => state.socket.prices)
     const tokenPriceA = useMemo(() => {
-        return tokenPrices[tokenA?.displayId || TokenId.SolUsdc] ?? 0
-    }, [tokenPrices, tokenA?.displayId])
+        return tokenPrices[tokenA?.id ?? ""] ?? 0
+    }, [tokenPrices, tokenA?.id])
     const tokenPriceB = useMemo(() => {
-        return tokenPrices[tokenB?.displayId || TokenId.SolUsdc] ?? 0
-    }, [tokenPrices, tokenB?.displayId])
+        return tokenPrices[tokenB?.id ?? ""] ?? 0
+    }, [tokenPrices, tokenB?.id])
     const queryFeesV2Swr = useQueryFeesV2Swr()
     const tokenAFees = useMemo(() => {
         return new Decimal(queryFeesV2Swr?.data?.data?.feesV2.data?.tokenA ?? 0)
@@ -73,8 +75,8 @@ export const DLMM = (
         return new Decimal(queryReservesV2Swr?.data?.data?.reservesV2.data?.tokenB ?? 0)
     }, [queryReservesV2Swr?.data?.data?.reservesV2.data?.tokenB])
     const totalReservesInUsd = useMemo(() => {
-        return tokenAReserves.mul(tokenPriceA).add(tokenBReserves.mul(tokenPriceB))
-    }, [tokenAReserves, tokenBReserves, tokenPriceA, tokenPriceB])
+        return tokenAReserves.mul(new Decimal(tokenPriceA.price ?? 0)).add(tokenBReserves.mul(new Decimal(tokenPriceB.price ?? 0)))
+    }, [tokenAReserves, tokenBReserves, tokenPriceA.price, tokenPriceB.price])
     const isLoading = useMemo(() => {
         return queryliquidityPoolsActivePositionSwr.isLoading || !liquidityPool
     }, [queryliquidityPoolsActivePositionSwr.isLoading, liquidityPool])

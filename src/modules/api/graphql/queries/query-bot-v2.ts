@@ -23,8 +23,105 @@ const query1 = gql`
         targetToken
         quoteToken
         isExitToUsdc
-        performanceDisplayMode
         version
+        performanceDisplayMode
+        balanceSnapshots {
+          targetBalanceAmount
+          quoteBalanceAmount
+          gasBalanceAmount
+          snapshotAt
+        }
+        activePosition {
+          id
+          type
+          liquidityPool
+          position
+          associatedPosition {
+            id
+            createdAt
+            updatedAt
+            openTxHash
+            liquidityPool
+            bot
+            chainId
+            positionId
+            isActive
+            closeTxHash
+            metadata
+            openSnapshot {
+              targetBalanceAmount
+              quoteBalanceAmount
+              gasBalanceAmount
+              snapshotAt
+              positionValue
+              positionValueInUsd
+            }
+            closeSnapshot {
+              targetBalanceAmount
+              quoteBalanceAmount
+              gasBalanceAmount
+              snapshotAt
+              positionValue
+              positionValueInUsd
+            }
+            performance {
+              roi
+              pnl
+              roiUsd
+              pnlUsd
+            }
+            fees {
+              targetAmount
+              quoteAmount
+            }
+            positionSettlement {
+              reason
+              metadata
+            }
+            clmmState {
+              tickLower
+              tickUpper
+            }
+            dlmmState {
+              minBinId
+              maxBinId
+            }
+          }
+          associatedLiquidityPool {
+            id
+            createdAt
+            updatedAt
+            displayId
+            dex
+            poolAddress
+            tokenA
+            tokenB
+            fee
+            chainId
+            type
+            isActive
+            metadata
+            url
+            wsIdleTimeoutMs
+            staleMs
+            clmmState {
+              tickSpacing
+              tickMultiplier
+            }
+            dlmmState {
+              binStep
+              binOffset
+              basisPointMax
+            }
+            analytics {
+              apr24H
+              fees24H
+              liquidity
+              tvl
+              volume24H
+            }
+          }
+        }
         performance24h {
           roi
           pnl
@@ -44,9 +141,16 @@ const queryMap: Record<QueryBotV2, DocumentNode> = {
     [QueryBotV2.Query1]: query1,
 }
 
+export interface BotV2AssociateOptions {
+  activePosition?: {
+    liquidityPool?: boolean;
+    position?: boolean;
+  }
+}
 
 export interface QueryBotV2Request {
     id: string;
+    associate?: BotV2AssociateOptions;
 }
 
 export type QueryBotV2Params = QueryParams<QueryBotV2, QueryBotV2Request>;

@@ -22,6 +22,12 @@ export const useQueryBotV2SwrCore = () => {
                 token: accessToken,
                 request: {
                     id: botId,
+                    associate: {
+                        activePosition: {
+                            liquidityPool: true,
+                            position: true,
+                        },
+                    },
                 },
             })
             const bot = data.data?.botV2

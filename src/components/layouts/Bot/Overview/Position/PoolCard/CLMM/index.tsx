@@ -1,5 +1,5 @@
-import { LiquidityPoolSchema, TokenId } from "@/modules/types"
-import { useAppSelector } from "@/redux"
+import { LiquidityPoolSchema } from "@/modules/types"
+import { DynamicClmmLiquidityPoolInfoCacheResult, useAppSelector } from "@/redux"
 import React, { useMemo } from "react"
 import { roundNumber, tickIndexToPrice } from "@/modules/utils"
 import { LiquidityChart } from "@/components/reuseable/charts"
@@ -30,14 +30,17 @@ export const CLMM = ({ liquidityPool }: CLMMProps) => {
     )
     const activePosition = useAppSelector((state) => state.bot.bot?.activePosition)
     const tickLower = useMemo(() => {
-        return activePosition?.tickLower
+        return activePosition?.associatedPosition?.clmmState?.tickLower
     }, [activePosition])
     const tickUpper = useMemo(() => {
-        return activePosition?.tickUpper
+        return activePosition?.associatedPosition?.clmmState?.tickUpper
     }, [activePosition])
+    const dynamicLiquidityPoolInfos = useAppSelector((state) => state.socket.dynamicLiquidityPoolInfos)
     const tickCurrent = useMemo(() => {
-        return liquidityPool?.dynamicInfo?.tickCurrent
-    }, [liquidityPool?.dynamicInfo?.tickCurrent])
+        const dynamicLiquidityPoolInfo = dynamicLiquidityPoolInfos
+        [activePosition?.liquidityPool ?? ""] as DynamicClmmLiquidityPoolInfoCacheResult
+        return dynamicLiquidityPoolInfo?.tickCurrent.toNumber()
+    }, [activePosition, dynamicLiquidityPoolInfos])
     const tickLowerPrice = useMemo(() => {
         return tickIndexToPrice(tickLower ?? 0, tokenA?.decimals ?? 0, tokenB?.decimals ?? 0)
     }, [tickLower, tokenA?.decimals, tokenB?.decimals])
@@ -50,13 +53,13 @@ export const CLMM = ({ liquidityPool }: CLMMProps) => {
     const isInRange = useMemo(() => {
         return currentPrice.gte(tickLowerPrice) && currentPrice.lte(tickUpperPrice)
     }, [currentPrice, tickLowerPrice, tickUpperPrice])
-    const tokenPrices = useAppSelector((state) => state.socket.tokenPrices)
+    const tokenPrices = useAppSelector((state) => state.socket.prices)
     const tokenPriceA = useMemo(() => {
-        return tokenPrices[tokenA?.displayId || TokenId.SolUsdc] ?? 0
-    }, [tokenPrices, tokenA?.displayId])
+        return tokenPrices[tokenA?.id ?? ""] ?? 0
+    }, [tokenPrices, tokenA?.id])
     const tokenPriceB = useMemo(() => {
-        return tokenPrices[tokenB?.displayId || TokenId.SolUsdc] ?? 0
-    }, [tokenPrices, tokenB?.displayId])
+        return tokenPrices[tokenB?.id ?? ""] ?? 0
+    }, [tokenPrices, tokenB?.id])
     const queryFeesV2Swr = useQueryFeesV2Swr()
     const tokenAFees = useMemo(() => {
         return new Decimal(queryFeesV2Swr?.data?.data?.feesV2.data?.tokenA ?? 0)
@@ -75,8 +78,8 @@ export const CLMM = ({ liquidityPool }: CLMMProps) => {
         return new Decimal(queryReservesV2Swr?.data?.data?.reservesV2.data?.tokenB ?? 0)
     }, [queryReservesV2Swr?.data?.data?.reservesV2.data?.tokenB])
     const totalReservesInUsd = useMemo(() => {
-        return tokenAReserves.mul(tokenPriceA).add(tokenBReserves.mul(tokenPriceB))
-    }, [tokenAReserves, tokenBReserves, tokenPriceA, tokenPriceB])
+        return tokenAReserves.mul(new Decimal(tokenPriceA.price ?? 0)).add(tokenBReserves.mul(new Decimal(tokenPriceB.price ?? 0)))
+    }, [tokenAReserves, tokenBReserves, tokenPriceA.price, tokenPriceB.price])
     const isLoading = useMemo(() => {
         return queryliquidityPoolsActivePositionSwr.isLoading || !liquidityPool
     }, [queryliquidityPoolsActivePositionSwr.isLoading, liquidityPool])

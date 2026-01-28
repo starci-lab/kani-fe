@@ -4,15 +4,12 @@ import { LiquidityPoolClmmStateSchema } from "./liquidity-pool-clmm-state"
 import { LiquidityPoolDlmmStateSchema } from "./liquidity-pool-dlmm-state"
 import { AbstractSchema } from "./abstract"
 
-export interface GraphQLDynamicLiquidityPoolInfo {
-    tickCurrent?: number
-    activeId?: number
-    liquidity?: string
-    price?: number
-    volume24H?: number
-    fees24H?: number
-    apr24H?: number
-    tvl?: string
+export interface GraphQLLiquidityPoolAnalytics {
+    volume24H: string
+    fees24H: string
+    apr24H: string
+    tvl: string
+    liquidity: string
 }
 
 export interface LiquidityPoolSchema extends AbstractSchema {
@@ -29,7 +26,7 @@ export interface LiquidityPoolSchema extends AbstractSchema {
     clmmState?: LiquidityPoolClmmStateSchema
     dlmmState?: LiquidityPoolDlmmStateSchema
     url: string
-    dynamicInfo?: GraphQLDynamicLiquidityPoolInfo
+    analytics?: GraphQLLiquidityPoolAnalytics
     wsIdleTimeoutMs?: number
     staleMs: number
 }
