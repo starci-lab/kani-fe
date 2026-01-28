@@ -2,12 +2,16 @@ import { useRef, useEffect } from "react"
 import { createManager } from "./utils"
 import EventEmitter2 from "eventemitter2"
 import { 
-    PublicationDynamicLiquidityPoolsInfoEventPayload, 
-    PublicationEvent, 
-    SubscribeDynamicLiquidityPoolsInfoEventPayload, 
-    SubscriptionEvent
+    PublicationDynamicLiquidityPoolsInfoEventPayload,
+    PublicationEvent,  
+    SubscriptionEvent,
+    WsResponse
 } from "./config"
 import { usePrivy } from "@privy-io/react-auth"
+import { superjson } from "@/modules/superjson"
+import { InternalSocketIoEvent } from "./events"
+import { PublicationDynamicLiquidityPoolInfo, setDynamicLiquidityPoolInfos } from "@/redux"
+import { useAppDispatch } from "@/redux"
 
 // declare core socket io event emitter
 export const dynamicLiquidityPoolInfoSocketIoEventEmitter = new EventEmitter2()
@@ -15,30 +19,36 @@ export const dynamicLiquidityPoolInfoSocketIoEventEmitter = new EventEmitter2()
 export const useDynamicLiquidityPoolInfoSocketIo = () => {
     // create socket io client
     const socketRef = useRef(createManager().socket("/dynamic-liquidity-pool-info"))
-
+    const dispatch = useAppDispatch()
     // on socket io connect
     useEffect(() => {
         const socket = socketRef.current
         // on connect
         socket.on(
             SubscriptionEvent.DynamicLiquidityPoolsInfo, 
-            (payload: SubscribeDynamicLiquidityPoolsInfoEventPayload) => {
-                console.log(payload)
-            }
-        )
-        socket.on(
-            PublicationEvent.DynamicLiquidityPoolsInfo, 
-            (payload: PublicationDynamicLiquidityPoolsInfoEventPayload) => {
-                console.log(payload)
+            (payload: WsResponse) => {
+                if (payload.success) {
+                    console.log(`[Dynamic Liquidity Pool Info Socket] ${payload.message}`)
+                } else {
+                    console.error(`[Dynamic Liquidity Pool Info Socket] ${payload.error}`)
+                }
             }
         )
         // on dynamic data updated
         socket.on(
             PublicationEvent.DynamicLiquidityPoolsInfo, 
             (
-                payload: PublicationDynamicLiquidityPoolsInfoEventPayload
+                payload: WsResponse
             ) => {
-                console.log(payload)
+                if (!payload.success) {
+                    return
+                }
+                const { results } = superjson.parse<PublicationDynamicLiquidityPoolsInfoEventPayload>(payload.data)
+                dynamicLiquidityPoolInfoSocketIoEventEmitter
+                    .emit(
+                        InternalSocketIoEvent.DynamicLiquidityPoolInfoUpdated, 
+                        results
+                    )
             }
         )
         socket.on(
@@ -66,6 +76,8 @@ export const useDynamicLiquidityPoolInfoSocketIo = () => {
             socket.off("connect")
             socket.off("disconnect")
             socket.off("connect_error")
+            socket.off(SubscriptionEvent.DynamicLiquidityPoolsInfo)
+            socket.off(PublicationEvent.DynamicLiquidityPoolsInfo)
         }
     }, [])
 
@@ -77,7 +89,6 @@ export const useDynamicLiquidityPoolInfoSocketIo = () => {
         }
         const handleEffect = async () => {
             const accessToken = await getAccessToken()
-            console.log("accessToken", accessToken)
             if (!accessToken) {
                 return
             }
@@ -90,5 +101,23 @@ export const useDynamicLiquidityPoolInfoSocketIo = () => {
         }
         handleEffect()
     }, [authenticated, getAccessToken])
+
+    useEffect(() => {
+        const handleEvent = async (
+            results: Record<string, PublicationDynamicLiquidityPoolInfo>
+        ) => {
+            dispatch(setDynamicLiquidityPoolInfos(results))
+        }
+        dynamicLiquidityPoolInfoSocketIoEventEmitter.on(
+            InternalSocketIoEvent.DynamicLiquidityPoolInfoUpdated, 
+            handleEvent
+        )
+        return () => {
+            dynamicLiquidityPoolInfoSocketIoEventEmitter.off(
+                InternalSocketIoEvent.DynamicLiquidityPoolInfoUpdated, 
+                handleEvent
+            )
+        }
+    }, [dispatch])
     return socketRef.current
 }

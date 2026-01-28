@@ -1,4 +1,4 @@
-import superjson from "../superjson"
+import { superjson } from "../superjson"
 export * from "./local"
 
 export enum LocalStorageKey {

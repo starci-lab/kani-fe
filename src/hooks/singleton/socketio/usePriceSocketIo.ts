@@ -5,9 +5,13 @@ import {
     PublicationPriceEventPayload, 
     PublicationEvent, 
     SubscribePricesEventPayload, 
-    SubscriptionEvent 
+    SubscriptionEvent, 
+    WsResponse
 } from "./config"
 import { usePrivy } from "@privy-io/react-auth"
+import { setPrices, useAppDispatch } from "@/redux"
+import { superjson } from "@/modules/superjson"
+import { InternalSocketIoEvent } from "./events"
 
 // declare pyth socket io event emitter
 export const priceSocketIoEventEmitter = new EventEmitter2()
@@ -15,7 +19,7 @@ export const priceSocketIoEventEmitter = new EventEmitter2()
 export const usePriceSocketIo = () => {
     // create socket io client
     const socketRef = useRef(createManager().socket("/price"))
-
+    const dispatch = useAppDispatch()
     // on socket io connect
     useEffect(() => {
         const socket = socketRef.current
@@ -28,9 +32,15 @@ export const usePriceSocketIo = () => {
         })
         // on pyth prices updated
         socket.on(
-            PublicationEvent.Price, (data: PublicationPriceEventPayload) => {
-                console.log(data)
-                priceSocketIoEventEmitter.emit(PublicationEvent.Price, data)
+            PublicationEvent.Price, (payload: WsResponse) => {
+                if (!payload.success) {
+                    return
+                }
+                const { results } = superjson.parse<PublicationPriceEventPayload>(payload.data)
+                priceSocketIoEventEmitter.emit(
+                    InternalSocketIoEvent.PriceUpdated, 
+                    results
+                )
             })
         socket.on(
             SubscriptionEvent.Price, (data: SubscribePricesEventPayload) => {
@@ -71,6 +81,21 @@ export const usePriceSocketIo = () => {
         }
         handleEffect()
     }, [authenticated, getAccessToken])
-    
+
+    useEffect(() => {
+        const handleEvent = async (
+            payload: WsResponse
+        ) => {
+            if (!payload.success) {
+                return
+            }
+            const { results } = superjson.parse<PublicationPriceEventPayload>(payload.data)
+            dispatch(setPrices(results))
+        }
+        priceSocketIoEventEmitter.on(PublicationEvent.Price, handleEvent)
+        return () => {
+            priceSocketIoEventEmitter.off(PublicationEvent.Price, handleEvent)
+        }
+    }, [dispatch])
     return socketRef.current
 }

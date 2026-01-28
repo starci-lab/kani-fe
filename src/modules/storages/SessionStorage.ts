@@ -1,4 +1,4 @@
-import superjson from "../superjson"
+import { superjson } from "../superjson"
 
 // session storage interface to manage session storage
 export class SessionStorage {

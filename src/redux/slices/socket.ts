@@ -1,64 +1,118 @@
-import { LiquidityPoolId, LiquidityPoolSchema, TokenId, TokenSchema } from "@/modules/types"
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 import BN from "bn.js"
+import { Dayjs } from "dayjs"
 
-export interface FetchedPool {
-    poolAddress: string
-    displayId: LiquidityPoolId
-    currentTick: number
-    currentSqrtPrice: BN
-    tickSpacing: number
-    liquidityPool: LiquidityPoolSchema
-    token0: TokenSchema
-    token1: TokenSchema
-    liquidity: BN
-    fee: number
-    rewardTokens: Array<TokenSchema>
+export interface SnapshotCacheResult {
+    snapshotAt: Dayjs
 }
 
+export interface DynamicClmmRewardInfo {
+    tokenAddress: string
+    emissionPerSecond: BN
+    growthGlobal: BN
+    vaultAddress?: string
+}
+
+export interface DynamicClmmLiquidityPoolInfoCacheResult extends SnapshotCacheResult {
+    tickCurrent: BN
+    liquidity: BN
+    sqrtPriceX64: BN
+    rewards: Array<DynamicClmmRewardInfo>
+    feeGrowthGlobalA: BN
+    feeGrowthGlobalB: BN
+}
+
+export interface DynamicDlmmRewardInfo {
+    tokenAddress: string
+    vault: string
+    funder: string
+    rewardDuration: BN
+    rewardDurationEnd: BN
+    rewardRate: BN
+    lastUpdateTime: BN
+    cumulativeSecondsWithEmptyLiquidityReward: BN
+}
+
+export interface DynamicDlmmLiquidityPoolInfoCacheResult extends SnapshotCacheResult {
+    activeId: BN
+    rewards: Array<DynamicDlmmRewardInfo>
+}
+
+export type DynamicLiquidityPoolInfoCacheResult = DynamicClmmLiquidityPoolInfoCacheResult | DynamicDlmmLiquidityPoolInfoCacheResult
+
+export type PublicationDynamicLiquidityPoolInfo = DynamicLiquidityPoolInfoCacheResult
+
+export interface PublicationDynamicLiquidityPoolsInfoEventPayload {
+    results: Record<string, PublicationDynamicLiquidityPoolInfo>
+}
+
+export interface PublicationPrice {
+    price: number
+}
+
+export interface PublicationPriceEventPayload {
+    results: Record<string, PublicationPrice>
+}
+
+export interface SubscribeDynamicLiquidityPoolsInfoEventPayload {
+    ids: Array<string>
+}
+
+export interface SubscribePricesEventPayload {
+    ids: Array<string>
+}
+
+export interface PublicationPrice {
+    price: number
+}
+
+export interface PublicationPriceEventPayload {
+    results: Record<string, PublicationPrice>
+}
+
+
 export interface SocketSlice {
-    tokenPrices: Partial<Record<TokenId, number>>
-    liquidityPools: Partial<Record<LiquidityPoolId, FetchedPool>>
+    dynamicLiquidityPoolInfos: Record<string, DynamicLiquidityPoolInfoCacheResult>
+    prices: Record<string, PublicationPrice>
 }
 
 const initialState: SocketSlice = {
-    tokenPrices: {},
-    liquidityPools: {},
+    dynamicLiquidityPoolInfos: {},
+    prices: {},
 }
 
 export const socketSlice = createSlice({
     name: "socket",
     initialState,
     reducers: {
-        setTokenPrices: (state, action: PayloadAction<Record<TokenId, number>>) => {
-            state.tokenPrices = action.payload
+        setDynamicLiquidityPoolInfos: (state, action: PayloadAction<Record<string, DynamicLiquidityPoolInfoCacheResult>>) => {
+            state.dynamicLiquidityPoolInfos = action.payload
         },
-        setTokenPrice: (state, action: PayloadAction<SetTokenPricePayload>) => {
-            state.tokenPrices[action.payload.tokenId] = action.payload.price
+        setPrices: (state, action: PayloadAction<Record<string, PublicationPrice>>) => {
+            state.prices = action.payload
         },
-        setSocketLiquidityPools: (state, action: PayloadAction<Record<LiquidityPoolId, FetchedPool>>) => {
-            state.liquidityPools = action.payload
+        setDynamicLiquidityPoolInfo: (state, action: PayloadAction<SetDynamicLiquidityPoolInfoPayload>) => {
+            state.dynamicLiquidityPoolInfos[action.payload.id] = action.payload.dynamicLiquidityPoolInfo
         },
-        setSocketLiquidityPool: (state, action: PayloadAction<SetLiquidityPoolPayload>) => {
-            state.liquidityPools[action.payload.liquidityPoolId] = action.payload.fetchedPool
+        setPrice: (state, action: PayloadAction<SetPricePayload>) => {
+            state.prices[action.payload.id] = action.payload.price
         },
     },
 })
-
-export interface SetTokenPricePayload {
-    tokenId: TokenId
-    price: number
-}
-
-export interface SetLiquidityPoolPayload {
-    liquidityPoolId: LiquidityPoolId
-    fetchedPool: FetchedPool
-}
-
 export const socketReducer = socketSlice.reducer
 export const { 
-    setTokenPrices, 
-    setTokenPrice, 
-    setSocketLiquidityPools, 
-    setSocketLiquidityPool 
+    setDynamicLiquidityPoolInfos, 
+    setPrices, 
+    setDynamicLiquidityPoolInfo, 
+    setPrice,
 } = socketSlice.actions
+
+export interface SetDynamicLiquidityPoolInfoPayload {
+    id: string
+    dynamicLiquidityPoolInfo: DynamicLiquidityPoolInfoCacheResult
+}
+
+export interface SetPricePayload {
+    id: string
+    price: PublicationPrice
+}
