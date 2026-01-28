@@ -1,11 +1,10 @@
 import { CookieKey, LocalStorageKey, removeCookie, removeLocalStorageItem } from "@/modules/storages"
-import { LiquidityProvisionBotSchema, UserSchema } from "@/modules/types"
+import { UserSchema } from "@/modules/types"
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 
 export interface SessionSlice {
     user?: UserSchema
     accessToken?: string
-    liquidityProvisionBot?: LiquidityProvisionBotSchema
 }
 
 const initialState: SessionSlice = {
@@ -22,9 +21,6 @@ export const sessionSlice = createSlice({
         setAccessToken: (state, action: PayloadAction<string>) => {
             state.accessToken = action.payload
         },
-        setLiquidityProvisionBot: (state, action: PayloadAction<LiquidityProvisionBotSchema>) => {
-            state.liquidityProvisionBot = action.payload
-        },
         signOut: (state) => {
             // remove all data from session
             removeLocalStorageItem(LocalStorageKey.AccessToken)
@@ -34,11 +30,9 @@ export const sessionSlice = createSlice({
             state.user = undefined
             // remove the access token from state
             state.accessToken = undefined
-            // remove the liquidity provision bot from state
-            state.liquidityProvisionBot = undefined
         },
     },
 })
 
 export const sessionReducer = sessionSlice.reducer
-export const { setUser, setAccessToken, setLiquidityProvisionBot, signOut } = sessionSlice.actions
+export const { setUser, setAccessToken, signOut } = sessionSlice.actions

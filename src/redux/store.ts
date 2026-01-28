@@ -2,10 +2,8 @@ import { combineReducers, configureStore } from "@reduxjs/toolkit"
 import { 
     chainReducer, 
     apiReducer, 
-    sessionReducer, 
     staticReducer, 
     socketReducer,
-    rpcReducer,
     routesReducer,
     signInModalReducer,
     exportPrivateKeyReducer,
@@ -13,6 +11,7 @@ import {
     botReducer,
     verifyModalReducer,
     depositModalReducer,
+    sessionReducer,
     createBotReducer,
 } from "./slices"
 
@@ -20,12 +19,11 @@ export const store = configureStore({
     reducer: {
         chain: chainReducer,
         api: apiReducer,
-        session: sessionReducer,
         static: staticReducer,
         socket: socketReducer,
-        rpc: rpcReducer,
         routes: routesReducer,
         bot: botReducer,
+        session: sessionReducer,
         createBot: createBotReducer,
         modals: combineReducers({
             deposit: depositModalReducer,

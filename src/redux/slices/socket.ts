@@ -74,11 +74,15 @@ export interface PublicationPriceEventPayload {
 export interface SocketSlice {
     dynamicLiquidityPoolInfos: Record<string, DynamicLiquidityPoolInfoCacheResult>
     prices: Record<string, PublicationPrice>
+    liquidityPoolIds: Array<string>
+    tokenIds: Array<string>
 }
 
 const initialState: SocketSlice = {
     dynamicLiquidityPoolInfos: {},
     prices: {},
+    liquidityPoolIds: [],
+    tokenIds: [],
 }
 
 export const socketSlice = createSlice({
@@ -97,6 +101,24 @@ export const socketSlice = createSlice({
         setPrice: (state, action: PayloadAction<SetPricePayload>) => {
             state.prices[action.payload.id] = action.payload.price
         },
+        setSocketLiquidityPoolIds: (state, action: PayloadAction<Array<string>>) => {
+            state.liquidityPoolIds = action.payload
+        },
+        setSocketTokenIds: (state, action: PayloadAction<Array<string>>) => {
+            state.tokenIds = action.payload
+        },
+        addSocketLiquidityPoolId: (state, action: PayloadAction<string>) => {
+            state.liquidityPoolIds.push(action.payload)
+        },
+        addSocketTokenId: (state, action: PayloadAction<string>) => {
+            state.tokenIds.push(action.payload)
+        },
+        removeSocketLiquidityPoolId: (state, action: PayloadAction<string>) => {
+            state.liquidityPoolIds = state.liquidityPoolIds.filter(id => id !== action.payload)
+        },
+        removeSocketTokenId: (state, action: PayloadAction<string>) => {
+            state.tokenIds = state.tokenIds.filter(id => id !== action.payload)
+        },
     },
 })
 export const socketReducer = socketSlice.reducer
@@ -105,6 +127,12 @@ export const {
     setPrices, 
     setDynamicLiquidityPoolInfo, 
     setPrice,
+    setSocketLiquidityPoolIds,
+    setSocketTokenIds,
+    addSocketLiquidityPoolId,
+    addSocketTokenId,
+    removeSocketLiquidityPoolId,
+    removeSocketTokenId,
 } = socketSlice.actions
 
 export interface SetDynamicLiquidityPoolInfoPayload {

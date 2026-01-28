@@ -1,7 +1,6 @@
 import { getLocalStorageItem, LocalStorageKey } from "@/modules/storages"
 import { useEffect } from "react"
-import { useAppDispatch } from "@/redux"
-import { setAccessToken } from "@/redux/slices"
+import { useAppDispatch, setAccessToken } from "@/redux"
 
 export const useAuth = () => {
     const dispatch = useAppDispatch()

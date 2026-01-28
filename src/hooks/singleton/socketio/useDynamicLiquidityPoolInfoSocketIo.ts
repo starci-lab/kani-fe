@@ -11,7 +11,7 @@ import { usePrivy } from "@privy-io/react-auth"
 import { superjson } from "@/modules/superjson"
 import { InternalSocketIoEvent } from "./events"
 import { PublicationDynamicLiquidityPoolInfo, setDynamicLiquidityPoolInfos } from "@/redux"
-import { useAppDispatch } from "@/redux"
+import { useAppDispatch, useAppSelector } from "@/redux"
 
 // declare core socket io event emitter
 export const dynamicLiquidityPoolInfoSocketIoEventEmitter = new EventEmitter2()
@@ -20,6 +20,7 @@ export const useDynamicLiquidityPoolInfoSocketIo = () => {
     // create socket io client
     const socketRef = useRef(createManager().socket("/dynamic-liquidity-pool-info"))
     const dispatch = useAppDispatch()
+    const liquidityPoolIds = useAppSelector(state => state.socket.liquidityPoolIds)
     // on socket io connect
     useEffect(() => {
         const socket = socketRef.current
@@ -54,11 +55,6 @@ export const useDynamicLiquidityPoolInfoSocketIo = () => {
         socket.on(
             "connect", () => {
                 console.log(`[Dynamic Liquidity Pool Info Socket] Connected — ID: ${socket.id}`)
-                socket.emit(
-                    SubscriptionEvent.DynamicLiquidityPoolsInfo, {
-                        ids: ["c26f0fad66ee1e7aa802392d"],
-                    }
-                )
             }
         )
         // on disconnect
@@ -80,6 +76,19 @@ export const useDynamicLiquidityPoolInfoSocketIo = () => {
             socket.off(PublicationEvent.DynamicLiquidityPoolsInfo)
         }
     }, [])
+
+    useEffect(() => {
+        const socket = socketRef.current
+        if (!liquidityPoolIds.length) {
+            return
+        }
+        socket.emit(
+            SubscriptionEvent.DynamicLiquidityPoolsInfo, 
+            {
+                ids: liquidityPoolIds,
+            }
+        )
+    }, [liquidityPoolIds])
 
     const { authenticated, getAccessToken } = usePrivy()
     // if access token is present, connect to socket io
