@@ -8,6 +8,7 @@ const query1 = gql`
             data {
               feeA
               feeB
+              rewards
             }
             error
             message
