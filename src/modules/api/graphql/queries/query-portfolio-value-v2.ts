@@ -1,4 +1,4 @@
-import { createNoCacheCredentialAuthClientWithToken } from "../clients"
+import { createApolloClient } from "../clients"
 import { GraphQLResponse, QueryParams } from "../types"
 import { DocumentNode, gql } from "@apollo/client"
 import { BalanceEvalStatus } from "@/modules/types"
@@ -64,7 +64,7 @@ export const queryPortfolioValueV2 = async (
     if (!token) {
         throw new Error("Token is required")
     }
-    return await createNoCacheCredentialAuthClientWithToken(token).query<{
+    return await createApolloClient({ token, withCredentials: true }).query<{
         portfolioValueV2: GraphQLResponse<PortfolioValueV2Response>;
     }>({
         query: queryDocument,

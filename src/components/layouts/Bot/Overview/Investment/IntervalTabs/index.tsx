@@ -1,6 +1,6 @@
 import React from "react"
 import { KaniTab, KaniTabs } from "../../../../../atomic"
-import { ChartInterval } from "@/modules"
+import { ChartInterval } from "@/modules/api"
 
 export interface IntervalTab {
     key: ChartInterval

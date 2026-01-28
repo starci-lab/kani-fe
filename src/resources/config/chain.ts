@@ -1,7 +1,7 @@
-import { iconAssetConfig } from "@/assets"
-import { ChainId } from "../types"
+import { iconAssetConfig } from "@/resources/assets"
+import { ChainId } from "../../modules/types"
 
-export interface ChainMetadata {
+export interface ChainConfig {
     name: string
     iconUrl: string
     description: string
@@ -12,7 +12,7 @@ export const supportedChains = (): Array<ChainId> => ([
     ChainId.Sui,
 ])
 
-export const getChainMetadata = (chainId: ChainId): ChainMetadata => {
+export const getChainConfig = (chainId: ChainId): ChainConfig => {
     switch (chainId) {
     case ChainId.Solana:
         return {

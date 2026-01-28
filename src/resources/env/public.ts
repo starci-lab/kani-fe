@@ -15,5 +15,19 @@ export const publicEnv = () => {
             initialRetryDelay: Number(process.env.NEXT_PUBLIC_GRAPHQL_INITIAL_RETRY_DELAY || 300),
             timeout: Number(process.env.NEXT_PUBLIC_GRAPHQL_TIMEOUT || 300000),
         },
+        computation: {
+            amount: {
+                fractionDigits: Number(process.env.NEXT_PUBLIC_COMPUTATION_AMOUNT_FRACTION_DIGITS || 10),
+            },
+            operation: {
+                fractionDigits: Number(process.env.NEXT_PUBLIC_COMPUTATION_OPERATION_FRACTION_DIGITS || 10),
+            },
+            round: {
+                fractionDigits: Number(process.env.NEXT_PUBLIC_COMPUTATION_ROUND_FRACTION_DIGITS || 5),
+            },
+            percentage: {
+                fractionDigits: Number(process.env.NEXT_PUBLIC_COMPUTATION_PERCENTAGE_FRACTION_DIGITS || 5),
+            },
+        },
     }
 }

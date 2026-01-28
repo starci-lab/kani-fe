@@ -1,7 +1,7 @@
 import { LiquidityPoolSchema } from "@/modules/types"
 import { DynamicClmmLiquidityPoolInfoCacheResult, useAppSelector } from "@/redux"
 import React, { useMemo } from "react"
-import { roundNumber, tickIndexToPrice } from "@/modules/utils"
+import { round, tickIndexToPrice } from "@/modules/utils"
 import { LiquidityChart } from "@/components/reuseable/charts"
 import { KaniChip, KaniDivider, KaniSkeleton, KaniSpinner } from "@/components/atomic"
 import Decimal from "decimal.js"
@@ -89,16 +89,16 @@ export const CLMM = ({ liquidityPool }: CLMMProps) => {
                 <div>
                     <div className="grid place-items-center gap-3">
                         <div className="text-xs">
-                            Price: {roundNumber(currentPrice.toNumber())}
+                            Price: {round(currentPrice).toNumber()}
                         </div>
                         <LiquidityChart
-                            priceLower={tickLowerPrice.toNumber()}
-                            priceUpper={tickUpperPrice.toNumber()}
-                            currentPrice={currentPrice.toNumber()}
+                            priceLower={tickLowerPrice}
+                            priceUpper={tickUpperPrice}
+                            currentPrice={currentPrice}
                         />
                         <div className="flex items-center gap-2">
                             <div className="text-xs">
-                                {roundNumber(tickLowerPrice.toNumber())} - {roundNumber(tickUpperPrice.toNumber())} <span className="text-secondary">{tokenB?.symbol}</span> per <span className="text-secondary">{tokenA?.symbol}</span>
+                                {round(tickLowerPrice).toNumber()} - {round(tickUpperPrice).toNumber()} <span className="text-secondary">{tokenB?.symbol}</span> per <span className="text-secondary">{tokenA?.symbol}</span>
                             </div>
                             <KaniChip
                                 color={isInRange ? "success" : "danger"}

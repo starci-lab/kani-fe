@@ -1,7 +1,7 @@
 "use client"
 import React, { PropsWithChildren } from "react"
 import { PrivyProvider as Provider } from "@privy-io/react-auth"
-import { publicEnv } from "@/modules/env"
+import { publicEnv } from "@/resources/env"
 import { useTheme } from "next-themes"
 
 export const PrivyProvider = ({ children }: PropsWithChildren) => {

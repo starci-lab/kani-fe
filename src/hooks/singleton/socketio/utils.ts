@@ -1,4 +1,4 @@
-import { publicEnv } from "@/modules/env"
+import { publicEnv } from "@/resources/env"
 import { Manager } from "socket.io-client"
 
 export const createManager = () => {

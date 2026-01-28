@@ -1,5 +1,5 @@
 import { PositionSchema } from "@/modules/types"
-import { createNoCacheCredentialAuthClientWithToken } from "../clients"
+import { createApolloClient } from "../clients"
 import { GraphQLResponse, QueryParams } from "../types"
 import { DocumentNode, gql } from "@apollo/client"
 
@@ -71,7 +71,7 @@ export const queryPositionsV2 = async (
     }
     const queryDocument = queryMap[query]
     // use no cache credential to include http only cookies
-    return await createNoCacheCredentialAuthClientWithToken(token)
+    return await createApolloClient({ token, withCredentials: true })
         .query<{ 
             positionsV2: GraphQLResponse<QueryPositionsV2Response> 
         }>({

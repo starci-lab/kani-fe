@@ -11,12 +11,13 @@ import {
 import React from "react"
 import { LiquidityPoolSchema } from "@/modules/types"
 import { useAppSelector } from "@/redux"
-import { centerPad, computePercentage } from "@/modules/utils"
+import { truncateMiddle, computePercentage } from "@/modules/utils"
 import { cn, Spacer } from "@heroui/react"
 import numeral from "numeral"
 import { PoolTypeChip } from "../PoolTypeChip"
 import { TooltipTitle } from "../TooltipTitle"
 import { SealCheckIcon } from "@phosphor-icons/react"
+import Decimal from "decimal.js"
 
 export interface PoolCardProps {
     liquidityPool: LiquidityPoolSchema
@@ -80,7 +81,7 @@ export const PoolCard = ({ liquidityPool, className, isSelected, onPress }: Pool
                         </div>
                         <div className="flex items-center gap-1 justify-end">
                             <div className="text-sm">
-                                {computePercentage(liquidityPool.fee, 1, 5).toString()}%
+                                {computePercentage({ numerator: new Decimal(liquidityPool.fee), denominator: new Decimal(1) }).toString()}%
                             </div>
                         </div>
                     </div>
@@ -114,7 +115,7 @@ export const PoolCard = ({ liquidityPool, className, isSelected, onPress }: Pool
                             {liquidityPool.dynamicInfo?.apr24H
                                 ?
                                 <div className="text-sm">
-                                    {`${computePercentage(liquidityPool.dynamicInfo?.apr24H ?? 0, 1, 2).toString()}%`}
+                                    {`${computePercentage({ numerator: new Decimal(liquidityPool.dynamicInfo?.apr24H ?? 0), denominator: new Decimal(1) }).toString()}%`}
                                 </div>
                                 : <KaniSkeleton className="h-5 w-[50px] rounded-md" />}
                         </div>
@@ -130,7 +131,7 @@ export const PoolCard = ({ liquidityPool, className, isSelected, onPress }: Pool
                     showAnchorIcon={true}
                     href={liquidityPool.url ?? ""}
                 >
-                    {centerPad(liquidityPool.url ?? "", 18, 6)}
+                    {truncateMiddle({ str: liquidityPool.url ?? "" })}
                 </KaniLink>
             </KaniCardBody>
         </KaniCard>

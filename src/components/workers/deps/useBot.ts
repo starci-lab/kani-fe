@@ -1,4 +1,4 @@
-import { paths } from "@/modules/path"
+import { paths } from "@/resources/path"
 import { setBotId, setSocketLiquidityPoolIds, useAppDispatch, useAppSelector } from "@/redux"
 import { useParams, usePathname } from "next/navigation"
 import { useEffect, useLayoutEffect } from "react"

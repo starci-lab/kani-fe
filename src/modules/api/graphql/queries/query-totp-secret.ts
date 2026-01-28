@@ -1,4 +1,4 @@
-import { createNoCacheCredentialAuthClientWithToken } from "../clients"
+import { createApolloClient } from "../clients"
 import { GraphQLResponse, QueryParams } from "../types"
 import { DocumentNode, gql } from "@apollo/client"
 
@@ -39,7 +39,7 @@ export const queryTotpSecret = async (
     }
     const queryDocument = queryMap[query]
     // use no cache credential to include http only cookies
-    return await createNoCacheCredentialAuthClientWithToken(token)
+    return await createApolloClient({ token })
         .query<{ totpSecret: GraphQLResponse<TotpSecretResponse> }>({
             query: queryDocument,
         })

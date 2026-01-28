@@ -6,7 +6,7 @@ import {
     KaniCardBody,
     KaniBadge,
 } from "@/components/atomic"
-import { centerPad } from "@/modules/utils"
+import { truncateMiddle } from "@/modules/utils"
 import { cn } from "@heroui/react"
 import { SnippetIcon } from "../SnippetIcon"
 import { SealCheckIcon } from "@phosphor-icons/react"
@@ -74,7 +74,7 @@ export const TokenCard = ({
                                         event.stopPropagation()
                                     }
                                 }>
-                                <div className="text-sm text-foreground-500">{centerPad(token.tokenAddress, 6, 4)}</div>
+                                <div className="text-sm text-foreground-500">{truncateMiddle({ str: token.tokenAddress ?? "" })}</div>
                                 <SnippetIcon copyString={token.tokenAddress ?? ""} classNames={{ checkIcon: "w-5 h-5 text-foreground-500", copyIcon: "w-5 h-5 text-foreground-500" }}/>
                             </div>
                         )}

@@ -1,8 +1,8 @@
 import React from "react"
 import { KaniButton, KaniImage, KaniLink } from "@/components/atomic"
 import { useRouter } from "next/navigation"
-import { paths } from "@/modules"
-import { iconAssetConfig } from "@/assets/icon"
+import { paths } from "@/resources/path"
+import { iconAssetConfig } from "@/resources/assets/icon"
 import { Spacer } from "@heroui/react"
 export const BotNotFound = () => {
     const router = useRouter()

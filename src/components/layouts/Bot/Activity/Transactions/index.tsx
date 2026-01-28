@@ -10,13 +10,13 @@ import {
     KaniTableRow
 } from "@/components/atomic"
 import { EmptyContent, SnippetIcon, TooltipTitle } from "@/components/reuseable"
-import { ExplorerId, ExplorerUrlType, getExplorerUrl } from "@/modules/blockchain"
+import { explorerUrl, ExplorerType } from "@/modules/blockchain"
 import { TransactionSchema, TransactionType } from "@/modules/types"
-import { centerPad } from "@/modules/utils"
+import { truncateMiddle } from "@/modules/utils"
 import { useAppDispatch, useAppSelector } from "@/redux"
 import { Spacer, Spinner } from "@heroui/react"
 import { ArrowSquareOutIcon } from "@phosphor-icons/react"
-import { dayjs } from "@/modules/utils"
+import { dayjs } from "@/modules/dayjs"
 import React, { useCallback } from "react"
 import { useQueryTransactionsV2Swr } from "@/hooks/singleton"
 import { setTransactionsPages } from "@/redux"
@@ -55,14 +55,13 @@ export const Transactions = () => {
         }
         }
     }
-    const explorerUrl = useCallback(
-        (transaction: TransactionSchema) => getExplorerUrl({
+    const url = useCallback(
+        (transaction: TransactionSchema) => explorerUrl({
             chainId: transaction.chainId,
             value: transaction.txHash,
-            type: ExplorerUrlType.Transaction,
-            explorerId: ExplorerId.Solscan,
-        }), []
-    )
+            type: ExplorerType.Transaction,
+        }), [])
+
     const queryTransactionsV2Swr = useQueryTransactionsV2Swr()
     const transactionsPages = useAppSelector((state) => state.bot.transactionsPages)
     return (
@@ -117,7 +116,7 @@ export const Transactions = () => {
                                 <KaniTableCell>{renderType(transaction.type)}</KaniTableCell>
                                 <KaniTableCell>
                                     <div className="flex items-center gap-2">
-                                        {centerPad(transaction.txHash, 10, 6)}
+                                        {truncateMiddle({ str: transaction.txHash })}
                                         <SnippetIcon
                                             copyString={transaction.txHash}
                                             classNames={{
@@ -128,7 +127,7 @@ export const Transactions = () => {
                                 </KaniTableCell>
                                 <KaniTableCell>{dayjs(transaction.timestamp).format("DD/MM/YYYY HH:mm:ss")}</KaniTableCell>
                                 <KaniTableCell>
-                                    <KaniLink color="secondary" onPress={() => window.open(explorerUrl(transaction), "_blank")}>
+                                    <KaniLink color="secondary" onPress={() => window.open(url(transaction), "_blank")}>
                                         <ArrowSquareOutIcon className="w-5 h-5 cursor-pointer" />
                                     </KaniLink>
                                 </KaniTableCell>

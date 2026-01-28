@@ -1,7 +1,7 @@
 import { queryHistoryV2, QueryHistoryV2Request, ChartInterval } from "@/modules/api"
 import { useAppDispatch, useAppSelector, setHistoryResponse } from "@/redux"
 import useSWR from "swr"
-import { dayjs } from "@/modules/utils"
+import { dayjs } from "@/modules/dayjs"
 import ms from "ms"
 import { usePrivy } from "@privy-io/react-auth"
 

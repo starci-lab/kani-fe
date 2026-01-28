@@ -6,7 +6,7 @@ import {
     ReferenceLine,
 } from "recharts"
 import React, { useMemo } from "react"
-import { roundNumber } from "@/modules/utils"
+import { round } from "@/modules/utils"
 import Decimal from "decimal.js"
 
 export enum PricePosition {
@@ -16,20 +16,24 @@ export enum PricePosition {
 }
 
 export interface LiquidityChartProps {
-    priceLower: number
-    priceUpper: number
-    currentPrice: number
+    priceLower: Decimal
+    priceUpper: Decimal
+    currentPrice: Decimal
 }
 
 export const LiquidityChart = ({ priceLower, priceUpper, currentPrice }: LiquidityChartProps) => {
     const data = useMemo(() => {
         return [
-            { name: roundNumber(priceLower), uv: 1 },
-            { name: roundNumber(priceUpper), uv: 1 },
+            { name: round(priceLower), uv: 1 },
+            { name: round(priceUpper), uv: 1 },
         ]
     }, [priceLower, priceUpper])
     const paddingRatio = 0.3
-    const computedCurrentPrice = computeCurrentPrice({ current: currentPrice, lower: priceLower, upper: priceUpper })
+    const computedCurrentPrice = computeCurrentPrice({ 
+        current: currentPrice, 
+        lower: priceLower, 
+        upper: priceUpper 
+    })
     const minX = Decimal.min(priceLower)
     const maxX = Decimal.max(priceUpper)
     const range = maxX.minus(minX).toNumber()
@@ -45,7 +49,7 @@ export const LiquidityChart = ({ priceLower, priceUpper, currentPrice }: Liquidi
         return PricePosition.InRange
     }, [currentPrice, priceLower, priceUpper])
     const isAboveHalf = useMemo(() => {
-        return currentPrice > (priceLower + priceUpper) / 2
+        return currentPrice.gt(priceLower.plus(priceUpper).div(2))
     }, [currentPrice, priceLower, priceUpper])
     return (
         <RechartsAreaChart
@@ -73,7 +77,7 @@ export const LiquidityChart = ({ priceLower, priceUpper, currentPrice }: Liquidi
             />
             {/* Lower */}
             <ReferenceLine
-                x={roundNumber(priceLower)}
+                x={round(priceLower).toNumber()}
                 stroke="hsl(var(--heroui-foreground-500))"
                 ifOverflow="extendDomain"
                 strokeDasharray="4 4"
@@ -109,14 +113,14 @@ export const LiquidityChart = ({ priceLower, priceUpper, currentPrice }: Liquidi
                             fill="hsl(var(--heroui-foreground-500))"
                             fontSize={12}
                         >
-                            {roundNumber(priceLower, 2)}
+                            {round(priceLower).toNumber()}
                         </text>
                     )
                 }}
             />
             {/* Upper */}
             <ReferenceLine
-                x={roundNumber(priceUpper)}
+                x={round(priceUpper).toNumber()}
                 stroke="hsl(var(--heroui-foreground-500))"
                 ifOverflow="extendDomain"
                 strokeDasharray="4 4"
@@ -150,7 +154,7 @@ export const LiquidityChart = ({ priceLower, priceUpper, currentPrice }: Liquidi
                             fill="hsl(var(--heroui-foreground-500))"
                             fontSize={12}
                         >
-                            {roundNumber(priceUpper, 2)}
+                            {round(priceUpper).toNumber()}
                         </text>
                     )
                 }}
@@ -161,7 +165,7 @@ export const LiquidityChart = ({ priceLower, priceUpper, currentPrice }: Liquidi
                 strokeDasharray="4 4"
             />
             <ReferenceLine
-                x={computedCurrentPrice}
+                x={computedCurrentPrice.toNumber()}
                 stroke="hsl(var(--heroui-primary))"
                 strokeWidth={2}
                 ifOverflow="extendDomain"
@@ -199,7 +203,7 @@ export const LiquidityChart = ({ priceLower, priceUpper, currentPrice }: Liquidi
                             fill="hsl(var(--heroui-foreground-500))"
                             fontSize={12}
                         >
-                            {roundNumber(currentPrice, 2)}
+                            {round(currentPrice).toNumber()}
                         </text>
                     )
                 }}
@@ -209,11 +213,11 @@ export const LiquidityChart = ({ priceLower, priceUpper, currentPrice }: Liquidi
 }
 
 export const computeCurrentPrice = (
-    { current, lower, upper, maxRatio = 0.1 }: CompressCurrentPriceProps
+    { current, lower, upper, maxRatio = new Decimal(0.1) }: CompressCurrentPriceProps
 ) => {
-    const cur = new Decimal(current)
-    const low = new Decimal(lower)
-    const up = new Decimal(upper)
+    const cur = current
+    const low = lower
+    const up = upper
 
     const space = up.minus(low)
     const boundary = space.mul(0.05)
@@ -228,7 +232,7 @@ export const computeCurrentPrice = (
         // ? = (price - low) / space
         // ? => price = (price - low) / space * (upWithBoundary - downWithBoundary) + downWithBoundary
         const newPrice = cur.minus(low).div(space).mul(upWithBoundary.minus(downWithBoundary)).plus(downWithBoundary)
-        return newPrice.toNumber()
+        return round(newPrice)
 
     }
     // diff >= 0
@@ -254,12 +258,12 @@ export const computeCurrentPrice = (
         ? low.minus(compressed).minus(boundary)
         : up.plus(compressed).plus(boundary)
 
-    return roundNumber(result.toNumber(), 2)
+    return round(result)
 }
 
 export interface CompressCurrentPriceProps {
-    current: number
-    lower: number
-    upper: number
-    maxRatio?: number
+    current: Decimal
+    lower: Decimal
+    upper: Decimal
+    maxRatio?: Decimal
 }

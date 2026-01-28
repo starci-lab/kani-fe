@@ -17,7 +17,7 @@ import { Spacer, Spinner } from "@heroui/react"
 import React from "react"
 import { useQueryPositionsV2Swr } from "@/hooks/singleton"
 import { setPositionsPages } from "@/redux"
-import { computePercentage, roundNumber } from "@/modules/utils"
+import { round, computePercentage } from "@/modules/utils"
 import { Performance } from "./Performance"
 import { EyeIcon } from "@phosphor-icons/react"
 
@@ -94,12 +94,12 @@ export const Positions = () => {
                             <KaniTableRow key={position.id} className="border-b border-divider last:border-b-0">
                                 <KaniTableCell>
                                     {(() => {
-                                        const tokenA = tokens.find((token) => token.id === position.associatedLiquidityPool.tokenA)
-                                        const tokenB = tokens.find((token) => token.id === position.associatedLiquidityPool.tokenB)
+                                        const tokenA = tokens.find((token) => token.id === position.associatedLiquidityPool?.tokenA)
+                                        const tokenB = tokens.find((token) => token.id === position.associatedLiquidityPool?.tokenB)
                                         const targetToken = tokenA?.id === bot?.targetToken ? tokenA : tokenB
                                         return (
                                             <div className="flex items-center gap-2">
-                                                {roundNumber(position.positionValueAtOpen, 5)} {targetToken?.symbol}
+                                                {round(position.positionValueAtOpen).toNumber()} {targetToken?.symbol}
                                             </div>
                                         )
                                     })()}

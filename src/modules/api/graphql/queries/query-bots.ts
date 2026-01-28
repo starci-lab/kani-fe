@@ -1,5 +1,5 @@
 import { BotSchema } from "@/modules/types"
-import { createNoCacheCredentialAuthClientWithToken } from "../clients"
+import { createApolloClient } from "../clients"
 import { GraphQLResponse, QueryParams } from "../types"
 import { DocumentNode, gql } from "@apollo/client"
 
@@ -18,7 +18,6 @@ const query1 = gql`
             name
             liquidityPools
             initialized
-            explorerId
             running
             targetToken
             quoteToken
@@ -72,7 +71,7 @@ export const queryBots = async ({
     }
     const queryDocument = queryMap[query]
     // use no cache credential to include http only cookies
-    return await createNoCacheCredentialAuthClientWithToken(token).query<{
+    return await createApolloClient({ token }).query<{
     bots: GraphQLResponse<QueryBotsResponse>;
   }>({
       query: queryDocument,

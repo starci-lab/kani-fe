@@ -1,4 +1,4 @@
-import { publicEnv } from "@/modules/env/public"
+import { publicEnv } from "@/resources/env/public"
 import { ApolloLink, Observable } from "@apollo/client"
 
 // Custom timeout link

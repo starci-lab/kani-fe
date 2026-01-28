@@ -2,7 +2,7 @@ import React from "react"
 import { KaniAvatar, KaniAvatarGroup, KaniCard, KaniCardBody, KaniChip, KaniImage } from "@/components/atomic"
 import { SnippetIcon, TooltipTitle } from "@/components/reuseable"
 import { UnitDropdown } from "../UnitDropdown"
-import { centerPad } from "@/modules/utils"
+import { truncateMiddle } from "@/modules/utils"
 import { BotCardBaseProps } from "../types"
 
 export type BotCardListProps = BotCardBaseProps
@@ -110,7 +110,7 @@ export const BotCardList = (props: BotCardListProps) => {
                         </div>
                         <div className="flex items-center gap-2">
                             <div className="text-sm text-foreground-500">
-                                {centerPad(accountAddress, 6, 4)}
+                                {truncateMiddle({ str: accountAddress ?? "" })}
                             </div>
                             <div 
                                 onPointerDown={(event) => event.stopPropagation()}

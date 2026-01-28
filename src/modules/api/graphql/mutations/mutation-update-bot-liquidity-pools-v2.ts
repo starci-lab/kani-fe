@@ -1,5 +1,5 @@
 import { DocumentNode, gql } from "@apollo/client"
-import { createNoCacheCredentialAuthClientWithToken } from "../clients"
+import { createApolloClient } from "../clients"
 import { GraphQLResponse, MutationParams } from "../types"
 
 const mutation1 = gql`
@@ -42,7 +42,7 @@ export const mutationUpdateBotLiquidityPoolsV2 = async ({
         throw new Error("Token is required")
     }
     // use no cache credential to include http only cookies
-    return await createNoCacheCredentialAuthClientWithToken(token)
+    return await createApolloClient(token)
         .mutate<{
             updateBotLiquidityPoolsV2: GraphQLResponse;
         }>(

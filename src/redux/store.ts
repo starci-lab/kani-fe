@@ -1,7 +1,6 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit"
 import { 
     chainReducer, 
-    apiReducer, 
     staticReducer, 
     socketReducer,
     routesReducer,
@@ -18,7 +17,6 @@ import {
 export const store = configureStore({
     reducer: {
         chain: chainReducer,
-        api: apiReducer,
         static: staticReducer,
         socket: socketReducer,
         routes: routesReducer,

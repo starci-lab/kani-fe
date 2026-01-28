@@ -1,4 +1,4 @@
-import { createNoCacheCredentialAuthClientWithHeaders } from "../clients"
+import { createApolloClient } from "../clients"
 import { GraphQLResponse, QueryParams } from "../types"
 import { DocumentNode, gql } from "@apollo/client"
 
@@ -46,7 +46,7 @@ export const queryExportedAccount = async (
     if (!headers) {
         throw new Error("Headers are required")
     }
-    return await createNoCacheCredentialAuthClientWithHeaders(headers).query<{
+    return await createApolloClient({ headers, withCredentials: true }).query<{
         exportedAccount: GraphQLResponse<ExportedAccountResponse>;
   }>({
       query: queryDocument,

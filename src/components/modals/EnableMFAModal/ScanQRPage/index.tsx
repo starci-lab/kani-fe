@@ -3,7 +3,7 @@ import { useQueryTotpSecretSwrMutation } from "@/hooks/singleton"
 import { KaniModalHeader, KaniModalBody, KaniLink, KaniSnippet, KaniButton, KaniModalFooter } from "../../../atomic"
 import { QRCode } from "../../../reuseable"
 import { Spacer } from "@heroui/react"
-import { centerPad } from "@/modules/utils"
+import { truncateMiddle } from "@/modules/utils"
 import { setEnableMFAPage, EnableMFAPage, useAppDispatch } from "@/redux"
 
 export const ScanQRPage = () => {
@@ -48,7 +48,7 @@ export const ScanQRPage = () => {
                             hideSymbol
                             codeString={queryTotpSecretMutation.data?.data?.totpSecret?.data?.totpSecret ?? ""}
                         >
-                            {centerPad(queryTotpSecretMutation.data?.data?.totpSecret?.data?.totpSecret ?? "", 6, 4)}
+                            {truncateMiddle({ str: queryTotpSecretMutation.data?.data?.totpSecret?.data?.totpSecret ?? "" })}
                         </KaniSnippet>
                     </div>
                 )}

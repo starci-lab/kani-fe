@@ -1,5 +1,3 @@
 export * from "./truncate"
-export * from "./math"
 export * from "./misc"
-export * from "./tick"
-export * from "./dayjs"
+export * from "./computations"

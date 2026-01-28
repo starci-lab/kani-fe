@@ -1,6 +1,6 @@
 import { useEffect } from "react"
 import { usePathname, useRouter } from "next/navigation"
-import { paths } from "@/modules/path"
+import { paths } from "@/resources/path"
 
 export const useRedirect = () => {
     const pathname = usePathname()

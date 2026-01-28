@@ -1,5 +1,5 @@
 import { UserSchema } from "@/modules/types"
-import { createNoCacheCredentialAuthClientWithToken } from "../clients"
+import { createApolloClient } from "../clients"
 import { GraphQLResponse, QueryParams } from "../types"
 import { DocumentNode, gql } from "@apollo/client"
 
@@ -37,7 +37,7 @@ export const queryUserV2 = async (
     }
     const queryDocument = queryMap[query]
     // use no cache credential to include http only cookies
-    return await createNoCacheCredentialAuthClientWithToken(token)
+    return await createApolloClient({ token, withCredentials: true })
         .query<{ userV2: GraphQLResponse<UserSchema> }>({
             query: queryDocument,
         })

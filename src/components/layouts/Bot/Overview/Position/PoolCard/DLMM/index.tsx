@@ -1,7 +1,7 @@
 import { LiquidityPoolSchema } from "@/modules/types"
 import { DynamicDlmmLiquidityPoolInfoCacheResult, useAppSelector } from "@/redux"
 import React, { useMemo } from "react"
-import { binIdToPrice, roundNumber } from "@/modules/utils"
+import { binIdToPrice, round } from "@/modules/utils"
 import { LiquidityChart } from "../../../../../../reuseable/charts"
 import { KaniChip, KaniDivider, KaniSkeleton, KaniSpinner } from "../../../../../../atomic"
 import Decimal from "decimal.js"
@@ -86,16 +86,16 @@ export const DLMM = (
                 <div>
             <div className="grid place-items-center gap-3">
                 <div className="text-xs">
-                    Price: {roundNumber(activeIdPrice.toNumber())}
+                    Price: {round(activeIdPrice).toNumber()}
                 </div>
                 <LiquidityChart
-                    priceLower={minBinIdPrice.toNumber()}
-                    priceUpper={maxBinIdPrice.toNumber()}
-                    currentPrice={activeIdPrice.toNumber()}
+                    priceLower={minBinIdPrice}
+                    priceUpper={maxBinIdPrice}
+                    currentPrice={activeIdPrice}
                 />
                 <div className="flex items-center gap-2">
                     <div className="text-xs">
-                        {roundNumber(minBinIdPrice.toNumber())} - {roundNumber(maxBinIdPrice.toNumber())} <span className="text-secondary">{tokenB?.symbol}</span> per <span className="text-secondary">{tokenA?.symbol}</span>
+                        {round(minBinIdPrice).toNumber()} - {round(maxBinIdPrice).toNumber()} <span className="text-secondary">{tokenB?.symbol}</span> per <span className="text-secondary">{tokenA?.symbol}</span>
                     </div>
                     <KaniChip
                         color={isInRange ? "success" : "danger"}

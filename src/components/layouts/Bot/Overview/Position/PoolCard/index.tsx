@@ -17,6 +17,7 @@ import { CLMM } from "./CLMM"
 import { DLMM } from "./DLMM"
 import numeral from "numeral"
 import { useQueryBotV2Swr } from "@/hooks/singleton"
+import Decimal from "decimal.js"
 
 export const PoolCard = (
 ) => {
@@ -89,7 +90,7 @@ export const PoolCard = (
                                 </div>
                                 <div className="flex items-center gap-1 justify-end">
                                     <div className="text-sm">
-                                        {computePercentage(activePosition?.associatedLiquidityPool?.fee ?? 0, 1, 5).toString()}%
+                                        {computePercentage({ numerator: new Decimal(activePosition?.associatedLiquidityPool?.fee ?? 0), denominator: new Decimal(1) }).toString()}%
                                     </div>
                                 </div>
                             </div>

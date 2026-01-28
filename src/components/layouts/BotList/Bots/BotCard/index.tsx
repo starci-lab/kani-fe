@@ -2,13 +2,14 @@ import React, { useMemo } from "react"
 import { BotSchema, PerformanceDisplayMode } from "@/modules/types"
 import { KaniChip } from "@/components/atomic"
 import { useAppSelector } from "@/redux"
-import { roundNumber } from "@/modules/utils"
+import { round } from "@/modules/utils"
 import { useRouter } from "next/navigation"
-import { getChainMetadata, paths } from "@/modules"
+import { getChainConfig } from "@/resources/config"
 import Decimal from "decimal.js"
 import { BotDisplayMode } from "@/redux/slices/bot"
 import { BotCardGrid } from "./Grid"
 import { BotCardList } from "./List"
+import { paths } from "@/resources/path"
 
 export interface BotCardProps {
     bot: BotSchema
@@ -30,8 +31,8 @@ export const BotCard = ({ bot }: BotCardProps) => {
     
     const [roi24hString, isPositiveRoi24h] = useMemo(
         () => {
-            const isPositiveRoi24h = new Decimal(roundNumber(bot.performance24h?.roi || 0)).isPositive()
-            const roi = `${isPositiveRoi24h ? "+" : "-"}${new Decimal(roundNumber(bot.performance24h?.roi || 0)).abs().toString()}%`
+            const isPositiveRoi24h = new Decimal(round(new Decimal(bot.performance24h?.roi || 0))).isPositive()
+            const roi = `${isPositiveRoi24h ? "+" : "-"}${new Decimal(round(new Decimal(bot.performance24h?.roi || 0))).abs().toString()}%`
             return [roi, isPositiveRoi24h]
         }, 
         [bot.performance24h?.roi]
@@ -39,8 +40,8 @@ export const BotCard = ({ bot }: BotCardProps) => {
     
     const [pnl24hString, isPositivePnl24h] = useMemo(
         () => {
-            const isPositivePnl24h = new Decimal(roundNumber(bot.performance24h?.pnl || 0)).isPositive()
-            const pnl = `${isPositivePnl24h ? "+" : "-"}${new Decimal(roundNumber(bot.performance24h?.pnl || 0)).abs().toString()} ${targetToken?.symbol}`
+            const isPositivePnl24h = new Decimal(round(new Decimal(bot.performance24h?.pnl || 0))).isPositive()
+            const pnl = `${isPositivePnl24h ? "+" : "-"}${new Decimal(round(new Decimal(bot.performance24h?.pnl || 0))).abs().toString()} ${targetToken?.symbol}`
             return [pnl, isPositivePnl24h]
         }, 
         [bot.performance24h?.pnl, targetToken?.symbol]
@@ -48,8 +49,8 @@ export const BotCard = ({ bot }: BotCardProps) => {
     
     const [roi24hInUsdString, isPositiveRoi24hInUsd] = useMemo(
         () => {
-            const isPositiveRoi24hInUsd = new Decimal(roundNumber(bot.performance24h?.roiInUsd || 0)).isPositive()
-            const roiInUsd = `${isPositiveRoi24hInUsd ? "+" : "-"}${new Decimal(roundNumber(bot.performance24h?.roiInUsd || 0)).abs().toString()}%`
+            const isPositiveRoi24hInUsd = new Decimal(round(new Decimal(bot.performance24h?.roiInUsd || 0))).isPositive()
+            const roiInUsd = `${isPositiveRoi24hInUsd ? "+" : "-"}${new Decimal(round(new Decimal(bot.performance24h?.roiInUsd || 0))).abs().toString()}%`
             return [roiInUsd, isPositiveRoi24hInUsd]
         }, 
         [bot.performance24h?.roiInUsd]
@@ -57,8 +58,8 @@ export const BotCard = ({ bot }: BotCardProps) => {
     
     const [pnl24hInUsdString, isPositivePnl24hInUsd] = useMemo(
         () => {
-            const isPositivePnl24hInUsd = new Decimal(roundNumber(bot.performance24h?.pnlInUsd || 0)).isPositive()
-            const pnlInUsd = `${isPositivePnl24hInUsd ? "+" : "-"}${new Decimal(roundNumber(bot.performance24h?.pnlInUsd || 0)).abs().toString()} USD`
+            const isPositivePnl24hInUsd = new Decimal(round(new Decimal(bot.performance24h?.pnlInUsd || 0))).isPositive()
+            const pnlInUsd = `${isPositivePnl24hInUsd ? "+" : "-"}${new Decimal(round(new Decimal(bot.performance24h?.pnlInUsd || 0))).abs().toString()} USD`
             return [pnlInUsd, isPositivePnl24hInUsd]
         }, 
         [bot.performance24h?.pnlInUsd]
@@ -90,7 +91,7 @@ export const BotCard = ({ bot }: BotCardProps) => {
         )
     }
     
-    const chainMetadata = useMemo(() => getChainMetadata(bot.chainId), [bot.chainId])
+    const chainConfig = useMemo(() => getChainConfig(bot.chainId), [bot.chainId])
     const capitalString = "50,000 USDC" // TODO: Calculate actual capital
     
     if (!targetToken || !quoteToken) {
@@ -109,8 +110,8 @@ export const BotCard = ({ bot }: BotCardProps) => {
         isPositivePnl,
         capitalString,
         liquidityStatusChip: renderLiquidityStatusChip(),
-        chainIconUrl: chainMetadata?.iconUrl,
-        chainName: chainMetadata?.name,
+        chainIconUrl: chainConfig?.iconUrl,
+        chainName: chainConfig?.name,
         accountAddress: bot.accountAddress ?? "",
         poolAddress: bot.activePosition?.associatedLiquidityPool?.poolAddress,
         onCardPress: () => router.push(paths().bots().bot(bot.id)),

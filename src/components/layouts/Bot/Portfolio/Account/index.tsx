@@ -6,25 +6,23 @@ import {
     KaniSkeleton,
 } from "../../../../atomic"
 import { TooltipTitle, SnippetIcon } from "../../../../reuseable"
-import { centerPad } from "@/modules/utils"
+import { truncateMiddle } from "@/modules/utils"
 import { Spacer } from "@heroui/react"
 import React, { useMemo } from "react"
 import {
     useAppSelector, 
 } from "@/redux"
-import { getChainAssets } from "@/assets"
+import { getChainAssets } from "@/resources/assets"
 import { ChainId } from "@/modules/types"
 import {
     QrCodeIcon, 
-    FloppyDiskBackIcon 
 } from "@phosphor-icons/react"
 import { 
-    ExplorerId, 
-    getExplorerUrl, 
-    ExplorerUrlType 
+    explorerUrl, 
+    ExplorerType 
 } from "@/modules/blockchain"
 import { ArrowSquareOutIcon } from "@phosphor-icons/react"
-import { useBackupBotPrivateKeyV2SwrMutation, useDepositDisclosure, useQueryBotsV2Swr } from "@/hooks/singleton"
+import { useDepositDisclosure, useQueryBotsV2Swr } from "@/hooks/singleton"
 
 export interface WalletAction {
     label: string
@@ -38,14 +36,12 @@ export interface WalletAction {
 export const Account = () => {
     const bot = useAppSelector((state) => state.bot.bot)
     const chainAssets = useMemo(() => getChainAssets(bot?.chainId ?? ChainId.Solana), [bot?.chainId])
-    const backupBotPrivateKeyV2SwrMutation = useBackupBotPrivateKeyV2SwrMutation()
     const depositDisclosure = useDepositDisclosure()
-    const explorerUrl = useMemo(() => getExplorerUrl({
-        chainId: bot?.chainId ?? ChainId.Solana,
+    const url = useMemo(() => explorerUrl({
+        type: ExplorerType.Account,
         value: bot?.accountAddress ?? "",
-        type: ExplorerUrlType.AccountAddress,
-        explorerId: bot?.explorerId ?? ExplorerId.Solscan,
-    }), [bot?.accountAddress, bot?.chainId, bot?.explorerId])
+        chainId: bot?.chainId ?? ChainId.Solana,
+    }), [bot?.accountAddress, bot?.chainId])
     const queryBotsV2Swr = useQueryBotsV2Swr()
     const actions: Array<WalletAction> = [
         {
@@ -55,18 +51,6 @@ export const Account = () => {
             tooltip: "Generate a QR code or address to deposit funds into this bot.",
             onPress: () => {
                 depositDisclosure.onOpen()
-            },
-        },
-        {
-            label: "Export Private Key",
-            icon: FloppyDiskBackIcon,
-            color: "danger",
-            disabled: bot?.backupPrivateKey,
-            tooltip: bot?.backupPrivateKey
-                ? "Private key has already been exported."
-                : "Export the bot's private key. Keep it secure and never share it.",
-            onPress: () => {
-                backupBotPrivateKeyV2SwrMutation.trigger()
             },
         }
     ]
@@ -94,7 +78,7 @@ export const Account = () => {
                                 <KaniSkeleton className="h-5 w-[100px] rounded-md"/>
                             ) : (
                                 <div className="text-sm">
-                                    {centerPad(bot?.accountAddress ?? "", 6, 4)}
+                                    {truncateMiddle({ str: bot?.accountAddress ?? "" })}
                                 </div>
                             )}
                         <Spacer y={1} />
@@ -103,7 +87,7 @@ export const Account = () => {
                                 copyString={bot?.accountAddress ?? ""}
                                 classNames={{ checkIcon: "w-5 h-5 text-foreground-500", copyIcon: "w-5 h-5 text-foreground-500" }}
                             />
-                            <KaniLink onPress={() => window.open(explorerUrl, "_blank")}>
+                            <KaniLink onPress={() => window.open(url, "_blank")}>
                                 <ArrowSquareOutIcon className="w-5 h-5 cursor-pointer text-foreground-500" />
                             </KaniLink>
                         </div>

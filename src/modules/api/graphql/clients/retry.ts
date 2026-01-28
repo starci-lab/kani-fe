@@ -1,4 +1,4 @@
-import { publicEnv } from "@/modules/env"
+import { publicEnv } from "@/resources/env"
 import { RetryLink } from "@apollo/client/link/retry"
 
 // retry link

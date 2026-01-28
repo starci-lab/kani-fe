@@ -10,8 +10,9 @@ import { IntervalTabs } from "./IntervalTabs"
 import { useQueryPortfolioValueV2Swr, useQueryStaticSwr } from "@/hooks/singleton"
 import { ArrowClockwiseIcon } from "@phosphor-icons/react"
 import { EligibilityStatus } from "./EligibilityStatus"
-import { computeDenomination } from "@/modules/utils"
+import { toDecimalAmount } from "@/modules/utils"
 import BN from "bn.js"
+import Decimal from "decimal.js"
 
 export const Investment = () => {
     const tokens = useAppSelector(
@@ -36,7 +37,7 @@ export const Investment = () => {
     )
     const gasAmountRequired = useMemo(() => gasConfig?.gasAmountRequired?.[bot?.chainId ?? ChainId.Solana], [gasConfig, bot?.chainId])
     const targetOperationalAmount = useMemo(() => gasAmountRequired?.targetOperationalAmount, [gasAmountRequired?.targetOperationalAmount])
-    const targetOperationalAmountDecimal = useMemo(() => computeDenomination(new BN(targetOperationalAmount ?? "0"), targetToken?.decimals ?? 9), [targetOperationalAmount, targetToken?.decimals])
+    const targetOperationalAmountDecimal = useMemo(() => toDecimalAmount({ amount: new BN(targetOperationalAmount ?? "0"), decimals: new Decimal(targetToken?.decimals ?? 9) }), [targetOperationalAmount, targetToken?.decimals])
     const balanceConfig = useAppSelector(
         (state) => state.static.balanceConfig
     )

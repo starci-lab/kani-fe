@@ -1,4 +1,4 @@
-import { createNoCacheCredentialAuthClientWithToken } from "../clients"
+import { createApolloClient } from "../clients"
 import {
     GraphQLResponse,
     ChartUnit,
@@ -63,7 +63,7 @@ export const queryHistoryV2 = async ({
     }
     const queryDocument = queryMap[query]
     // use no cache credential to include http only cookies
-    return await createNoCacheCredentialAuthClientWithToken(token).query<{
+    return await createApolloClient({ token }).query<{
     historyV2: GraphQLResponse<QueryHistoryV2Response>;
   }>({
       query: queryDocument,

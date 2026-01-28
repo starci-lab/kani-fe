@@ -1,5 +1,5 @@
 import { HttpLink } from "@apollo/client"
-import { publicEnv } from "@/modules/env"
+import { publicEnv } from "@/resources/env"
 
 export const createHttpLink = (withCredentials = false, headers: Record<string, string> = {}) => {
     return new HttpLink({

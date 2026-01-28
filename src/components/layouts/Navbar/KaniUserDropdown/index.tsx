@@ -8,7 +8,7 @@ import {
     KaniDropdownSection,
     KaniDropdownTrigger,
 } from "@/components/atomic"
-import { truncateWithEllipsis } from "@/modules/utils"
+import { truncateEnd } from "@/modules/utils"
 import { 
     AtIcon, 
     PencilLineIcon, 
@@ -24,7 +24,7 @@ export const KaniUserDropdown = () => {
         <KaniDropdown>
             <KaniDropdownTrigger>
                 <KaniButton variant="bordered">
-                    {truncateWithEllipsis(user?.email?.address.toString() ?? "")}
+                    {truncateEnd({ str: user?.email?.address.toString() ?? "" })}
                 </KaniButton>
             </KaniDropdownTrigger>
             <KaniDropdownMenu aria-label="Static Actions" disabledKeys={user?.mfaMethods.length ? ["enroll-in-mfa"] : []}>

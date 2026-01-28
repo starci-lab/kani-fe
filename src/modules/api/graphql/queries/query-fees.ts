@@ -1,4 +1,4 @@
-import { createNoCacheCredentialAuthClientWithToken } from "../clients"
+import { createApolloClient } from "../clients"
 import { GraphQLResponse, QueryParams } from "../types"
 import { DocumentNode, gql } from "@apollo/client"
 
@@ -45,7 +45,7 @@ export const queryFees = async (
     if (!token) {
         throw new Error("Token is required")
     }
-    return await createNoCacheCredentialAuthClientWithToken(token).query<{
+    return await createApolloClient({ token }).query<{
         fees: GraphQLResponse<FeesResponse>;
   }>({
       query: queryDocument,

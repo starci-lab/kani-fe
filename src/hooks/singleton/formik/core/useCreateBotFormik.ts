@@ -5,7 +5,7 @@ import { ChainId } from "@/modules/types"
 import { useCreateBotV2SwrMutation } from "../../swr"
 import { runGraphQLWithToast } from "@/components/toasts"
 import { useRouter } from "next/navigation"
-import { paths } from "@/modules/path"
+import { paths } from "@/resources/path"
 import { setLiquidityPoolIds, setQuoteTokenId, setTargetTokenId, useAppDispatch } from "@/redux"
 
 export interface CreateBotFormikValues {

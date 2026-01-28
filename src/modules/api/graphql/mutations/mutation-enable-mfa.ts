@@ -1,6 +1,6 @@
 import { DocumentNode, gql } from "@apollo/client"
 import { GraphQLResponse, GraphQLHeadersKey, MutationParams } from "../types"
-import { createNoCacheCredentialAuthClientWithTokenAndHeaders } from "../clients"
+import { createApolloClientAndHeaders } from "../clients"
 
 const mutation1 = gql`
   mutation EnableMFA {
@@ -46,7 +46,7 @@ export const mutationEnableMFA = async ({
     if (!headers[GraphQLHeadersKey.TOTP]) {
         throw new Error("TOTP is required")
     }
-    return await createNoCacheCredentialAuthClientWithTokenAndHeaders(token, headers).mutate<{
+    return await createApolloClientAndHeaders(token, headers).mutate<{
     enableMFA: GraphQLResponse<MutationEnableMFAResponse>,
   }>({
       mutation: mutationDocument,

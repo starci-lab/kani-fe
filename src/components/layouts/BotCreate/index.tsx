@@ -2,7 +2,7 @@
 import React from "react"
 import { KaniBreadcrumb, KaniBreadcrumbItem } from "@/components/atomic"
 import { Spacer } from "@heroui/react"
-import { paths } from "@/modules"
+import { paths } from "@/resources/path"
 import { useRouter } from "next/navigation"
 import { SetUpYourBot } from "./SetUpYourBot"
 export const BotCreate = () => {

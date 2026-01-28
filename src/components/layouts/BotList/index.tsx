@@ -6,11 +6,11 @@ import { BotsSkeleton } from "./BotsSkeleton"
 import { useAppSelector } from "@/redux"
 import { KaniButton, KaniInput } from "../../atomic"
 import { useRouter } from "next/navigation"
-import { paths } from "@/modules"
 import { Spacer } from "@heroui/react"
 import { PlusIcon, SortAscendingIcon } from "@phosphor-icons/react"
 import { MagnifyingGlassIcon } from "@phosphor-icons/react/dist/ssr"
 import { DisplayModeToggle } from "./DisplayModeToggle"
+import { paths } from "@/resources/path"
 export const BotList = () => {
     const queryBotsV2Swr = useQueryBotsV2Swr()
     const bots = useAppSelector((state) => state.bot.bots)

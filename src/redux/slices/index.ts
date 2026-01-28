@@ -1,5 +1,4 @@
 export * from "./chain"
-export * from "./api"
 export * from "./static"
 export * from "./socket"
 export * from "./modals"

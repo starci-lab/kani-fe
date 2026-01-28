@@ -10,22 +10,22 @@ import {
     useCreateBotFormik, 
 } from "@/hooks/singleton"
 import React, { useMemo } from "react"
-import { getChainMetadata, supportedChains } from "@/modules"
+import { getChainConfig, supportedChains } from "@/resources/config"
 import { ChainId } from "@/modules/types"
 import { Spacer } from "@heroui/react"
 
 export const SelectChainDropdown = () => {
     const formik = useCreateBotFormik()
-    const metadata = useMemo(() => {
-        return getChainMetadata(formik.values.chainId)
+    const config = useMemo(() => {
+        return getChainConfig(formik.values.chainId)
     }, [formik.values.chainId])
     // we return the dropdown
     return (
         <KaniDropdown>
             <KaniDropdownTrigger>
                 <KaniButton variant="flat">
-                    <KaniImage src={metadata.iconUrl} className="w-5 h-5" />
-                    {metadata.name}
+                    <KaniImage src={config.iconUrl} className="w-5 h-5" />
+                    {config.name}
                 </KaniButton>
             </KaniDropdownTrigger>
             <KaniDropdownMenu
@@ -37,20 +37,20 @@ export const SelectChainDropdown = () => {
                 }}
             >
                 {supportedChains().map((chainId) => {
-                    const metadata = getChainMetadata(chainId)
+                    const config = getChainConfig(chainId)
                     return (
-                        <KaniDropdownItem aria-label={metadata.name} key={chainId}>
+                        <KaniDropdownItem aria-label={config.name} key={chainId}>
                             <div className="flex items-center gap-2 max-w-[300px]">
                                 <div>
                                     <div className="flex items-center gap-2">
                                         <KaniImage
-                                            src={metadata.iconUrl}
+                                            src={config.iconUrl}
                                             className="w-5 h-5"
                                         />
-                                        {metadata.name}
+                                        {config.name}
                                     </div>
                                     <Spacer y={2} />
-                                    <div className="text-xs text-foreground-500">{metadata.description}</div>
+                                    <div className="text-xs text-foreground-500">{config.description}</div>
                                 </div>
                             </div>
                         </KaniDropdownItem>

@@ -1,4 +1,4 @@
-import { dayjs } from "@/modules/utils"
+import { dayjs } from "@/modules/dayjs"
 import { useAppSelector } from "@/redux/hooks"
 import React, { useMemo } from "react"
 import {

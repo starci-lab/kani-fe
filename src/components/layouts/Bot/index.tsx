@@ -14,7 +14,7 @@ import { runGraphQLWithToast } from "@/components/toasts"
 import { PrivySecurityAlert } from "./PrivySecurityAlert"
 import { Settings } from "./Settings"
 import { useRouter } from "next/navigation"
-import { paths } from "@/modules"
+import { paths } from "@/resources/path"
 
 export const Bot = () => {
     const tabs = [

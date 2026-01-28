@@ -1,5 +1,5 @@
-import { ChartInterval } from "@/modules"
-import { dayjs } from "@/modules/utils"
+import { ChartInterval } from "@/modules/api"
+import { dayjs } from "@/modules/dayjs"
 import React from "react"
 import Decimal from "decimal.js"
 

@@ -3,7 +3,7 @@ import { KaniAvatar, KaniAvatarGroup, KaniCard, KaniCardBody, KaniChip, KaniDivi
 import { Spacer } from "@heroui/react"
 import { SnippetIcon, TooltipTitle } from "@/components/reuseable"
 import { UnitDropdown } from "../UnitDropdown"
-import { centerPad } from "@/modules/utils"
+import { truncateMiddle } from "@/modules/utils"
 import { BotCardBaseProps } from "../types"
 
 export type BotCardGridProps = BotCardBaseProps
@@ -113,7 +113,7 @@ export const BotCardGrid = ({
                     </div>
                     <div className="flex items-center gap-2">
                         <div className="text-sm text-foreground-500">
-                            {centerPad(accountAddress, 6, 4)}
+                            {truncateMiddle({ str: accountAddress ?? "" })}
                         </div>
                         <div 
                             onPointerDown={(event) => event.stopPropagation()}

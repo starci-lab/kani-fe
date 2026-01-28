@@ -10,13 +10,13 @@ import {
 import { useDepositDisclosure } from "@/hooks/singleton"
 import { QRCode, SnippetIcon, TooltipTitle } from "../../reuseable"
 import { setDepositModalTokenId, useAppDispatch, useAppSelector } from "@/redux"
-import { getChainAssets } from "@/assets"
+import { getChainAssets } from "@/resources/assets"
 import { ChainId, TokenId } from "@/modules/types"
 import { Spacer } from "@heroui/react"
 import {
-    centerPad
+    truncateMiddle
 } from "@/modules/utils"
-import { getChainMetadata } from "@/modules"
+import { getChainConfig } from "@/resources/config"
 
 export const DepositModal = () => {
     const { isOpen, onOpenChange } = useDepositDisclosure()
@@ -25,7 +25,7 @@ export const DepositModal = () => {
     const depositModalTokenId = useAppSelector((state) => state.modals.deposit.tokenId)
     const token = useMemo(() => tokens.find((token) => token.displayId === depositModalTokenId), [tokens, depositModalTokenId])
     const chainAssets = useMemo(() => getChainAssets(bot?.chainId ?? ChainId.Solana), [bot?.chainId])
-    const chainMetadata = useMemo(() => getChainMetadata(bot?.chainId ?? ChainId.Solana), [bot?.chainId])
+    const chainConfig = useMemo(() => getChainConfig(bot?.chainId ?? ChainId.Solana), [bot?.chainId])
     const dispatch = useAppDispatch()
     return (
         <KaniModal size="xs" isOpen={isOpen} onOpenChange={onOpenChange} onClose={
@@ -46,7 +46,7 @@ export const DepositModal = () => {
                             data={bot?.accountAddress ?? ""} 
                             icon={token ? 
                             <KaniImage className="w-8 h-8" src={token?.iconUrl ?? ""} /> 
-                            : <KaniImage className="w-8 h-8" src={chainMetadata.iconUrl ?? ""} /> }
+                            : <KaniImage className="w-8 h-8" src={chainConfig.iconUrl ?? ""} /> }
                         />
                         <Spacer y={4} />
                         <KaniDivider />
@@ -56,7 +56,7 @@ export const DepositModal = () => {
                             <div className="flex items-center gap-1 ">
                                 <KaniImage className="w-5 h-5" src={chainAssets.token} />
                                 <div className="text-sm">
-                                    {chainMetadata.name}
+                                    {chainConfig.name}
                                 </div>
                             </div>
                         </div>
@@ -65,8 +65,9 @@ export const DepositModal = () => {
                             <TooltipTitle title="Deposit Address" />
                             <div className="flex items-center gap-1 ">
                                 <div className="text-sm">
-                                    {centerPad(bot?.accountAddress ?? "", 6, 4)}
+                                    {truncateMiddle({ str: bot?.accountAddress ?? "" })}
                                 </div>
+                                {bot?.accountAddress && (
                                 <SnippetIcon
                                     copyString={bot?.accountAddress ?? ""}
                                     classNames={{
@@ -74,6 +75,7 @@ export const DepositModal = () => {
                                         copyIcon: "w-4 h-4 text-foreground-500",
                                     }}
                                 />
+                                )}
                             </div>
                         </div>
                         {
@@ -84,7 +86,7 @@ export const DepositModal = () => {
                                         <TooltipTitle title="Token Address" />
                                         <div className="flex items-center gap-1 ">
                                             <div className="text-sm">
-                                                {centerPad(token?.tokenAddress ?? "", 6, 4)}
+                                                {truncateMiddle({ str: token?.tokenAddress ?? "" })}
                                             </div>
                                             <SnippetIcon
                                                 copyString={bot?.accountAddress ?? ""}
