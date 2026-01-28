@@ -6,8 +6,8 @@ const query1 = gql`
     query FeesV2($request: FeesV2Request!) {
         feesV2(request: $request) {
             data {
-              tokenA
-              tokenB
+              feeA
+              feeB
             }
             error
             message
@@ -16,8 +16,8 @@ const query1 = gql`
     }`
 
 export interface FeesV2Response {
-  tokenA: string;
-  tokenB: string;
+  feeA: string;
+  feeB: string;
 }
 
 export enum QueryFeesV2 {
@@ -26,7 +26,6 @@ export enum QueryFeesV2 {
 
 export interface FeesV2Request {
   botId: string;
-  activePositionId: string;
 }
 
 const queryMap: Record<QueryFeesV2, DocumentNode> = {

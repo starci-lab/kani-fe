@@ -24,7 +24,6 @@ export const useQueryFeesV2SwrCore = () => {
                 token: accessToken,
                 request: {
                     botId: bot.id,
-                    activePositionId: bot.activePosition.id,
                 },
             })
             return data

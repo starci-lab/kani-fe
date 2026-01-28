@@ -144,8 +144,9 @@ export const PoolCard = (
                     {!botSwr.isLoading ? (
                         <KaniLink
                             color="foreground"
-                            className="text-secondary text-xs"
+                            className="text-secondary"
                             isExternal
+                            size="sm"
                             showAnchorIcon={true}
                             href={activePosition?.associatedLiquidityPool?.url ?? ""}>
                             Details
