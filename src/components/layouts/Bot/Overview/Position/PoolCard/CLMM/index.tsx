@@ -211,7 +211,7 @@ export const CLMM = ({ liquidityPool }: CLMMProps) => {
         const isPositiveRoi24h = new Decimal(
             totalInTarget.sub(prev).div(prev),
         ).isPositive();
-        const roi = `${isPositiveRoi24h ? "+" : "-"}${round(computePercentage({ numerator: new Decimal(totalInTarget.sub(prev)), denominator: new Decimal(prev) })).toString()}%`;
+        const roi = `${isPositiveRoi24h ? "+" : "-"}${round(computePercentage({ numerator: new Decimal(totalInTarget.sub(prev)), denominator: new Decimal(prev) })).abs().toString()}%`;
         return [roi, isPositiveRoi24h];
     }, [bot?.activePosition?.associatedPosition?.openSnapshot?.positionValue]);
     const [pnlInUsdString, isPositivePnlInUsd] = useMemo(() => {
@@ -244,7 +244,7 @@ export const CLMM = ({ liquidityPool }: CLMMProps) => {
         const isPositiveRoiInUsd = new Decimal(
             totalInUsd.sub(prev).div(prev),
         ).isPositive();
-        const roiInUsd = `${isPositiveRoiInUsd ? "+" : "-"}${round(computePercentage({ numerator: new Decimal(totalInUsd.sub(prev)), denominator: new Decimal(prev) })).toString()}%`;
+        const roiInUsd = `${isPositiveRoiInUsd ? "+" : "-"}${round(computePercentage({ numerator: new Decimal(totalInUsd.sub(prev)), denominator: new Decimal(prev) })).abs().toString()}%`;
         return [roiInUsd, isPositiveRoiInUsd];
     }, [
         bot?.activePosition?.associatedPosition?.openSnapshot?.positionValueInUsd,
