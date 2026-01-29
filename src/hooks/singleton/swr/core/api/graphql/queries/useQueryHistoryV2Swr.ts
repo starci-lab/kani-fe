@@ -8,33 +8,26 @@ import { ChartInterval, ChartUnit } from "@/modules/types"
 
 export interface IntervalConfig {
     time: ms.StringValue
-    interval: number
 }
 
 export const intervalConfigMap: Record<ChartInterval, IntervalConfig> = {
     [ChartInterval.FifteenMinutes]: {
         time: "1 day",          // 96 points
-        interval: 8,      // show 12 ticks (every 2 hours)
     },
     [ChartInterval.ThirtyMinutes]: {
-        time: "1 day",          // 48 points
-        interval: 4,      // show 12 ticks (every 2 hours)
+        time: "3 day",          // 48 points
     },
     [ChartInterval.OneHour]: {
-        time: "7 day",          // 7 * 24 = 168 points
-        interval: 23,      // show every day
+        time: "7 days",          // 7 * 24 = 168 points
     },
     [ChartInterval.TwoHours]: {
-        time: "1 day",          // 12 points
-        interval: 1,      // show 12 ticks (every 2 hours)
+        time: "14 days",          // 12 points
     },
     [ChartInterval.FourHours]: {
-        time: "2 days",          // 12 points
-        interval: 1,      // show 12 ticks (every 2 hours)
+        time: "1M",          // 30 points
     },
     [ChartInterval.Day]: {
-        time: "14 days",         // 14 points
-        interval: 1,      // show ~14 ticks (every 2 hours)
+        time: "3M",         // 90 points
     },
 }
 

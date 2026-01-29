@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 import { BotSchema, PerformanceDisplayMode, PositionSchema, TransactionSchema } from "@/modules/types"
 import { QueryHistoryResponse } from "@/modules/api"
 import { LiquidityPoolsSortBy } from "@/modules/api"
-import { ChartInterval, ChartUnit } from "@/modules/api/graphql"
+import { ChartInterval, ChartUnit } from "@/modules/types"
 
 export enum BotTab {
     Overview = "overview",

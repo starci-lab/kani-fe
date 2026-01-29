@@ -53,10 +53,39 @@ const TickText = ({
     )
 }
 
+
 const shouldShowDateAtStartOfDay = (localTime: ReturnType<typeof dayjs>, index: number, visibleTicksCount: number) => {
     // avoid showing DD/MM too close to the end tick (keeps UI cleaner)
     const ticksRemaining = new Decimal(visibleTicksCount).sub(index).sub(1)
     return localTime.hour() === 0 && localTime.minute() === 0 && ticksRemaining.greaterThan(8)
+}
+
+const shouldShowDateAtNoonOrMidnight = (
+    localTime: ReturnType<typeof dayjs>,
+    index: number,
+    visibleTicksCount: number
+) => {
+    const ticksRemaining = new Decimal(visibleTicksCount).sub(index).sub(1)
+  
+    return (
+        localTime.minute() === 0 &&
+        (localTime.hour() === 0 || localTime.hour() === 12) &&
+      ticksRemaining.greaterThan(8)
+    )
+}
+
+const shouldShowDateAt4HourInterval = (
+    localTime: ReturnType<typeof dayjs>,
+    index: number,
+    visibleTicksCount: number
+) => {
+    const ticksRemaining = new Decimal(visibleTicksCount).sub(index).sub(1)
+  
+    return (
+        localTime.minute() === 0 &&
+        localTime.hour() % 4 === 0 &&
+        ticksRemaining.greaterThan(8)
+    )
 }
 
 export const CustomTickHour = ({ x, y, payload, index, visibleTicksCount }: CustomTickProps) => {
@@ -80,16 +109,16 @@ export const CustomTickFifteenMinutes = ({
 }: CustomTickProps) => {
     if (index === 0) return null
     const localTime = dayjs(payload.value).local()
-
     if (index + 1 === visibleTicksCount) {
         return <TickText x={x} y={y} text={localTime.format("HH:mm")} />
     }
     if (shouldShowDateAtStartOfDay(localTime, index, visibleTicksCount)) {
         return <TickText x={x} y={y} text={localTime.format("DD/MM")} />
     }
-    // show every 2 hours at the top of the hour
-    const is2HourMark = localTime.minute() === 0 && localTime.hour() % 2 === 0
-    if (is2HourMark) {
+    if (shouldShowDateAtNoonOrMidnight(localTime, index, visibleTicksCount)) {
+        return <TickText x={x} y={y} text={localTime.format("HH:mm")} />
+    }
+    if (shouldShowDateAt4HourInterval(localTime, index, visibleTicksCount)) {
         return <TickText x={x} y={y} text={localTime.format("HH:mm")} />
     }
     return null
@@ -104,16 +133,13 @@ export const CustomTickThirtyMinutes = ({
 }: CustomTickProps) => {
     if (index === 0) return null
     const localTime = dayjs(payload.value).local()
-
     if (index + 1 === visibleTicksCount) {
         return <TickText x={x} y={y} text={localTime.format("HH:mm")} />
     }
     if (shouldShowDateAtStartOfDay(localTime, index, visibleTicksCount)) {
         return <TickText x={x} y={y} text={localTime.format("DD/MM")} />
     }
-    // show every 2 hours at the top of the hour
-    const is2HourMark = localTime.minute() === 0 && localTime.hour() % 2 === 0
-    if (is2HourMark) {
+    if (shouldShowDateAtNoonOrMidnight(localTime, index, visibleTicksCount)) {
         return <TickText x={x} y={y} text={localTime.format("HH:mm")} />
     }
     return null
@@ -134,8 +160,7 @@ export const CustomTickTwoHours = ({
     if (shouldShowDateAtStartOfDay(localTime, index, visibleTicksCount)) {
         return <TickText x={x} y={y} text={localTime.format("DD/MM")} />
     }
-    // 2h data is sparse enough; show time labels to keep chart readable
-    return <TickText x={x} y={y} text={localTime.format("HH:mm")} />
+    return null
 }
 
 export const CustomTickFourHours = ({
@@ -151,10 +176,10 @@ export const CustomTickFourHours = ({
         return <TickText x={x} y={y} text={localTime.format("HH:mm")} />
     }
     if (shouldShowDateAtStartOfDay(localTime, index, visibleTicksCount)) {
+        console.log("shouldShowDateAtStartOfDay", localTime.format("DD/MM"))
         return <TickText x={x} y={y} text={localTime.format("DD/MM")} />
     }
-    // 4h data is sparse enough; show time labels
-    return <TickText x={x} y={y} text={localTime.format("HH:mm")} />
+    return null
 }
 
 export const CustomTickDay = ({
@@ -162,8 +187,15 @@ export const CustomTickDay = ({
     y,
     payload,
     index,
+    visibleTicksCount,
 }: CustomTickProps) => {
     if (index === 0) return null
     const localTime = dayjs(payload.value).local()
-    return <TickText x={x} y={y} text={localTime.format("DD/MM")} />
+    if (index + 1 === visibleTicksCount) {
+        return <TickText x={x} y={y} text={localTime.format("HH:mm")} />
+    }
+    if (shouldShowDateAtStartOfDay(localTime, index, visibleTicksCount)) {
+        return <TickText x={x} y={y} text={localTime.format("DD/MM")} />
+    }
+    return null 
 }

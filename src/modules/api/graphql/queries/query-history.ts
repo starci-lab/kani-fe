@@ -1,9 +1,8 @@
+import { ChartInterval, ChartUnit } from "@/modules/types"
 import { createApolloClient } from "../clients"
 import {
     GraphQLResponse,
-    ChartUnit,
     QueryParams,
-    ChartInterval,
 } from "../types"
 import { DocumentNode, gql } from "@apollo/client"
 
