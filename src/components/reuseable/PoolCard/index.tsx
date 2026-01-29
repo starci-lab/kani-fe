@@ -4,14 +4,13 @@ import {
     KaniBadge,
     KaniCard,
     KaniCardBody,
-    KaniDivider,
     KaniLink,
     KaniSkeleton
 } from "../../atomic"
 import React from "react"
 import { LiquidityPoolSchema } from "@/modules/types"
 import { useAppSelector } from "@/redux"
-import { truncateMiddle, computePercentage } from "@/modules/utils"
+import { computePercentage } from "@/modules/utils"
 import { cn, Spacer } from "@heroui/react"
 import numeral from "numeral"
 import { PoolTypeChip } from "../PoolTypeChip"
@@ -26,7 +25,14 @@ export interface PoolCardProps {
     onPress?: (liquidityPool: LiquidityPoolSchema) => void
 }
 
-export const PoolCard = ({ liquidityPool, className, isSelected, onPress }: PoolCardProps) => {
+export const PoolCard = (
+    { 
+        liquidityPool, 
+        className, 
+        isSelected, 
+        onPress 
+    }: PoolCardProps
+) => {
     const tokens = useAppSelector((state) => state.static.tokens)
     const tokenA = tokens.find((token) => token.id === liquidityPool.tokenA)
     const tokenB = tokens.find((token) => token.id === liquidityPool.tokenB)
@@ -75,9 +81,14 @@ export const PoolCard = ({ liquidityPool, className, isSelected, onPress }: Pool
                                     radius="full"
                                 />
                             </KaniAvatarGroup>
-                            <div className="text-sm">
+                            <KaniLink 
+                                color="foreground"
+                                size="sm"
+                                underline="hover"
+                                isExternal
+                                href={liquidityPool.url ?? ""}>
                                 {tokenA?.name}-{tokenB?.name}
-                            </div>
+                            </KaniLink>
                         </div>
                         <div className="flex items-center gap-1 justify-end">
                             <div className="text-sm">
@@ -86,53 +97,42 @@ export const PoolCard = ({ liquidityPool, className, isSelected, onPress }: Pool
                         </div>
                     </div>
                 </div>
-                <Spacer y={3} />
-                <KaniDivider />
-                <Spacer y={3} />
+                <Spacer y={6} />
                 <div className="flex flex-col gap-3">
                     <div className="flex items-center justify-between">
                         <TooltipTitle title="TVL" classNames={{ title: "text-sm text-foreground-500" }} />
-                        <div className="text-sm">{liquidityPool.dynamicInfo?.tvl
-                            ? `$${numeral(liquidityPool.dynamicInfo?.tvl).format("0,0")}`
+                        <div className="text-sm">{liquidityPool.analytics?.tvl
+                            ? `$${numeral(liquidityPool.analytics?.tvl).format("0,0")}`
                             : <KaniSkeleton className="h-5 w-[50px] rounded-md" />
                         }</div>
                     </div>
                     <div className="flex items-center justify-between">
                         <TooltipTitle title="Fees 24H" classNames={{ title: "text-sm text-foreground-500" }} />
-                        <div className="text-sm">{liquidityPool.dynamicInfo?.fees24H
-                            ? `$${numeral(liquidityPool.dynamicInfo?.fees24H).format("0,0")}`
+                        <div className="text-sm">{liquidityPool.analytics?.fees24H
+                            ? `$${numeral(liquidityPool.analytics?.fees24H).format("0,0")}`
                             : <KaniSkeleton className="h-5 w-[50px] rounded-md" />}</div>
                     </div>
                     <div className="flex items-center justify-between">
                         <TooltipTitle title="Volume 24H" classNames={{ title: "text-sm text-foreground-500" }} />
-                        <div className="text-sm">{liquidityPool.dynamicInfo?.volume24H
-                            ? `$${numeral(liquidityPool.dynamicInfo?.volume24H).format("0,0")}`
+                        <div className="text-sm">{liquidityPool.analytics?.volume24H
+                            ? `$${numeral(liquidityPool.analytics?.volume24H).format("0,0")}`
                             : <KaniSkeleton className="h-5 w-[50px] rounded-md" />}</div>
                     </div>
                     <div className="flex items-center justify-between">
                         <TooltipTitle title="APR 24H" classNames={{ title: "text-sm text-foreground-500" }} />
                         <div className="flex items-center gap-2">
-                            {liquidityPool.dynamicInfo?.apr24H
+                            {liquidityPool.analytics?.apr24H
                                 ?
                                 <div className="text-sm">
-                                    {`${computePercentage({ numerator: new Decimal(liquidityPool.dynamicInfo?.apr24H ?? 0), denominator: new Decimal(1) }).toString()}%`}
+                                    {`${computePercentage({ 
+                                        numerator: new Decimal(liquidityPool.analytics?.apr24H ?? 0), 
+                                        denominator: new Decimal(1) }).toString()}%`
+                                    }
                                 </div>
                                 : <KaniSkeleton className="h-5 w-[50px] rounded-md" />}
                         </div>
                     </div>
                 </div>
-                <Spacer y={3} />
-                <KaniDivider />
-                <Spacer y={3} />
-                <KaniLink
-                    color="foreground"
-                    size="sm"
-                    isExternal
-                    showAnchorIcon={true}
-                    href={liquidityPool.url ?? ""}
-                >
-                    {truncateMiddle({ str: liquidityPool.url ?? "" })}
-                </KaniLink>
             </KaniCardBody>
         </KaniCard>
     }

@@ -33,4 +33,5 @@ export interface BotSchema extends AbstractSchema {
     activeJob?: ActiveJobSchema
     performance24h?: BotPerformance24H
     performanceDisplayMode: PerformanceDisplayMode
+    positionsPerformanceDisplayMode: PerformanceDisplayMode
 }

@@ -11,8 +11,7 @@ import React, { useMemo } from "react"
 import { useQueryLiquidityPoolsUpdatePoolsSwr, useUpdatePoolsDisclosure } from "@/hooks/singleton"
 import { Spacer } from "@heroui/react"
 import { setUpdatePoolsFilters, useAppDispatch, useAppSelector } from "@/redux"
-import { DexSelect, EmptyContent, PoolCard, PoolCardSkeleton, SortByDropdown, TextCheckbox, TextSwitch } from "../../reuseable"
-import { ArrowClockwiseIcon } from "@phosphor-icons/react"
+import { DexSelect, EmptyContent, PoolCard, PoolCardSkeleton, RefreshIcon, SortByDropdown, TextCheckbox, TextSwitch } from "../../reuseable"
 import { LiquidityPoolsSortBy } from "@/modules/api"
 import { useUpdateBotLiquidityPoolsFormik } from "@/hooks/singleton"
 
@@ -111,7 +110,7 @@ export const UpdatePoolsDrawer = () => {
                                         }} 
                                     />
                                     <KaniButton variant="flat" isIconOnly>
-                                        <ArrowClockwiseIcon className="w-5 h-5" />
+                                        <RefreshIcon />
                                     </KaniButton>
                                 </div>
                             </div>

@@ -20,6 +20,7 @@ import { dayjs } from "@/modules/dayjs"
 import React, { useCallback } from "react"
 import { useQueryTransactionsV2Swr } from "@/hooks/singleton"
 import { setTransactionsPages } from "@/redux"
+import { RefreshIcon } from "../../../../reuseable"
 
 export const Transactions = () => {
     const dispatch = useAppDispatch()
@@ -66,9 +67,19 @@ export const Transactions = () => {
     const transactionsPages = useAppSelector((state) => state.bot.transactionsPages)
     return (
         <div>
-            <TooltipTitle
-                title="Transactions"
-            />
+            <div className="flex items-center gap-2 justify-between">
+                <TooltipTitle
+                    title="Transactions"
+                />
+                <RefreshIcon
+                    classNames={{
+                        icon: "text-primary"
+                    }}
+                    onRefresh={() => {
+                        queryTransactionsV2Swr.mutate()
+                    }}
+                />
+            </div>
             <Spacer y={4} />
             <KaniTable 
                 shadow="none"

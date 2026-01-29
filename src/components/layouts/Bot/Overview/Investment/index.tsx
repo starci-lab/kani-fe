@@ -1,4 +1,4 @@
-import { KaniDivider, KaniLink, KaniSkeleton, TooltipTitle } from "@/components"
+import { KaniDivider, KaniSkeleton } from "../../../../atomic"
 import { useAppSelector } from "@/redux/hooks"
 import { Spacer } from "@heroui/react"
 import React, { useMemo } from "react"
@@ -8,7 +8,7 @@ import { HistoryChart } from "./HistoryChart"
 import numeral from "numeral"
 import { IntervalTabs } from "./IntervalTabs"
 import { useQueryPortfolioValueV2Swr, useQueryStaticSwr } from "@/hooks/singleton"
-import { ArrowClockwiseIcon } from "@phosphor-icons/react"
+import { RefreshIcon, TooltipTitle } from "../../../../reuseable"
 import { EligibilityStatus } from "./EligibilityStatus"
 import { toDecimalAmount } from "@/modules/utils"
 import BN from "bn.js"
@@ -72,15 +72,14 @@ export const Investment = () => {
                 <TooltipTitle
                     title="Assets" 
                 />
-                <KaniLink
-                    color="primary"
-                    className="cursor-pointer"
-                    onPress={() => {
+                <RefreshIcon
+                    classNames={{
+                        icon: "text-primary"
+                    }}
+                    onRefresh={() => {
                         queryPortfolioValueV2Swr.mutate()
                     }}
-                >
-                    <ArrowClockwiseIcon className="w-5 h-5 cursor-pointer" />
-                </KaniLink>
+                />
             </div>
             <Spacer y={4} />
             <div className="flex gap-2">

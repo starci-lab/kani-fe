@@ -1,9 +1,7 @@
 import React from "react"
-import { KaniLink } from "../../../../atomic"
-import { TooltipTitle } from "../../../../reuseable"
+import { RefreshIcon, TooltipTitle } from "../../../../reuseable"
 import { PoolCard } from "./PoolCard"
 import { Spacer } from "@heroui/react"
-import { ArrowClockwiseIcon } from "@phosphor-icons/react"
 import { useQueryReservesWithFeesV2Swr } from "@/hooks/singleton"
 
 export const Position = () => {
@@ -14,15 +12,16 @@ export const Position = () => {
                 <TooltipTitle
                     title="Position"
                 />
-                <KaniLink
-                    target="_blank"
-                    className="text-primary cursor-pointer"
-                    onPress={() => {
-                        queryReservesWithFeesV2Swr.mutate()
+                <RefreshIcon 
+                    classNames={{
+                        icon: "text-primary"
                     }}
-                >
-                    <ArrowClockwiseIcon className="w-5 h-5"/>
-                </KaniLink>
+                    onRefresh={
+                        () => {
+                            queryReservesWithFeesV2Swr.mutate()
+                        }
+                    } 
+                />
             </div>
             <Spacer y={4} />
             <PoolCard />

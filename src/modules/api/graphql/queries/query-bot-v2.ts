@@ -25,6 +25,7 @@ const query1 = gql`
         isExitToUsdc
         version
         performanceDisplayMode
+        positionsPerformanceDisplayMode
         balanceSnapshots {
           targetBalanceAmount
           quoteBalanceAmount

@@ -43,7 +43,7 @@ export const mutationVerifySignInOtp = async ({
 }: MutationVerifySignInOtpParams) => {
     const mutationDocument = mutationMap[mutation]
     // use no cache credential to include http only cookies
-    return await createApolloClient().mutate<{
+    return await createApolloClient({}).mutate<{
         verifySignInOtp: GraphQLResponse<MutationVerifySignInOtpResponse>,
     }>({
         mutation: mutationDocument,

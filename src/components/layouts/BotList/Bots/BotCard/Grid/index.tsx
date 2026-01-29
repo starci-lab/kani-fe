@@ -5,7 +5,7 @@ import { UnitDropdown, SnippetIcon, TooltipTitle } from "../../../../../reuseabl
 import { truncateMiddle } from "@/modules/utils"
 import { BotCardBaseProps } from "../types"
 import { updateBotPerformanceDisplayModeInBots, useAppDispatch } from "@/redux"
-import { PerformanceDisplayMode } from "@/modules/types"
+import { useUpdateBotPerformanceDisplayModeV2SwrMutation } from "@/hooks/singleton"
 
 export type BotCardGridProps = BotCardBaseProps
 
@@ -28,6 +28,7 @@ export const BotCardGrid = ({
     onCardPress,
 }: BotCardGridProps) => {
     const dispatch = useAppDispatch()
+    const updateBotPerformanceDisplayModeV2SwrMutation = useUpdateBotPerformanceDisplayModeV2SwrMutation()
     return (
         <KaniCard 
             isPressable 
@@ -91,12 +92,27 @@ export const BotCardGrid = ({
                             </div>
                         </div>
                     </div>
-                    <UnitDropdown bot={bot} setOptimisticPerformanceDisplayMode={() => {
-                        dispatch(updateBotPerformanceDisplayModeInBots({
-                            id: bot.id,
-                            performanceDisplayMode: bot.performanceDisplayMode === PerformanceDisplayMode.Usd ? PerformanceDisplayMode.Target : PerformanceDisplayMode.Usd,
-                        }))
-                    }} />
+                    <UnitDropdown 
+                        targetToken={targetToken} 
+                        value={bot.performanceDisplayMode} 
+                        onValueChange={
+                            async (value) => {
+                            // optimistic update
+                                dispatch(
+                                    updateBotPerformanceDisplayModeInBots({
+                                        id: bot.id,
+                                        performanceDisplayMode: value,
+                                    }
+                                    )
+                                )
+                                // update server
+                                await updateBotPerformanceDisplayModeV2SwrMutation.trigger({
+                                    request: {
+                                        id: bot.id,
+                                        performanceDisplayMode: value,
+                                    },
+                                })
+                            }} />
                 </div>
                 <Spacer y={6} />
                 <div className="flex items-center gap-4 justify-between">

@@ -1,8 +1,8 @@
 import { KaniLink } from "../../../../atomic"
-import { PoolCardSkeleton, TooltipTitle, PoolCard } from "../../../../reuseable"
+import { PoolCardSkeleton, TooltipTitle, PoolCard, RefreshIcon } from "../../../../reuseable"
 import { Spacer } from "@heroui/react"
 import React from "react"
-import { ArrowClockwiseIcon, FadersIcon } from "@phosphor-icons/react"
+import { FadersIcon } from "@phosphor-icons/react"
 import { useQueryLiquidityPoolsBotSwr, useUpdatePoolsDisclosure } from "@/hooks/singleton"
 
 export const Pools = () => {
@@ -14,6 +14,7 @@ export const Pools = () => {
                 <TooltipTitle
                     title="Pools"
                     tooltipString="The pools selected for the bot." />
+                
                 <div>
                     <div className="flex items-center gap-2">
                         <KaniLink
@@ -26,18 +27,14 @@ export const Pools = () => {
                                 className="w-5 h-5"
                             />
                         </KaniLink>  
-                        <KaniLink
-                            className="cursor-pointer"
-                            size="sm"
-                            color="primary"
-                            onPress={() => {
+                        <RefreshIcon
+                            classNames={{
+                                icon: "text-primary"
+                            }}
+                            onRefresh={() => {
                                 mutate()
                             }}
-                        >
-                            <ArrowClockwiseIcon 
-                                className="w-5 h-5"
-                            />
-                        </KaniLink>  
+                        />
                     </div>
                 </div>  
             </div>

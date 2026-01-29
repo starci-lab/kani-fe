@@ -61,7 +61,7 @@ export const TokenCard = ({
                         {renderChips()}
                     </div>
                 </div>
-                <Spacer y={2} />
+                <Spacer y={3} />
                 <TooltipTitle 
                     classNames={{
                         title: "text-xs text-foreground-500", 
@@ -80,7 +80,7 @@ export const TokenCard = ({
                         </div>
                     )   
                 }
-                <Spacer y={1} />
+                <Spacer y={2} />
                 <KaniLink
                     color="primary"
                     className="cursor-pointer"

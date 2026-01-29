@@ -28,6 +28,46 @@ const query1 = gql`
             minBinId
             maxBinId
           }
+          openSnapshot {
+            targetBalanceAmount
+            quoteBalanceAmount
+            gasBalanceAmount
+            snapshotAt
+            positionValue
+            positionValueInUsd
+          }
+          closeSnapshot {
+            targetBalanceAmount
+            quoteBalanceAmount
+            gasBalanceAmount
+            snapshotAt
+            positionValue
+            positionValueInUsd
+          }
+          performance {
+            roi
+            pnl
+            roiUsd
+            pnlUsd
+          }
+          associatedLiquidityPool {
+            id
+            createdAt
+            updatedAt
+            displayId
+            dex
+            poolAddress
+            tokenA
+            tokenB
+            fee
+            chainId
+            type
+            isActive
+            metadata
+            url
+            wsIdleTimeoutMs
+            staleMs
+          }
         }
         count
       }

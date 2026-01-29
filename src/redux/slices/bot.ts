@@ -180,13 +180,20 @@ export const botSlice = createSlice({
                         : bot
                 )
             }
-        },
-          
+        }, 
         updateBotPerformanceDisplayMode: (state, action) => {
             if (state.bot) {
                 state.bot = {
                     ...state.bot,
                     performanceDisplayMode: action.payload.performanceDisplayMode,
+                }
+            }
+        },
+        updateBotPositionsPerformanceDisplayMode: (state, action) => {
+            if (state.bot) {
+                state.bot = {
+                    ...state.bot,
+                    positionsPerformanceDisplayMode: action.payload.positionsPerformanceDisplayMode,
                 }
             }
         },
@@ -217,6 +224,7 @@ export const {
     setDisplayMode,
     updateBotPerformanceDisplayMode,
     updateBotPerformanceDisplayModeInBots,
+    updateBotPositionsPerformanceDisplayMode,
 } = botSlice.actions
 
 export interface UpdateBotPerformanceDisplayModePayload {

@@ -18,35 +18,38 @@ const query1 = gql`
       data {
         count
         data {
-          id
-          createdAt
-          updatedAt
-          displayId
-          dex
-          poolAddress
-          tokenA
-          tokenB
-          fee
-          chainId
-          type
-          tickSpacing
-          binStep
-          binOffset
-          isActive
-          tickMultiplier
-          metadata
-          url
-          basisPointMax
-          dynamicInfo {
-            tickCurrent
-            activeId
-            liquidity
-            price
-            volume24H
-            fees24H
-            apr24H
-            tvl
-          }
+            id
+            createdAt
+            updatedAt
+            displayId
+            dex
+            poolAddress
+            tokenA
+            tokenB
+            fee
+            chainId
+            type
+            isActive
+            metadata
+            url
+            wsIdleTimeoutMs
+            staleMs
+            clmmState {
+                tickSpacing
+                tickMultiplier
+            }
+            analytics {
+                volume24H
+                fees24H
+                apr24H
+                tvl
+                liquidity
+            }
+            dlmmState {
+                binStep
+                binOffset
+                basisPointMax
+            }
         }
       }
     }

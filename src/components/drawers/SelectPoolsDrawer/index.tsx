@@ -10,8 +10,7 @@ import React, { useMemo } from "react"
 import { useQueryLiquidityPoolsSelectPoolsSwr, useSelectPoolsDisclosure, useCreateBotFormik } from "@/hooks/singleton"
 import { Spacer } from "@heroui/react"
 import { setSelectPoolsFilters, useAppDispatch, useAppSelector } from "@/redux"
-import { DexSelect, EmptyContent, PoolCard, PoolCardSkeleton, SortByDropdown, TextCheckbox, TextSwitch } from "../../reuseable"
-import { ArrowClockwiseIcon } from "@phosphor-icons/react"
+import { DexSelect, EmptyContent, PoolCard, PoolCardSkeleton, RefreshIcon, SortByDropdown, TextCheckbox, TextSwitch } from "../../reuseable"
 import { LiquidityPoolsSortBy } from "@/modules/api"
 
 export const SelectPoolsDrawer = () => {
@@ -98,7 +97,7 @@ export const SelectPoolsDrawer = () => {
                                         }} 
                                     />
                                     <KaniButton variant="flat" isIconOnly>
-                                        <ArrowClockwiseIcon className="w-5 h-5" />
+                                        <RefreshIcon />
                                     </KaniButton>
                                 </div>
                             </div>

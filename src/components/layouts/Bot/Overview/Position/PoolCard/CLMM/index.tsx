@@ -15,7 +15,7 @@ import {
 } from "@/components/atomic";
 import Decimal from "decimal.js";
 import { Spacer } from "@heroui/react";
-import { useQueryReservesWithFeesV2Swr } from "@/hooks/singleton";
+import { useQueryReservesWithFeesV2Swr, useUpdateBotPerformanceDisplayModeV2SwrMutation } from "@/hooks/singleton";
 import numeral from "numeral";
 import { TooltipTitle, UnitDropdown } from "@/components/reuseable";
 import { useAppDispatch } from "@/redux";
@@ -25,6 +25,7 @@ export interface CLMMProps {
 }
 
 export const CLMM = ({ liquidityPool }: CLMMProps) => {
+    const updateBotPerformanceDisplayModeV2SwrMutation = useUpdateBotPerformanceDisplayModeV2SwrMutation()
     const dispatch = useAppDispatch();
     const bot = useAppSelector((state) => state.bot.bot);
     const tokens = useAppSelector((state) => state.static.tokens);
@@ -252,9 +253,12 @@ export const CLMM = ({ liquidityPool }: CLMMProps) => {
         totalFeesInUsd,
         totalRewardsInUsd,
     ]);
-
+    const targetToken = useMemo(() => tokens.find((token) => token.id === bot?.targetToken), [tokens, bot?.targetToken])
+    if (!targetToken) {
+        return null
+    }
     if (!bot) {
-        return null;
+        return null
     }
     return (
         <>
@@ -306,8 +310,9 @@ export const CLMM = ({ liquidityPool }: CLMMProps) => {
                                 </div>
                                 <KaniDivider orientation="vertical" className="h-5" />
                             </div>
-                            <div className="flex flex-col gap-2 ml-auto">
+                            <div className="flex flex-col gap-2">
                                 <KaniChip
+                                    className="ml-auto"
                                     variant="flat"
                                     startContent={
                                         <KaniImage src={tokenA?.iconUrl} className="w-5 h-5" />
@@ -316,6 +321,7 @@ export const CLMM = ({ liquidityPool }: CLMMProps) => {
                                     {tokenAReserve.toNumber()} {tokenA?.symbol}
                                 </KaniChip>
                                 <KaniChip
+                                    className="ml-auto"
                                     variant="flat"
                                     startContent={
                                         <KaniImage src={tokenB?.iconUrl} className="w-5 h-5" />
@@ -344,8 +350,9 @@ export const CLMM = ({ liquidityPool }: CLMMProps) => {
                             </div>
                             <div className="grid grid-cols-[1fr_150px] items-center gap-2">
                                 <KaniDivider orientation="vertical" className="h-5" />
-                                <div className="flex flex-col gap-2 ml-auto">
+                                <div className="flex flex-col gap-2">
                                     <KaniChip
+                                        className="ml-auto"
                                         variant="flat"
                                         startContent={
                                             <KaniImage src={tokenA?.iconUrl} className="w-5 h-5" />
@@ -356,6 +363,7 @@ export const CLMM = ({ liquidityPool }: CLMMProps) => {
                                         </span>
                                     </KaniChip>
                                     <KaniChip
+                                        className="ml-auto"
                                         variant="flat"
                                         startContent={
                                             <KaniImage src={tokenB?.iconUrl} className="w-5 h-5" />
@@ -392,6 +400,7 @@ export const CLMM = ({ liquidityPool }: CLMMProps) => {
                                         <div className="flex flex-col gap-2">
                                             {rewards.map(([tokenId, reward]) => (
                                                 <KaniChip
+                                                    key={tokenId}
                                                     className="ml-auto"
                                                     variant="flat"
                                                     startContent={
@@ -457,18 +466,23 @@ export const CLMM = ({ liquidityPool }: CLMMProps) => {
                         </div>
                     </div>
                     <UnitDropdown
-                        bot={bot}
-                        setOptimisticPerformanceDisplayMode={() => {
-                            dispatch(
-                                updateBotPerformanceDisplayMode({
+                        targetToken={targetToken}
+                        value={bot.performanceDisplayMode}
+                        onValueChange={
+                            async (value) => {
+                                // optimistic update
+                                dispatch(updateBotPerformanceDisplayMode({
                                     id: bot.id,
-                                    performanceDisplayMode:
-                                        bot.performanceDisplayMode === PerformanceDisplayMode.Usd
-                                            ? PerformanceDisplayMode.Target
-                                            : PerformanceDisplayMode.Usd,
-                                }),
-                            );
-                        }}
+                                    performanceDisplayMode: value,
+                                }))
+                                // update server
+                                await updateBotPerformanceDisplayModeV2SwrMutation.trigger({
+                                    request: {
+                                        id: bot.id,
+                                        performanceDisplayMode: value,
+                                    },
+                                })
+                            }}
                     />
                 </div>
             </div>

@@ -11,22 +11,29 @@ import {
     KaniTableHeader,
     KaniTableRow
 } from "../../../../atomic"
-import { EmptyContent, TooltipTitle } from "../../../../reuseable"
-import { useAppDispatch, useAppSelector } from "@/redux"
+import { EmptyContent, RefreshIcon, SnippetIcon, TooltipTitle, UnitDropdown } from "../../../../reuseable"
+import { updateBotPositionsPerformanceDisplayMode, useAppDispatch, useAppSelector } from "@/redux"
 import { Spacer, Spinner } from "@heroui/react"
-import React from "react"
-import { useQueryPositionsV2Swr } from "@/hooks/singleton"
+import React, { useMemo } from "react"
+import { useQueryPositionsV2Swr, useUpdateBotPositionsPerformanceDisplayModeV2SwrMutation } from "@/hooks/singleton"
 import { setPositionsPages } from "@/redux"
-import { round, computePercentage } from "@/modules/utils"
+import { round, computePercentage, truncateMiddle } from "@/modules/utils"
 import { Performance } from "./Performance"
 import { EyeIcon } from "@phosphor-icons/react"
+import Decimal from "decimal.js"
+import { PerformanceDisplayMode } from "@/modules/types"
 
 export const Positions = () => {
+    const bot = useAppSelector((state) => state.bot.bot)
     const queryPositionsV2Swr = useQueryPositionsV2Swr()
     const dispatch = useAppDispatch()
     const positions = useAppSelector((state) => state.bot.positions)
     const positionsPages = useAppSelector((state) => state.bot.positionsPages)
     const headers = [
+        {
+            key: "id",
+            label: "ID"
+        },
         {
             key: "value",
             label: "Value"
@@ -46,13 +53,47 @@ export const Positions = () => {
     ]
     const tokens = useAppSelector((state) => state.static.tokens)
     const dexes = useAppSelector((state) => state.static.dexes)
-    const bot = useAppSelector((state) => state.bot.bot)
-
+    const updateBotPositionsPerformanceDisplayModeV2SwrMutation = useUpdateBotPositionsPerformanceDisplayModeV2SwrMutation()
+    const targetToken = useMemo(() => tokens.find((token) => token.id === bot?.targetToken), [tokens, bot?.targetToken])
+    if (!bot) {
+        return null
+    }
+    if (!targetToken) {
+        return null
+    }
     return (
         <div>
-            <TooltipTitle
-                title="Positions"
-            />
+            <div className="flex items-center gap-4 justify-between">
+                <TooltipTitle
+                    title="Positions"
+                />
+                <div className="flex items-center gap-2">   
+                    <UnitDropdown 
+                        targetToken={targetToken} 
+                        value={bot.positionsPerformanceDisplayMode} 
+                        onValueChange={
+                            async (value) => {
+                                dispatch(updateBotPositionsPerformanceDisplayMode({
+                                    id: bot.id,
+                                    positionsPerformanceDisplayMode: value,
+                                }))
+                                await updateBotPositionsPerformanceDisplayModeV2SwrMutation.trigger({
+                                    request: {
+                                        id: bot.id,
+                                        positionsPerformanceDisplayMode: value,
+                                    },
+                                })
+                            }} />
+                    <RefreshIcon
+                        classNames={{
+                            icon: "text-primary"
+                        }}
+                        onRefresh={() => {
+                            queryPositionsV2Swr.mutate()
+                        }}
+                    />
+                </div>
+            </div>
             <Spacer y={4} />
             <KaniTable 
                 shadow="none"
@@ -93,13 +134,33 @@ export const Positions = () => {
                             positions || []).map((position) => (
                             <KaniTableRow key={position.id} className="border-b border-divider last:border-b-0">
                                 <KaniTableCell>
+                                    <div className="flex items-center gap-2">
+                                        {truncateMiddle({ str: position.id, front: 4, back: 4 })}  
+                                        <SnippetIcon
+                                            copyString={position.id}
+                                            classNames={{
+                                                checkIcon: "w-5 h-5 text-foreground-500",
+                                                copyIcon: "w-5 h-5 text-foreground-500",
+                                            }}
+                                        />  
+                                    </div>
+                                </KaniTableCell>
+                                <KaniTableCell>
                                     {(() => {
                                         const tokenA = tokens.find((token) => token.id === position.associatedLiquidityPool?.tokenA)
                                         const tokenB = tokens.find((token) => token.id === position.associatedLiquidityPool?.tokenB)
                                         const targetToken = tokenA?.id === bot?.targetToken ? tokenA : tokenB
                                         return (
                                             <div className="flex items-center gap-2">
-                                                {round(position.positionValueAtOpen).toNumber()} {targetToken?.symbol}
+                                                {
+                                                    (() => {
+                                                        if (bot.positionsPerformanceDisplayMode === PerformanceDisplayMode.Usd) {
+                                                            return  `${round(new Decimal(position.openSnapshot?.positionValueInUsd ?? 0)).toNumber()} USD`
+                                                        } else {
+                                                            return `${round(new Decimal(position.openSnapshot?.positionValue ?? 0)).toNumber()} ${targetToken?.symbol}`
+                                                        }
+                                                    })()
+                                                }
                                             </div>
                                         )
                                     })()}
@@ -110,14 +171,14 @@ export const Positions = () => {
                                 <KaniTableCell>
                                     {
                                         (() => {
-                                            const tokenA = tokens.find((token) => token.id === position.associatedLiquidityPool.tokenA)
-                                            const tokenB = tokens.find((token) => token.id === position.associatedLiquidityPool.tokenB)
+                                            const tokenA = tokens.find((token) => token.id === position.associatedLiquidityPool?.tokenA)
+                                            const tokenB = tokens.find((token) => token.id === position.associatedLiquidityPool?.tokenB)
                                             return (
                                                 <div>
                                                     <div className="flex items-center gap-2">
                                                         {
                                                             (() => {
-                                                                const dex = dexes.find((dex) => dex.id === position.associatedLiquidityPool.dex)
+                                                                const dex = dexes.find((dex) => dex.id === position.associatedLiquidityPool?.dex)
                                                                 return (
                                                                     <div className="flex items-center gap-2">
                                                                         <KaniImage src={dex?.iconUrl} className="w-4 h-4" />
@@ -141,7 +202,7 @@ export const Positions = () => {
                                                             <div className="text-sm">{tokenA?.name}-{tokenB?.name}</div>
                                                         </div>
                                                         <div className="flex items-center gap-1 justify-end">
-                                                            <div className="text-sm">{computePercentage(position.associatedLiquidityPool.fee ?? 0, 1, 5).toString()}%</div>
+                                                            <div className="text-sm">{computePercentage({ numerator: new Decimal(position.associatedLiquidityPool?.fee ?? 0), denominator: new Decimal(1) }).toString()}%</div>
                                                         </div>
                                                     </div>
                                                 </div>

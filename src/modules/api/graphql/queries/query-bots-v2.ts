@@ -26,6 +26,7 @@ const query1 = gql`
             quoteToken
             isExitToUsdc
             performanceDisplayMode
+            positionsPerformanceDisplayMode
             version
             activePosition {
               id
