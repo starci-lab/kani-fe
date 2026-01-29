@@ -304,7 +304,16 @@ export const CLMM = ({ liquidityPool }: CLMMProps) => {
                     />
                     {queryReservesWithFeesV2Swr.isLoading ||
                         !queryReservesWithFeesV2Swr.data ? (
-                        <KaniSkeleton className="h-[28px] w-[120px] rounded-md" />
+                            <div className="grid grid-cols-[1fr_150px] items-center gap-2">
+                            <div className="flex items-center gap-2">
+                                <KaniSkeleton className="h-[20px] w-[60px] rounded-md" />
+                                <KaniDivider orientation="vertical" className="h-5" />
+                            </div>
+                            <div className="flex flex-col gap-2 items-end">
+                                <KaniSkeleton className="h-[28px] w-[120px] rounded-full" />
+                                <KaniSkeleton className="h-[28px] w-[120px] rounded-full" />
+                            </div>
+                        </div>
                     ) : (
                         <div className="grid grid-cols-[1fr_150px] items-center gap-2">
                             <div className="flex items-center gap-2">
@@ -345,7 +354,16 @@ export const CLMM = ({ liquidityPool }: CLMMProps) => {
                     />
                     {queryReservesWithFeesV2Swr.isLoading ||
                         !queryReservesWithFeesV2Swr.data ? (
-                        <KaniSkeleton className="h-[28px] w-[120px] rounded-md" />
+                            <div className="grid grid-cols-[1fr_150px] items-center gap-2">
+                            <div className="flex items-center gap-2">
+                                <KaniSkeleton className="h-[20px] w-[60px] rounded-md" />
+                                <KaniDivider orientation="vertical" className="h-5" />
+                            </div>
+                            <div className="flex flex-col gap-2 items-end">
+                                <KaniSkeleton className="h-[28px] w-[120px] rounded-full" />
+                                <KaniSkeleton className="h-[28px] w-[120px] rounded-full" />
+                            </div>
+                        </div>
                     ) : (
                         <div className="flex items-center gap-2">
                             <div className="text-sm">
