@@ -253,7 +253,10 @@ export const CLMM = ({ liquidityPool }: CLMMProps) => {
         totalFeesInUsd,
         totalRewardsInUsd,
     ]);
-    const targetToken = useMemo(() => tokens.find((token) => token.id === bot?.targetToken), [tokens, bot?.targetToken])
+    const targetToken = useMemo(
+        () => tokens.find((token) => token.id === bot?.targetToken), 
+        [tokens, bot?.targetToken]
+    )
     if (!targetToken) {
         return null
     }

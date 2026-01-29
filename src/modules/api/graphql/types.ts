@@ -38,15 +38,3 @@ export interface QueryVariables<TRequest> {
     request: TRequest
 }
 
-export enum ChartInterval {
-    FifteenMinutes = "fifteenMinutes",
-    ThirtyMinutes = "thirtyMinutes",
-    OneHour = "oneHour",
-    TwoHours = "twoHours",
-    FourHours = "fourHours",
-    Day = "day",
-}
-
-export enum ChartUnit {
-    Usd = "usd",
-}

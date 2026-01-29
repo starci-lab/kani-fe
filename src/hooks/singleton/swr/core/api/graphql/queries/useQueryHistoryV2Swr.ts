@@ -1,9 +1,10 @@
-import { queryHistoryV2, QueryHistoryV2Request, ChartInterval } from "@/modules/api"
+import { queryHistoryV2, QueryHistoryV2Request } from "@/modules/api"
 import { useAppDispatch, useAppSelector, setHistoryResponse } from "@/redux"
 import useSWR from "swr"
 import { dayjs } from "@/modules/dayjs"
 import ms from "ms"
 import { usePrivy } from "@privy-io/react-auth"
+import { ChartInterval, ChartUnit } from "@/modules/types"
 
 export interface IntervalConfig {
     time: ms.StringValue
@@ -41,10 +42,16 @@ export const useQueryHistoryV2SwrCore = () => {
     const dispatch = useAppDispatch()
     const { getAccessToken, authenticated } = usePrivy()
     const botId = useAppSelector((state) => state.bot.id)
-    const chartInterval = useAppSelector((state) => state.bot.chartInterval)
-    const chartUnit = useAppSelector((state) => state.bot.chartUnit)
+    const chartInterval = useAppSelector((state) => state.bot.bot?.chartConfig?.chartInterval ?? ChartInterval.OneHour)
+    const chartUnit = useAppSelector((state) => state.bot.bot?.chartConfig?.chartUnit ?? ChartUnit.Target)
     const swr = useSWR(
-        authenticated && botId ? ["QUERY_HISTORY_V2_SWR", authenticated, botId] : null,
+        (authenticated && botId) ? [
+            "QUERY_HISTORY_V2_SWR", 
+            authenticated, 
+            botId, 
+            chartInterval, 
+            chartUnit
+        ] : null,
         async () => {
             if (!botId) {
                 throw new Error("Id is required")

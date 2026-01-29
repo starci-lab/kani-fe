@@ -1,7 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 import { BotSchema, PerformanceDisplayMode, PositionSchema, TransactionSchema } from "@/modules/types"
 import { QueryHistoryResponse } from "@/modules/api"
-import { ChartInterval, ChartUnit, LiquidityPoolsSortBy } from "@/modules/api"
+import { LiquidityPoolsSortBy } from "@/modules/api"
+import { ChartInterval, ChartUnit } from "@/modules/api/graphql"
 
 export enum BotTab {
     Overview = "overview",
@@ -50,8 +51,6 @@ export interface BotSlice {
     transactionsCursor?: string
     positions?: Array<PositionSchema>
     positionsCursor?: string
-    chartInterval: ChartInterval
-    chartUnit?: ChartUnit
     historyResponse?: QueryHistoryResponse
     selectedPosition?: PositionSchema
     bots?: Array<BotSchema>
@@ -64,9 +63,13 @@ export interface BotSlice {
     displayMode: BotDisplayMode
 }
 
+export type BotChartConfigPayload = Partial<{
+    chartUnit: ChartUnit
+    chartInterval: ChartInterval
+}>
+
 const initialState: BotSlice = {
     tab: BotTab.Overview,
-    chartInterval: ChartInterval.OneHour,
     updatePoolsFilters: {
         asc: false,
         sortBy: LiquidityPoolsSortBy.Apr,
@@ -130,14 +133,29 @@ export const botSlice = createSlice({
                 ...action.payload
             }
         },
-        setSelectedPosition: (state, action: PayloadAction<PositionSchema>) => {
-            state.selectedPosition = action.payload
+        setBotChartConfigChartUnit: (state, action: PayloadAction<ChartUnit>) => {
+            if (state.bot) {
+                if (state.bot.chartConfig) {
+                    state.bot.chartConfig = {
+                        ...state.bot.chartConfig,
+                        chartUnit: action.payload,
+                    }
+                } else {
+                    state.bot.chartConfig = {
+                        chartUnit: action.payload,
+                    }
+                }
+            }
         },
-        setChartInterval: (state, action: PayloadAction<ChartInterval>) => {
-            state.chartInterval = action.payload
-        },
-        setChartUnit: (state, action: PayloadAction<ChartUnit>) => {
-            state.chartUnit = action.payload
+        setBotChartConfigChartInterval: (state, action: PayloadAction<ChartInterval>) => {
+            if (state.bot) {
+                if (state.bot.chartConfig) {
+                    state.bot.chartConfig = {
+                        ...state.bot.chartConfig,
+                        chartInterval: action.payload,
+                    }
+                }
+            }
         },
         setHistoryResponse: (state, action: PayloadAction<QueryHistoryResponse>) => {
             state.historyResponse = action.payload
@@ -213,9 +231,8 @@ export const {
     setTransactionsPages,
     setPositionsFilters,
     setPositionsPages,
-    setSelectedPosition,
-    setChartInterval,
-    setChartUnit,
+    setBotChartConfigChartUnit,
+    setBotChartConfigChartInterval,
     setHistoryResponse,
     setBots,
     setBotsPageNumber,

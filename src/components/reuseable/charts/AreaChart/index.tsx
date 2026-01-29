@@ -11,6 +11,7 @@ import {
     CartesianGrid,
 } from "recharts"
 import { CustomTick } from "./CustomTick"
+import { ChartInterval } from "@/modules/types"
 
 export interface AreaChartData {
     name: string
@@ -21,7 +22,7 @@ export interface AreaChartProps {
 }
 
 export const AreaChart = ({ data }: AreaChartProps) => {
-    const interval = useAppSelector((state) => state.bot.chartInterval)
+    const interval = useAppSelector((state) => state.bot.bot?.chartConfig?.chartInterval ?? ChartInterval.OneHour)
     const bot = useAppSelector((state) => state.bot.bot)
     const tokens = useAppSelector((state) => state.static.tokens)
     const token = useMemo(() => {
@@ -31,7 +32,7 @@ export const AreaChart = ({ data }: AreaChartProps) => {
         <ResponsiveContainer width="100%" height={300}>
             <RechartsAreaChart
                 data={data}
-                margin={{ top: 25, right: 0, left: 0, bottom: 25 }}
+                margin={{ top: 25, right: 0, left: 0, bottom: 10 }}
             >
                 <defs>
                     <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
@@ -66,10 +67,7 @@ export const AreaChart = ({ data }: AreaChartProps) => {
                     tickMargin={10}
                     tick={{ fontSize: 12 }}
                     domain={
-                        [
-                            (dataMin: number) => dataMin * 0.9
-                            , "dataMax"
-                        ]
+                        ["auto", "auto"]
                     }
                 />
                 <Tooltip

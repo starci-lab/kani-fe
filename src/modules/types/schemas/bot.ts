@@ -5,6 +5,7 @@ import { BotSnapshotsSchema } from "./bot-snapshots"
 import { ActiveJobSchema } from "./active-job"
 import { PrivyMetadataSchema } from "./privy-metadata"
 import { AbstractSchema } from "./abstract"
+import { BotChartConfigSchema } from "./bot-chart-config"
 
 export interface BotPerformance24H {
     roi: number
@@ -34,4 +35,5 @@ export interface BotSchema extends AbstractSchema {
     performance24h?: BotPerformance24H
     performanceDisplayMode: PerformanceDisplayMode
     positionsPerformanceDisplayMode: PerformanceDisplayMode
+    chartConfig?: BotChartConfigSchema
 }

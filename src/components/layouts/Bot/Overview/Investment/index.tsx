@@ -13,6 +13,7 @@ import { EligibilityStatus } from "./EligibilityStatus"
 import { toDecimalAmount } from "@/modules/utils"
 import BN from "bn.js"
 import Decimal from "decimal.js"
+import { ChartUnitTabs } from "./ChartUnitTabs"
 
 export const Investment = () => {
     const tokens = useAppSelector(
@@ -52,7 +53,7 @@ export const Investment = () => {
             <TooltipTitle
                 title="Investment"
             />
-            <Spacer y={4} />
+            <Spacer y={2} />
             <div className="flex justify-between items-center">
                 {
                     isLoading ? (
@@ -62,12 +63,16 @@ export const Investment = () => {
                             ${numeral(queryPortfolioValueV2Swr.data?.data?.portfolioValueV2?.data?.portfolioValueInUsd?.includingGas?.toString() || "0").format("0,0.00000")}
                         </div>
                     )}
-                <IntervalTabs />  
             </div>
             <EligibilityStatus />
-            <Spacer y={4} />
+            <Spacer y={6} />
             <HistoryChart />
-            <Spacer y={8} />
+            <Spacer y={3} />
+            <div className="flex justify-between items-center">
+                <ChartUnitTabs />
+                <IntervalTabs />  
+            </div>
+            <Spacer y={6} />
             <div className="flex justify-between items-center">
                 <TooltipTitle
                     title="Assets" 

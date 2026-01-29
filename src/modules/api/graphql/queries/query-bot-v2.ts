@@ -123,6 +123,10 @@ const query1 = gql`
             }
           }
         }
+        chartConfig {
+          chartUnit
+          chartInterval
+        }
         performance24h {
           roi
           pnl

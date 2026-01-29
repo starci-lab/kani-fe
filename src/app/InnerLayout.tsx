@@ -6,7 +6,8 @@ import {
     Navbar,
     NextThemesProvider,
     PrivyProvider,
-    WorkersContainer
+    WorkersContainer,
+    SwrProvider
 } from "@/components"
 import { SingletonHookProvider } from "@/hooks/singleton"
 import { ReduxProvider } from "@/redux"
@@ -19,23 +20,25 @@ export const InnerLayout = ({ children }: PropsWithChildren) => {
         <Suspense>
             <NextThemesProvider attribute="class" defaultTheme="dark" enableSystem={true} storageKey="kani-theme">
                 <HeroUIProvider> 
-                    <PrivyProvider>
-                        <ReduxProvider>
-                            <SingletonHookProvider>
-                                <Navbar />
-                                <div className="flex mx-auto max-w-[1024px]">
-                                    <Sidebar />
-                                    <div className="flex-1 p-6">
-                                        {children}
-                                    </div>
-                                </div>  
-                                <ModalContainer />
-                                <DrawerContainer />
-                                <ToastProvider />
-                                <WorkersContainer />
-                            </SingletonHookProvider>
-                        </ReduxProvider>
-                    </PrivyProvider>
+                    <SwrProvider>
+                        <PrivyProvider>
+                            <ReduxProvider>
+                                <SingletonHookProvider>
+                                    <Navbar />
+                                    <div className="flex mx-auto max-w-[1024px]">
+                                        <Sidebar />
+                                        <div className="flex-1 p-6">
+                                            {children}
+                                        </div>
+                                    </div>  
+                                    <ModalContainer />
+                                    <DrawerContainer />
+                                    <ToastProvider />
+                                    <WorkersContainer />
+                                </SingletonHookProvider>
+                            </ReduxProvider>
+                        </PrivyProvider>
+                    </SwrProvider>
                 </HeroUIProvider>
             </NextThemesProvider>
         </Suspense>

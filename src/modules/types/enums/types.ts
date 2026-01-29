@@ -56,3 +56,17 @@ export enum BalanceEvalStatus {
     TargetUnderweighted = "targetUnderweighted",
     TargetOverweighted  = "targetOverweighted",
 }
+
+export enum ChartInterval {
+    FifteenMinutes = "fifteenMinutes",
+    ThirtyMinutes = "thirtyMinutes",
+    OneHour = "oneHour",
+    TwoHours = "twoHours",
+    FourHours = "fourHours",
+    Day = "day",
+}
+
+export enum ChartUnit {
+    Usd = "usd",
+    Target = "target",
+}
