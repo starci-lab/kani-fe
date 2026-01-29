@@ -1,4 +1,4 @@
-import { KaniDivider, KaniSkeleton } from "../../../../atomic"
+import { KaniDivider, KaniSkeleton, KaniTooltip } from "../../../../atomic"
 import { useAppSelector } from "@/redux/hooks"
 import { Spacer } from "@heroui/react"
 import React, { useMemo } from "react"
@@ -14,6 +14,7 @@ import { toDecimalAmount } from "@/modules/utils"
 import BN from "bn.js"
 import Decimal from "decimal.js"
 import { ChartUnitTabs } from "./ChartUnitTabs"
+import { motion } from "framer-motion"
 
 export const Investment = () => {
     const tokens = useAppSelector(
@@ -28,9 +29,11 @@ export const Investment = () => {
     const quoteToken = useMemo(() => tokens.find(
         (token) => token.id === bot?.quoteToken
     ), [tokens, bot?.quoteToken])
+    console.log(tokens)
+    console.log(bot?.chainId)
     const gasToken = useMemo(() => tokens.find(
         (token) => token.chainId === bot?.chainId
-        && token.type === TokenType.Native
+            && token.type === TokenType.Native
     ), [tokens, bot?.chainId])
     const queryPortfolioValueV2Swr = useQueryPortfolioValueV2Swr()
     const gasConfig = useAppSelector(
@@ -48,6 +51,10 @@ export const Investment = () => {
         return queryPortfolioValueV2Swr.isLoading || !queryPortfolioValueV2Swr.data || !bot
     }, [queryPortfolioValueV2Swr.isLoading, queryPortfolioValueV2Swr.data, bot])
     const staticSwr = useQueryStaticSwr()
+    const investmentValue = useMemo(() => {
+        return new Decimal(queryPortfolioValueV2Swr.data?.data?.portfolioValueV2?.data?.portfolioValueInUsd?.includingGas?.toString() || "0").add(new Decimal(bot?.activePosition?.associatedPosition?.openSnapshot?.positionValueInUsd ?? 0)).toString()
+
+    }, [queryPortfolioValueV2Swr.data?.data?.portfolioValueV2?.data?.portfolioValueInUsd?.includingGas?.toString(), bot?.activePosition?.associatedPosition?.openSnapshot?.positionValueInUsd])
     return (
         <div>
             <TooltipTitle
@@ -57,10 +64,40 @@ export const Investment = () => {
             <div className="flex justify-between items-center">
                 {
                     isLoading ? (
-                        <KaniSkeleton className="h-[30px] w-[120px] rounded-md"/>
+                        <KaniSkeleton className="h-[30px] w-[120px] rounded-md" />
                     ) : (
-                        <div className="text-4xl font-bold leading-none">
-                            ${numeral(queryPortfolioValueV2Swr.data?.data?.portfolioValueV2?.data?.portfolioValueInUsd?.includingGas?.toString() || "0").format("0,0.00000")}
+                        <div className="flex items-center gap-2">
+                            <div className="text-4xl font-bold leading-none">
+                                ${numeral(investmentValue).format("0,0.00000")}
+                            </div>
+                            <KaniTooltip content="The investment value is the sum of the portfolio value and the position value." placement="top">
+                                <div className="text-4xl font-bold leading-none text-secondary">
+                                    <motion.span
+                                        className="
+    bg-gradient-to-r 
+    from-[hsl(var(--heroui-primary))] 
+    via-[hsl(var(--heroui-secondary))] 
+    to-[hsl(var(--heroui-primary))]
+    bg-[length:200%_200%]
+    bg-clip-text
+    text-transparent
+  "
+                                        animate={{
+                                            backgroundPosition: ["0% 50%", "100% 50%"],
+                                        }}
+                                        transition={{
+                                            duration: 2,
+                                            repeat: Infinity,
+                                            repeatType: "reverse",
+                                            ease: "linear",
+                                        }}
+                                    >
+                                        (${numeral(
+                                            bot?.activePosition?.associatedPosition?.openSnapshot?.positionValueInUsd ?? 0
+                                        ).format("0,0.00")})
+                                    </motion.span>
+                                </div>
+                            </KaniTooltip>
                         </div>
                     )}
             </div>
@@ -70,12 +107,12 @@ export const Investment = () => {
             <Spacer y={3} />
             <div className="flex justify-between items-center">
                 <ChartUnitTabs />
-                <IntervalTabs />  
+                <IntervalTabs />
             </div>
             <Spacer y={6} />
             <div className="flex justify-between items-center">
                 <TooltipTitle
-                    title="Assets" 
+                    title="Assets"
                 />
                 <RefreshIcon
                     classNames={{
@@ -123,14 +160,14 @@ export const Investment = () => {
                         <div className="text-xs">
                             {
                                 staticSwr.isLoading ? (
-                                    <KaniSkeleton className="h-[14px] w-[40px] rounded-md"/>
+                                    <KaniSkeleton className="h-[14px] w-[40px] rounded-md" />
                                 ) : (
                                     `${minRequiredAmountInUsd} USD`
                                 )
                             }
                         </div>
                     </div>
-                    <KaniDivider orientation="vertical" className="h-4"/>
+                    <KaniDivider orientation="vertical" className="h-4" />
                     <div className="flex gap-2 items-center">
                         <TooltipTitle
                             title="Minimum Gas Balance"
@@ -143,7 +180,7 @@ export const Investment = () => {
                         />
                         {
                             staticSwr.isLoading ? (
-                                <KaniSkeleton className="h-[14px] w-[40px] rounded-md"/>
+                                <KaniSkeleton className="h-[14px] w-[40px] rounded-md" />
                             ) : (
                                 <div className="text-xs">
                                     {targetOperationalAmountDecimal.toString()} {gasToken?.symbol}

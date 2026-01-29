@@ -20,7 +20,7 @@ export const HistoryChart = () => {
     return (
         <div>
             {
-                (queryHistoryV2Swr.isLoading || queryHistoryV2Swr.isValidating) ?
+                (queryHistoryV2Swr.isLoading) ?
                     <div className="h-[300px] w-full grid place-items-center">
                         <KaniSpinner />
                     </div>

@@ -22,6 +22,7 @@ const query1 = gql`
             displayId
             iconUrl
             id
+            type
             symbol
             is2022Token
             marketListings {
