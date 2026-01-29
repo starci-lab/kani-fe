@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 import { BotSchema, PerformanceDisplayMode, PositionSchema, TransactionSchema } from "@/modules/types"
-import { QueryHistoryResponse } from "@/modules"
+import { QueryHistoryResponse } from "@/modules/api"
 import { ChartInterval, ChartUnit, LiquidityPoolsSortBy } from "@/modules/api"
 
 export enum BotTab {
@@ -172,14 +172,22 @@ export const botSlice = createSlice({
         setDisplayMode: (state, action: PayloadAction<BotDisplayMode>) => {
             state.displayMode = action.payload
         },
-        updateBotPerformanceDisplayMode: (state, action: PayloadAction<UpdateBotPerformanceDisplayModePayload>) => {
+        updateBotPerformanceDisplayModeInBots: (state, action) => {
             if (state.bots) {
-                state.bots = state.bots.map((bot) => {
-                    if (bot.id === action.payload.id) {
-                        return { ...bot, performanceDisplayMode: action.payload.performanceDisplayMode }
-                    }
-                    return bot
-                })
+                state.bots = state.bots.map((bot) =>
+                    bot.id === action.payload.id
+                        ? { ...bot, performanceDisplayMode: action.payload.performanceDisplayMode }
+                        : bot
+                )
+            }
+        },
+          
+        updateBotPerformanceDisplayMode: (state, action) => {
+            if (state.bot) {
+                state.bot = {
+                    ...state.bot,
+                    performanceDisplayMode: action.payload.performanceDisplayMode,
+                }
             }
         },
     },
@@ -208,6 +216,7 @@ export const {
     setBotIsExitToUsdc,
     setDisplayMode,
     updateBotPerformanceDisplayMode,
+    updateBotPerformanceDisplayModeInBots,
 } = botSlice.actions
 
 export interface UpdateBotPerformanceDisplayModePayload {

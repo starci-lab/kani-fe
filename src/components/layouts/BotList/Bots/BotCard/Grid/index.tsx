@@ -1,10 +1,11 @@
 import React from "react"
-import { KaniAvatar, KaniAvatarGroup, KaniCard, KaniCardBody, KaniChip, KaniDivider, KaniImage } from "@/components/atomic"
+import { KaniAvatar, KaniAvatarGroup, KaniCard, KaniCardBody, KaniChip, KaniDivider, KaniImage } from "../../../../../atomic"
 import { Spacer } from "@heroui/react"
-import { SnippetIcon, TooltipTitle } from "@/components/reuseable"
-import { UnitDropdown } from "../UnitDropdown"
+import { UnitDropdown, SnippetIcon, TooltipTitle } from "../../../../../reuseable"
 import { truncateMiddle } from "@/modules/utils"
 import { BotCardBaseProps } from "../types"
+import { updateBotPerformanceDisplayModeInBots, useAppDispatch } from "@/redux"
+import { PerformanceDisplayMode } from "@/modules/types"
 
 export type BotCardGridProps = BotCardBaseProps
 
@@ -26,6 +27,7 @@ export const BotCardGrid = ({
     poolAddress,
     onCardPress,
 }: BotCardGridProps) => {
+    const dispatch = useAppDispatch()
     return (
         <KaniCard 
             isPressable 
@@ -89,7 +91,12 @@ export const BotCardGrid = ({
                             </div>
                         </div>
                     </div>
-                    <UnitDropdown bot={bot} />
+                    <UnitDropdown bot={bot} setOptimisticPerformanceDisplayMode={() => {
+                        dispatch(updateBotPerformanceDisplayModeInBots({
+                            id: bot.id,
+                            performanceDisplayMode: bot.performanceDisplayMode === PerformanceDisplayMode.Usd ? PerformanceDisplayMode.Target : PerformanceDisplayMode.Usd,
+                        }))
+                    }} />
                 </div>
                 <Spacer y={6} />
                 <div className="flex items-center gap-4 justify-between">

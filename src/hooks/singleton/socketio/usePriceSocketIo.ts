@@ -9,7 +9,7 @@ import {
     WsResponse
 } from "./config"
 import { usePrivy } from "@privy-io/react-auth"
-import { setPrices, useAppDispatch, useAppSelector } from "@/redux"
+import { PublicationPrice, setPrices, useAppDispatch, useAppSelector } from "@/redux"
 import { superjson } from "@/modules/superjson"
 import { InternalSocketIoEvent } from "./events"
 
@@ -97,17 +97,13 @@ export const usePriceSocketIo = () => {
 
     useEffect(() => {
         const handleEvent = async (
-            payload: WsResponse
+            payload: Record<string, PublicationPrice>
         ) => {
-            if (!payload.success) {
-                return
-            }
-            const { results } = superjson.parse<PublicationPriceEventPayload>(payload.data)
-            dispatch(setPrices(results))
+            dispatch(setPrices(payload))
         }
-        priceSocketIoEventEmitter.on(PublicationEvent.Price, handleEvent)
+        priceSocketIoEventEmitter.on(InternalSocketIoEvent.PriceUpdated, handleEvent)
         return () => {
-            priceSocketIoEventEmitter.off(PublicationEvent.Price, handleEvent)
+            priceSocketIoEventEmitter.off(InternalSocketIoEvent.PriceUpdated, handleEvent)
         }
     }, [dispatch])
     return socketRef.current

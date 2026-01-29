@@ -7,9 +7,10 @@ import { useUpdateBotPerformanceDisplayModeV2SwrMutation } from "@/hooks/singlet
 
 interface UnitDropdownProps {
     bot: BotSchema
+    setOptimisticPerformanceDisplayMode: () => void
 }
 
-export const UnitDropdown = ({ bot }: UnitDropdownProps) => {
+export const UnitDropdown = ({ bot, setOptimisticPerformanceDisplayMode }: UnitDropdownProps) => {
     const [isOpen, setIsOpen] = useState(false)
     const tokens = useAppSelector(
         (state) => state.static.tokens
@@ -40,6 +41,7 @@ export const UnitDropdown = ({ bot }: UnitDropdownProps) => {
                             return
                         }
                         const selectedKeys = Array.from(value)
+                        setOptimisticPerformanceDisplayMode()
                         await updateBotPerformanceDisplayModeV2SwrMutation.trigger({
                             request: {
                                 id: bot.id,

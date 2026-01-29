@@ -11,8 +11,6 @@ import {
     useToggleBotSwrMutationCore,
     useQueryUserV2SwrCore,
     useCreateBotV2SwrMutationCore,
-    useQueryFeesV2SwrCore,
-    useQueryReservesV2SwrCore,
     useUpdateBotSettingsV2SwrMutationCore,
     useToggleBotV2SwrMutationCore,
     useUpdateBotLiquidityPoolsV2SwrMutationCore,
@@ -31,6 +29,7 @@ import {
     useQueryLiquidityPoolsSelectedPoolsSwrCore,
     useQueryPositionsV2SwrCore,
     useUpdateBotPerformanceDisplayModeV2SwrMutationCore,
+    useQueryReservesWithFeesV2SwrCore,
 } from "./core"
 
 export interface SwrContextType {
@@ -43,8 +42,6 @@ export interface SwrContextType {
     toggleBotSwrMutation: ReturnType<typeof useToggleBotSwrMutationCore>;
     queryUserV2Swr: ReturnType<typeof useQueryUserV2SwrCore>;
     createBotV2SwrMutation: ReturnType<typeof useCreateBotV2SwrMutationCore>;
-    queryFeesV2Swr: ReturnType<typeof useQueryFeesV2SwrCore>;
-    queryReservesV2Swr: ReturnType<typeof useQueryReservesV2SwrCore>;
     queryPortfolioValueV2Swr: ReturnType<typeof useQueryPortfolioValueV2SwrCore>;
     queryHistoryV2Swr: ReturnType<typeof useQueryHistoryV2SwrCore>;
     queryTotpSecretSwrMutation: ReturnType<typeof useQueryTotpSecretSwrMutationCore>;
@@ -63,6 +60,7 @@ export interface SwrContextType {
     queryTransactionsSwr: ReturnType<typeof useQueryTransactionsSwrCore>;
     queryTransactionsV2Swr: ReturnType<typeof useQueryTransactionsV2SwrCore>;
     updateBotPerformanceDisplayModeV2SwrMutation: ReturnType<typeof useUpdateBotPerformanceDisplayModeV2SwrMutationCore>;
+    queryReservesWithFeesV2Swr: ReturnType<typeof useQueryReservesWithFeesV2SwrCore>;
 }
 
 export const SwrContext = createContext<SwrContextType | null>(null)
@@ -86,8 +84,6 @@ export const SwrProvider = ({ children }: PropsWithChildren) => {
     const updateBotLiquidityPoolsV2SwrMutation = useUpdateBotLiquidityPoolsV2SwrMutationCore()
     const updateBotSettingsV2SwrMutation = useUpdateBotSettingsV2SwrMutationCore()
     const updateBotPerformanceDisplayModeV2SwrMutation = useUpdateBotPerformanceDisplayModeV2SwrMutationCore()
-    const queryFeesV2Swr = useQueryFeesV2SwrCore()
-    const queryReservesV2Swr = useQueryReservesV2SwrCore()
     const queryLiquidityPoolsActivePositionSwr = useQueryLiquidityPoolsActivePositionSwrCore()
     const queryLiquidityPoolsBotSwr = useQueryLiquidityPoolsBotSwrCore()
     const queryLiquidityPoolsUpdatePoolsSwr = useQueryLiquidityPoolsUpdatePoolsSwrCore()
@@ -97,7 +93,7 @@ export const SwrProvider = ({ children }: PropsWithChildren) => {
     const queryLiquidityPoolsSelectedPoolsSwr = useQueryLiquidityPoolsSelectedPoolsSwrCore()
     const queryPositionsSwr = useQueryPositionsSwrCore()    
     const queryTransactionsSwr = useQueryTransactionsSwrCore()
-
+    const queryReservesWithFeesV2Swr = useQueryReservesWithFeesV2SwrCore()
     const values = useMemo(() => ({
         queryStaticSwr,
         queryUserV2Swr,
@@ -113,8 +109,6 @@ export const SwrProvider = ({ children }: PropsWithChildren) => {
         queryTransactionsV2Swr,
         createBotSwrMutation,
         toggleBotSwrMutation,
-        queryFeesV2Swr,
-        queryReservesV2Swr,
         queryPortfolioValueV2Swr,
         queryHistoryV2Swr,
         toggleBotV2SwrMutation,
@@ -128,6 +122,7 @@ export const SwrProvider = ({ children }: PropsWithChildren) => {
         queryBotsV2Swr,
         queryBotV2Swr,
         queryLiquidityPoolsSelectedPoolsSwr,
+        queryReservesWithFeesV2Swr,
     }), [
         queryStaticSwr,
         queryUserV2Swr,
@@ -143,8 +138,6 @@ export const SwrProvider = ({ children }: PropsWithChildren) => {
         queryTransactionsV2Swr,
         createBotSwrMutation,
         toggleBotSwrMutation,
-        queryFeesV2Swr,
-        queryReservesV2Swr,
         queryPortfolioValueV2Swr,
         queryHistoryV2Swr,
         toggleBotV2SwrMutation,
@@ -161,6 +154,7 @@ export const SwrProvider = ({ children }: PropsWithChildren) => {
         queryPositionsSwr,
         queryPositionsV2Swr,
         queryTransactionsSwr,
+        queryReservesWithFeesV2Swr,
     ])
     return (
         <SwrContext.Provider

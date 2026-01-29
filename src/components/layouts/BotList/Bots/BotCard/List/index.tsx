@@ -1,9 +1,10 @@
 import React from "react"
-import { KaniAvatar, KaniAvatarGroup, KaniCard, KaniCardBody, KaniChip, KaniImage } from "@/components/atomic"
-import { SnippetIcon, TooltipTitle } from "@/components/reuseable"
-import { UnitDropdown } from "../UnitDropdown"
+import { KaniAvatar, KaniAvatarGroup, KaniCard, KaniCardBody, KaniChip, KaniImage } from "../../../../../atomic"
+import { SnippetIcon, TooltipTitle, UnitDropdown } from "../../../../../reuseable"
 import { truncateMiddle } from "@/modules/utils"
 import { BotCardBaseProps } from "../types"
+import { updateBotPerformanceDisplayModeInBots, useAppDispatch } from "@/redux"
+import { PerformanceDisplayMode } from "@/modules/types"
 
 export type BotCardListProps = BotCardBaseProps
 
@@ -26,7 +27,7 @@ export const BotCardList = (props: BotCardListProps) => {
         poolAddress,
         onCardPress,
     } = props
-
+    const dispatch = useAppDispatch()
     return (
         <KaniCard 
             isPressable 
@@ -123,7 +124,12 @@ export const BotCardList = (props: BotCardListProps) => {
                             </div>
                         </div>
                     </div>
-                    <UnitDropdown bot={bot} />
+                    <UnitDropdown bot={bot} setOptimisticPerformanceDisplayMode={() => {
+                        dispatch(updateBotPerformanceDisplayModeInBots({
+                            id: bot.id,
+                            performanceDisplayMode: bot.performanceDisplayMode === PerformanceDisplayMode.Usd ? PerformanceDisplayMode.Target : PerformanceDisplayMode.Usd,
+                        }))
+                    }} />
                 </div>
             </KaniCardBody>
         </KaniCard>

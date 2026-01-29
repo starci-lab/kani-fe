@@ -3,10 +3,10 @@ import { DynamicDlmmLiquidityPoolInfoCacheResult, useAppSelector } from "@/redux
 import React, { useMemo } from "react"
 import { binIdToPrice, round } from "@/modules/utils"
 import { LiquidityChart } from "../../../../../../reuseable/charts"
-import { KaniChip, KaniDivider, KaniSkeleton, KaniSpinner } from "../../../../../../atomic"
+import { KaniChip, KaniDivider, KaniSkeleton } from "../../../../../../atomic"
 import Decimal from "decimal.js"
 import { Spacer } from "@heroui/react"
-import { useQueryFeesV2Swr, useQueryLiquidityPoolsActivePositionSwr, useQueryReservesV2Swr } from "@/hooks/singleton"
+import { useQueryReservesWithFeesV2Swr } from "@/hooks/singleton"
 import numeral from "numeral"
 
 export interface DLMMProps {
@@ -16,7 +16,6 @@ export interface DLMMProps {
 export const DLMM = (
     { liquidityPool }: DLMMProps
 ) => {
-    const queryliquidityPoolsActivePositionSwr = useQueryLiquidityPoolsActivePositionSwr()
     const tokens = useAppSelector((state) => state.static.tokens)
     const tokenA = useMemo(
         () => tokens.find((token) => token.id === liquidityPool?.tokenA),
@@ -57,32 +56,28 @@ export const DLMM = (
     const tokenPriceB = useMemo(() => {
         return tokenPrices[tokenB?.id ?? ""] ?? 0
     }, [tokenPrices, tokenB?.id])
-    const queryFeesV2Swr = useQueryFeesV2Swr()
+    const queryReservesWithFeesV2Swr = useQueryReservesWithFeesV2Swr()
     const tokenAFees = useMemo(() => {
-        return new Decimal(queryFeesV2Swr?.data?.data?.feesV2.data?.tokenA ?? 0)
-    }, [queryFeesV2Swr?.data?.data?.feesV2.data?.tokenA])
+        return new Decimal(queryReservesWithFeesV2Swr?.data?.data?.reservesWithFeesV2.data?.feeA ?? 0)
+    }, [queryReservesWithFeesV2Swr?.data?.data?.reservesWithFeesV2.data?.feeA])
     const tokenBFees = useMemo(() => {
-        return new Decimal(queryFeesV2Swr?.data?.data?.feesV2.data?.tokenB ?? 0)
-    }, [queryFeesV2Swr?.data?.data?.feesV2.data?.tokenB])
+        return new Decimal(queryReservesWithFeesV2Swr?.data?.data?.reservesWithFeesV2.data?.feeB ?? 0)
+    }, [queryReservesWithFeesV2Swr?.data?.data?.reservesWithFeesV2.data?.feeB])
     const totalFees = useMemo(() => {
         return tokenAFees.add(tokenBFees)
     }, [tokenAFees, tokenBFees])
-    const queryReservesV2Swr = useQueryReservesV2Swr()
     const tokenAReserves = useMemo(() => {
-        return new Decimal(queryReservesV2Swr?.data?.data?.reservesV2.data?.tokenA ?? 0)
-    }, [queryReservesV2Swr?.data?.data?.reservesV2.data?.tokenA])
+        return new Decimal(queryReservesWithFeesV2Swr?.data?.data?.reservesWithFeesV2.data?.reserveA ?? 0)
+    }, [queryReservesWithFeesV2Swr?.data?.data?.reservesWithFeesV2.data?.reserveA])
     const tokenBReserves = useMemo(() => {
-        return new Decimal(queryReservesV2Swr?.data?.data?.reservesV2.data?.tokenB ?? 0)
-    }, [queryReservesV2Swr?.data?.data?.reservesV2.data?.tokenB])
+        return new Decimal(queryReservesWithFeesV2Swr?.data?.data?.reservesWithFeesV2.data?.reserveB ?? 0)
+    }, [queryReservesWithFeesV2Swr?.data?.data?.reservesWithFeesV2.data?.reserveB])
     const totalReservesInUsd = useMemo(() => {
         return tokenAReserves.mul(new Decimal(tokenPriceA.price ?? 0)).add(tokenBReserves.mul(new Decimal(tokenPriceB.price ?? 0)))
     }, [tokenAReserves, tokenBReserves, tokenPriceA.price, tokenPriceB.price])
-    const isLoading = useMemo(() => {
-        return queryliquidityPoolsActivePositionSwr.isLoading || !liquidityPool
-    }, [queryliquidityPoolsActivePositionSwr.isLoading, liquidityPool])
     return (
         <>
-            {!isLoading ?
+            {
                 <div>
             <div className="grid place-items-center gap-3">
                 <div className="text-xs">
@@ -107,16 +102,13 @@ export const DLMM = (
                 </div>
             </div>
             </div>
-            : <div className="h-[120px] grid place-items-center">
-                <KaniSpinner />
-            </div>
             }
             <Spacer y={6} />
             <div className="flex flex-col gap-3">
                 <div className="flex items-center justify-between">
                     <div className="text-sm text-foreground-500">Yield</div>
                     {
-                        (isLoading || queryFeesV2Swr.isLoading || !queryFeesV2Swr.data) ?
+                        (queryReservesWithFeesV2Swr.isLoading || !queryReservesWithFeesV2Swr.data) ?
                     <div className="flex items-center gap-2">
                         <div className="text-sm">${numeral(totalFees.toNumber()).format("0,0.00000")}</div>
                         <KaniDivider orientation="vertical" className="h-5"/>
@@ -136,7 +128,7 @@ export const DLMM = (
                 <div className="flex items-center justify-between">
                     <div className="text-sm text-foreground-500">Liquidity</div>
                     {
-                        (isLoading || queryReservesV2Swr.isLoading || !queryReservesV2Swr.data) ?
+                        (queryReservesWithFeesV2Swr.isLoading || !queryReservesWithFeesV2Swr.data) ?
                     <div className="flex items-center gap-2">
                         <div className="text-sm">${numeral(totalReservesInUsd.toNumber()).format("0,0.00000")}</div>
                         <KaniDivider orientation="vertical" className="h-5"/>

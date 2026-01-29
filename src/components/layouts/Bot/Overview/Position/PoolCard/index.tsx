@@ -84,9 +84,14 @@ export const PoolCard = (
                                             radius="full"
                                         />
                                     </KaniAvatarGroup>
-                                    <div className="text-sm">
+                                    <KaniLink
+                                        color="foreground"
+                                        isExternal
+                                        size="sm"
+                                        underline="hover"
+                                        href={activePosition?.associatedLiquidityPool?.url ?? ""}>
                                         {tokenA?.name}-{tokenB?.name}
-                                    </div>
+                                    </KaniLink>
                                 </div>
                                 <div className="flex items-center gap-1 justify-end">
                                     <div className="text-sm">
@@ -139,23 +144,6 @@ export const PoolCard = (
                         </div>
                     </div>
                 </div>  
-                <Spacer y={6} />
-                <div className="flex items-center justify-end">
-                    {!botSwr.isLoading ? (
-                        <KaniLink
-                            color="foreground"
-                            className="text-secondary"
-                            isExternal
-                            size="sm"
-                            showAnchorIcon={true}
-                            href={activePosition?.associatedLiquidityPool?.url ?? ""}>
-                            Details
-                        </KaniLink>
-                    ) : (
-                        <KaniSkeleton className="h-5 w-[150px] rounded-md" />
-                    )
-                    }  
-                </div>
             </KaniCardBody>
         </KaniCard >
     )

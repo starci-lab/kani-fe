@@ -6,7 +6,8 @@ import {
     setDexes, 
     setAccountLimits, 
     setGasConfig, 
-    setBalanceConfig 
+    setBalanceConfig, 
+    setSocketTokenIds
 } from "@/redux"
 import useSWR from "swr"
 
@@ -28,6 +29,7 @@ export const useQueryStaticSwrCore = () => {
                 throw new Error("Dexes not found")
             }
             dispatch(setTokens(tokens.data))
+            dispatch(setSocketTokenIds(tokens.data.map((token) => token.id)))
             dispatch(setDexes(dexes.data))
             if (accountLimits && accountLimits.data) {
                 dispatch(setAccountLimits(accountLimits.data))

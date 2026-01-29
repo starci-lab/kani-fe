@@ -1,14 +1,13 @@
-
-import { queryFeesV2 } from "@/modules/api"
+import { queryReservesWithFeesV2 } from "@/modules/api"
 import { useAppSelector } from "@/redux"
 import useSWR from "swr"
 import { usePrivy } from "@privy-io/react-auth"
 
-export const useQueryFeesV2SwrCore = () => {
+export const useQueryReservesWithFeesV2SwrCore = () => {
     const { getAccessToken, authenticated } = usePrivy()
     const bot = useAppSelector((state) => state.bot.bot)
     const swr = useSWR(
-        authenticated && bot && bot.id && bot.activePosition && bot.activePosition.id ? ["QUERY_FEES_V2_SWR", authenticated, bot.id, bot.activePosition.id] : null,
+        authenticated && bot && bot.id && bot.activePosition && bot.activePosition.id ? ["QUERY_RESERVES_WITH_FEES_V2_SWR", authenticated, bot.id, bot.activePosition.id] : null,
         async () => {
             if (!bot || !bot.id) {
                 throw new Error("Bot id is required")
@@ -20,7 +19,7 @@ export const useQueryFeesV2SwrCore = () => {
             if (!accessToken) {
                 throw new Error("Access token is required")
             }
-            const data = await queryFeesV2({
+            const data = await queryReservesWithFeesV2({
                 token: accessToken,
                 request: {
                     botId: bot.id,
