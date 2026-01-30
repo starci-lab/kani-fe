@@ -21,6 +21,7 @@ const query1 = gql`
             decimals
             displayId
             iconUrl
+            type
             id
             symbol
             is2022Token

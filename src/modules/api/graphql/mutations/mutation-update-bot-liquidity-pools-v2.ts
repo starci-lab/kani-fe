@@ -42,7 +42,7 @@ export const mutationUpdateBotLiquidityPoolsV2 = async ({
         throw new Error("Token is required")
     }
     // use no cache credential to include http only cookies
-    return await createApolloClient(token)
+    return await createApolloClient({ token })
         .mutate<{
             updateBotLiquidityPoolsV2: GraphQLResponse;
         }>(

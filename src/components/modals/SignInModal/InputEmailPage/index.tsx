@@ -6,7 +6,7 @@ import {
     KaniModalFooter,
     KaniModalHeader,
     KaniLink,
-} from "@/components/atomic"
+} from "../../../atomic"
 import {
     SignInPage,
     setSignInModalPage,
@@ -14,7 +14,7 @@ import {
 } from "@/redux"
 import { useRequestSignInOtpSwrMutation } from "@/hooks/singleton"
 import { useSignInFormik } from "@/hooks/singleton"
-import { runGraphQLWithToast } from "@/components/toasts"
+import { runGraphQLWithToast } from "../../../toasts"
 
 export const InputEmailPage = () => {
     const dispatch = useAppDispatch()

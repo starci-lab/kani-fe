@@ -3,7 +3,7 @@
 import React, { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { CopyIcon, CheckIcon } from "@phosphor-icons/react"
-import { WithClassNames } from "@/components/types"
+import { WithClassNames } from "../../types"
 
 export interface SnippetIconProps extends WithClassNames<{
   copyIcon?: string

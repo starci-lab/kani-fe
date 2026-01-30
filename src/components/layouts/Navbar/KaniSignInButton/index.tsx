@@ -1,5 +1,5 @@
 import React from "react"
-import { KaniButton } from "@/components/atomic"
+import { KaniButton } from "../../../atomic"
 import { useLogin, usePrivy } from "@privy-io/react-auth"
 
 export const KaniSignInButton = () => {

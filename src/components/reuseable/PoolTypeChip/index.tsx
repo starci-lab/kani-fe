@@ -1,4 +1,4 @@
-import { KaniChip } from "@/components/atomic"
+import { KaniChip } from "../../atomic"
 import { LiquidityPoolType } from "@/modules/types"
 import { ChartBarIcon, ChartLineIcon } from "@phosphor-icons/react"
 import React from "react"

@@ -1,6 +1,6 @@
 "use client"
 import React from "react"
-import { KaniBreadcrumb, KaniBreadcrumbItem } from "@/components/atomic"
+import { KaniBreadcrumb, KaniBreadcrumbItem } from "../../atomic"
 import { Spacer } from "@heroui/react"
 import { paths } from "@/resources/path"
 import { useRouter } from "next/navigation"

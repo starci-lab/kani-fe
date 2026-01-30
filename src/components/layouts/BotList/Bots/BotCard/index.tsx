@@ -1,6 +1,6 @@
 import React, { useMemo } from "react"
 import { BotSchema, PerformanceDisplayMode } from "@/modules/types"
-import { KaniChip } from "@/components/atomic"
+import { KaniChip } from "../../../../atomic"
 import { useAppSelector } from "@/redux"
 import { round } from "@/modules/utils"
 import { useRouter } from "next/navigation"

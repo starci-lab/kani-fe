@@ -1,7 +1,7 @@
 import { motion } from "framer-motion"
 import { CaretUpIcon } from "@phosphor-icons/react"
 import React from "react"
-import { WithClassNames } from "@/components/types"
+import { WithClassNames } from "../../types"
 
 export interface CaretRotateIconProps extends WithClassNames<{
     icon?: string

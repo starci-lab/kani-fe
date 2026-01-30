@@ -1,4 +1,4 @@
-import { KaniDivider, KaniSkeleton, KaniTooltip } from "../../../../atomic"
+import { KaniDivider, KaniSkeleton } from "../../../../atomic"
 import { useAppSelector } from "@/redux/hooks"
 import { Spacer } from "@heroui/react"
 import React, { useMemo } from "react"
@@ -9,12 +9,11 @@ import numeral from "numeral"
 import { IntervalTabs } from "./IntervalTabs"
 import { useQueryPortfolioValueV2Swr, useQueryStaticSwr } from "@/hooks/singleton"
 import { RefreshIcon, TooltipTitle } from "../../../../reuseable"
-import { EligibilityStatus } from "./EligibilityStatus"
+import { EvalStatus } from "./EvalStatus"
 import { toDecimalAmount } from "@/modules/utils"
 import BN from "bn.js"
 import Decimal from "decimal.js"
 import { ChartUnitTabs } from "./ChartUnitTabs"
-import { motion } from "framer-motion"
 
 export const Investment = () => {
     const tokens = useAppSelector(
@@ -29,8 +28,6 @@ export const Investment = () => {
     const quoteToken = useMemo(() => tokens.find(
         (token) => token.id === bot?.quoteToken
     ), [tokens, bot?.quoteToken])
-    console.log(tokens)
-    console.log(bot?.chainId)
     const gasToken = useMemo(() => tokens.find(
         (token) => token.chainId === bot?.chainId
             && token.type === TokenType.Native
@@ -53,7 +50,6 @@ export const Investment = () => {
     const staticSwr = useQueryStaticSwr()
     const investmentValue = useMemo(() => {
         return new Decimal(queryPortfolioValueV2Swr.data?.data?.portfolioValueV2?.data?.portfolioValueInUsd?.includingGas?.toString() || "0").add(new Decimal(bot?.activePosition?.associatedPosition?.openSnapshot?.positionValueInUsd ?? 0)).toString()
-
     }, [queryPortfolioValueV2Swr.data?.data?.portfolioValueV2?.data?.portfolioValueInUsd?.includingGas?.toString(), bot?.activePosition?.associatedPosition?.openSnapshot?.positionValueInUsd])
     return (
         <div>
@@ -70,38 +66,10 @@ export const Investment = () => {
                             <div className="text-4xl font-bold leading-none">
                                 ${numeral(investmentValue).format("0,0.00000")}
                             </div>
-                            <KaniTooltip content="The investment value is the sum of the portfolio value and the position value." placement="top">
-                                <div className="text-4xl font-bold leading-none text-secondary">
-                                    <motion.span
-                                        className="
-    bg-gradient-to-r 
-    from-[hsl(var(--heroui-primary))] 
-    via-[hsl(var(--heroui-secondary))] 
-    to-[hsl(var(--heroui-primary))]
-    bg-[length:200%_200%]
-    bg-clip-text
-    text-transparent
-  "
-                                        animate={{
-                                            backgroundPosition: ["0% 50%", "100% 50%"],
-                                        }}
-                                        transition={{
-                                            duration: 2,
-                                            repeat: Infinity,
-                                            repeatType: "reverse",
-                                            ease: "linear",
-                                        }}
-                                    >
-                                        (${numeral(
-                                            bot?.activePosition?.associatedPosition?.openSnapshot?.positionValueInUsd ?? 0
-                                        ).format("0,0.00")})
-                                    </motion.span>
-                                </div>
-                            </KaniTooltip>
                         </div>
                     )}
             </div>
-            <EligibilityStatus />
+            <EvalStatus />
             <Spacer y={6} />
             <HistoryChart />
             <Spacer y={3} />

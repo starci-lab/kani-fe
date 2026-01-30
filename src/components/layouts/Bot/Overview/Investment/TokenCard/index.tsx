@@ -2,7 +2,7 @@ import { TokenId, TokenSchema } from "@/modules/types"
 import React from "react"
 import { KaniAvatar, KaniCard, KaniCardBody, KaniChip, KaniLink, KaniSkeleton } from "../../../../../atomic"
 import { Spacer, cn } from "@heroui/react"
-import { TooltipTitle } from "@/components"
+import { TooltipTitle } from "../../../../../reuseable"
 import { useDepositDisclosure } from "@/hooks/singleton"
 import { useAppDispatch, setDepositModalTokenId } from "@/redux"
 

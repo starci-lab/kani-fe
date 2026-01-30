@@ -2,7 +2,7 @@ import React from "react"
 import {
     KaniModal,
     KaniModalContent,
-} from "@/components/atomic"
+} from "../../atomic"
 import { useSignInDisclosure } from "@/hooks/singleton"
 import { InputEmailPage } from "./InputEmailPage"
 import { InputOTPPage } from "./InputOTPPage"

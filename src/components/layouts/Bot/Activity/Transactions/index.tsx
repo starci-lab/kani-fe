@@ -8,8 +8,8 @@ import {
     KaniTableColumn,
     KaniTableHeader,
     KaniTableRow
-} from "@/components/atomic"
-import { EmptyContent, SnippetIcon, TooltipTitle } from "@/components/reuseable"
+} from "../../../../atomic"
+import { EmptyContent, SnippetIcon, TooltipTitle } from "../../../../reuseable"
 import { explorerUrl, ExplorerType } from "@/modules/blockchain"
 import { TransactionSchema, TransactionType } from "@/modules/types"
 import { truncateMiddle } from "@/modules/utils"

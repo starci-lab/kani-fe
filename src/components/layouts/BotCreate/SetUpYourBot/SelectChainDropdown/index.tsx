@@ -5,7 +5,7 @@ import {
     KaniDropdownMenu,
     KaniDropdownItem,
     KaniImage,
-} from "@/components/atomic"
+} from "../../../../atomic"
 import { 
     useCreateBotFormik, 
 } from "@/hooks/singleton"

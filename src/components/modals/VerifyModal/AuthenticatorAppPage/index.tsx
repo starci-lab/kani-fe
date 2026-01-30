@@ -5,7 +5,7 @@ import {
     KaniInputOtp,
     KaniModalFooter,
     KaniButton 
-} from "@/components/atomic"
+} from "../../../atomic"
 import React from "react"
 import { useVerifyFormik } from "@/hooks/singleton"
 import { setVerifyModalPage, VerifyPage } from "@/redux"

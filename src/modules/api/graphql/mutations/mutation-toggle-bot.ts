@@ -38,7 +38,7 @@ export const mutationToggleBot = async ({
         throw new Error("Token is required")
     }
     // use no cache credential to include http only cookies
-    return await createApolloClient(token).mutate<{
+    return await createApolloClient({ token }).mutate<{
         toggleBot: GraphQLResponse,
     }>(
         {

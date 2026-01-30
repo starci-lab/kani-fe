@@ -6,6 +6,7 @@ import { Chip, Spacer, cn } from "@heroui/react"
 import { useAppSelector } from "@/redux"
 import { computePercentage } from "@/modules/utils"
 import { SnippetIcon } from "../SnippetIcon"
+import Decimal from "decimal.js"
 
 export interface LiquidityPoolCardProps {
     liquidityPool: LiquidityPoolSchema
@@ -39,7 +40,12 @@ export const LiquidityPoolCard = ({ liquidityPool, isSelected, onSelect }: Liqui
                         </KaniAvatarGroup>
                         <div>
                             <div className="text-sm">{tokenA?.name}-{tokenB?.name}</div>
-                            <div className="text-xs text-foreground-500">{computePercentage(liquidityPool.fee, 1, 5).toString()}%</div>
+                            <div className="text-xs text-foreground-500">{computePercentage(
+                                { 
+                                    numerator: new Decimal(liquidityPool.fee), 
+                                    denominator: new Decimal(1) 
+                                    }
+                                ).toString()}%</div>
                         </div>
                     </div>
                     <Spacer y={2} />

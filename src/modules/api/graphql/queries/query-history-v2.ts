@@ -1,10 +1,9 @@
 import { createApolloClient } from "../clients"
 import {
-    GraphQLResponse,
     ChartUnit,
-    QueryParams,
     ChartInterval,
-} from "../types"
+} from "@/modules/types"
+import { GraphQLResponse, QueryParams } from "@/modules/api"
 import { DocumentNode, gql } from "@apollo/client"
 
 const query1 = gql`

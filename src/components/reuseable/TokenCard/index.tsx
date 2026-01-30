@@ -5,7 +5,7 @@ import {
     KaniCard,
     KaniCardBody,
     KaniBadge,
-} from "@/components/atomic"
+} from "../../atomic"
 import { truncateMiddle } from "@/modules/utils"
 import { cn } from "@heroui/react"
 import { SnippetIcon } from "../SnippetIcon"

@@ -7,7 +7,7 @@ import {
     KaniDropdownMenu,
     KaniDropdownSection,
     KaniDropdownTrigger,
-} from "@/components/atomic"
+} from "../../../atomic"
 import { truncateEnd } from "@/modules/utils"
 import { 
     AtIcon, 

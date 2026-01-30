@@ -1,23 +1,26 @@
-import { LiquidityPoolSchema, PerformanceDisplayMode } from "@/modules/types";
+import { LiquidityPoolSchema, PerformanceDisplayMode } from "@/modules/types"
 import {
     DynamicClmmLiquidityPoolInfoCacheResult,
     updateBotPerformanceDisplayMode,
     useAppSelector,
-} from "@/redux";
-import React, { useMemo } from "react";
-import { computePercentage, round, tickIndexToPrice } from "@/modules/utils";
-import { LiquidityChart } from "@/components/reuseable/charts";
+} from "@/redux"
+import React, { useMemo } from "react"
+import { computePercentage, round, tickIndexToPrice } from "@/modules/utils"
+import { LiquidityChart } from "../../../../../../reuseable"
 import {
     KaniChip,
     KaniDivider,
     KaniImage,
     KaniSkeleton,
-} from "@/components/atomic";
-import Decimal from "decimal.js";
-import { Spacer } from "@heroui/react";
-import { useQueryReservesWithFeesV2Swr, useUpdateBotPerformanceDisplayModeV2SwrMutation } from "@/hooks/singleton";
+} from "../../../../../../atomic"
+import Decimal from "decimal.js"
+import { Spacer } from "@heroui/react"
+import {
+    useQueryReservesWithFeesV2Swr,
+    useUpdateBotPerformanceDisplayModeV2SwrMutation,
+} from "@/hooks/singleton";
 import numeral from "numeral";
-import { TooltipTitle, UnitDropdown } from "@/components/reuseable";
+import { TooltipTitle, UnitDropdown } from "../../../../../../reuseable"
 import { useAppDispatch } from "@/redux";
 
 export interface CLMMProps {
@@ -25,21 +28,22 @@ export interface CLMMProps {
 }
 
 export const CLMM = ({ liquidityPool }: CLMMProps) => {
-    const updateBotPerformanceDisplayModeV2SwrMutation = useUpdateBotPerformanceDisplayModeV2SwrMutation()
+    const updateBotPerformanceDisplayModeV2SwrMutation =
+        useUpdateBotPerformanceDisplayModeV2SwrMutation();
     const dispatch = useAppDispatch();
     const bot = useAppSelector((state) => state.bot.bot);
     const tokens = useAppSelector((state) => state.static.tokens);
     const tokenA = useMemo(
         () => tokens.find((token) => token.id === liquidityPool?.tokenA),
         [tokens, liquidityPool?.tokenA],
-    );
+    )
     const tokenB = useMemo(
         () => tokens.find((token) => token.id === liquidityPool?.tokenB),
         [tokens, liquidityPool?.tokenB],
-    );
+    )
     const activePosition = useAppSelector(
         (state) => state.bot.bot?.activePosition,
-    );
+    )
     const tickLower = useMemo(() => {
         return activePosition?.associatedPosition?.clmmState?.tickLower;
     }, [activePosition]);
@@ -60,15 +64,15 @@ export const CLMM = ({ liquidityPool }: CLMMProps) => {
             tickLower ?? 0,
             tokenA?.decimals ?? 0,
             tokenB?.decimals ?? 0,
-        );
-    }, [tickLower, tokenA?.decimals, tokenB?.decimals]);
+        )
+    }, [tickLower, tokenA?.decimals, tokenB?.decimals])
     const tickUpperPrice = useMemo(() => {
         return tickIndexToPrice(
             tickUpper ?? 0,
             tokenA?.decimals ?? 0,
             tokenB?.decimals ?? 0,
         );
-    }, [tickUpper, tokenA?.decimals, tokenB?.decimals]);
+    }, [tickUpper, tokenA?.decimals, tokenB?.decimals])
     const currentPrice = useMemo(() => {
         return tickIndexToPrice(
             tickCurrent ?? 0,
@@ -212,7 +216,14 @@ export const CLMM = ({ liquidityPool }: CLMMProps) => {
         const isPositiveRoi24h = new Decimal(
             totalInTarget.sub(prev).div(prev),
         ).isPositive();
-        const roi = `${isPositiveRoi24h ? "+" : "-"}${round(computePercentage({ numerator: new Decimal(totalInTarget.sub(prev)), denominator: new Decimal(prev) })).abs().toString()}%`;
+        const roi = `${isPositiveRoi24h ? "+" : "-"}${round(
+            computePercentage({
+                numerator: new Decimal(totalInTarget.sub(prev)),
+                denominator: new Decimal(prev),
+            }),
+        )
+            .abs()
+            .toString()}%`;
         return [roi, isPositiveRoi24h];
     }, [bot?.activePosition?.associatedPosition?.openSnapshot?.positionValue]);
     const [pnlInUsdString, isPositivePnlInUsd] = useMemo(() => {
@@ -245,7 +256,14 @@ export const CLMM = ({ liquidityPool }: CLMMProps) => {
         const isPositiveRoiInUsd = new Decimal(
             totalInUsd.sub(prev).div(prev),
         ).isPositive();
-        const roiInUsd = `${isPositiveRoiInUsd ? "+" : "-"}${round(computePercentage({ numerator: new Decimal(totalInUsd.sub(prev)), denominator: new Decimal(prev) })).abs().toString()}%`;
+        const roiInUsd = `${isPositiveRoiInUsd ? "+" : "-"}${round(
+            computePercentage({
+                numerator: new Decimal(totalInUsd.sub(prev)),
+                denominator: new Decimal(prev),
+            }),
+        )
+            .abs()
+            .toString()}%`;
         return [roiInUsd, isPositiveRoiInUsd];
     }, [
         bot?.activePosition?.associatedPosition?.openSnapshot?.positionValueInUsd,
@@ -254,14 +272,14 @@ export const CLMM = ({ liquidityPool }: CLMMProps) => {
         totalRewardsInUsd,
     ]);
     const targetToken = useMemo(
-        () => tokens.find((token) => token.id === bot?.targetToken), 
-        [tokens, bot?.targetToken]
-    )
+        () => tokens.find((token) => token.id === bot?.targetToken),
+        [tokens, bot?.targetToken],
+    );
     if (!targetToken) {
-        return null
+        return null;
     }
     if (!bot) {
-        return null
+        return null;
     }
     return (
         <>
@@ -304,7 +322,7 @@ export const CLMM = ({ liquidityPool }: CLMMProps) => {
                     />
                     {queryReservesWithFeesV2Swr.isLoading ||
                         !queryReservesWithFeesV2Swr.data ? (
-                            <div className="grid grid-cols-[1fr_150px] items-center gap-2">
+                        <div className="grid grid-cols-[1fr_150px] items-center gap-2">
                             <div className="flex items-center gap-2">
                                 <KaniSkeleton className="h-[20px] w-[60px] rounded-md" />
                                 <KaniDivider orientation="vertical" className="h-5" />
@@ -354,7 +372,7 @@ export const CLMM = ({ liquidityPool }: CLMMProps) => {
                     />
                     {queryReservesWithFeesV2Swr.isLoading ||
                         !queryReservesWithFeesV2Swr.data ? (
-                            <div className="grid grid-cols-[1fr_150px] items-center gap-2">
+                        <div className="grid grid-cols-[1fr_150px] items-center gap-2">
                             <div className="flex items-center gap-2">
                                 <KaniSkeleton className="h-[20px] w-[60px] rounded-md" />
                                 <KaniDivider orientation="vertical" className="h-5" />
@@ -489,21 +507,22 @@ export const CLMM = ({ liquidityPool }: CLMMProps) => {
                     <UnitDropdown
                         targetToken={targetToken}
                         value={bot.performanceDisplayMode}
-                        onValueChange={
-                            async (value) => {
-                                // optimistic update
-                                dispatch(updateBotPerformanceDisplayMode({
+                        onValueChange={async (value) => {
+                            // optimistic update
+                            dispatch(
+                                updateBotPerformanceDisplayMode({
                                     id: bot.id,
                                     performanceDisplayMode: value,
-                                }))
-                                // update server
-                                await updateBotPerformanceDisplayModeV2SwrMutation.trigger({
-                                    request: {
-                                        id: bot.id,
-                                        performanceDisplayMode: value,
-                                    },
-                                })
-                            }}
+                                }),
+                            );
+                            // update server
+                            await updateBotPerformanceDisplayModeV2SwrMutation.trigger({
+                                request: {
+                                    id: bot.id,
+                                    performanceDisplayMode: value,
+                                },
+                            });
+                        }}
                     />
                 </div>
             </div>

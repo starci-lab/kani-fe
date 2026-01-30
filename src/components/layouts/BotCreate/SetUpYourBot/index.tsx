@@ -4,9 +4,9 @@ import {
     KaniButton,
     KaniSwitch,
     KaniCheckbox,
-} from "@/components/atomic"
+} from "../../../atomic"
 import { Spacer } from "@heroui/react"
-import { TooltipTitle } from "@/components/reuseable"
+import { TooltipTitle } from "../../../reuseable"
 import { useCreateBotFormik } from "@/hooks/singleton"
 import { SelectChainDropdown } from "./SelectChainDropdown"
 import { SelectPools } from "./SelectPools"

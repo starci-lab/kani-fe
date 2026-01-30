@@ -1,5 +1,5 @@
 import React from "react"
-import { KaniTab, KaniTabs } from "@/components/atomic"
+import { KaniTab, KaniTabs } from "../../../atomic"
 import { ListIcon, GridFourIcon } from "@phosphor-icons/react"
 import { BotDisplayMode, setDisplayMode, useAppSelector } from "@/redux"
 import { useAppDispatch } from "@/redux"

@@ -1,7 +1,7 @@
 import React from "react"
 
 import { KaniTooltip } from "../../atomic"
-import { WithClassNames } from "@/components/types"
+import { WithClassNames } from "../../types"
 import { cn } from "@heroui/react"
 import { QuestionIcon } from "@phosphor-icons/react"
 

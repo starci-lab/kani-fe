@@ -1,5 +1,5 @@
 import { SortAscendingIcon, SortDescendingIcon } from "@phosphor-icons/react"
-import { KaniButton, KaniDivider, KaniDropdown, KaniDropdownItem, KaniDropdownMenu, KaniDropdownTrigger } from "@/components/atomic"
+import { KaniButton, KaniDivider, KaniDropdown, KaniDropdownItem, KaniDropdownMenu, KaniDropdownTrigger } from "../../atomic"
 import React from "react"
 import { LiquidityPoolsSortBy } from "@/modules/api"
 

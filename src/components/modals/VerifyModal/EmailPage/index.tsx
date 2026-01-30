@@ -6,10 +6,10 @@ import {
     KaniModalFooter, 
     KaniInputOtp, 
     KaniLink
-} from "@/components/atomic"
+} from "../../../atomic"
 import { useVerifyFormik } from "@/hooks/singleton"
 import { useAppDispatch } from "@/redux"
-import { runGraphQLWithToast } from "@/components/toasts"
+import { runGraphQLWithToast } from "../../../toasts"
 import { Spacer } from "@heroui/react"
 import { useRequestSend2FactorOtpSwrMutation } from "@/hooks/singleton"
 import { setVerifyModalPage, VerifyPage } from "@/redux"

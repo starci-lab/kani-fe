@@ -1,4 +1,4 @@
-import { KaniModal, KaniModalContent, KaniModalHeader } from "@/components/atomic"
+import { KaniModal, KaniModalContent, KaniModalHeader } from "../../atomic"
 import { useSortByDisclosure } from "@/hooks/singleton"
 import React from "react"
 

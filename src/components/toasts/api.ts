@@ -1,5 +1,5 @@
 // Helper to display toast notifications based on GraphQL API responses
-import { GraphQLResponse } from "@/modules"
+import { GraphQLResponse } from "@/modules/api"
 import { addToast } from "@heroui/toast"
 
 // Show a toast depending on whether the GraphQL response was successful or not

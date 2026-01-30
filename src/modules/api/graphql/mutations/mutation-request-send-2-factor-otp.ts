@@ -31,7 +31,7 @@ export const mutationRequestSend2FactorOtp = async ({
     }
     const mutationDocument = mutationMap[mutation]
     // use no cache credential to include http only cookies
-    return await createApolloClient(token).mutate<{
+    return await createApolloClient({ token }).mutate<{
         requestSend2FactorOtp: GraphQLResponse,
     }>({
         mutation: mutationDocument,

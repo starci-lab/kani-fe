@@ -1,6 +1,6 @@
 import React from "react"
 import { ListIcon } from "@phosphor-icons/react"
-import { KaniButton } from "@/components/atomic"
+import { KaniButton } from "../../../atomic"
 import { useMenuDisclosure } from "@/hooks/singleton"
 
 export const MobileMenuButton = () => {

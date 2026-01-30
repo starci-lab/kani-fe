@@ -5,14 +5,14 @@ import {
     KaniModalHeader,
     KaniButton,
     KaniModalFooter,
-} from "@/components/atomic"
+} from "../../../atomic"
 import { Spacer } from "@heroui/react"
-import { KaniLink } from "@/components/atomic"
+import { KaniLink } from "../../../atomic"
 import { setSignInModalPage, SignInPage } from "@/redux"
 import { useAppDispatch } from "@/redux"
 import { useSignInFormik } from "@/hooks/singleton"
 import { useRequestSignInOtpSwrMutation } from "@/hooks/singleton"
-import { runGraphQLWithToast } from "@/components/toasts"
+import { runGraphQLWithToast } from "../../../toasts"
 
 export const InputOTPPage = () => {
     const dispatch = useAppDispatch()

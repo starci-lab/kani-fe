@@ -1,4 +1,4 @@
-import { Logo } from "@/components/svg"
+import { Logo } from "../../svg"
 import React from "react"
 
 export interface EmptyContentProps {

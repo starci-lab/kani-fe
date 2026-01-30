@@ -1,4 +1,4 @@
-import { KaniListbox, KaniListboxItem, KaniDivider } from "@/components/atomic"
+import { KaniListbox, KaniListboxItem, KaniDivider } from "../../atomic"
 import React from "react"
 import { BookIcon, LifebuoyIcon, RobotIcon, UserIcon } from "@phosphor-icons/react"
 import { 

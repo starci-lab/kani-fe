@@ -1,5 +1,5 @@
 import React from "react"
-import { KaniButton, KaniImage, KaniLink } from "@/components/atomic"
+import { KaniButton, KaniImage, KaniLink } from "../../../atomic"
 import { useRouter } from "next/navigation"
 import { paths } from "@/resources/path"
 import { iconAssetConfig } from "@/resources/assets/icon"

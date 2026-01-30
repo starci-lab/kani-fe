@@ -47,8 +47,8 @@ export const mutationUpdateBotChartConfigV2 = async ({
     if (!token) {
         throw new Error("Token is required")
     }
-    // use no cache credential to include http only cookies
-    return await createApolloClient({ token, withCredentials: true }).mutate<{
+    // use no cache credentials
+    return await createApolloClient({ token }).mutate<{
         updateBotChartConfigV2: GraphQLResponse,
     }>({
         mutation: mutationDocument,

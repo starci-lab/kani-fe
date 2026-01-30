@@ -8,7 +8,7 @@ import {
     KaniDivider,
     KaniLink,
     KaniSkeleton,
-} from "@/components/atomic"
+} from "../../../../../atomic"
 import { useAppSelector } from "@/redux"
 import { Spacer } from "@heroui/react"
 import { computePercentage } from "@/modules/utils"

@@ -1,5 +1,5 @@
-import { KaniAvatar, KaniButton, KaniLink } from "@/components/atomic"
-import { TooltipTitle } from "@/components/reuseable"
+import { KaniAvatar, KaniButton, KaniLink } from "../../../../atomic"
+import { TooltipTitle } from "../../../../reuseable"
 import { useCreateBotFormik, useSelectTokenDisclosure } from "@/hooks/singleton"
 import { useAppSelector } from "@/redux"
 import { Spacer } from "@heroui/react"

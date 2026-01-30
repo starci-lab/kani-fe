@@ -12,7 +12,7 @@ import {
 import { useExportPrivateKeyDisclosure } from "@/hooks/singleton/discloresure"
 import { useAppSelector } from "@/redux"
 import { Spacer } from "@heroui/react"
-import { SnippetIcon } from "@/components/reuseable"
+import { SnippetIcon } from "../../reuseable"
 
 export const ExportPrivateKeyModal = () => {
     const { isOpen, onOpenChange } = useExportPrivateKeyDisclosure()

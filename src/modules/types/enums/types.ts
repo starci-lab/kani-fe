@@ -51,6 +51,7 @@ export enum PerformanceDisplayMode {
 
 export enum BalanceEvalStatus {
     Ok = "ok",
+    InPosition = "inPosition",
     InsufficientFunding = "insufficientFunding",
     InsufficientGas = "insufficientGas",
     TargetUnderweighted = "targetUnderweighted",

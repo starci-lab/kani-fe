@@ -1,6 +1,6 @@
 import React, { useMemo } from "react"
 import { useAppSelector } from "@/redux/hooks"
-import { AreaChart } from "@/components/reuseable"
+import { AreaChart } from "../../../../../reuseable"
 import Decimal from "decimal.js"
 import { useQueryHistoryV2Swr } from "@/hooks/singleton"
 import { KaniSpinner } from "../../../../../atomic"

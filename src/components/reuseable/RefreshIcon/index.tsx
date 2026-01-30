@@ -3,7 +3,7 @@
 import React, { useState } from "react"
 import { motion } from "framer-motion"
 import { ArrowClockwiseIcon } from "@phosphor-icons/react"
-import { WithClassNames } from "@/components/types"
+import { WithClassNames } from "../../types"
 import { cn } from "@heroui/react"
 
 export interface RefreshIconProps extends WithClassNames<{

@@ -1,5 +1,5 @@
 import React from "react"
-import { KaniAlert } from "@/components"
+import { KaniAlert } from "../../../atomic"
 import { ShieldCheckIcon } from "@phosphor-icons/react"
 
 export const PrivySecurityAlert = () => {
