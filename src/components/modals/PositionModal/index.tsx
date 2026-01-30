@@ -6,7 +6,7 @@ import {
     KaniModalBody, 
     KaniModalFooter, 
     KaniButton 
-} from "../../"
+} from "../../atomic"
 import { usePositionDisclosure } from "@/hooks/singleton"
 import { useAppSelector } from "@/redux"
 
