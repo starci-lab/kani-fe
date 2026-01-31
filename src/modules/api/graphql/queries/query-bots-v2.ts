@@ -29,6 +29,7 @@ const query1 = gql`
             positionsPerformanceDisplayMode
             version
             status
+            avatarUrl
             activePosition {
               id
               type

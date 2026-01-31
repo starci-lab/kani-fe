@@ -37,4 +37,5 @@ export interface BotSchema extends AbstractSchema {
     positionsPerformanceDisplayMode: PerformanceDisplayMode
     chartConfig?: BotChartConfigSchema
     status?: BotStatus
+    avatarUrl: string
 }

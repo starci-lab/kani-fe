@@ -28,7 +28,6 @@ import {
     useDepositDisclosure, 
     useQueryBotsV2Swr 
 } from "@/hooks/singleton"
-import Jazzicon, { jsNumberForAddress } from "react-jazzicon"
 
 export interface WalletAction {
     label: string
@@ -81,10 +80,7 @@ export const Account = () => {
                             <KaniSkeleton className="w-14 h-14 min-w-10 min-h-10 rounded-full"/>
                         ) : (
                             <div className="w-14 h-14 relative rounded-full">
-                                <Jazzicon 
-                                    diameter={56} 
-                                    seed={jsNumberForAddress(bot?.accountAddress ?? "")} 
-                                />
+                                <KaniImage src={bot?.avatarUrl ?? ""} alt="Bot Avatar" className="w-14 h-14 rounded-full" />
                                 <KaniImage
                                     removeWrapper
                                     className="w-7 h-7 min-w-7 min-h-7 rounded-full absolute bottom-0 right-0"

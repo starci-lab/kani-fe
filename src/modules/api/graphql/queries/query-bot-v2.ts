@@ -24,6 +24,7 @@ const query1 = gql`
         quoteToken
         isExitToUsdc
         version
+        avatarUrl
         performanceDisplayMode
         positionsPerformanceDisplayMode
         balanceSnapshots {

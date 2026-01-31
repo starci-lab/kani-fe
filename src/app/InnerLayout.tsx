@@ -1,6 +1,7 @@
 "use client"
 import { 
     DrawerContainer,
+    Fallback,
     HeroUIProvider, 
     ModalContainer, 
     NextThemesProvider,
@@ -15,7 +16,7 @@ import React, { PropsWithChildren, Suspense } from "react"
 
 export const InnerLayout = ({ children }: PropsWithChildren) => {
     return (
-        <Suspense>
+        <Suspense fallback={<Fallback />}>
             <NextThemesProvider attribute="class" defaultTheme="dark" enableSystem={true} storageKey="kani-theme">
                 <HeroUIProvider> 
                     <SwrProvider>
