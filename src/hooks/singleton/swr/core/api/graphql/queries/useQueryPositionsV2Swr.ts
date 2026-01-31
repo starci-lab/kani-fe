@@ -10,7 +10,7 @@ export const useQueryPositionsV2SwrCore = () => {
     const id = useAppSelector((state) => state.bot.id)
     const filters = useAppSelector((state) => state.bot.positionsFilters)
     const swr = useSWR(
-        authenticated ? ["QUERY_POSITIONS_V2_SWR", authenticated, filters] : null,
+        authenticated ? ["QUERY_POSITIONS_V2_SWR", authenticated, filters, id] : null,
         async () => {
             if (!id) {
                 throw new Error("Id is required")

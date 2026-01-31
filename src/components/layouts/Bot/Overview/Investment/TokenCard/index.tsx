@@ -5,6 +5,8 @@ import { Spacer, cn } from "@heroui/react"
 import { TooltipTitle } from "../../../../../reuseable"
 import { useDepositDisclosure } from "@/hooks/singleton"
 import { useAppDispatch, setDepositModalTokenId } from "@/redux"
+import { round } from "@/modules/utils"
+import Decimal from "decimal.js"
 
 export enum TokenCardType {
     TargetToken = "targetToken",
@@ -76,7 +78,7 @@ export const TokenCard = ({
                         <div className={cn(
                             "text-xl font-bold"
                         )}>
-                            {balanceAmount} {token?.symbol}
+                            {round(new Decimal(balanceAmount))} {token?.symbol}
                         </div>
                     )   
                 }

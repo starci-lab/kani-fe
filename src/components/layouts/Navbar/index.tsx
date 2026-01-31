@@ -10,13 +10,17 @@ import { KaniUserDropdown } from "./KaniUserDropdown"
 import { SwitchThemeButton } from "../../reuseable"
 import { MobileMenuButton } from "./MobileMenuButton"
 import { usePrivy } from "@privy-io/react-auth"
+import Image from "next/image"
 
 export const Navbar = () => {
     const { user } = usePrivy()
     return (
         <KaniNavbar isBordered>
             <KaniNavbarBrand>
-                <p className="font-bold text-inherit">KANI</p>
+                <div className="flex items-center gap-1">
+                    <Image src="/logo.svg" alt="KANI" width={40} height={40} />
+                    <div className="text-2xl font-semibold text-primary">KANI</div>
+                </div>
             </KaniNavbarBrand>
             <KaniNavbarContent justify="end">
                 <KaniNavbarItem className="hidden md:block">

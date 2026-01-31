@@ -2,6 +2,7 @@ import { paths } from "@/resources/path"
 import { BotDisplayMode, BotTab, setBotId, setBotTab, setDisplayMode, setSocketLiquidityPoolIds, useAppDispatch, useAppSelector } from "@/redux"
 import { useParams, usePathname, useSearchParams } from "next/navigation"
 import { useEffect, useLayoutEffect } from "react"
+import { usePrivy } from "@privy-io/react-auth"
 
 export const useBot = () => {
     const { id } = useParams()
@@ -9,7 +10,11 @@ export const useBot = () => {
     const pathname = usePathname()
     const dispatch = useAppDispatch()
     const searchParams = useSearchParams()
+    const { authenticated } = usePrivy()
     useLayoutEffect(() => {
+        if (!authenticated) {
+            return
+        }
         const base = paths().bots().base().split("?")[0]
         if (pathname.startsWith(base)) {
             const _id = id as string
@@ -26,7 +31,7 @@ export const useBot = () => {
                 dispatch(setBotTab(tab))
             }
         }
-    }, [id, pathname, dispatch])
+    }, [id, pathname, dispatch, authenticated])
 
     useEffect(() => {
         if (bot && bot.activePosition?.liquidityPool) {

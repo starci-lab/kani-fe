@@ -10,7 +10,7 @@ export const useQueryTransactionsV2SwrCore = () => {
     const id = useAppSelector((state) => state.bot.id)
     const filters = useAppSelector((state) => state.bot.transactionsFilters)
     const swr = useSWR(
-        authenticated ? ["QUERY_TRANSACTIONS_V2_SWR", authenticated, filters] : null,
+        authenticated ? ["QUERY_TRANSACTIONS_V2_SWR", authenticated, filters, id] : null,
         async () => {
             if (!id) {
                 throw new Error("Id is required")

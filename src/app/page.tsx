@@ -1,12 +1,10 @@
 "use client"
-import { Button } from "@heroui/react"
+import { Onboarding } from "@/components/layouts"
 import React from "react"
 
 const Page = () => {
     return (
-        <div>
-            <Button>Click me</Button>
-        </div>
+        <Onboarding />
     )
 }
 
