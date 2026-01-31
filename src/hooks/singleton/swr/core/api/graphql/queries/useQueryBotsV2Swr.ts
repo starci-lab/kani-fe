@@ -26,6 +26,7 @@ export const useQueryBotsV2SwrCore = () => {
                                 liquidityPool: true,
                                 position: true,
                             },
+                            status: true,
                         },
                     },
                 }

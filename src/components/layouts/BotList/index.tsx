@@ -18,7 +18,7 @@ export const BotList = () => {
     const accountLimits = useAppSelector((state) => state.static.accountLimits)
     // render bots based on the display mode
     const renderBots = () => {
-        if (queryBotsV2Swr.isLoading) {
+        if (!queryBotsV2Swr.data || queryBotsV2Swr.isLoading) {
             return <BotsSkeleton/>
         }
         if (!bots?.length) {

@@ -4,6 +4,7 @@ import {
     KaniTooltip, 
     KaniLink,
     KaniSkeleton,
+    KaniChip,
 } from "../../../../atomic"
 import { TooltipTitle, SnippetIcon } from "../../../../reuseable"
 import { truncateMiddle } from "@/modules/utils"
@@ -23,7 +24,11 @@ import {
     ExplorerType 
 } from "@/modules/blockchain"
 import { ArrowSquareOutIcon } from "@phosphor-icons/react"
-import { useDepositDisclosure, useQueryBotsV2Swr } from "@/hooks/singleton"
+import { 
+    useDepositDisclosure, 
+    useQueryBotsV2Swr 
+} from "@/hooks/singleton"
+import Jazzicon, { jsNumberForAddress } from "react-jazzicon"
 
 export interface WalletAction {
     label: string
@@ -72,23 +77,38 @@ export const Account = () => {
             <div className="flex items-center gap-2">
                 <div className="flex items-center gap-3">
                     {
-                        queryBotsV2Swr.isLoading ? (
+                        !queryBotsV2Swr.data || queryBotsV2Swr.isLoading ? (
                             <KaniSkeleton className="w-14 h-14 min-w-10 min-h-10 rounded-full"/>
                         ) : (
-                            <KaniImage
-                                removeWrapper
-                                className="w-14 h-14 min-w-10 min-h-10"
-                                src={chainAssets.token}
-                            />
+                            <div className="w-14 h-14 relative rounded-full">
+                                <Jazzicon 
+                                    diameter={56} 
+                                    seed={jsNumberForAddress(bot?.accountAddress ?? "")} 
+                                />
+                                <KaniImage
+                                    removeWrapper
+                                    className="w-7 h-7 min-w-7 min-h-7 rounded-full absolute bottom-0 right-0"
+                                    src={chainAssets.token}
+                                />
+                            </div>
                         )
                     }
                     <div>
                         {
-                            queryBotsV2Swr.isLoading ? (
+                            !queryBotsV2Swr.data || queryBotsV2Swr.isLoading ? (
                                 <KaniSkeleton className="h-5 w-[100px] rounded-md"/>
                             ) : (
-                                <div className="text-sm">
-                                    {truncateMiddle({ str: bot?.accountAddress ?? "" })}
+                                <div className="flex items-center gap-2"> 
+                                    <div className="text-sm">
+                                        {truncateMiddle({ str: bot?.accountAddress ?? "", front: 6, back: 4 })}
+                                    </div>
+                                    <KaniChip
+                                        variant="flat"
+                                        size="sm"
+                                        className="text-xs"
+                                    >
+                                        {bot?.chainId === ChainId.Solana ? "Solana" : "Sui"}
+                                    </KaniChip>
                                 </div>
                             )}
                         <Spacer y={1} />

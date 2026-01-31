@@ -19,7 +19,7 @@ export const BotCardGrid = ({
     isPositiveRoi,
     pnlString,
     isPositivePnl,
-    capitalString,
+    fundingString,
     liquidityStatusChip,
     chainIconUrl,
     chainName,
@@ -116,9 +116,9 @@ export const BotCardGrid = ({
                 </div>
                 <Spacer y={6} />
                 <div className="flex items-center gap-4 justify-between">
-                    <TooltipTitle title="Capital" classNames={{title: "text-sm text-foreground-500"}} tooltipString="The amount of capital the bot." />
+                    <TooltipTitle title="Funding" classNames={{title: "text-sm text-foreground-500"}} tooltipString="The amount of funding the bot." />
                     <div className="text-sm text-foreground-500">
-                        {capitalString}
+                        {fundingString}
                     </div>
                 </div>
                 <Spacer y={3} />

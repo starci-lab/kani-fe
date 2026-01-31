@@ -152,7 +152,10 @@ export const Bot = () => {
                 color="primary"
                 selectedKey={tab}
                 onSelectionChange={(value) => {
-                    dispatch(setBotTab(value as BotTab))
+                    const _value = value as BotTab
+                    const path = paths().bots().bot(bot?.id ?? "", { tab: _value })
+                    router.push(path)
+                    dispatch(setBotTab(_value))
                 }}
                 aria-label="Bot Tabs"
                 classNames={{

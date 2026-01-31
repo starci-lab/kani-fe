@@ -1,6 +1,6 @@
 import React, { useMemo } from "react"
 import { useAppSelector } from "@/redux/hooks"
-import { AreaChart } from "../../../../../reuseable"
+import { AreaChart, EmptyContent } from "../../../../../reuseable"
 import Decimal from "decimal.js"
 import { useQueryHistoryV2Swr } from "@/hooks/singleton"
 import { KaniSpinner } from "../../../../../atomic"
@@ -20,12 +20,20 @@ export const HistoryChart = () => {
     return (
         <div>
             {
-                (queryHistoryV2Swr.isLoading) ?
+                (!queryHistoryV2Swr.data ||queryHistoryV2Swr.isLoading) ?
                     <div className="h-[300px] w-full grid place-items-center">
                         <KaniSpinner />
                     </div>
-                    :
-                    <AreaChart data={data} />
+                    : (data?.length > 0) ? (
+                        <AreaChart data={data} />
+                    ) : (
+                        <div className="h-[300px] w-full grid place-items-center">
+                            <EmptyContent
+                                title="No history yet"
+                                description="This bot doesn't have any recorded history yet"
+                            />
+                        </div>
+                    )
             }
         </div>
     )

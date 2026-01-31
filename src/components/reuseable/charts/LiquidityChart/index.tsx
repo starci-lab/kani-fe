@@ -77,7 +77,7 @@ export const LiquidityChart = ({ priceLower, priceUpper, currentPrice }: Liquidi
             />
             {/* Lower */}
             <ReferenceLine
-                x={round(priceLower).toNumber()}
+                x={round(priceLower)}
                 stroke="hsl(var(--heroui-foreground-500))"
                 ifOverflow="extendDomain"
                 strokeDasharray="4 4"
@@ -113,14 +113,14 @@ export const LiquidityChart = ({ priceLower, priceUpper, currentPrice }: Liquidi
                             fill="hsl(var(--heroui-foreground-500))"
                             fontSize={12}
                         >
-                            {round(priceLower).toNumber()}
+                            {round(priceLower)}
                         </text>
                     )
                 }}
             />
             {/* Upper */}
             <ReferenceLine
-                x={round(priceUpper).toNumber()}
+                x={round(priceUpper)}
                 stroke="hsl(var(--heroui-foreground-500))"
                 ifOverflow="extendDomain"
                 strokeDasharray="4 4"
@@ -154,7 +154,7 @@ export const LiquidityChart = ({ priceLower, priceUpper, currentPrice }: Liquidi
                             fill="hsl(var(--heroui-foreground-500))"
                             fontSize={12}
                         >
-                            {round(priceUpper).toNumber()}
+                            {round(priceUpper)}
                         </text>
                     )
                 }}
@@ -165,7 +165,7 @@ export const LiquidityChart = ({ priceLower, priceUpper, currentPrice }: Liquidi
                 strokeDasharray="4 4"
             />
             <ReferenceLine
-                x={computedCurrentPrice.toNumber()}
+                x={computedCurrentPrice}
                 stroke="hsl(var(--heroui-primary))"
                 strokeWidth={2}
                 ifOverflow="extendDomain"
@@ -203,7 +203,7 @@ export const LiquidityChart = ({ priceLower, priceUpper, currentPrice }: Liquidi
                             fill="hsl(var(--heroui-foreground-500))"
                             fontSize={12}
                         >
-                            {round(currentPrice).toNumber()}
+                            {round(currentPrice)}
                         </text>
                     )
                 }}

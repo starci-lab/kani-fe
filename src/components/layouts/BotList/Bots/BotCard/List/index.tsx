@@ -19,7 +19,7 @@ export const BotCardList = (props: BotCardListProps) => {
         isPositiveRoi,
         pnlString,
         isPositivePnl,
-        capitalString,
+        fundingString,
         liquidityStatusChip,
         chainIconUrl,
         chainName,
@@ -95,9 +95,9 @@ export const BotCardList = (props: BotCardListProps) => {
                     </div>
                     <div className="flex flex-col gap-3">
                         <div className="flex items-center gap-4">
-                            <TooltipTitle title="Capital" classNames={{title: "text-sm text-foreground-500"}} tooltipString="The amount of capital the bot." />
+                            <TooltipTitle title="Funding" classNames={{title: "text-sm text-foreground-500"}} tooltipString="The amount of funding the bot." />
                             <div className="text-sm text-foreground-500">
-                                {capitalString}
+                                {fundingString}
                             </div>
                         </div>
                         <div className="flex items-center gap-4">

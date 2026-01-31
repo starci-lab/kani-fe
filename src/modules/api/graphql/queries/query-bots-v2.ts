@@ -28,6 +28,7 @@ const query1 = gql`
             performanceDisplayMode
             positionsPerformanceDisplayMode
             version
+            status
             activePosition {
               id
               type
@@ -45,6 +46,10 @@ const query1 = gql`
                 isActive
                 closeTxHash
                 metadata
+                openSnapshot {
+                  balanceValue
+                  balanceValueInUsd
+                }
               }
               associatedLiquidityPool {
                 id
@@ -95,6 +100,7 @@ export interface BotsV2AssociateOptions {
     liquidityPool?: boolean;
     position?: boolean;
   }
+  status?: boolean;
 }
 export type QueryBotsV2Params = QueryParams<QueryBotsV2, QueryBotsV2Request>;
 

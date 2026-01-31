@@ -1,6 +1,6 @@
 import { paths } from "@/resources/path"
-import { setBotId, setSocketLiquidityPoolIds, useAppDispatch, useAppSelector } from "@/redux"
-import { useParams, usePathname } from "next/navigation"
+import { BotDisplayMode, BotTab, setBotId, setBotTab, setDisplayMode, setSocketLiquidityPoolIds, useAppDispatch, useAppSelector } from "@/redux"
+import { useParams, usePathname, useSearchParams } from "next/navigation"
 import { useEffect, useLayoutEffect } from "react"
 
 export const useBot = () => {
@@ -8,13 +8,23 @@ export const useBot = () => {
     const bot = useAppSelector((state) => state.bot.bot)
     const pathname = usePathname()
     const dispatch = useAppDispatch()
+    const searchParams = useSearchParams()
     useLayoutEffect(() => {
-        const base = paths().bots().base()
-        const regex = new RegExp(`^${base}/[^/]+$`)
-
-        if (regex.test(pathname)) {
+        const base = paths().bots().base().split("?")[0]
+        if (pathname.startsWith(base)) {
             const _id = id as string
+            if (!_id) {
+                const displayMode = searchParams.get("displayMode") as BotDisplayMode
+                if (displayMode !== BotDisplayMode.Grid) {
+                    dispatch(setDisplayMode(displayMode))
+                }
+                return
+            }
             dispatch(setBotId(_id))
+            const tab = searchParams.get("tab") as BotTab
+            if (tab !== BotTab.Overview) {
+                dispatch(setBotTab(tab))
+            }
         }
     }, [id, pathname, dispatch])
 

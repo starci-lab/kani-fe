@@ -7,4 +7,6 @@ export interface PositionSnapshotsSchema extends AbstractSchema {
     snapshotAt: Date
     positionValue: number
     positionValueInUsd: number
+    balanceValue: number
+    balanceValueInUsd: number
 }

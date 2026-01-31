@@ -11,7 +11,7 @@ export interface BotCardBaseProps {
     isPositiveRoi: boolean
     pnlString: string
     isPositivePnl: boolean
-    capitalString: string
+    fundingString: string
     liquidityStatusChip: React.ReactNode
     chainIconUrl?: string
     chainName?: string

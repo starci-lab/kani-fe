@@ -10,11 +10,11 @@ export const iconAssetConfig = () => ({
         },
         chains: {
             solana: "/icons/chains/solana.png",
-            sui: "/icons/chains/sui.svg",
+            sui: "/icons/chains/sui.png",
         },
         tokens: {
             solana: "/icons/tokens/solana.png",
-            sui: "/icons/tokens/sui.svg",
+            sui: "/icons/tokens/sui.png",
         },
     }
 })

@@ -71,3 +71,9 @@ export enum ChartUnit {
     Usd = "usd",
     Target = "target",
 }
+
+export enum BotStatus {
+    InRange = "inRange",
+    OutOfRange = "outOfRange",
+    Idle = "idle",
+}

@@ -91,7 +91,7 @@ const initialState: BotSlice = {
         currentPage: 1,
         totalPages: 1,
     },
-    displayMode: BotDisplayMode.List,
+    displayMode: BotDisplayMode.Grid,
 }
 
 export const botSlice = createSlice({

@@ -7,21 +7,17 @@ import {
     KaniCardBody,
     KaniDivider,
     KaniLink,
-    KaniSkeleton,
 } from "../../../../../atomic"
 import { useAppSelector } from "@/redux"
 import { Spacer } from "@heroui/react"
-import { computePercentage } from "@/modules/utils"
+import { computePercentage, round } from "@/modules/utils"
 import { PoolTypeChip } from "../../../../../reuseable"
-import { CLMM } from "./CLMM"
-import { DLMM } from "./DLMM"
-import numeral from "numeral"
-import { useQueryBotV2Swr } from "@/hooks/singleton"
+import { CLMMContent } from "./CLMMContent"
+import { DLMMContent } from "./DLMMContent"
 import Decimal from "decimal.js"
 
 export const PoolCard = (
 ) => {
-    const botSwr = useQueryBotV2Swr()
     const activePosition = useAppSelector((state) => state.bot.bot?.activePosition)
     const tokens = useAppSelector((state) => state.static.tokens)
     const tokenA = useMemo(
@@ -41,72 +37,60 @@ export const PoolCard = (
         <KaniCard>
             <KaniCardBody>
                 <div className="flex items-center gap-4 justify-between">
-                    {
-                        botSwr.isLoading ? (
-                            <KaniSkeleton className="h-[28px] w-[120px] rounded-md" />
-                        ) : (
-                            <div className="flex items-center gap-2 justify-start">
-                                <div className="flex items-center gap-1">
-                                    <KaniAvatar
-                                        src={dex?.iconUrl}
-                                        classNames={{
-                                            base: "w-5 h-5",
-                                        }}
-                                        radius="full"
-                                    />
-                                    <div className="text-sm">{dex?.name}</div>
-                                </div>
-                                <PoolTypeChip
-                                    type={activePosition?.associatedLiquidityPool?.type ?? LiquidityPoolType.Clmm}
+                    <div className="flex items-center gap-2 justify-start">
+                        <div className="flex items-center gap-1">
+                            <KaniAvatar
+                                src={dex?.iconUrl}
+                                classNames={{
+                                    base: "w-5 h-5",
+                                }}
+                                radius="full"
+                            />
+                            <div className="text-sm">{dex?.name}</div>
+                        </div>
+                        <PoolTypeChip
+                            type={activePosition?.associatedLiquidityPool?.type ?? LiquidityPoolType.Clmm}
+                        />
+                    </div>
+                    <div className="flex items-center gap-2 justify-center">
+                        <div className="flex items-center gap-2 justify-center">
+                            <KaniAvatarGroup>
+                                <KaniAvatar
+                                    src={tokenA?.iconUrl}
+                                    classNames={{
+                                        base: "w-5 h-5 z-10",
+                                    }}
+                                    radius="full"
                                 />
+                                <KaniAvatar
+                                    src={tokenB?.iconUrl}
+                                    classNames={{
+                                        base: "w-5 h-5",
+                                    }}
+                                    radius="full"
+                                />
+                            </KaniAvatarGroup>
+                            <KaniLink
+                                color="foreground"
+                                isExternal
+                                size="sm"
+                                underline="hover"
+                                href={activePosition?.associatedLiquidityPool?.url ?? ""}>
+                                {tokenA?.name}-{tokenB?.name}
+                            </KaniLink>
+                        </div>
+                        <div className="flex items-center gap-1 justify-end">
+                            <div className="text-sm">
+                                {computePercentage({ numerator: new Decimal(activePosition?.associatedLiquidityPool?.fee ?? 0), denominator: new Decimal(1) }).toString()}%
                             </div>
-                        )
-                    }
-                    {
-                        botSwr.isLoading ? (
-                            <KaniSkeleton className="h-[28px] w-[120px] rounded-md" />
-                        ) : (
-                            <div className="flex items-center gap-2 justify-center">
-                                <div className="flex items-center gap-2 justify-center">
-                                    <KaniAvatarGroup>
-                                        <KaniAvatar
-                                            src={tokenA?.iconUrl}
-                                            classNames={{
-                                                base: "w-5 h-5 z-10",
-                                            }}
-                                            radius="full"
-                                        />
-                                        <KaniAvatar
-                                            src={tokenB?.iconUrl}
-                                            classNames={{
-                                                base: "w-5 h-5",
-                                            }}
-                                            radius="full"
-                                        />
-                                    </KaniAvatarGroup>
-                                    <KaniLink
-                                        color="foreground"
-                                        isExternal
-                                        size="sm"
-                                        underline="hover"
-                                        href={activePosition?.associatedLiquidityPool?.url ?? ""}>
-                                        {tokenA?.name}-{tokenB?.name}
-                                    </KaniLink>
-                                </div>
-                                <div className="flex items-center gap-1 justify-end">
-                                    <div className="text-sm">
-                                        {computePercentage({ numerator: new Decimal(activePosition?.associatedLiquidityPool?.fee ?? 0), denominator: new Decimal(1) }).toString()}%
-                                    </div>
-                                </div>
-                            </div>
-                        )
-                    }
+                        </div>
+                    </div>
                 </div>
                 <Spacer y={6} />
                 {
                     activePosition?.associatedLiquidityPool?.type === LiquidityPoolType.Dlmm 
-                        ? <DLMM liquidityPool={activePosition?.associatedLiquidityPool} /> 
-                        : <CLMM liquidityPool={activePosition?.associatedLiquidityPool} />
+                        ? <DLMMContent /> 
+                        : <CLMMContent />
                 }
                 <Spacer y={3} />
                 <KaniDivider />
@@ -115,32 +99,25 @@ export const PoolCard = (
                     <div className="flex items-center justify-between">
                         <div className="text-sm text-foreground-500">TVL</div>
                         <div className="text-sm">{
-                            !botSwr.isLoading ? `$${numeral(activePosition?.associatedLiquidityPool?.analytics?.tvl).format("0,0.00")}`
-                                : <KaniSkeleton className="h-5 w-[50px] rounded-md" />
+                            `$${ round(new Decimal(activePosition?.associatedLiquidityPool?.analytics?.tvl ?? 0))}`
                         }</div>
                     </div>
                     <div className="flex items-center justify-between">
                         <div className="text-sm text-foreground-500">Fees 24H</div>
                         <div className="text-sm">{
-                            !botSwr.isLoading 
-                                ? `$${numeral(activePosition?.associatedLiquidityPool?.analytics?.fees24H).format("0,0.00")}`
-                                : <KaniSkeleton className="h-5 w-[50px] rounded-md" />
+                            `$${round(new Decimal(activePosition?.associatedLiquidityPool?.analytics?.fees24H ?? 0))}`
                         }</div>
                     </div>
                     <div className="flex items-center justify-between">
                         <div className="text-sm text-foreground-500">Volume 24H</div>
                         <div className="text-sm">{
-                            !botSwr.isLoading 
-                                ? `$${numeral(activePosition?.associatedLiquidityPool?.analytics?.volume24H).format("0,0.00")}`
-                                : <KaniSkeleton className="h-5 w-[50px] rounded-md" />}</div>
+                            `$${round(new Decimal(activePosition?.associatedLiquidityPool?.analytics?.volume24H ?? 0))}`
+                        }</div>
                     </div>
                     <div className="flex items-center justify-between">
                         <div className="text-sm text-foreground-500">APR 24H</div>
                         <div className="flex items-center gap-2 text-sm">
-                            {
-                                !botSwr.isLoading 
-                                    ? `${numeral(activePosition?.associatedLiquidityPool?.analytics?.apr24H).format("0,0.00")}%`
-                                    : <KaniSkeleton className="h-5 w-[50px] rounded-md" />}
+                            {round(new Decimal(activePosition?.associatedLiquidityPool?.analytics?.apr24H ?? 0))}%
                         </div>
                     </div>
                 </div>  

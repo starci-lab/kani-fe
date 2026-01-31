@@ -1,6 +1,5 @@
 import React, { useMemo } from "react"
-import { BotSchema, PerformanceDisplayMode } from "@/modules/types"
-import { KaniChip } from "../../../../atomic"
+import { BotSchema, BotStatus, PerformanceDisplayMode } from "@/modules/types"
 import { useAppSelector } from "@/redux"
 import { round } from "@/modules/utils"
 import { useRouter } from "next/navigation"
@@ -10,6 +9,7 @@ import { BotDisplayMode } from "@/redux/slices/bot"
 import { BotCardGrid } from "./Grid"
 import { BotCardList } from "./List"
 import { paths } from "@/resources/path"
+import { BotCardBaseProps } from "./types"
 
 export interface BotCardProps {
     bot: BotSchema
@@ -71,34 +71,43 @@ export const BotCard = ({ bot }: BotCardProps) => {
     const isPositivePnl = bot.performanceDisplayMode === PerformanceDisplayMode.Usd ? isPositivePnl24hInUsd : isPositivePnl24h
     
     const renderLiquidityStatusChip = () => {
-        return (
-            <div className="flex items-center gap-2 animate-pulse">
-                <span className="w-2 h-2 rounded-full bg-success" />
-                <div className="text-sm text-success">
+        switch (bot.status) {
+        case BotStatus.InRange:
+            return (
+                <div className="flex items-center gap-2 animate-pulse">
+                    <span className="w-2 h-2 rounded-full bg-success" />
+                    <div className="text-sm text-success">
                     In Range
+                    </div>
                 </div>
-            </div>
-        )
-        return (
-            <KaniChip color="danger" variant="flat">
-                Out of Range
-            </KaniChip>
-        )
-        return (
-            <KaniChip color="warning" variant="flat">
-                Idle
-            </KaniChip>
-        )
+            )
+        case BotStatus.OutOfRange:
+            return (
+                <div className="flex items-center gap-2 animate-pulse">
+                    <span className="w-2 h-2 rounded-full bg-danger" />
+                    <div className="text-sm text-danger">
+                    Out of Range
+                    </div>
+                </div>
+            )
+        case BotStatus.Idle:
+            return (
+                <div className="flex items-center gap-2 animate-pulse">
+                    <span className="w-2 h-2 rounded-full bg-warning" />
+                    <div className="text-sm text-warning">
+                    Idle
+                    </div>
+                </div>
+            )
+        }
     }
     
     const chainConfig = useMemo(() => getChainConfig(bot.chainId), [bot.chainId])
-    const capitalString = "50,000 USDC" // TODO: Calculate actual capital
     
     if (!targetToken || !quoteToken) {
         return null
     }
-    
-    const cardProps = {
+    const cardProps: BotCardBaseProps = {
         bot,
         targetToken,
         quoteToken,
@@ -108,7 +117,7 @@ export const BotCard = ({ bot }: BotCardProps) => {
         isPositiveRoi,
         pnlString,
         isPositivePnl,
-        capitalString,
+        fundingString: bot.performanceDisplayMode === PerformanceDisplayMode.Usd ? `${round(new Decimal(bot.activePosition?.associatedPosition?.openSnapshot?.balanceValueInUsd ?? 0))} USD` : `${round(new Decimal(bot.activePosition?.associatedPosition?.openSnapshot?.balanceValue ?? 0))} ${targetToken?.symbol}`,
         liquidityStatusChip: renderLiquidityStatusChip(),
         chainIconUrl: chainConfig?.iconUrl,
         chainName: chainConfig?.name,
@@ -116,7 +125,6 @@ export const BotCard = ({ bot }: BotCardProps) => {
         poolAddress: bot.activePosition?.associatedLiquidityPool?.poolAddress,
         onCardPress: () => router.push(paths().bots().bot(bot.id)),
     }
-    
     return displayMode === BotDisplayMode.Grid ? (
         <BotCardGrid {...cardProps} />
     ) : (

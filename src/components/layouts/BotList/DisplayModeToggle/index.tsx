@@ -3,6 +3,8 @@ import { KaniTab, KaniTabs } from "../../../atomic"
 import { ListIcon, GridFourIcon } from "@phosphor-icons/react"
 import { BotDisplayMode, setDisplayMode, useAppSelector } from "@/redux"
 import { useAppDispatch } from "@/redux"
+import { paths } from "@/resources/path"
+import { useRouter } from "next/navigation"
 
 export interface DisplayModeToggleTab {
     key: string
@@ -13,6 +15,7 @@ export interface DisplayModeToggleTab {
 export const DisplayModeToggle = () => {
     const displayMode = useAppSelector(state => state.bot.displayMode)
     const dispatch = useAppDispatch()
+    const router = useRouter()
     const tabs: Array<DisplayModeToggleTab> = [
         {
             ariaLabel: "Grid",
@@ -37,6 +40,7 @@ export const DisplayModeToggle = () => {
             selectedKey={displayMode} 
             onSelectionChange={(value) => {
                 dispatch(setDisplayMode(value as BotDisplayMode))
+                router.push(paths().bots().base({ displayMode: value as BotDisplayMode }))
             }}>
             {tabs.map((tab) => (
                 <KaniTab aria-label={tab.ariaLabel} key={tab.key} title={

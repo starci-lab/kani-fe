@@ -155,9 +155,9 @@ export const Positions = () => {
                                                 {
                                                     (() => {
                                                         if (bot.positionsPerformanceDisplayMode === PerformanceDisplayMode.Usd) {
-                                                            return  `${round(new Decimal(position.openSnapshot?.positionValueInUsd ?? 0)).toNumber()} USD`
+                                                            return  `${round(new Decimal(position.openSnapshot?.positionValueInUsd ?? 0))} USD`
                                                         } else {
-                                                            return `${round(new Decimal(position.openSnapshot?.positionValue ?? 0)).toNumber()} ${targetToken?.symbol}`
+                                                            return `${round(new Decimal(position.openSnapshot?.positionValue ?? 0))} ${targetToken?.symbol}`
                                                         }
                                                     })()
                                                 }

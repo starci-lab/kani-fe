@@ -10,9 +10,8 @@ import {
 import React from "react"
 import { LiquidityPoolSchema } from "@/modules/types"
 import { useAppSelector } from "@/redux"
-import { computePercentage } from "@/modules/utils"
+import { computePercentage, round } from "@/modules/utils"
 import { cn, Spacer } from "@heroui/react"
-import numeral from "numeral"
 import { PoolTypeChip } from "../PoolTypeChip"
 import { TooltipTitle } from "../TooltipTitle"
 import { SealCheckIcon } from "@phosphor-icons/react"
@@ -102,20 +101,20 @@ export const PoolCard = (
                     <div className="flex items-center justify-between">
                         <TooltipTitle title="TVL" classNames={{ title: "text-sm text-foreground-500" }} />
                         <div className="text-sm">{liquidityPool.analytics?.tvl
-                            ? `$${numeral(liquidityPool.analytics?.tvl).format("0,0")}`
+                            ? `$${round(new Decimal(liquidityPool.analytics?.tvl))}`
                             : <KaniSkeleton className="h-5 w-[50px] rounded-md" />
                         }</div>
                     </div>
                     <div className="flex items-center justify-between">
                         <TooltipTitle title="Fees 24H" classNames={{ title: "text-sm text-foreground-500" }} />
                         <div className="text-sm">{liquidityPool.analytics?.fees24H
-                            ? `$${numeral(liquidityPool.analytics?.fees24H).format("0,0")}`
+                            ? `$${round(new Decimal(liquidityPool.analytics?.fees24H))}`
                             : <KaniSkeleton className="h-5 w-[50px] rounded-md" />}</div>
                     </div>
                     <div className="flex items-center justify-between">
                         <TooltipTitle title="Volume 24H" classNames={{ title: "text-sm text-foreground-500" }} />
                         <div className="text-sm">{liquidityPool.analytics?.volume24H
-                            ? `$${numeral(liquidityPool.analytics?.volume24H).format("0,0")}`
+                            ? `$${round(new Decimal(liquidityPool.analytics?.volume24H))}`
                             : <KaniSkeleton className="h-5 w-[50px] rounded-md" />}</div>
                     </div>
                     <div className="flex items-center justify-between">
