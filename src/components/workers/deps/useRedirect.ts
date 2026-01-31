@@ -6,8 +6,11 @@ import { usePrivy } from "@privy-io/react-auth"
 export const useRedirect = () => {
     const pathname = usePathname()
     const router = useRouter()
-    const { authenticated } = usePrivy()
+    const { ready, authenticated } = usePrivy()
     useLayoutEffect(() => {
+        if (!ready) {
+            return
+        }
         if (!authenticated) {
             if (pathname !== paths().base()) {
                 router.push(paths().base())
@@ -20,5 +23,5 @@ export const useRedirect = () => {
                 return
             }
         }
-    }, [pathname, router, authenticated])
+    }, [pathname, router, authenticated, ready])
 }

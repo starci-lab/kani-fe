@@ -9,10 +9,11 @@ export const Onboarding = () => {
     return (
         <div className="min-h-screen flex">
             {/* Left content */}
-            <div className="w-1/2 flex items-center justify-center px-16">
+            <div className="sm:w-1/2 flex items-center justify-center px-16">
                 <div className="max-w-md">
                     <motion.h1
                         className="
+    sm:text-start text-center
     text-4xl font-bold leading-normal
     pb-1
     bg-gradient-to-r from-secondary via-primary to-secondary
@@ -24,19 +25,21 @@ export const Onboarding = () => {
                     >
   Maximize yields with Kani
                     </motion.h1>
-                    <Spacer y={4} />
-                    <div className="text-foreground-500">
+                    <Spacer y={3} />
+                    <div className="text-foreground-500 text-center sm:text-start">
                         Create an account or log in to manage your bots and automatically optimize your strategies.
                     </div>
-                    <Spacer y={8} />
-                    <KaniButton size="lg" color="primary" className="w-fit" onPress={() => login()}>
+                    <Spacer y={6} />
+                    <div className="flex justify-center sm:justify-start">
+                        <KaniButton size="lg" color="primary" className="w-fit" onPress={() => login()}>
                         Get Started
-                    </KaniButton>
+                        </KaniButton>
+                    </div>
                 </div>
             </div>
 
             {/* Right image - fixed */}
-            <div className="fixed right-0 top-0 h-screen w-1/2">
+            <div className="hidden sm:block fixed right-0 top-0 h-screen w-1/2">
                 <KaniImage
                     src="/onboarding.webp"
                     alt="Onboarding"

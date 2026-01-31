@@ -4,6 +4,7 @@ import {
     KaniImage,
     KaniLink,
     KaniPagination,
+    KaniScrollShadow,
     KaniTable,
     KaniTableBody,
     KaniTableCell,
@@ -95,30 +96,13 @@ export const Positions = () => {
                 </div>
             </div>
             <Spacer y={4} />
-            <div className="max-w-full w-full overflow-auto">
+            <KaniScrollShadow className="w-[calc(100vw-3rem)] max-w-[calc(100vw-3rem)]" hideScrollBar orientation="vertical">
                 <KaniTable 
                     shadow="none"
                     radius="sm"
                     classNames={{
-                        wrapper: "min-h-[300px] p-0 bg-transparent overflow-hidden",
+                        wrapper: "min-h-[300px] p-0 bg-transparent overflow-y-hidden",
                     }}
-                    bottomContent={
-                        positionsPages.totalPages && positionsPages.totalPages > 0 ? (
-                            <div className="flex w-full justify-center">
-                                <KaniPagination
-                                    isCompact
-                                    showControls
-                                    showShadow
-                                    color="primary"
-                                    page={positionsPages.currentPage}
-                                    total={positionsPages.totalPages}
-                                    onChange={(page) => dispatch(setPositionsPages({
-                                        currentPage: page,
-                                    }))}
-                                />
-                            </div>
-                        ) : null
-                    }
                 >
                     <KaniTableHeader>
                         {headers.map((header) => (
@@ -221,7 +205,24 @@ export const Positions = () => {
                         }
                     </KaniTableBody>
                 </KaniTable>
-            </div>
+            </KaniScrollShadow>
+            <Spacer y={3} />
+            {positionsPages.totalPages && positionsPages.totalPages > 0 ? (
+                <div className="flex w-full justify-center">
+                    <KaniPagination
+                        isCompact
+                        showControls
+                        showShadow
+                        color="primary"
+                        page={positionsPages.currentPage}
+                        total={positionsPages.totalPages}
+                        onChange={(page) => dispatch(setPositionsPages({
+                            currentPage: page,
+                        }))}
+                    />
+                </div>
+            ) : null
+            }
         </div>
     )
 }
