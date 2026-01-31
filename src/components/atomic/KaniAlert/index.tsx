@@ -6,7 +6,7 @@ export const KaniAlert = (props: AlertProps) => {
         {...props} 
         classNames={
             { 
-                title: cn("mb-3 text-sm", props.classNames?.title), 
+                title: cn("mb-2 text-sm", props.classNames?.title), 
                 description: cn("text-xs", props.classNames?.description),
                 ...props.classNames, 
             }

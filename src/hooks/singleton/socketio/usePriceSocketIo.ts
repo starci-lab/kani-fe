@@ -9,7 +9,12 @@ import {
     WsResponse
 } from "./config"
 import { usePrivy } from "@privy-io/react-auth"
-import { PublicationPrice, setPrices, useAppDispatch, useAppSelector } from "@/redux"
+import { 
+    PublicationPrice, 
+    setPrices, 
+    useAppDispatch, 
+    useAppSelector 
+} from "@/redux"
 import { superjson } from "@/modules/superjson"
 import { InternalSocketIoEvent } from "./events"
 

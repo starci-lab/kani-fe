@@ -57,7 +57,7 @@ export const EvalStatus = () => {
                     description={
                         <div>
                             <div>Not enough funding to open a new position. Please deposit more {targetToken?.symbol} and/or {quoteToken?.symbol} to reach at least {minRequiredAmountInUsd} USD and try again.</div> 
-                            <Spacer y={3} />
+                            <Spacer y={2} />
                             <Button
                                 color="warning"
                                 size="sm"

@@ -15,7 +15,8 @@ import {
 import { getChainAssets } from "@/resources/assets"
 import { ChainId } from "@/modules/types"
 import {
-    QrCodeIcon, 
+    ArrowLineUpIcon,
+    ArrowLineDownIcon, 
 } from "@phosphor-icons/react"
 import { 
     explorerUrl, 
@@ -46,13 +47,22 @@ export const Account = () => {
     const actions: Array<WalletAction> = [
         {
             label: "Deposit",
-            icon: QrCodeIcon,
+            icon: ArrowLineDownIcon,
             color: "default",
             tooltip: "Generate a QR code or address to deposit funds into this bot.",
             onPress: () => {
                 depositDisclosure.onOpen()
             },
-        }
+        },
+        {
+            label: "Withdraw",
+            icon: ArrowLineUpIcon,
+            color: "default",
+            tooltip: "Withdraw funds from this bot.",   
+            onPress: () => {
+                console.log("Withdraw")
+            },
+        },
     ]
     return (
         <div>
