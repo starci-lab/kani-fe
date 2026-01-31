@@ -1,10 +1,11 @@
 import React from "react"
-import { KaniAvatar, KaniAvatarGroup, KaniCard, KaniCardBody, KaniChip, KaniImage } from "../../../../../atomic"
+import { KaniAvatar, KaniAvatarGroup, KaniCard, KaniCardBody, KaniImage } from "../../../../../atomic"
 import { SnippetIcon, TooltipTitle, UnitDropdown } from "../../../../../reuseable"
-import { truncateMiddle } from "@/modules/utils"
+import { truncateEnd, truncateMiddle } from "@/modules/utils"
 import { BotCardBaseProps } from "../types"
 import { updateBotPerformanceDisplayModeInBots, useAppDispatch } from "@/redux"
 import { useUpdateBotPerformanceDisplayModeV2SwrMutation } from "@/hooks/singleton"
+import { cn } from "@heroui/react"
 
 export type BotCardListProps = BotCardBaseProps
 
@@ -36,38 +37,27 @@ export const BotCardList = (props: BotCardListProps) => {
             className="w-full"
         >
             <KaniCardBody>
-                <div className="grid grid-cols-[150px_2fr_3fr_125px_auto] items-center gap-4 w-full">
+                <div className="grid grid-cols-[120px_1fr_auto] md:grid-cols-[150px_2fr_3fr_125px_auto] items-center gap-4 w-full">
                     <div className="flex flex-col gap-3">
-                        <div className="flex items-center gap-4">
+                        <div className="flex items-center gap-2">
                             <div className="flex items-center gap-2">
                                 <KaniAvatarGroup>
                                     <KaniAvatar src={targetToken.iconUrl} classNames={{
-                                        img: "w-6 h-6",
-                                        base: "w-6 h-6 z-10",
-                                    }}/>
+                                        img: "w-6 h-6 min-w-6 min-h-6 max-w-6 max-h-6",
+                                        base: "w-6 h-6 max-w-6 max-h-6 min-w-6 min-h-6 z-10",
+                                    }} imgProps={{ className: "w-6 h-6 min-w-6 min-h-6 max-w-6 max-h-6" }}/>
                                     <KaniAvatar src={quoteToken.iconUrl} classNames={{
-                                        img: "w-6 h-6",
-                                        base: "w-6 h-6",
-                                    }}/>
+                                        img: "w-6 h-6 min-w-6 min-h-6 max-w-6 max-h-6",
+                                        base: "w-6 h-6 min-w-6 min-h-6 max-w-6 max-h-6",
+                                    }} imgProps={{ className: "w-6 h-6 min-w-6 min-h-6 max-w-6 max-h-6" }}/>
                                 </KaniAvatarGroup>
-                                <div className="font-bold">
-                                    {botName}
+                                <div className={cn("font-bold", isRunning ? "text-primary" : "text-secondary")}>
+                                    {truncateEnd({ str: botName, maxLength: 6 })}
                                 </div>
                             </div>
-                            {
-                                isRunning ? (
-                                    <KaniChip color="primary" size="sm" variant="flat">
-                                    Active
-                                    </KaniChip>
-                                ) : (
-                                    <KaniChip color="secondary" size="sm" variant="flat">
-                                    Inactive
-                                    </KaniChip>
-                                )
-                            }
                         </div>
                     </div>
-                    <div className="flex flex-col gap-3">
+                    <div className="flex flex-col gap-2">
                         <div className="flex items-center gap-2">
                             <TooltipTitle
                                 classNames={{
@@ -93,7 +83,7 @@ export const BotCardList = (props: BotCardListProps) => {
                             </div>
                         </div>
                     </div>
-                    <div className="flex flex-col gap-3">
+                    <div className="flex-col gap-2 md:flex hidden">
                         <div className="flex items-center gap-4">
                             <TooltipTitle title="Funding" classNames={{title: "text-sm text-foreground-500"}} tooltipString="The amount of funding the bot." />
                             <div className="text-sm text-foreground-500">
@@ -105,7 +95,7 @@ export const BotCardList = (props: BotCardListProps) => {
                             {liquidityStatusChip}
                         </div>
                     </div>
-                    <div className="flex flex-col gap-3">
+                    <div className="flex flex-col gap-2 md:flex hidden">
                         <div className="flex items-center gap-2">
                             <KaniImage src={chainIconUrl} className="w-5 h-5" />
                             <div className="text-sm text-foreground-500">{chainName}</div>

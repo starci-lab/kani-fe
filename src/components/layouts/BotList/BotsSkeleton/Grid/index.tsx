@@ -7,9 +7,12 @@ export const Grid = () => {
     return (
         <KaniCard>
             <KaniCardBody>
-                <div className="flex items-center justify-between gap-4">
-                    <KaniSkeleton className="w-[100px] h-6 rounded-md"/>
-                    <KaniSkeleton className="w-[50px] h-6 rounded-full"/>
+                <div className="flex items-center gap-2">
+                    <div className="flex items-center">
+                        <KaniSkeleton className="w-6 h-6 rounded-full z-10"/>
+                        <KaniSkeleton className="w-6 h-6 rounded-full -ml-2"/>
+                    </div>
+                    <KaniSkeleton className="w-[50px] h-6 rounded-md"/>
                 </div>
                 <Spacer y={6} />
                 <div className="flex items-center gap-4 justify-between">

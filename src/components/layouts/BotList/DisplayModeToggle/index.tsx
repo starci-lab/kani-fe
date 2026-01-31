@@ -35,8 +35,10 @@ export const DisplayModeToggle = () => {
             color="secondary"
             classNames={{
                 cursor: "group-data-[selected=true]:bg-secondary/20",
-                tabContent: "group-data-[selected=true]:text-secondary"
+                tabContent: "group-data-[selected=true]:text-secondary",
+                tabList: "md:w-fit w-full"
             }}
+            className="md:w-fit w-full"
             selectedKey={displayMode} 
             onSelectionChange={(value) => {
                 dispatch(setDisplayMode(value as BotDisplayMode))
