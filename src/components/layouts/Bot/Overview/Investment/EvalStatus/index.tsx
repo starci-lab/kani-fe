@@ -52,6 +52,9 @@ export const EvalStatus = () => {
                 return <>
                 <Spacer y={6} />
                 <KaniAlert
+                    classNames={{
+                        base: "!bg-warning/20"
+                    }}
                     color="warning"
                     title="Not Enough Funding"
                     description={
@@ -80,6 +83,9 @@ export const EvalStatus = () => {
                 <>
                     <Spacer y={6} />
                     <KaniAlert
+                        classNames={{
+                            base: "!bg-warning/20"
+                        }}
                         color="warning"
                         title="Not Enough Gas"
                         description={

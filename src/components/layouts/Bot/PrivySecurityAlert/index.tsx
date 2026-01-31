@@ -8,6 +8,7 @@ export const PrivySecurityAlert = () => {
             icon={<ShieldCheckIcon weight="fill" />}
             classNames={{
                 alertIcon: "w-6 h-6",
+                base: "!bg-secondary/20"
             }}
             color="secondary"
             title="Your bot is secured by Privy"

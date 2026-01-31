@@ -96,7 +96,7 @@ export const Positions = () => {
                 </div>
             </div>
             <Spacer y={4} />
-            <KaniScrollShadow className="w-[calc(100vw-3rem)] max-w-[calc(100vw-3rem)]" hideScrollBar orientation="vertical">
+            <KaniScrollShadow className="sm:w-full w-[calc(100vw-3rem)] max-w-[calc(100vw-3rem)] sm:max-w-full overflow-hidden" hideScrollBar orientation="vertical">
                 <KaniTable 
                     shadow="none"
                     radius="sm"
