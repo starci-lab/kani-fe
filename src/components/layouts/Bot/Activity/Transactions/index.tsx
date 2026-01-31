@@ -66,87 +66,94 @@ export const Transactions = () => {
     const queryTransactionsV2Swr = useQueryTransactionsV2Swr()
     const transactionsPages = useAppSelector((state) => state.bot.transactionsPages)
     return (
-        <div>
-            <div className="flex items-center gap-2 justify-between">
-                <TooltipTitle
-                    title="Transactions"
-                />
-                <RefreshIcon
-                    classNames={{
-                        icon: "text-primary"
-                    }}
-                    onRefresh={() => {
-                        queryTransactionsV2Swr.mutate()
-                    }}
-                />
+        <div className="w-full">
+            <div className="max-w-full py-4 px-2 w-full h-full scrollbar-hide overflow-x-scroll">
+                <div className="flex items-center gap-2 justify-between">
+                    <TooltipTitle
+                        title="Transactions"
+                    />
+                    <RefreshIcon
+                        classNames={{
+                            icon: "text-primary"
+                        }}
+                        onRefresh={() => {
+                            queryTransactionsV2Swr.mutate()
+                        }}
+                    />
+                </div>
+                <Spacer y={4} />
+                <div className="w-full max-w-full overflow-x-auto">
+                    <KaniTable 
+                        shadow="none"
+                        radius="sm"
+                        classNames={{
+                            wrapper: "min-h-[300px] min-w-max p-0 bg-transparent overflow-hidden",
+                        }}
+                        bottomContent={
+                            transactionsPages.totalPages && transactionsPages.totalPages > 0 ? (
+                                <div className="flex w-full justify-center">
+                                    <KaniPagination
+                                        variant="flat"
+                                        isCompact
+                                        showControls
+                                        showShadow
+                                        color="primary"
+                                        page={transactionsPages.currentPage}
+                                        total={transactionsPages.totalPages}
+                                        onChange={(page) => dispatch(
+                                            setTransactionsPages({
+                                                currentPage: page,
+                                            }
+                                            )
+                                        )
+                                        }
+                                    />
+                                </div>
+                            ) : null
+                        }
+                    >
+                        <KaniTableHeader>
+                            {headers.map((header) => (
+                                <KaniTableColumn 
+                                    key={header.key}
+                                >{header.label}
+                                </KaniTableColumn>
+                            ))}
+                        </KaniTableHeader>
+                        <KaniTableBody 
+                            loadingContent={<Spinner />}
+                            loadingState={queryTransactionsV2Swr.isLoading ? "loading" : "idle"}
+                            emptyContent={<EmptyContent description="We couldn&apos;t find any transactions." />}
+                        >
+                            {
+                                (
+                                    transactions || []).map((transaction) => (
+                                    <KaniTableRow key={transaction.id} className="border-b border-divider last:border-b-0">
+                                        <KaniTableCell>{renderType(transaction.type)}</KaniTableCell>
+                                        <KaniTableCell>
+                                            <div className="flex items-center gap-2">
+                                                {truncateMiddle({ str: transaction.txHash })}
+                                                <SnippetIcon
+                                                    copyString={transaction.txHash}
+                                                    classNames={{
+                                                        checkIcon: "w-4 h-4 text-foreground-500",
+                                                        copyIcon: "w-4 h-4 text-foreground-500",
+                                                    }}/>
+                                            </div>
+                                        </KaniTableCell>
+                                        <KaniTableCell>{dayjs(transaction.timestamp).format("DD/MM/YYYY HH:mm:ss")}</KaniTableCell>
+                                        <KaniTableCell>
+                                            <KaniLink color="secondary" onPress={() => window.open(url(transaction), "_blank")}>
+                                                <ArrowSquareOutIcon className="w-5 h-5 cursor-pointer" />
+                                            </KaniLink>
+                                        </KaniTableCell>
+                                    </KaniTableRow>
+                                ))
+                            }
+                        </KaniTableBody>
+                    </KaniTable>
+                </div>
             </div>
-            <Spacer y={4} />
-            <KaniTable 
-                shadow="none"
-                radius="sm"
-                classNames={{
-                    wrapper: "min-h-[300px] p-0 bg-transparent overflow-hidden",
-                }}
-                bottomContent={
-                    transactionsPages.totalPages && transactionsPages.totalPages > 0 ? (
-                        <div className="flex w-full justify-center">
-                            <KaniPagination
-                                variant="flat"
-                                isCompact
-                                showControls
-                                showShadow
-                                color="primary"
-                                page={transactionsPages.currentPage}
-                                total={transactionsPages.totalPages}
-                                onChange={(page) => dispatch(
-                                    setTransactionsPages({
-                                        currentPage: page,
-                                    }
-                                    )
-                                )
-                                }
-                            />
-                        </div>
-                    ) : null
-                }
-            >
-                <KaniTableHeader>
-                    {headers.map((header) => (
-                        <KaniTableColumn key={header.key}>{header.label}</KaniTableColumn>
-                    ))}
-                </KaniTableHeader>
-                <KaniTableBody 
-                    loadingContent={<Spinner />}
-                    loadingState={queryTransactionsV2Swr.isLoading ? "loading" : "idle"}
-                    emptyContent={<EmptyContent description="We couldn&apos;t find any transactions." />}
-                >
-                    {
-                        (
-                            transactions || []).map((transaction) => (
-                            <KaniTableRow key={transaction.id} className="border-b border-divider last:border-b-0">
-                                <KaniTableCell>{renderType(transaction.type)}</KaniTableCell>
-                                <KaniTableCell>
-                                    <div className="flex items-center gap-2">
-                                        {truncateMiddle({ str: transaction.txHash })}
-                                        <SnippetIcon
-                                            copyString={transaction.txHash}
-                                            classNames={{
-                                                checkIcon: "w-4 h-4 text-foreground-500",
-                                                copyIcon: "w-4 h-4 text-foreground-500",
-                                            }}/>
-                                    </div>
-                                </KaniTableCell>
-                                <KaniTableCell>{dayjs(transaction.timestamp).format("DD/MM/YYYY HH:mm:ss")}</KaniTableCell>
-                                <KaniTableCell>
-                                    <KaniLink color="secondary" onPress={() => window.open(url(transaction), "_blank")}>
-                                        <ArrowSquareOutIcon className="w-5 h-5 cursor-pointer" />
-                                    </KaniLink>
-                                </KaniTableCell>
-                            </KaniTableRow>
-                        ))
-                    }
-                </KaniTableBody>
-            </KaniTable>
         </div>
     )
 }

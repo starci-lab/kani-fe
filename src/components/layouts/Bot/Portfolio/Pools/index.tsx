@@ -38,7 +38,7 @@ export const Pools = () => {
                     </div>
                 </div>  
             </div>
-            <Spacer y={4} />
+            <Spacer y={3} />
             {
                 (isLoading || !data?.liquidityPools.data?.data) ? (
                     <div className="flex flex-col gap-3">

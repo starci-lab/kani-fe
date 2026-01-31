@@ -73,7 +73,7 @@ export const Investment = () => {
             <Spacer y={6} />
             <HistoryChart />
             <Spacer y={3} />
-            <div className="flex justify-between items-center">
+            <div className="flex justify-between items-center md:flex-row flex-col gap-3">
                 <ChartUnitTabs />
                 <IntervalTabs />
             </div>
@@ -91,8 +91,8 @@ export const Investment = () => {
                     }}
                 />
             </div>
-            <Spacer y={4} />
-            <div className="flex gap-2">
+            <Spacer y={3} />
+            <div className="flex gap-3 md:flex-row flex-col">
                 <TokenCard
                     token={targetToken}
                     type={TokenCardType.TargetToken}
@@ -112,10 +112,10 @@ export const Investment = () => {
                     isLoading={isLoading}
                 />
             </div>
-            <Spacer y={4} />
-            <div className="flex gap-2">
-                <div className="flex items-center gap-4">
-                    <div className="flex gap-2 items-center">
+            <Spacer y={3} />
+            <div className="flex gap-3">
+                <div className="flex sm:items-center gap-3 md:flex-row flex-col">
+                    <div className="flex gap-3 items-center">
                         <TooltipTitle
                             title="Minimum Balance (Excl. Gas)"
                             classNames={{
@@ -135,7 +135,7 @@ export const Investment = () => {
                             }
                         </div>
                     </div>
-                    <KaniDivider orientation="vertical" className="h-4" />
+                    <KaniDivider orientation="vertical" className="h-4 md:block hidden" />
                     <div className="flex gap-2 items-center">
                         <TooltipTitle
                             title="Minimum Gas Balance"

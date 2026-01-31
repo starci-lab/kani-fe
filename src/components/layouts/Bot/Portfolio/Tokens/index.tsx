@@ -32,7 +32,7 @@ export const Tokens = () => {
                     }}
                 />
             </div>
-            <Spacer y={4} />
+            <Spacer y={3} />
             <div className="flex flex-col gap-2">
                 {
                     !queryBalancesV2Swr.data || queryBalancesV2Swr.isLoading ? (

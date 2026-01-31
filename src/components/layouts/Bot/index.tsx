@@ -157,14 +157,15 @@ export const Bot = () => {
                     router.push(path)
                     dispatch(setBotTab(_value))
                 }}
+                className="w-full"
                 aria-label="Bot Tabs"
                 classNames={{
-                    tabList: "pb-0",
+                    tabList: "pb-0 w-full"
                 }}>
                 {tabs.map((tab) => (
                     <Tab key={tab.key} title={
                         <div className="flex items-center gap-2">
-                            <tab.icon className="w-5 h-5 min-w-5 min-h-5" />
+                            <tab.icon className="w-5 h-5 min-w-5 min-h-5 sm:block hidden" />
                             {tab.title}
                         </div>
                     } />

@@ -42,21 +42,29 @@ export const IntervalTabs = () => {
     const dispatch = useAppDispatch()
     const updateBotChartConfigV2SwrMutation = useUpdateBotChartConfigV2SwrMutation()
     return ( 
-        <div>
-            <KaniTabs variant="underlined" size="sm" color="primary" onSelectionChange={
-                async (key) => {
-                    if (!bot?.id) {
-                        return
-                    }
-                    const chartInterval = key as ChartInterval
-                    dispatch(setBotChartConfigChartInterval(chartInterval))
-                    await updateBotChartConfigV2SwrMutation.trigger({
-                        request: {
-                            id: bot.id,
-                            chartInterval,
-                        },
-                    })
-                }} selectedKey={bot?.chartConfig?.chartInterval ?? ChartInterval.OneHour}>
+        <div className="md:w-fit w-full">
+            <KaniTabs 
+                variant="underlined" 
+                size="sm" 
+                className="w-full"
+                classNames={{
+                    tabList: "w-full"
+                }}
+                color="primary" 
+                onSelectionChange={
+                    async (key) => {
+                        if (!bot?.id) {
+                            return
+                        }
+                        const chartInterval = key as ChartInterval
+                        dispatch(setBotChartConfigChartInterval(chartInterval))
+                        await updateBotChartConfigV2SwrMutation.trigger({
+                            request: {
+                                id: bot.id,
+                                chartInterval,
+                            },
+                        })
+                    }} selectedKey={bot?.chartConfig?.chartInterval ?? ChartInterval.OneHour}>
                 {
                     intervals.map((interval) => (
                         <KaniTab key={interval.key} title={interval.text} />

@@ -29,7 +29,7 @@ export const Position = () => {
                     } 
                 />
             </div>
-            <Spacer y={4} />
+            <Spacer y={3} />
             {
                 (!queryBotV2Swr.data || queryBotV2Swr.isLoading) ? (
                     <div className="h-[300px] w-full grid place-items-center">

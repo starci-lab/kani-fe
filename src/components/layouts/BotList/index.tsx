@@ -30,10 +30,10 @@ export const BotList = () => {
             <div className="flex items-center justify-between">
                 <div className="text-2xl font-bold">Bots</div>
             </div>
-            <Spacer y={4} />
+            <Spacer y={3} />
             <div className="text-sm text-foreground-500">Individual users can create and run up to {accountLimits?.maxBotsPerAccount}  bots at the same time.</div>
-            <Spacer y={12} />
-            <div className="flex items-center justify-between flex-col gap-4 sm:flex-row flex-col-reverse">
+            <Spacer y={6} />
+            <div className="flex items-center justify-between flex-col gap-3 sm:flex-row flex-col-reverse">
                 <DisplayModeToggle />
                 <KaniButton className="md:w-fit w-full" color="primary" startContent={<PlusIcon className="w-5 h-5"/>} onPress={() => router.push(paths().bots().create())}>
                     Create Bot

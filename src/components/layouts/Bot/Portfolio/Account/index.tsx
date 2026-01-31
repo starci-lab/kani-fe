@@ -72,7 +72,7 @@ export const Account = () => {
         <div>
             <TooltipTitle
                 title="Account" />
-            <Spacer y={4} />
+            <Spacer y={3} />
             <div className="flex items-center gap-2">
                 <div className="flex items-center gap-3">
                     {
@@ -120,7 +120,7 @@ export const Account = () => {
                     </div>
                 </div>  
             </div>
-            <Spacer y={4} />
+            <Spacer y={3} />
             <div className="flex items-center gap-2">
                 {actions.map((action) => (
                     <KaniTooltip key={action.label} content={action.tooltip}>

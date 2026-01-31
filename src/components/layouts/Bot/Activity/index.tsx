@@ -5,10 +5,10 @@ import { Positions } from "./Positions"
 
 export const Activity = () => {
     return (
-        <>
+        <div className="w-full">
             <Transactions />
-            <Spacer y={8} />   
+            <Spacer y={6} />   
             <Positions />
-        </>
+        </div>
     )
 }

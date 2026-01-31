@@ -8,9 +8,9 @@ export const Portfolio = () => {
     return (
         <div>
             <Account />
-            <Spacer y={8} />
+            <Spacer y={6} />
             <Tokens />
-            <Spacer y={8} />
+            <Spacer y={6} />
             <Pools />
         </div>
     )

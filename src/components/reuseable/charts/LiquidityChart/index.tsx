@@ -4,10 +4,12 @@ import {
     XAxis,
     YAxis,
     ReferenceLine,
+    ResponsiveContainer,
 } from "recharts"
 import React, { useMemo } from "react"
 import { round } from "@/modules/utils"
 import Decimal from "decimal.js"
+import { cn } from "@heroui/react"
 
 export enum PricePosition {
     InRange = "inRange",
@@ -52,163 +54,163 @@ export const LiquidityChart = ({ priceLower, priceUpper, currentPrice }: Liquidi
         return currentPrice.gt(priceLower.plus(priceUpper).div(2))
     }, [currentPrice, priceLower, priceUpper])
     return (
-        <RechartsAreaChart
-            width={300}   
-            height={120}     
-            data={data}
-            margin={{ top: 10, right: 10, left: 0, bottom: 0 }}
-        >
-            <XAxis
-                type="number"
-                dataKey="name"
-                domain={[extendedMin, extendedMax]}
-                hide
-            />
-            <YAxis hide domain={[-0.3, 1.3]} />
-            <Area
-                type="linear"
-                dataKey="uv"
-                stroke="hsl(var(--heroui-foreground-400))"
-                fill="hsl(var(--heroui-foreground-300))"
-                fillOpacity={1}
-                dot={false}
-                activeDot={false}
-                isAnimationActive={false}
-            />
-            {/* Lower */}
-            <ReferenceLine
-                x={round(priceLower)}
-                stroke="hsl(var(--heroui-foreground-500))"
-                ifOverflow="extendDomain"
-                strokeDasharray="4 4"
-                label={({ viewBox }) => {
-                    const { x, y, height } = viewBox
-                    return (
-                        <text
-                            x={
-                                (() => {
+        <ResponsiveContainer width="80%" className={cn("max-w-[300px]")} height={120}>
+            <RechartsAreaChart   
+                data={data}
+                margin={{ top: 10, right: 10, left: 0, bottom: 0 }}
+            >
+                <XAxis
+                    type="number"
+                    dataKey="name"
+                    domain={[extendedMin, extendedMax]}
+                    hide
+                />
+                <YAxis hide domain={[-0.3, 1.3]} />
+                <Area
+                    type="linear"
+                    dataKey="uv"
+                    stroke="hsl(var(--heroui-foreground-400))"
+                    fill="hsl(var(--heroui-foreground-300))"
+                    fillOpacity={1}
+                    dot={false}
+                    activeDot={false}
+                    isAnimationActive={false}
+                />
+                {/* Lower */}
+                <ReferenceLine
+                    x={round(priceLower)}
+                    stroke="hsl(var(--heroui-foreground-500))"
+                    ifOverflow="extendDomain"
+                    strokeDasharray="4 4"
+                    label={({ viewBox }) => {
+                        const { x, y, height } = viewBox
+                        return (
+                            <text
+                                x={
+                                    (() => {
+                                        switch (pricePosition) {
+                                        case PricePosition.InRange:
+                                            return x - 5
+                                        case PricePosition.Below:
+                                            return x + 5
+                                        case PricePosition.Above:
+                                            return x - 5
+                                        }
+                                    })()
+                                }
+                                y={y + height - 3}  
+                                textAnchor={
+                                    (() => {
+                                        switch (pricePosition) {
+                                        case PricePosition.InRange:
+                                            return "end"
+                                        case PricePosition.Below:
+                                            return "start"
+                                        case PricePosition.Above:
+                                            return "end"
+                                        }
+                                    })()
+                                }
+                                fill="hsl(var(--heroui-foreground-500))"
+                                fontSize={12}
+                            >
+                                {round(priceLower)}
+                            </text>
+                        )
+                    }}
+                />
+                {/* Upper */}
+                <ReferenceLine
+                    x={round(priceUpper)}
+                    stroke="hsl(var(--heroui-foreground-500))"
+                    ifOverflow="extendDomain"
+                    strokeDasharray="4 4"
+                    label={({ viewBox }) => {
+                        const { x, y, height } = viewBox
+                        return (
+                            <text
+                                x={(() => {
                                     switch (pricePosition) {
                                     case PricePosition.InRange:
-                                        return x - 5
+                                        return x + 5
                                     case PricePosition.Below:
                                         return x + 5
                                     case PricePosition.Above:
                                         return x - 5
                                     }
-                                })()
-                            }
-                            y={y + height - 3}  
-                            textAnchor={
-                                (() => {
-                                    switch (pricePosition) {
-                                    case PricePosition.InRange:
-                                        return "end"
-                                    case PricePosition.Below:
-                                        return "start"
-                                    case PricePosition.Above:
-                                        return "end"
-                                    }
-                                })()
-                            }
-                            fill="hsl(var(--heroui-foreground-500))"
-                            fontSize={12}
-                        >
-                            {round(priceLower)}
-                        </text>
-                    )
-                }}
-            />
-            {/* Upper */}
-            <ReferenceLine
-                x={round(priceUpper)}
-                stroke="hsl(var(--heroui-foreground-500))"
-                ifOverflow="extendDomain"
-                strokeDasharray="4 4"
-                label={({ viewBox }) => {
-                    const { x, y, height } = viewBox
-                    return (
-                        <text
-                            x={(() => {
-                                switch (pricePosition) {
-                                case PricePosition.InRange:
-                                    return x + 5
-                                case PricePosition.Below:
-                                    return x + 5
-                                case PricePosition.Above:
-                                    return x - 5
+                                })()}
+                                y={y + height - 3}  
+                                textAnchor={
+                                    (() => {
+                                        switch (pricePosition) {
+                                        case PricePosition.InRange:
+                                            return "start"
+                                        case PricePosition.Below:
+                                            return "start"
+                                        case PricePosition.Above:
+                                            return "end"
+                                        }
+                                    })()
                                 }
-                            })()}
-                            y={y + height - 3}  
-                            textAnchor={
-                                (() => {
-                                    switch (pricePosition) {
-                                    case PricePosition.InRange:
-                                        return "start"
-                                    case PricePosition.Below:
-                                        return "start"
-                                    case PricePosition.Above:
-                                        return "end"
-                                    }
-                                })()
-                            }
-                            fill="hsl(var(--heroui-foreground-500))"
-                            fontSize={12}
-                        >
-                            {round(priceUpper)}
-                        </text>
-                    )
-                }}
-            />
-            <ReferenceLine
-                y={0}
-                stroke="hsl(var(--heroui-foreground-500))"
-                strokeDasharray="4 4"
-            />
-            <ReferenceLine
-                x={computedCurrentPrice}
-                stroke="hsl(var(--heroui-primary))"
-                strokeWidth={2}
-                ifOverflow="extendDomain"
-                label={({ viewBox }) => {
-                    const { x, y, height } = viewBox
-                    return (
-                        <text
-                            x={(() => {
-                                if (pricePosition === PricePosition.Above) {
-                                    return x + 5
-                                }
-                                if (pricePosition === PricePosition.Below) {
-                                    return x - 5
-                                }
-                                if (isAboveHalf) {
-                                    return x - 5
-                                }
-                                return x + 5
-                            })()}
-                            y={y + height - 3}  
-                            textAnchor={
-                                (() => {
+                                fill="hsl(var(--heroui-foreground-500))"
+                                fontSize={12}
+                            >
+                                {round(priceUpper)}
+                            </text>
+                        )
+                    }}
+                />
+                <ReferenceLine
+                    y={0}
+                    stroke="hsl(var(--heroui-foreground-500))"
+                    strokeDasharray="4 4"
+                />
+                <ReferenceLine
+                    x={computedCurrentPrice}
+                    stroke="hsl(var(--heroui-primary))"
+                    strokeWidth={2}
+                    ifOverflow="extendDomain"
+                    label={({ viewBox }) => {
+                        const { x, y, height } = viewBox
+                        return (
+                            <text
+                                x={(() => {
                                     if (pricePosition === PricePosition.Above) {
-                                        return "start"
+                                        return x + 5
                                     }
                                     if (pricePosition === PricePosition.Below) {
-                                        return "end"
+                                        return x - 5
                                     }
                                     if (isAboveHalf) {
-                                        return "end"
+                                        return x - 5
                                     }
-                                    return "start"
-                                })()
-                            }
-                            fill="hsl(var(--heroui-foreground-500))"
-                            fontSize={12}
-                        >
-                            {round(currentPrice)}
-                        </text>
-                    )
-                }}
-            />    
-        </RechartsAreaChart>
+                                    return x + 5
+                                })()}
+                                y={y + height - 3}  
+                                textAnchor={
+                                    (() => {
+                                        if (pricePosition === PricePosition.Above) {
+                                            return "start"
+                                        }
+                                        if (pricePosition === PricePosition.Below) {
+                                            return "end"
+                                        }
+                                        if (isAboveHalf) {
+                                            return "end"
+                                        }
+                                        return "start"
+                                    })()
+                                }
+                                fill="hsl(var(--heroui-foreground-500))"
+                                fontSize={12}
+                            >
+                                {round(currentPrice)}
+                            </text>
+                        )
+                    }}
+                />    
+            </RechartsAreaChart>
+        </ResponsiveContainer>
     )
 }
 
