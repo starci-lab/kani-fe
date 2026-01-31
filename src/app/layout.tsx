@@ -1,12 +1,12 @@
 import React from "react"
-import { Geist } from "next/font/google"
+import { Figtree } from "next/font/google"
 import "./globals.css"
 import { PropsWithChildren } from "react"
 import { InnerLayout } from "./InnerLayout"
 import { Metadata } from "next"
 
-const font = Geist({
-    variable: "--font-geist-sans",
+const font = Figtree({
+    variable: "--font-figtree",
     subsets: ["latin"],
     weight: ["400", "700"],
 })
