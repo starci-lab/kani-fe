@@ -6,7 +6,7 @@ export default heroui({
             colors: {
                 primary: {
                     DEFAULT: "#FE6D9C",
-                    foreground: "#000000",
+                    foreground: "#ffffff",
                     50:  "#FFF1F6",
                     100: "#FFE3EC",
                     200: "#FFC1D3",
@@ -37,7 +37,7 @@ export default heroui({
             colors: {
                 primary: {
                     DEFAULT: "#FE6D9C",
-                    foreground: "#000000",
+                    foreground: "#ffffff",
                     50:  "#FFF1F6",
                     100: "#FFE3EC",
                     200: "#FFC1D3",

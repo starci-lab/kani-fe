@@ -8,6 +8,7 @@ import { Metadata } from "next"
 const font = Geist({
     variable: "--font-geist-sans",
     subsets: ["latin"],
+    weight: ["400", "700"],
 })
 
 export const metadata: Metadata = {
@@ -21,7 +22,7 @@ const Layout = ({
     return (
         <html lang="en" suppressHydrationWarning>
             <body
-                className={`${font.variable} antialiased`}
+                className={`${font.className} antialiased`}
             >
                 <InnerLayout>
                     {children}
