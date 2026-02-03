@@ -27,6 +27,7 @@ const query1 = gql`
         avatarUrl
         performanceDisplayMode
         positionsPerformanceDisplayMode
+        withdrawalAddress
         balanceSnapshots {
           targetBalanceAmount
           quoteBalanceAmount

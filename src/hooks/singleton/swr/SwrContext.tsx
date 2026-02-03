@@ -35,6 +35,7 @@ import {
     useQueryReservesWithFeesV2SwrCore,
     useUpdateBotChartConfigV2SwrMutationCore,
     useQueryBalancesV2SwrCore,
+    useWithdrawV2SwrMutationCore,
 } from "./core"
 
 export interface SwrContextType {
@@ -71,6 +72,7 @@ export interface SwrContextType {
     queryReservesWithFeesV2Swr: ReturnType<typeof useQueryReservesWithFeesV2SwrCore>;
     updateBotChartConfigV2SwrMutation: ReturnType<typeof useUpdateBotChartConfigV2SwrMutationCore>;
     queryBalancesV2Swr: ReturnType<typeof useQueryBalancesV2SwrCore>;
+    withdrawV2SwrMutation: ReturnType<typeof useWithdrawV2SwrMutationCore>;
 }
 
 export const SwrContext = createContext<SwrContextType | null>(null)
@@ -109,6 +111,7 @@ export const SwrProvider = ({ children }: PropsWithChildren) => {
     const queryTransactionsSwr = useQueryTransactionsSwrCore()
     const queryReservesWithFeesV2Swr = useQueryReservesWithFeesV2SwrCore()
     const queryBalancesV2Swr = useQueryBalancesV2SwrCore()
+    const withdrawV2SwrMutation = useWithdrawV2SwrMutationCore()
     const values = useMemo(() => ({
         queryStaticSwr,
         queryUserV2Swr,
@@ -143,6 +146,7 @@ export const SwrProvider = ({ children }: PropsWithChildren) => {
         queryLiquidityPoolsSelectedPoolsSwr,
         queryReservesWithFeesV2Swr,
         queryBalancesV2Swr,
+        withdrawV2SwrMutation,
     }), [
         queryStaticSwr,
         queryUserV2Swr,
@@ -180,6 +184,7 @@ export const SwrProvider = ({ children }: PropsWithChildren) => {
         queryTransactionsSwr,
         queryReservesWithFeesV2Swr,
         queryBalancesV2Swr,
+        withdrawV2SwrMutation,
     ])
     return (
         <SwrContext.Provider

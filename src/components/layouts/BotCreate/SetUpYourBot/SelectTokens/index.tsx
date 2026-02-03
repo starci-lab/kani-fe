@@ -18,11 +18,11 @@ export const SelectTokens = () => {
                 title="Select Tokens"
                 isRequired
             />
-            <Spacer y={2} />
+            <Spacer y={1.5} />
             <div className="text-xs text-foreground-500">
             Kani bots use two-token pools: Target Token is what you earn, Quote Token is the paired token. <KaniLink className="text-xs" href="https://docs.kani.com/how-it-works/target-and-quote-tokens" target="_blank">Learn more</KaniLink>
             </div>
-            <Spacer y={4} />
+            <Spacer y={3} />
             <div className="flex items-center gap-4">
                 <div className="flex flex-col gap-2">
                     <KaniButton
@@ -39,7 +39,7 @@ export const SelectTokens = () => {
                                 <div className="text-sm">{targetToken.name}</div>
                             </div>
                             : 
-                            "Select Target Token"
+                            "Target Token"
                         }
                     </KaniButton>
                 </div>
@@ -59,7 +59,7 @@ export const SelectTokens = () => {
                                     <KaniAvatar src={quoteToken.iconUrl} className="w-5 h-5"/>
                                     <div className="text-sm">{quoteToken.name}</div>
                                 </div>
-                                : "Select Quote Token"
+                                : "Quote Token"
                         }
                     </KaniButton>
                 </div>

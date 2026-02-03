@@ -1,25 +1,16 @@
 import { useFormik } from "formik"
 import * as Yup from "yup"
 import { useRequireMFADisclosure, useMFAVerificationDisclosure } from "../../discloresure"
-import { isAddress } from "@/modules/blockchain"
 import { ChainId } from "@/modules/types"
 import { setMFAVerificationModalOnAction, useAppDispatch, useAppSelector } from "@/redux"
 import { usePrivy } from "@privy-io/react-auth"
 
 export interface PercentageWithdrawFormikValues {
-    withdrawalAddress: string
     percentage: number
     chainId?: ChainId
 }
 
 const validationSchema = Yup.object({
-    withdrawalAddress: Yup.string()
-        .required("Withdrawal address is required")
-        .test("is-address", "Invalid withdrawal address", function (value) {
-            if (!value) return false
-            return isAddress(value, this.parent.chainId)
-        }
-        ),
     percentage: Yup.number()
         .required("Percentage is required")
         .min(0, "Percentage must be at least 0")
@@ -35,7 +26,6 @@ export const usePercentageWithdrawFormikCore = () => {
     const bot = useAppSelector((state) => state.bot.bot)
     return useFormik<PercentageWithdrawFormikValues>({
         initialValues: {
-            withdrawalAddress: "",
             percentage: 0,
             chainId: bot?.chainId,
         },

@@ -29,6 +29,7 @@ export interface BotSchema extends AbstractSchema {
     quoteToken: string
     balanceSnapshots?: BotSnapshotsSchema
     isExitToUsdc: boolean
+    withdrawalAddress?: string
     version: AppVersion
     activePosition?: BotActivePositionSchema
     activeJob?: ActiveJobSchema

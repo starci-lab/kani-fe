@@ -28,6 +28,7 @@ export interface MutationCreateBotV2Request {
     quoteTokenId: string;
     liquidityPoolIds?: Array<string>;
     isExitToUsdc: boolean;
+    withdrawalAddress?: string;
 }
 
 export enum MutationCreateBotV2 {

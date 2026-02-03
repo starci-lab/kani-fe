@@ -16,6 +16,7 @@ export interface MutationUpdateBotSettingsV2Request {
     id: string;
     name?: string;
     isExitToUsdc?: boolean;
+    withdrawalAddress?: string;
 }
 
 export enum MutationUpdateBotSettingsV2 {

@@ -24,7 +24,7 @@ export const SelectPools = () => {
                 tooltipString="This is the pools of your bot"
                 isRequired
             />
-            <Spacer y={2} />
+            <Spacer y={1.5} />
             <div>
                 {
                     !formik.values.liquidityPoolIds.length ? (
@@ -59,7 +59,7 @@ export const SelectPools = () => {
                     </div>
                 )}
             </div>
-            <Spacer y={4} />
+            <Spacer y={3} />
             <div className="flex items-center gap-2">
                 <KaniButton
                     isDisabled={

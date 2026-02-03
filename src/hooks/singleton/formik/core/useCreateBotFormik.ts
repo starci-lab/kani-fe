@@ -7,6 +7,7 @@ import { runGraphQLWithToast } from "@/modules/toast"
 import { useRouter } from "next/navigation"
 import { paths } from "@/resources/path"
 import { setLiquidityPoolIds, setQuoteTokenId, setTargetTokenId, useAppDispatch } from "@/redux"
+import { isAddress } from "@/modules/blockchain"
 
 export interface CreateBotFormikValues {
     name: string
@@ -16,6 +17,7 @@ export interface CreateBotFormikValues {
     quoteTokenId?: string
     liquidityPoolIds: Array<string>
     isExitToUsdc: boolean
+    withdrawalAddress?: string
     isTermsOfServiceAccepted: boolean
 }
 
@@ -24,19 +26,27 @@ const initialValues: CreateBotFormikValues = {
     chainId: ChainId.Solana,
     isTargetTokenSelected: false,
     liquidityPoolIds: [],
-    isExitToUsdc: false,
+    isExitToUsdc: true,
     isTermsOfServiceAccepted: false,
 }
 
-const validationSchema = Yup.object({
-    name: Yup.string().required("Bot name is required"),
-    chainId: Yup.string().required("Chain ID is required"),
-    targetTokenId: Yup.string().required("Target token ID is required"),
-    quoteTokenId: Yup.string().required("Quote token ID is required"),
-    liquidityPoolIds: Yup.array().of(Yup.string()).required("Liquidity pool IDs are required"),
-    isExitToUsdc: Yup.boolean().required("Exit to USDC is required"),
-    isTermsOfServiceAccepted: Yup.boolean().required("Terms of service acceptance is required").oneOf([true], "Terms of service acceptance is required"),
-})
+const validationSchema = Yup.object(
+    {
+        name: Yup.string().required("Bot name is required"),
+        chainId: Yup.string().required("Chain ID is required"),
+        targetTokenId: Yup.string().required("Target token ID is required"),
+        quoteTokenId: Yup.string().required("Quote token ID is required"),
+        liquidityPoolIds: Yup.array().of(Yup.string()).required("Liquidity pool IDs are required"),
+        isExitToUsdc: Yup.boolean().required("Exit to USDC is required"),
+        isTermsOfServiceAccepted: Yup.boolean().required("Terms of service acceptance is required").oneOf([true], "Terms of service acceptance is required"),
+        withdrawalAddress: Yup.string().required("Withdrawal address is required")
+            .test("is-address", "Invalid withdrawal address", function (value) {
+                if (!value) return false
+                return isAddress(value, this.parent.chainId)
+            }
+            ),
+    }
+)
 
 export const useCreateBotFormikCore = () => {
     const createBotV2Mutation = useCreateBotV2SwrMutation()
@@ -59,6 +69,7 @@ export const useCreateBotFormikCore = () => {
                             targetTokenId: values.targetTokenId!,
                             quoteTokenId: values.quoteTokenId!,
                             isExitToUsdc: values.isExitToUsdc,
+                            withdrawalAddress: values.withdrawalAddress,
                         },
                     })
                     if (!response.data?.createBotV2) {

@@ -10,6 +10,7 @@ import {
     useSignInFormikCore,
     useUpdateBotLiquidityPoolsFormikCore,
     useUpdateBotNameFormikCore,
+    useUpdateBotWithdrawalAddressFormikCore,
     usePercentageWithdrawFormikCore,
     useSingleAssetWithdrawFormikCore,
 } from "./core"
@@ -23,6 +24,7 @@ export interface FormikContextType {
     signInFormik: ReturnType<typeof useSignInFormikCore>    
     updateBotLiquidityPoolsFormik: ReturnType<typeof useUpdateBotLiquidityPoolsFormikCore>
     updateBotNameFormik: ReturnType<typeof useUpdateBotNameFormikCore>
+    updateBotWithdrawalAddressFormik: ReturnType<typeof useUpdateBotWithdrawalAddressFormikCore>
     percentageWithdrawFormik: ReturnType<typeof usePercentageWithdrawFormikCore>
     singleAssetWithdrawFormik: ReturnType<typeof useSingleAssetWithdrawFormikCore>
 }
@@ -39,6 +41,7 @@ export const FormikProvider = ({ children }: PropsWithChildren) => {
     const signInFormik = useSignInFormikCore()
     const updateBotLiquidityPoolsFormik = useUpdateBotLiquidityPoolsFormikCore()
     const updateBotNameFormik = useUpdateBotNameFormikCore()
+    const updateBotWithdrawalAddressFormik = useUpdateBotWithdrawalAddressFormikCore()
     const percentageWithdrawFormik = usePercentageWithdrawFormikCore()
     const singleAssetWithdrawFormik = useSingleAssetWithdrawFormikCore()
     const value = useMemo(
@@ -52,6 +55,7 @@ export const FormikProvider = ({ children }: PropsWithChildren) => {
                 signInFormik,
                 updateBotLiquidityPoolsFormik,
                 updateBotNameFormik,
+                updateBotWithdrawalAddressFormik,
                 percentageWithdrawFormik,
                 singleAssetWithdrawFormik
             }), [
@@ -63,6 +67,7 @@ export const FormikProvider = ({ children }: PropsWithChildren) => {
             signInFormik, 
             updateBotLiquidityPoolsFormik,
             updateBotNameFormik,
+            updateBotWithdrawalAddressFormik,
             percentageWithdrawFormik,
             singleAssetWithdrawFormik
         ]

@@ -3,8 +3,11 @@ import { KaniAlert, KaniInput, KaniLink, KaniSlider } from "../../../atomic"
 import React from "react"
 import { Spacer } from "@heroui/react"
 import { TooltipTitle } from "../../../reuseable"
+import { useAppSelector } from "@/redux"
+import { truncateMiddle } from "@/modules/utils"
 export const Percentage = () => {
     const formik = usePercentageWithdrawFormik()
+    const bot = useAppSelector((state) => state.bot.bot)
     return (
         <div>
             <KaniAlert
@@ -59,12 +62,8 @@ export const Percentage = () => {
                     }}
                 />
                 <KaniInput
-                    placeholder="Enter withdrawal address"
-                    value={formik.values.withdrawalAddress}
-                    onValueChange={(value) => formik.setFieldValue("withdrawalAddress", value)}
-                    onBlur={() => formik.setFieldTouched("withdrawalAddress", true)}
-                    errorMessage={formik.errors.withdrawalAddress}
-                    isInvalid={!!formik.errors.withdrawalAddress && !!formik.touched.withdrawalAddress}
+                    isDisabled
+                    value={truncateMiddle({ str: bot?.withdrawalAddress ?? "" })}
                 />
             </div>
         </div>

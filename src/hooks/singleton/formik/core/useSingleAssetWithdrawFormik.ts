@@ -1,18 +1,18 @@
 import { useFormik } from "formik"
 import * as Yup from "yup"
-import { useRequireMFADisclosure, useMFAVerificationDisclosure } from "../../discloresure"
-import { useQueryBalancesV2Swr } from "../../swr"
+import { useRequireMFADisclosure, useMFAVerificationDisclosure, useWithdrawDisclosure } from "../../discloresure"
+import { useQueryBalancesV2Swr, useWithdrawV2SwrMutation } from "../../swr"
 import { useEffect } from "react"
 import { setMFAVerificationModalOnAction, useAppDispatch, useAppSelector } from "@/redux"
 import Decimal from "decimal.js"
 import { toDecimalAmount } from "@/modules/utils"
 import BN from "bn.js"
-import { isAddress } from "@/modules/blockchain"
 import { ChainId } from "@/modules/types"
 import { usePrivy } from "@privy-io/react-auth"
+import { GraphQLHeadersKey } from "@/modules/api"
+import { runGraphQLWithToast } from "@/modules/toast"
 
 export interface SingleAssetWithdrawFormikValues {
-    withdrawalAddress: string
     tokenId?: string
     chainId?: ChainId
     amount?: string
@@ -21,13 +21,6 @@ export interface SingleAssetWithdrawFormikValues {
 }
 
 const validationSchema = Yup.object({
-    withdrawalAddress: Yup.string()
-        .required("Withdrawal address is required")
-        .test("is-address", "Invalid withdrawal address", function (value) {
-            if (!value) return false
-            return isAddress(value, this.parent.chainId)
-        }
-        ),
     tokenId: Yup.string().required("Token is required"),
     balance: Yup.number().required(),
     amount: Yup.string()
@@ -47,6 +40,8 @@ const validationSchema = Yup.object({
 
 export const useSingleAssetWithdrawFormikCore = () => {
     const swr = useQueryBalancesV2Swr()
+    const withdrawV2Mutation = useWithdrawV2SwrMutation()
+    const { onClose: onCloseWithdrawModal } = useWithdrawDisclosure()
     const { getAccessToken, authenticated } = usePrivy()
     const { onOpen: onOpenRequireMFAModal } = useRequireMFADisclosure()
     const { onOpen: onOpenMFAVerificationModal } = useMFAVerificationDisclosure()
@@ -55,7 +50,6 @@ export const useSingleAssetWithdrawFormikCore = () => {
     const bot = useAppSelector((state) => state.bot.bot)
     const formik = useFormik<SingleAssetWithdrawFormikValues>({
         initialValues: {
-            withdrawalAddress: "",
             tokenId: swr.data?.data?.balancesV2.data?.[0]?.id,
             showBalance: true,
             chainId: bot?.chainId,
@@ -78,9 +72,38 @@ export const useSingleAssetWithdrawFormikCore = () => {
                 throw new Error("Token is required")
             }
             dispatch(
-                setMFAVerificationModalOnAction(() => {
-                    alert("onAction")
-                    return true
+                setMFAVerificationModalOnAction(async ({ totp }) => {
+                    const botId = bot?.id
+                    const tokenId = formik.values.tokenId
+                    const amount = formik.values.amount
+                    if (!botId || !tokenId || !amount) {
+                        return false
+                    }
+                    const success = await runGraphQLWithToast(
+                        async () => {
+                            const result = await withdrawV2Mutation.trigger({
+                                request: {
+                                    id: botId,
+                                    tokens: [{ id: tokenId, amount }],
+                                },
+                                headers: totp
+                                    ? { [GraphQLHeadersKey.TOTP]: totp }
+                                    : undefined,
+                            })
+                            const response = result?.data?.withdrawV2
+                            if (!response) {
+                                throw new Error("Withdrawal failed")
+                            }
+                            return response
+                        },
+                        { showSuccessToast: true, showErrorToast: true }
+                    )
+                    if (success) {
+                        await swr.mutate()
+                        onCloseWithdrawModal()
+                        formik.resetForm()
+                    }
+                    return success
                 })
             )
             onOpenMFAVerificationModal()

@@ -25,6 +25,7 @@ const query1 = gql`
             targetToken
             quoteToken
             isExitToUsdc
+            withdrawalAddress
             performanceDisplayMode
             positionsPerformanceDisplayMode
             version

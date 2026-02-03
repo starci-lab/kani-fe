@@ -6,12 +6,13 @@ import { TooltipTitle, WalletBalance } from "../../../reuseable"
 import { SelectTokenDropdown } from "./SelectTokenDropdown"
 import Decimal from "decimal.js"
 import { useAppSelector } from "@/redux"
-import { round, sanitizeNumericInput, sleep } from "@/modules/utils"
+import { round, sanitizeNumericInput, sleep, truncateMiddle } from "@/modules/utils"
 
 export const SingleAsset = () => {
     const formik = useSingleAssetWithdrawFormik()
     const prices = useAppSelector((state) => state.socket.prices)
     const tokenPrice = useMemo(() => prices[formik.values.tokenId ?? ""], [prices, formik.values.tokenId])
+    const bot = useAppSelector((state) => state.bot.bot)
     return (
         <div>
             <KaniAlert
@@ -93,24 +94,20 @@ export const SingleAsset = () => {
                             </div>
                         </div>
                     </div>
+                    <Spacer y={3} />
+                    <div className="flex flex-col gap-1.5">
+                        <TooltipTitle 
+                            title="Withdrawal Address"
+                            classNames={{
+                                title: "text-sm",
+                            }}
+                        />
+                        <KaniInput
+                            isDisabled
+                            value={truncateMiddle({ str: bot?.withdrawalAddress ?? "" })}
+                        />
+                    </div>
                 </div>
-            </div>
-            <Spacer y={3} />
-            <div className="flex flex-col gap-1.5">
-                <TooltipTitle 
-                    title="Withdrawal Address"
-                    classNames={{
-                        title: "text-sm",
-                    }}
-                />
-                <KaniInput
-                    placeholder="Enter withdrawal address"
-                    value={formik.values.withdrawalAddress}
-                    onValueChange={(value) => formik.setFieldValue("withdrawalAddress", value)}
-                    onBlur={() => formik.setFieldTouched("withdrawalAddress", true)}
-                    errorMessage={formik.errors.withdrawalAddress}
-                    isInvalid={!!formik.errors.withdrawalAddress && !!formik.touched.withdrawalAddress}
-                />
             </div>
         </div>
     )

@@ -84,6 +84,7 @@ export const WithdrawModal = () => {
                         color="primary" 
                         isLoading={formik.isSubmitting} 
                         className="flex-1" 
+                        isDisabled={!formik.isValid}
                         onPress={
                             async () => {
                                 await formik.submitForm()
