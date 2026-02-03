@@ -10,6 +10,7 @@ import { PositionModal } from "./PositionModal"
 import { MenuModal } from "./MenuModal"
 import { SortByModal } from "./SortByModal"
 import { WithdrawModal } from "./WithdrawModal"
+import { RequireMFAModal } from "./RequireMFAModal"
 
 export const ModalContainer = () => {
     return (
@@ -25,6 +26,7 @@ export const ModalContainer = () => {
             <MenuModal />
             <SortByModal />
             <WithdrawModal />
+            <RequireMFAModal />
         </>
     )
 }

@@ -1,17 +1,16 @@
 import React, { useMemo } from "react"
 import { KaniModal, KaniModalContent, KaniModalHeader, KaniModalBody, KaniButton, KaniModalFooter } from "../../atomic"
 import { useVerifyDisclosure, useVerifyFormik } from "@/hooks/singleton"
-import { CaretRightIcon, EnvelopeIcon, PasswordIcon } from "@phosphor-icons/react"
+import { CaretRightIcon, PasswordIcon } from "@phosphor-icons/react"
 import { Spacer } from "@heroui/react"
 import { useRequestSend2FactorOtpSwrMutation } from "@/hooks/singleton"
 import { runGraphQLWithToast } from "../../toasts"
 import { setVerifyModalPage, VerifyPage } from "@/redux"
 import { useAppDispatch, useAppSelector } from "@/redux"
-import { EmailPage } from "./EmailPage"
 import { AuthenticatorAppPage } from "./AuthenticatorAppPage"
 import Decimal from "decimal.js"
 export const VerifyModal = () => {
-    const { isOpen, onOpenChange } = useVerifyDisclosure()
+    const { isOpen, onOpenChange, onClose } = useVerifyDisclosure()
     const formik = useVerifyFormik()
     const requestSend2FactorOtpMutation = useRequestSend2FactorOtpSwrMutation()
     const page = useAppSelector(state => state.modals.verify.page)
@@ -25,60 +24,17 @@ export const VerifyModal = () => {
     const totalCompleted = useMemo(() => {
         return new Decimal(isEmailCompleted ? 1 : 0).add(new Decimal(isAuthenticatorAppCompleted ? 1 : 0))
     }, [isEmailCompleted, isAuthenticatorAppCompleted])
+
     const renderPage = () => {
         switch (page) {
         case VerifyPage.Base:
             return <>
-                <KaniModalHeader title="Two-Factor Verification" description={
+                <KaniModalHeader title="Multi-step verification" description={
                     <div>
-                     Please enter the verification code sent to your email and the authentication code sent to your phone to continue.
+                     Please complete the multi-step verification to continue.
                     </div>
                 } />
                 <KaniModalBody>
-                    <KaniButton 
-                        isLoading={requestSend2FactorOtpMutation.isMutating} 
-                        variant="flat" 
-                        className="h-fit p-3" 
-                        onPress={async () => {
-                            let success: boolean = false
-                            if (!isEmailCompleted) {
-                            success = await runGraphQLWithToast(
-                                async () => {
-                                    const response = await requestSend2FactorOtpMutation.trigger()
-                                    if (!response.data?.requestSend2FactorOtp) {
-                                        throw new Error("Failed to request Send 2 Factor OTP")
-                                    }
-                                    return response.data.requestSend2FactorOtp
-                                },
-                                {
-                                    showSuccessToast: false,
-                                    showErrorToast: false,
-                                }
-                            )
-                            }
-                            if (success || isEmailCompleted) {
-                                dispatch(setVerifyModalPage(VerifyPage.Email))
-                            }
-                        }}>
-                        <div className="flex items-center justify-between w-full">
-                            <div>
-                                <div className="flex items-center justify-between w-full">
-                                    <div className="flex items-center gap-2">
-                                        <EnvelopeIcon className="w-5 h-5"/>
-                                        <div className="text-sm">
-                                    Email 
-                                        </div>
-                                    </div>
-                                </div>
-                                <Spacer y={2}/>
-                                <div className="text-xs text-foreground-500 text-left">
-                                    {isEmailCompleted ? <div className="text-primary">Completed</div> : <div className="text-foreground-500">Not started</div>}                                  
-                                </div>
-                            </div>
-                            <CaretRightIcon/>
-                        </div>
-                    </KaniButton>
-                    <Spacer y={3}/>
                     <KaniButton variant="flat" className="h-fit p-3" onPress={() => {
                         dispatch(setVerifyModalPage(VerifyPage.AuthenticatorApp))
                     }}>
@@ -102,7 +58,7 @@ export const VerifyModal = () => {
                     </KaniButton>
                     <Spacer y={3}/>
                     <div className="text-xs text-foreground-500">
-                        {totalCompleted.toNumber()} of 2 verifications completed
+                        {totalCompleted.toNumber()} of 1 verification completed
                     </div>
                 </KaniModalBody>
                 <KaniModalFooter>
@@ -120,14 +76,15 @@ export const VerifyModal = () => {
                     </KaniButton>
                 </KaniModalFooter>
             </>
-        case VerifyPage.Email:
-            return <EmailPage />
         case VerifyPage.AuthenticatorApp:
             return <AuthenticatorAppPage />
         }
     }
     return (
-        <KaniModal size="sm" isOpen={isOpen} onOpenChange={onOpenChange}>
+        <KaniModal size="sm" isOpen={isOpen} onOpenChange={onOpenChange} onClose={() => {
+            formik.resetForm()
+            onClose()
+        }}>
             <KaniModalContent>
                 {renderPage()}
             </KaniModalContent>

@@ -5,7 +5,8 @@ import {
     DexSchema, 
     AccountLimitsConfig, 
     GasConfig, 
-    BalanceConfig 
+    BalanceConfig, 
+    AuthenticationConfig
 } from "@/modules/types"
 import { client } from "../clients"
 
@@ -68,6 +69,12 @@ const query1 = gql`
         error
         data
     }
+    authenticationConfig {
+        success
+        message
+        error
+        data
+    }
 }`
 
 export enum QueryStatic {
@@ -84,6 +91,7 @@ export interface QueryStaticResponse {
     gasConfig: GraphQLResponse<GasConfig>
     accountLimits: GraphQLResponse<AccountLimitsConfig>
     balanceConfig: GraphQLResponse<BalanceConfig>
+    authenticationConfig: GraphQLResponse<AuthenticationConfig>
 }
 
 export type QueryStaticParams = QueryParams<QueryStatic, QueryStaticResponse>;

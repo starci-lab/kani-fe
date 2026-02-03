@@ -1,15 +1,16 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit"
 
 export enum EnableMFAPage {
+    Base = "base",
     ScanQR = "scanQR",
-    InputTOTP = "inputTOTP",
+    ConfirmTOTP = "confirmTOTP",
 }
 export interface EnableMFAModalSlice {
     page: EnableMFAPage
 }
 
 const initialState: EnableMFAModalSlice = {
-    page: EnableMFAPage.ScanQR,
+    page: EnableMFAPage.Base,
 }
 
 export const enableMFAModalSlice = createSlice({

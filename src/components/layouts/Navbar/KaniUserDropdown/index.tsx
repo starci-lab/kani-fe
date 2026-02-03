@@ -14,12 +14,15 @@ import {
     PencilLineIcon, 
     SignOutIcon 
 } from "@phosphor-icons/react"
-import { usePrivy, useMfaEnrollment, useLogout } from "@privy-io/react-auth"
+import { usePrivy, useLogout } from "@privy-io/react-auth"
+import { useEnableMFADisclosure } from "@/hooks/singleton"
+import { useAppSelector } from "@/redux"
 
 export const KaniUserDropdown = () => {
+    const { onOpen } = useEnableMFADisclosure()
     const { user } = usePrivy()
     const { logout } = useLogout()
-    const { showMfaEnrollmentModal } = useMfaEnrollment()
+    const userState = useAppSelector((state) => state.session.user)
     return (
         <KaniDropdown>
             <KaniDropdownTrigger>
@@ -27,7 +30,7 @@ export const KaniUserDropdown = () => {
                     {truncateEnd({ str: user?.email?.address.toString() ?? "" })}
                 </KaniButton>
             </KaniDropdownTrigger>
-            <KaniDropdownMenu aria-label="Static Actions" disabledKeys={user?.mfaMethods.length ? ["enroll-in-mfa"] : []}>
+            <KaniDropdownMenu aria-label="Static Actions" disabledKeys={userState?.mfaEnabled ? ["enable-mfa"] : []}>
                 <KaniDropdownSection showDivider>
                     <KaniDropdownItem 
                         isReadOnly 
@@ -37,13 +40,13 @@ export const KaniUserDropdown = () => {
                         {user?.email?.address.toString() ?? ""}
                     </KaniDropdownItem>
                     <KaniDropdownItem 
-                        key="enroll-in-mfa"
+                        key="enable-mfa"
                         startContent={<PencilLineIcon />}
                         onPress={() => {
-                            showMfaEnrollmentModal()
+                            onOpen()
                         }}
                     >
-                    Enroll in MFA
+                    Enable MFA
                     </KaniDropdownItem>
                 </KaniDropdownSection>
                 <KaniDropdownSection>

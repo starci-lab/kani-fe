@@ -77,3 +77,7 @@ export enum BotStatus {
     OutOfRange = "outOfRange",
     Idle = "idle",
 }
+
+export enum AuthenticationFactor {
+    TOTP = "totp",
+}

@@ -1,14 +1,24 @@
-import React from "react"
-import { useQueryTotpSecretSwrMutation } from "@/hooks/singleton"
-import { KaniModalHeader, KaniModalBody, KaniLink, KaniSnippet, KaniButton, KaniModalFooter } from "../../../atomic"
-import { QRCode } from "../../../reuseable"
+import React, { useEffect } from "react"
+import { KaniModalHeader, KaniModalBody, KaniLink, KaniSnippet, KaniButton, KaniModalFooter, KaniSpinner, KaniSkeleton } from "../../../atomic"
+import { QRCode, SnippetIcon } from "../../../reuseable"
 import { Spacer } from "@heroui/react"
 import { truncateMiddle } from "@/modules/utils"
-import { setEnableMFAPage, EnableMFAPage, useAppDispatch } from "@/redux"
+import { setEnableMFAPage, EnableMFAPage, useAppDispatch, useAppSelector } from "@/redux"
+import { useQueryTotpSecretV2SwrMutation } from "@/hooks/singleton"
 
 export const ScanQRPage = () => {
-    const queryTotpSecretMutation = useQueryTotpSecretSwrMutation()
     const dispatch = useAppDispatch()
+    const swrMutation = useQueryTotpSecretV2SwrMutation()
+    const user = useAppSelector((state) => state.session.user)
+    useEffect(() => {
+        if (!user) {
+            return
+        }
+        const handleEffect = async () => {
+            await swrMutation.trigger()
+        }
+        handleEffect()
+    }, [user])
     return (
         <>
             <KaniModalHeader title="Enable MFA" description={
@@ -37,21 +47,36 @@ export const ScanQRPage = () => {
                 </div>
             } />
             <KaniModalBody>
-                {queryTotpSecretMutation.data?.data?.totpSecret?.data?.totpSecret && (
+                {swrMutation.isMutating || !swrMutation.data ?
                     <div className="grid place-items-center">
-                        <QRCode
-                            data={queryTotpSecretMutation.data?.data?.totpSecret?.data?.totpSecretUrl ?? ""}
-                            size={150}
-                        />
-                        <Spacer y={4} />
-                        <KaniSnippet
-                            hideSymbol
-                            codeString={queryTotpSecretMutation.data?.data?.totpSecret?.data?.totpSecret ?? ""}
+                        <div
+                            className="relative inline-block overflow-hidden border border-divider p-3 rounded-medium"
                         >
-                            {truncateMiddle({ str: queryTotpSecretMutation.data?.data?.totpSecret?.data?.totpSecret ?? "" })}
-                        </KaniSnippet>
+                            <div className="h-[150px] w-[150px] grid place-items-center">
+                                <KaniSpinner />
+                            </div>
+                        </div>
+                        <Spacer y={4} />
+                        <KaniSkeleton className="h-5 w-[120px] rounded-md" />
                     </div>
-                )}
+                    : (
+                        <div className="grid place-items-center">
+                            <QRCode
+                                data={swrMutation.data?.data?.totpSecretV2.data?.totpSecretUrl ?? ""}
+                                size={150}
+                            />
+                            <Spacer y={4} />
+                            <div className="flex items-center gap-2">
+                                <SnippetIcon
+                                    copyString={swrMutation.data?.data?.totpSecretV2.data?.totpSecret ?? ""}
+                                    classNames={{ checkIcon: "w-5 h-5", copyIcon: "w-5 h-5" }}
+                                />
+                                <div className="text-sm">
+                                    {truncateMiddle({ str: swrMutation.data?.data?.totpSecretV2.data?.totpSecret ?? "" })}
+                                </div>
+                            </div>
+                        </div>
+                    )}
             </KaniModalBody>
             <KaniModalFooter>
                 <KaniButton
@@ -59,7 +84,7 @@ export const ScanQRPage = () => {
                     fullWidth
                     size="lg"
                     onPress={() => {
-                        dispatch(setEnableMFAPage(EnableMFAPage.InputTOTP))
+                        dispatch(setEnableMFAPage(EnableMFAPage.ConfirmTOTP))
                     }}
                 >
                     Continue

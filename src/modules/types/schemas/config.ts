@@ -1,4 +1,4 @@
-import { ConfigId } from "../enums"
+import { AuthenticationFactor, ConfigId } from "../enums"
 import { ChainId } from "../blockchain"
 import { AbstractSchema } from "./abstract"
 
@@ -35,4 +35,8 @@ export interface ProfitConfig {
 
 export interface AccountLimitsConfig {
     maxBotsPerAccount: number
+}
+
+export interface AuthenticationConfig {
+    authenticationFactors: Array<AuthenticationFactor>
 }

@@ -2,7 +2,6 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit"
 
 export enum VerifyPage {
     Base = "base",
-    Email = "email",
     AuthenticatorApp = "authenticatorApp",
 }
 export interface VerifyModalSlice {

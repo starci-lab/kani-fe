@@ -18,6 +18,7 @@ import {
     useUpdatePoolsDisclosureCore,
     useSortByDisclosureCore,
     useWithdrawDisclosureCore,
+    useRequireMFADisclosureCore,
 } from "./core"
 
 export interface DiscloresureContextType {
@@ -37,6 +38,7 @@ export interface DiscloresureContextType {
     updatePools: ReturnType<typeof useUpdatePoolsDisclosureCore>
     sortBy: ReturnType<typeof useSortByDisclosureCore>
     withdraw: ReturnType<typeof useWithdrawDisclosureCore>
+    requireMFA: ReturnType<typeof useRequireMFADisclosureCore>
 }
 
 export const DiscloresureContext = createContext<DiscloresureContextType | null>(null)
@@ -58,6 +60,7 @@ export const DiscloresureProvider = ({ children }: PropsWithChildren) => {
     const updatePools = useUpdatePoolsDisclosureCore()
     const sortBy = useSortByDisclosureCore()
     const withdraw = useWithdrawDisclosureCore()
+    const requireMFA = useRequireMFADisclosureCore()
     const value = useMemo(() => ({
         connect, 
         exportPrivateKey, 
@@ -74,7 +77,8 @@ export const DiscloresureProvider = ({ children }: PropsWithChildren) => {
         menu,
         updatePools,
         sortBy,
-        withdraw
+        withdraw,
+        requireMFA
     }), [
         connect, 
         exportPrivateKey, 
@@ -91,7 +95,8 @@ export const DiscloresureProvider = ({ children }: PropsWithChildren) => {
         menu,
         updatePools,
         sortBy,
-        withdraw
+        withdraw,
+        requireMFA
     ])
     return (
         <DiscloresureContext.Provider value={value}>

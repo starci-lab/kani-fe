@@ -1,16 +1,19 @@
-import { getLocalStorageItem, LocalStorageKey } from "@/modules/storages"
+import { usePrivy } from "@privy-io/react-auth"
+import { useEnableMFADisclosure } from "@/hooks/singleton"
+import { useAppSelector } from "@/redux"
 import { useEffect } from "react"
-import { useAppDispatch, setAccessToken } from "@/redux"
 
 export const useAuth = () => {
-    const dispatch = useAppDispatch()
+    const { authenticated } = usePrivy()
+    const user = useAppSelector((state) => state.session.user)
+    const { onOpen: onOpenEnableMFAModal } = useEnableMFADisclosure()
     useEffect(() => {
-        const accessToken = getLocalStorageItem<string>(
-            LocalStorageKey.AccessToken
-        )
-        if (!accessToken) {
+        if (!authenticated) {
             return
         }
-        dispatch(setAccessToken(accessToken))
-    }, [])
+        if (!user || user?.mfaEnabled) {
+            return
+        }
+        onOpenEnableMFAModal()
+    }, [authenticated, user])
 }

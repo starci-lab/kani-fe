@@ -12,7 +12,7 @@ import { useEnableMFAFormik } from "@/hooks/singleton"
 import { setEnableMFAPage, EnableMFAPage } from "@/redux"
 import { useAppDispatch } from "@/redux"
 
-export const InputTOTPPage = () => {
+export const ConfirmTOTPPage = () => {
     const formik = useEnableMFAFormik()
     const dispatch = useAppDispatch()
     return (

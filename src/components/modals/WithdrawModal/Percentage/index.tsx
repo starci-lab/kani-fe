@@ -2,7 +2,7 @@ import { usePercentageWithdrawFormik } from "@/hooks/singleton"
 import { KaniAlert, KaniInput, KaniLink, KaniSlider } from "../../../atomic"
 import React from "react"
 import { Spacer } from "@heroui/react"
-import { TooltipTitle } from "@/components/reuseable"
+import { TooltipTitle } from "../../../reuseable"
 export const Percentage = () => {
     const formik = usePercentageWithdrawFormik()
     return (
@@ -20,7 +20,7 @@ export const Percentage = () => {
                     </div>}
             />
             <Spacer y={3} />
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-1.5">
                 <TooltipTitle 
                     title="Percentage"
                     classNames={{
@@ -51,7 +51,7 @@ export const Percentage = () => {
                 </div>
             </div>
             <Spacer y={3} />
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-1.5">
                 <TooltipTitle 
                     title="Withdrawal Address"
                     classNames={{
@@ -64,7 +64,7 @@ export const Percentage = () => {
                     onValueChange={(value) => formik.setFieldValue("withdrawalAddress", value)}
                     onBlur={() => formik.setFieldTouched("withdrawalAddress", true)}
                     errorMessage={formik.errors.withdrawalAddress}
-                    isInvalid={!!formik.errors.withdrawalAddress}
+                    isInvalid={!!formik.errors.withdrawalAddress && !!formik.touched.withdrawalAddress}
                 />
             </div>
         </div>

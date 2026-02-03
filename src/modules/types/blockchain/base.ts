@@ -31,3 +31,15 @@ export enum Network {
 export enum DexName {
     Cetus = "cetus",
 }
+
+export const chainIdToPlatformId = (chainId: ChainId): PlatformId => {
+    switch (chainId) {
+    case ChainId.Solana:
+        return PlatformId.Solana
+    case ChainId.Monad:
+        return PlatformId.Evm
+    case ChainId.Sui:
+        return PlatformId.Sui
+    }
+    throw new Error(`Invalid chainId: ${chainId}`)
+}

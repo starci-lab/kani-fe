@@ -7,6 +7,7 @@ import {
     useRequestSignInOtpSwrMutationCore,
     useVerifySignInOtpSwrMutationCore,
     useEnableMFASwrMutationCore,
+    useEnableMFAV2SwrMutationCore,
     useRequestSend2FactorOtpSwrMutationCore,
     useToggleBotSwrMutationCore,
     useQueryUserV2SwrCore,
@@ -25,6 +26,7 @@ import {
     useQueryPortfolioValueV2SwrCore,
     useQueryHistoryV2SwrCore,
     useQueryTotpSecretSwrMutationCore,
+    useQueryTotpSecretV2SwrMutationCore,
     useQueryBotV2SwrCore,
     useQueryLiquidityPoolsSelectedPoolsSwrCore,
     useQueryPositionsV2SwrCore,
@@ -41,6 +43,7 @@ export interface SwrContextType {
     requestSignInOtpSwrMutation: ReturnType<typeof useRequestSignInOtpSwrMutationCore>;
     verifySignInOtpSwrMutation: ReturnType<typeof useVerifySignInOtpSwrMutationCore>;
     enableMFASwrMutation: ReturnType<typeof useEnableMFASwrMutationCore>;
+    enableMFAV2SwrMutation: ReturnType<typeof useEnableMFAV2SwrMutationCore>;
     requestSend2FactorOtpSwrMutation: ReturnType<typeof useRequestSend2FactorOtpSwrMutationCore>;
     toggleBotSwrMutation: ReturnType<typeof useToggleBotSwrMutationCore>;
     queryUserV2Swr: ReturnType<typeof useQueryUserV2SwrCore>;
@@ -48,6 +51,7 @@ export interface SwrContextType {
     queryPortfolioValueV2Swr: ReturnType<typeof useQueryPortfolioValueV2SwrCore>;
     queryHistoryV2Swr: ReturnType<typeof useQueryHistoryV2SwrCore>;
     queryTotpSecretSwrMutation: ReturnType<typeof useQueryTotpSecretSwrMutationCore>;
+    queryTotpSecretV2SwrMutation: ReturnType<typeof useQueryTotpSecretV2SwrMutationCore>;
     queryLiquidityPoolsActivePositionSwr: ReturnType<typeof useQueryLiquidityPoolsActivePositionSwrCore>;
     queryLiquidityPoolsBotSwr: ReturnType<typeof useQueryLiquidityPoolsBotSwrCore>;
     queryLiquidityPoolsUpdatePoolsSwr: ReturnType<typeof useQueryLiquidityPoolsUpdatePoolsSwrCore>;
@@ -78,8 +82,10 @@ export const SwrProvider = ({ children }: PropsWithChildren) => {
     const requestSignInOtpSwrMutation = useRequestSignInOtpSwrMutationCore()
     const verifySignInOtpSwrMutation = useVerifySignInOtpSwrMutationCore()
     const enableMFASwrMutation = useEnableMFASwrMutationCore()
+    const enableMFAV2SwrMutation = useEnableMFAV2SwrMutationCore()
     const requestSend2FactorOtpSwrMutation = useRequestSend2FactorOtpSwrMutationCore()
     const queryTotpSecretSwrMutation = useQueryTotpSecretSwrMutationCore()
+    const queryTotpSecretV2SwrMutation = useQueryTotpSecretV2SwrMutationCore()
     const createBotSwrMutation = useCreateBotSwrMutationCore()
     const toggleBotSwrMutation = useToggleBotSwrMutationCore()
     const queryPositionsV2Swr = useQueryPositionsV2SwrCore()
@@ -110,8 +116,10 @@ export const SwrProvider = ({ children }: PropsWithChildren) => {
         requestSignInOtpSwrMutation,
         verifySignInOtpSwrMutation,
         enableMFASwrMutation,
+        enableMFAV2SwrMutation,
         requestSend2FactorOtpSwrMutation,
         queryTotpSecretSwrMutation,
+        queryTotpSecretV2SwrMutation,
         queryTransactionsSwr,
         queryPositionsSwr,
         queryPositionsV2Swr,
@@ -142,8 +150,10 @@ export const SwrProvider = ({ children }: PropsWithChildren) => {
         requestSignInOtpSwrMutation,
         verifySignInOtpSwrMutation,
         enableMFASwrMutation,
+        enableMFAV2SwrMutation,
         requestSend2FactorOtpSwrMutation,
         queryTotpSecretSwrMutation,
+        queryTotpSecretV2SwrMutation,
         queryTransactionsSwr,
         queryPositionsSwr,
         queryPositionsV2Swr,

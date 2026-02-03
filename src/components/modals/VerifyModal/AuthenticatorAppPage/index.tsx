@@ -23,8 +23,8 @@ export const AuthenticatorAppPage = () => {
                     <div>
                      Please enter the code from your phone app like
                         <KaniLink
-                            className="text-foreground-500 text-xs"
-                            color="foreground"
+                            className="text-xs"
+                            color="primary"
                             underline="always"
                             href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2"
                             target="_blank"
@@ -33,8 +33,8 @@ export const AuthenticatorAppPage = () => {
                         </KaniLink>
                      &nbsp;or&nbsp;
                         <KaniLink
-                            className="text-foreground-500 text-xs"
-                            color="foreground"
+                            className="text-xs"
+                            color="primary"
                             underline="always"
                             href="https://authy.com/"
                             target="_blank"

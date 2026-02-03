@@ -7,7 +7,6 @@ export interface UserSchema extends AbstractSchema {
     picture?: string
     encryptedTotpSecretPayload?: unknown
     referralCode?: string
-    temporaryTotpToken?: string
     mfaEnabled: boolean
     privyUserId?: string
     version: AppVersion

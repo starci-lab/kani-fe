@@ -1,6 +1,7 @@
 export * from "./useCreateBotSwrMutation"
 export * from "./useCreateBotV2SwrMutation"
 export * from "./useEnableMFASwrMutation"
+export * from "./useEnableMFAV2SwrMutation"
 export * from "./useRequestSend2FactorOtpSwrMutation"
 export * from "./useRequestSignInOtpSwrMutation"
 export * from "./useToggleBotSwrMutation"

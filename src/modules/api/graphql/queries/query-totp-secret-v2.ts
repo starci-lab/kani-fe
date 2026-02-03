@@ -1,37 +1,38 @@
-import { UserSchema } from "@/modules/types"
 import { createApolloClient } from "../clients"
 import { GraphQLResponse, QueryParams } from "../types"
 import { DocumentNode, gql } from "@apollo/client"
 
 const query1 = gql`
-  query UserV2 {
-    userV2 {
+  query TotpSecretV2 {
+    totpSecretV2 {
       message
       success
       error
       data {
-        id
-        privyUserId
-        version
-        referralCode
-        mfaEnabled
+        totpSecret
+        totpSecretUrl
       }
     }
   }
 `
 
-export enum QueryUserV2 {
+export enum QueryTotpSecretV2 {
   Query1 = "query1",
 }
 
-const queryMap: Record<QueryUserV2, DocumentNode> = {
-    [QueryUserV2.Query1]: query1,
+const queryMap: Record<QueryTotpSecretV2, DocumentNode> = {
+    [QueryTotpSecretV2.Query1]: query1,
 }
 
-export type QueryUserV2Params = QueryParams<QueryUserV2, UserSchema>;
+export interface TotpSecretV2Response {
+  totpSecret?: string;
+  totpSecretUrl?: string;
+}
 
-export const queryUserV2 = async (
-    { query = QueryUserV2.Query1, token }: QueryUserV2Params
+export type QueryTotpSecretV2Params = QueryParams<QueryTotpSecretV2>;
+
+export const queryTotpSecretV2 = async (
+    { query = QueryTotpSecretV2.Query1, token }: QueryTotpSecretV2Params
 ) => {
     if (!token) {
         throw new Error("Token is required")
@@ -39,7 +40,7 @@ export const queryUserV2 = async (
     const queryDocument = queryMap[query]
     // use no cache credential to include http only cookies
     return await createApolloClient({ token, withCredentials: true })
-        .query<{ userV2: GraphQLResponse<UserSchema> }>({
+        .query<{ totpSecretV2: GraphQLResponse<TotpSecretV2Response> }>({
             query: queryDocument,
         })
 }
