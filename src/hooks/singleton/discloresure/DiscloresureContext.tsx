@@ -11,8 +11,8 @@ import {
     useSelectPoolsDisclosureCore,
     useSelectTokenDisclosureCore,
     useSignInDisclosureCore,
-    useEnableMFADisclosureCore,
-    useVerifyDisclosureCore,
+    useManageMFASettingsDisclosureCore,
+    useMFAVerificationDisclosureCore,
     usePositionDisclosureCore,
     useMenuDisclosureCore,
     useUpdatePoolsDisclosureCore,
@@ -31,8 +31,8 @@ export interface DiscloresureContextType {
     selectPools: ReturnType<typeof useSelectPoolsDisclosureCore>
     selectToken: ReturnType<typeof useSelectTokenDisclosureCore>
     signIn: ReturnType<typeof useSignInDisclosureCore>
-    enableMFA: ReturnType<typeof useEnableMFADisclosureCore>
-    verify: ReturnType<typeof useVerifyDisclosureCore>
+    manageMFASettings: ReturnType<typeof useManageMFASettingsDisclosureCore>
+    mfaVerification: ReturnType<typeof useMFAVerificationDisclosureCore>
     position: ReturnType<typeof usePositionDisclosureCore>
     menu: ReturnType<typeof useMenuDisclosureCore>
     updatePools: ReturnType<typeof useUpdatePoolsDisclosureCore>
@@ -53,8 +53,8 @@ export const DiscloresureProvider = ({ children }: PropsWithChildren) => {
     const selectPools = useSelectPoolsDisclosureCore()
     const selectToken = useSelectTokenDisclosureCore()
     const signIn = useSignInDisclosureCore()
-    const enableMFA = useEnableMFADisclosureCore()
-    const verify = useVerifyDisclosureCore()
+    const manageMFASettings = useManageMFASettingsDisclosureCore()
+    const mfaVerification = useMFAVerificationDisclosureCore()
     const position = usePositionDisclosureCore()
     const menu = useMenuDisclosureCore()
     const updatePools = useUpdatePoolsDisclosureCore()
@@ -71,8 +71,8 @@ export const DiscloresureProvider = ({ children }: PropsWithChildren) => {
         selectPools,
         selectToken,
         signIn,
-        enableMFA,
-        verify,
+        manageMFASettings,
+        mfaVerification,
         position,
         menu,
         updatePools,
@@ -89,8 +89,8 @@ export const DiscloresureProvider = ({ children }: PropsWithChildren) => {
         selectPools,
         selectToken,
         signIn,
-        enableMFA,
-        verify,
+        manageMFASettings,
+        mfaVerification,
         position,
         menu,
         updatePools,

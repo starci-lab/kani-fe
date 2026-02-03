@@ -1,23 +1,24 @@
-import { 
-    KaniModalHeader, 
-    KaniLink, 
-    KaniModalBody, 
+import {
+    KaniModalHeader,
+    KaniLink,
+    KaniModalBody,
     KaniInputOtp,
     KaniModalFooter,
-    KaniButton 
+    KaniButton,
 } from "../../../atomic"
 import React from "react"
-import { useVerifyFormik } from "@/hooks/singleton"
-import { setVerifyModalPage, VerifyPage } from "@/redux"
+import { setMFAVerificationModalPage, MFAVerificationPage } from "@/redux"
 import { useAppDispatch } from "@/redux"
+import { useVerifyAuthenticatorAppFormik } from "@/hooks/singleton"
+
 export const AuthenticatorAppPage = () => {
-    const formik = useVerifyFormik()
     const dispatch = useAppDispatch()
+    const formik = useVerifyAuthenticatorAppFormik()
     return (
         <>
                 <KaniModalHeader
                     onPrev={() => {
-                        dispatch(setVerifyModalPage(VerifyPage.Base))
+                        dispatch(setMFAVerificationModalPage(MFAVerificationPage.Base))
                     }}
                     title="Authenticator App Verification" description={
                     <div>
@@ -61,16 +62,15 @@ export const AuthenticatorAppPage = () => {
                     </div>
                 </KaniModalBody>
                 <KaniModalFooter>
-                    <KaniButton 
-                        isDisabled={!!formik.errors.authenticatorAppCodeInput}
-                        fullWidth 
+                    <KaniButton
+                        isDisabled={!!formik.errors.authenticatorAppCodeInput || !formik.values.authenticatorAppCodeInput}
+                        fullWidth
                         color="primary"
-                        onPress={
-                            async () => {
-                                formik.setFieldValue("authenticatorAppCode", formik.values.authenticatorAppCodeInput)
-                                dispatch(setVerifyModalPage(VerifyPage.Base))
-                            }
-                        }>
+                        onPress={async () => {
+                            formik.setFieldValue("authenticatorAppCode", formik.values.authenticatorAppCodeInput)
+                            await formik.submitForm()
+                        }}
+                    >
                         Confirm
                     </KaniButton>
                 </KaniModalFooter>

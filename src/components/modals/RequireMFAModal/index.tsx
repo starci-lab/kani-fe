@@ -8,11 +8,11 @@ import {
     KaniButton,
     KaniLink
 } from "../../atomic"
-import { useEnableMFADisclosure, useRequireMFADisclosure } from "@/hooks/singleton"
+import { useManageMFASettingsDisclosure, useRequireMFADisclosure } from "@/hooks/singleton"
 
 export const RequireMFAModal = () => {
     const { isOpen, onOpenChange, onClose } = useRequireMFADisclosure()
-    const { onOpen: onOpenEnableMFAModal } = useEnableMFADisclosure()
+    const { onOpen: onOpenManageMFASettingsModal } = useManageMFASettingsDisclosure()
     return (
         <KaniModal size="xs" isOpen={isOpen} onOpenChange={onOpenChange}>
             <KaniModalContent>
@@ -25,10 +25,10 @@ export const RequireMFAModal = () => {
                 <KaniModalFooter>
                     <KaniButton color="primary" fullWidth onPress={
                         () => {
-                            onOpenEnableMFAModal()
+                            onOpenManageMFASettingsModal()
                             onClose()
                         }
-                    }>Enable MFA</KaniButton>
+                    }>Manage MFA Settings</KaniButton>
                 </KaniModalFooter>
             </KaniModalContent>
         </KaniModal>

@@ -14,7 +14,7 @@ const query1 = gql`
         privyUserId
         version
         referralCode
-        mfaEnabled
+        authenticationFactors
       }
     }
   }

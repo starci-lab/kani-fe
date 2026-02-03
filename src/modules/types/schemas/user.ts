@@ -1,5 +1,6 @@
 import { AppVersion } from "../enums"
 import { AbstractSchema } from "./abstract"
+import { AuthenticationFactor } from "../enums"
 
 export interface UserSchema extends AbstractSchema {
     email?: string
@@ -7,7 +8,7 @@ export interface UserSchema extends AbstractSchema {
     picture?: string
     encryptedTotpSecretPayload?: unknown
     referralCode?: string
-    mfaEnabled: boolean
     privyUserId?: string
     version: AppVersion
+    authenticationFactors?: Array<AuthenticationFactor>
 }

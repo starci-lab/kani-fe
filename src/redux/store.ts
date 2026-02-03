@@ -8,7 +8,7 @@ import {
     exportPrivateKeyReducer,
     enableMFAModalReducer,
     botReducer,
-    verifyModalReducer,
+    mfaVerificationModalReducer,
     depositModalReducer,
     sessionReducer,
     createBotReducer,
@@ -28,7 +28,7 @@ export const store = configureStore({
             signIn: signInModalReducer,
             exportPrivateKey: exportPrivateKeyReducer,
             enableMFAModal: enableMFAModalReducer,
-            verify: verifyModalReducer,
+            mfaVerification: mfaVerificationModalReducer,
         }),
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware({

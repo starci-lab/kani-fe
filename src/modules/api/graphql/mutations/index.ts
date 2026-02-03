@@ -1,5 +1,5 @@
-export * from "./mutation-enable-mfa"
-export * from "./mutation-enable-mfa-v2"
+export * from "./mutation-enable-authenticator-app-v2"
+export * from "./mutation-disable-authenticator-app-v2"
 export * from "./mutation-update-liquidity-provision-bot-liquidity-pools"
 export * from "./mutation-update-liquidity-provision-bot-rpcs"
 export * from "./mutation-verify-privy-auth-token"

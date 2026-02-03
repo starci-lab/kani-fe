@@ -4,7 +4,7 @@ import React from "react"
 import { Spacer } from "@heroui/react"
 import { setBotIsExitToUsdc, useAppDispatch, useAppSelector } from "@/redux"
 import { useUpdateBotSettingsV2SwrMutation } from "@/hooks/singleton"
-import { runGraphQLWithToast } from "../../../../toasts"
+import { runGraphQLWithToast } from "@/modules/toast"
 import { useQueryBotV2Swr } from "@/hooks/singleton"
 
 export const ExitToUsdc = () => {

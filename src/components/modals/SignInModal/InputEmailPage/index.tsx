@@ -14,7 +14,7 @@ import {
 } from "@/redux"
 import { useRequestSignInOtpSwrMutation } from "@/hooks/singleton"
 import { useSignInFormik } from "@/hooks/singleton"
-import { runGraphQLWithToast } from "../../../toasts"
+import { runGraphQLWithToast } from "@/modules/toast"
 
 export const InputEmailPage = () => {
     const dispatch = useAppDispatch()

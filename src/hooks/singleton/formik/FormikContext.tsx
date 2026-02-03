@@ -2,11 +2,12 @@
 import React, { PropsWithChildren, useMemo } from "react"
 import { createContext } from "react"
 import {
-    useEnableMFAFormikCore,
+    useEnableAuthenticatorAppFormikCore,
+    useDisableAuthenticatorAppFormikCore,
+    useVerifyAuthenticatorAppFormikCore,
     useConfirmTotpFormikCore,
     useCreateBotFormikCore,
     useSignInFormikCore,
-    useVerifyFormikCore,
     useUpdateBotLiquidityPoolsFormikCore,
     useUpdateBotNameFormikCore,
     usePercentageWithdrawFormikCore,
@@ -14,11 +15,12 @@ import {
 } from "./core"
 
 export interface FormikContextType {
-    enableMFAFormik: ReturnType<typeof useEnableMFAFormikCore>
+    enableAuthenticatorAppFormik: ReturnType<typeof useEnableAuthenticatorAppFormikCore>
+    disableAuthenticatorAppFormik: ReturnType<typeof useDisableAuthenticatorAppFormikCore>
+    verifyAuthenticatorAppFormik: ReturnType<typeof useVerifyAuthenticatorAppFormikCore>
     confirmTotpFormik: ReturnType<typeof useConfirmTotpFormikCore>
     createBotFormik: ReturnType<typeof useCreateBotFormikCore>
-    signInFormik: ReturnType<typeof useSignInFormikCore>
-    verifyFormik: ReturnType<typeof useVerifyFormikCore>
+    signInFormik: ReturnType<typeof useSignInFormikCore>    
     updateBotLiquidityPoolsFormik: ReturnType<typeof useUpdateBotLiquidityPoolsFormikCore>
     updateBotNameFormik: ReturnType<typeof useUpdateBotNameFormikCore>
     percentageWithdrawFormik: ReturnType<typeof usePercentageWithdrawFormikCore>
@@ -29,11 +31,12 @@ export const FormikContext = createContext<FormikContextType | null>(null)
 
 // Lazy formik provider - only initializes hooks after mount
 export const FormikProvider = ({ children }: PropsWithChildren) => {
-    const enableMFAFormik = useEnableMFAFormikCore()
+    const enableAuthenticatorAppFormik = useEnableAuthenticatorAppFormikCore()
+    const disableAuthenticatorAppFormik = useDisableAuthenticatorAppFormikCore()
+    const verifyAuthenticatorAppFormik = useVerifyAuthenticatorAppFormikCore()
     const confirmTotpFormik = useConfirmTotpFormikCore()
     const createBotFormik = useCreateBotFormikCore()
     const signInFormik = useSignInFormikCore()
-    const verifyFormik = useVerifyFormikCore()
     const updateBotLiquidityPoolsFormik = useUpdateBotLiquidityPoolsFormikCore()
     const updateBotNameFormik = useUpdateBotNameFormikCore()
     const percentageWithdrawFormik = usePercentageWithdrawFormikCore()
@@ -41,21 +44,23 @@ export const FormikProvider = ({ children }: PropsWithChildren) => {
     const value = useMemo(
         () => (
             {
-                enableMFAFormik, 
+                enableAuthenticatorAppFormik,
+                disableAuthenticatorAppFormik,
+                verifyAuthenticatorAppFormik,
                 confirmTotpFormik, 
                 createBotFormik,
                 signInFormik,
-                verifyFormik,
                 updateBotLiquidityPoolsFormik,
                 updateBotNameFormik,
                 percentageWithdrawFormik,
                 singleAssetWithdrawFormik
             }), [
-            enableMFAFormik, 
+            enableAuthenticatorAppFormik,
+            disableAuthenticatorAppFormik,
+            verifyAuthenticatorAppFormik,
             confirmTotpFormik, 
             createBotFormik, 
             signInFormik, 
-            verifyFormik,
             updateBotLiquidityPoolsFormik,
             updateBotNameFormik,
             percentageWithdrawFormik,

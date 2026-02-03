@@ -7,7 +7,8 @@ import {
     setAccountLimits, 
     setGasConfig, 
     setBalanceConfig, 
-    setSocketTokenIds
+    setSocketTokenIds,
+    setAuthenticationConfig
 } from "@/redux"
 import useSWR from "swr"
 
@@ -22,6 +23,7 @@ export const useQueryStaticSwrCore = () => {
             const accountLimits = data.data?.accountLimits
             const gasConfig = data.data?.gasConfig
             const balanceConfig = data.data?.balanceConfig
+            const authenticationConfig = data.data?.authenticationConfig
             if (!tokens || !tokens.data) {
                 throw new Error("Tokens not found")
             }
@@ -39,6 +41,9 @@ export const useQueryStaticSwrCore = () => {
             }
             if (balanceConfig && balanceConfig.data) {
                 dispatch(setBalanceConfig(balanceConfig.data))
+            }
+            if (authenticationConfig && authenticationConfig.data) {
+                dispatch(setAuthenticationConfig(authenticationConfig.data))
             }
             return data
         }

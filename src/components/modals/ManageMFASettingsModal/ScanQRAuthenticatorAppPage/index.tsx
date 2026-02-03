@@ -1,9 +1,9 @@
 import React, { useEffect } from "react"
-import { KaniModalHeader, KaniModalBody, KaniLink, KaniSnippet, KaniButton, KaniModalFooter, KaniSpinner, KaniSkeleton } from "../../../atomic"
+import { KaniModalHeader, KaniModalBody, KaniLink, KaniButton, KaniModalFooter, KaniSpinner, KaniSkeleton } from "../../../atomic"
 import { QRCode, SnippetIcon } from "../../../reuseable"
 import { Spacer } from "@heroui/react"
 import { truncateMiddle } from "@/modules/utils"
-import { setEnableMFAPage, EnableMFAPage, useAppDispatch, useAppSelector } from "@/redux"
+import { setManageMFASettingsPage, ManageMFASettingsPage, useAppDispatch, useAppSelector } from "@/redux"
 import { useQueryTotpSecretV2SwrMutation } from "@/hooks/singleton"
 
 export const ScanQRPage = () => {
@@ -21,7 +21,7 @@ export const ScanQRPage = () => {
     }, [user])
     return (
         <>
-            <KaniModalHeader title="Enable MFA" description={
+            <KaniModalHeader title="Enable Authentication App" description={
                 <div>
                     Please enter the code from your phone app like
                     <KaniLink
@@ -84,7 +84,7 @@ export const ScanQRPage = () => {
                     fullWidth
                     size="lg"
                     onPress={() => {
-                        dispatch(setEnableMFAPage(EnableMFAPage.ConfirmTOTP))
+                        dispatch(setManageMFASettingsPage(ManageMFASettingsPage.ConfirmTOTP))
                     }}
                 >
                     Continue

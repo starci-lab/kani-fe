@@ -8,21 +8,21 @@ import {
     KaniLink
 } from "../../../atomic"
 import { Spacer } from "@heroui/react"
-import { useEnableMFAFormik } from "@/hooks/singleton"
-import { setEnableMFAPage, EnableMFAPage } from "@/redux"
+import { useEnableAuthenticatorAppFormik } from "@/hooks/singleton"
+import { setManageMFASettingsPage, ManageMFASettingsPage } from "@/redux"
 import { useAppDispatch } from "@/redux"
 
-export const ConfirmTOTPPage = () => {
-    const formik = useEnableMFAFormik()
+export const ConfirmEnableAuthenticatorAppPage = () => {
+    const formik = useEnableAuthenticatorAppFormik()
     const dispatch = useAppDispatch()
     return (
         <>
             <KaniModalHeader
-                title="Confirm TOTP"
-                onPrev={() => dispatch(setEnableMFAPage(EnableMFAPage.ScanQR))}
+                title="Enable Authentication App"
+                onPrev={() => dispatch(setManageMFASettingsPage(ManageMFASettingsPage.ScanQR))}
                 description={
                     <div>
-                        Please enter the code from your phone app like
+                        To enable your authentication app, please enter the code from your phone app like{" "}
                         <KaniLink
                             className="text-xs"
                             color="primary"

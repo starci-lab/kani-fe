@@ -1,19 +1,22 @@
 import { usePrivy } from "@privy-io/react-auth"
-import { useEnableMFADisclosure } from "@/hooks/singleton"
+import { useManageMFASettingsDisclosure } from "@/hooks/singleton"
 import { useAppSelector } from "@/redux"
 import { useEffect } from "react"
 
 export const useAuth = () => {
     const { authenticated } = usePrivy()
     const user = useAppSelector((state) => state.session.user)
-    const { onOpen: onOpenEnableMFAModal } = useEnableMFADisclosure()
+    const { onOpen: onOpenManageMFASettingsModal } = useManageMFASettingsDisclosure()
     useEffect(() => {
         if (!authenticated) {
             return
         }
-        if (!user || user?.mfaEnabled) {
+        if (!user) {
             return
         }
-        onOpenEnableMFAModal()
+        if (user?.authenticationFactors?.length) {
+            return
+        }
+        onOpenManageMFASettingsModal()
     }, [authenticated, user])
 }

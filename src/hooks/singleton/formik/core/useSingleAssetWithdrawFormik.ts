@@ -1,9 +1,9 @@
 import { useFormik } from "formik"
 import * as Yup from "yup"
-import { useRequireMFADisclosure, useVerifyDisclosure } from "../../discloresure"
+import { useRequireMFADisclosure, useMFAVerificationDisclosure } from "../../discloresure"
 import { useQueryBalancesV2Swr } from "../../swr"
 import { useEffect } from "react"
-import { setVerifyModalOnAction, useAppDispatch, useAppSelector } from "@/redux"
+import { setMFAVerificationModalOnAction, useAppDispatch, useAppSelector } from "@/redux"
 import Decimal from "decimal.js"
 import { toDecimalAmount } from "@/modules/utils"
 import BN from "bn.js"
@@ -49,7 +49,7 @@ export const useSingleAssetWithdrawFormikCore = () => {
     const swr = useQueryBalancesV2Swr()
     const { getAccessToken, authenticated } = usePrivy()
     const { onOpen: onOpenRequireMFAModal } = useRequireMFADisclosure()
-    const { onOpen: onOpenVerifyModal } = useVerifyDisclosure()
+    const { onOpen: onOpenMFAVerificationModal } = useMFAVerificationDisclosure()
     const dispatch = useAppDispatch()
     const user = useAppSelector((state) => state.session.user)
     const bot = useAppSelector((state) => state.bot.bot)
@@ -69,7 +69,7 @@ export const useSingleAssetWithdrawFormikCore = () => {
             if (!user) {
                 throw new Error("User is not authenticated")
             }
-            if (!user.mfaEnabled) {
+            if (!user.authenticationFactors?.length) {
                 onOpenRequireMFAModal()
                 return
             }
@@ -78,11 +78,12 @@ export const useSingleAssetWithdrawFormikCore = () => {
                 throw new Error("Token is required")
             }
             dispatch(
-                setVerifyModalOnAction(() => {
+                setMFAVerificationModalOnAction(() => {
+                    alert("onAction")
                     return true
                 })
             )
-            onOpenVerifyModal()
+            onOpenMFAVerificationModal()
         },
     })
     const tokens = useAppSelector((state) => state.static.tokens)

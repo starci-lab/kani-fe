@@ -1,9 +1,9 @@
 import { useFormik } from "formik"
 import * as Yup from "yup"
-import { useRequireMFADisclosure, useVerifyDisclosure } from "../../discloresure"
+import { useRequireMFADisclosure, useMFAVerificationDisclosure } from "../../discloresure"
 import { isAddress } from "@/modules/blockchain"
 import { ChainId } from "@/modules/types"
-import { setVerifyModalOnAction, useAppDispatch, useAppSelector } from "@/redux"
+import { setMFAVerificationModalOnAction, useAppDispatch, useAppSelector } from "@/redux"
 import { usePrivy } from "@privy-io/react-auth"
 
 export interface PercentageWithdrawFormikValues {
@@ -30,7 +30,7 @@ export const usePercentageWithdrawFormikCore = () => {
     const { getAccessToken, authenticated } = usePrivy()
     const user = useAppSelector((state) => state.session.user)
     const { onOpen: onOpenRequireMFAModal } = useRequireMFADisclosure()
-    const { onOpen: onOpenVerifyModal } = useVerifyDisclosure()
+    const { onOpen: onOpenMFAVerificationModal } = useMFAVerificationDisclosure()
     const dispatch = useAppDispatch()
     const bot = useAppSelector((state) => state.bot.bot)
     return useFormik<PercentageWithdrawFormikValues>({
@@ -48,7 +48,7 @@ export const usePercentageWithdrawFormikCore = () => {
             if (!user) {
                 throw new Error("User is not authenticated")
             }
-            if (!user.mfaEnabled) {
+            if (!user.authenticationFactors?.length) {
                 onOpenRequireMFAModal()
                 return
             }
@@ -57,11 +57,12 @@ export const usePercentageWithdrawFormikCore = () => {
                 throw new Error("Token is required")
             }
             dispatch(
-                setVerifyModalOnAction(() => {
+                setMFAVerificationModalOnAction(() => {
+                    alert("onAction")
                     return true
                 })
             )
-            onOpenVerifyModal()
+            onOpenMFAVerificationModal()
         },
     })
 }

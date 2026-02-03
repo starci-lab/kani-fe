@@ -12,7 +12,7 @@ import { setSignInModalPage, SignInPage } from "@/redux"
 import { useAppDispatch } from "@/redux"
 import { useSignInFormik } from "@/hooks/singleton"
 import { useRequestSignInOtpSwrMutation } from "@/hooks/singleton"
-import { runGraphQLWithToast } from "../../../toasts"
+import { runGraphQLWithToast } from "@/modules/toast"
 
 export const InputOTPPage = () => {
     const dispatch = useAppDispatch()

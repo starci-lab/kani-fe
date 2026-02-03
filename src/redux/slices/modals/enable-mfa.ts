@@ -1,27 +1,28 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit"
 
-export enum EnableMFAPage {
+export enum ManageMFASettingsPage {
     Base = "base",
     ScanQR = "scanQR",
     ConfirmTOTP = "confirmTOTP",
+    ConfirmDisable = "confirmDisable",
 }
 export interface EnableMFAModalSlice {
-    page: EnableMFAPage
+    page: ManageMFASettingsPage
 }
 
 const initialState: EnableMFAModalSlice = {
-    page: EnableMFAPage.Base,
+    page: ManageMFASettingsPage.Base,
 }
 
 export const enableMFAModalSlice = createSlice({
     name: "enableMFAModal",
     initialState,
     reducers: {
-        setEnableMFAPage: (state, action: PayloadAction<EnableMFAPage>) => {
+        setManageMFASettingsPage: (state, action: PayloadAction<ManageMFASettingsPage>) => {
             state.page = action.payload
         },
     },
 })
 
 export const enableMFAModalReducer = enableMFAModalSlice.reducer
-export const { setEnableMFAPage } = enableMFAModalSlice.actions
+export const { setManageMFASettingsPage } = enableMFAModalSlice.actions

@@ -14,15 +14,14 @@ import {
     PencilLineIcon, 
     SignOutIcon 
 } from "@phosphor-icons/react"
-import { usePrivy, useLogout } from "@privy-io/react-auth"
-import { useEnableMFADisclosure } from "@/hooks/singleton"
-import { useAppSelector } from "@/redux"
+import { usePrivy, useLogout, useMfaEnrollment } from "@privy-io/react-auth"
+import { useManageMFASettingsDisclosure } from "@/hooks/singleton"
 
 export const KaniUserDropdown = () => {
-    const { onOpen } = useEnableMFADisclosure()
+    const { onOpen } = useManageMFASettingsDisclosure()
     const { user } = usePrivy()
+    const { showMfaEnrollmentModal } = useMfaEnrollment()
     const { logout } = useLogout()
-    const userState = useAppSelector((state) => state.session.user)
     return (
         <KaniDropdown>
             <KaniDropdownTrigger>
@@ -30,7 +29,7 @@ export const KaniUserDropdown = () => {
                     {truncateEnd({ str: user?.email?.address.toString() ?? "" })}
                 </KaniButton>
             </KaniDropdownTrigger>
-            <KaniDropdownMenu aria-label="Static Actions" disabledKeys={userState?.mfaEnabled ? ["enable-mfa"] : []}>
+            <KaniDropdownMenu aria-label="Static Actions">
                 <KaniDropdownSection showDivider>
                     <KaniDropdownItem 
                         isReadOnly 
@@ -40,13 +39,13 @@ export const KaniUserDropdown = () => {
                         {user?.email?.address.toString() ?? ""}
                     </KaniDropdownItem>
                     <KaniDropdownItem 
-                        key="enable-mfa"
+                        key="manage-mfa-settings"
                         startContent={<PencilLineIcon />}
                         onPress={() => {
                             onOpen()
                         }}
                     >
-                    Enable MFA
+                    Manage MFA Settings
                     </KaniDropdownItem>
                 </KaniDropdownSection>
                 <KaniDropdownSection>
@@ -59,6 +58,18 @@ export const KaniUserDropdown = () => {
                         }}
                     >
                     Sign Out
+                    </KaniDropdownItem>
+                </KaniDropdownSection>
+                <KaniDropdownSection>
+                    <KaniDropdownItem
+                        startContent={<SignOutIcon />}
+                        key="sign-out"
+                        className="text-danger"
+                        onPress={() => {
+                            showMfaEnrollmentModal()
+                        }}
+                    >
+                    Delete Account
                     </KaniDropdownItem>
                 </KaniDropdownSection>
             </KaniDropdownMenu>

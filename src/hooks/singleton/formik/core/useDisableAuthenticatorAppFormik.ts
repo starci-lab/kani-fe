@@ -1,21 +1,18 @@
 import { useFormik } from "formik"
 import * as Yup from "yup"
-import { useEnableMFAV2SwrMutation, useQueryUserV2Swr } from "../../swr"
-import { runGraphQLWithToast } from "@/components"
-import { useEnableMFADisclosure } from "../../discloresure"
-import { 
-    EnableMFAPage, 
-    setEnableMFAPage, 
-    useAppDispatch 
+import { useDisableAuthenticatorAppV2SwrMutation, useQueryUserV2Swr } from "../../swr"
+import { runGraphQLWithToast } from "@/modules/toast"
+import {
+    ManageMFASettingsPage,
+    setManageMFASettingsPage,
+    useAppDispatch,
 } from "@/redux"
 import { usePrivy } from "@privy-io/react-auth"
 
-// Form values type — only one field for the 6-digit OTP code
-export interface EnableMFAFormikValues {
+export interface DisableAuthenticatorAppFormikValues {
     totp: string
 }
 
-// Validation schema for the OTP form
 const validationSchema = Yup.object({
     totp: Yup.string()
         .length(6, "OTP must be exactly 6 digits")
@@ -23,18 +20,16 @@ const validationSchema = Yup.object({
         .required("OTP is required"),
 })
 
-const initialValues: EnableMFAFormikValues = {
+const initialValues: DisableAuthenticatorAppFormikValues = {
     totp: "",
 }
 
-// Core hook — creates the Formik instance for the TOTP form
-export const useEnableMFAFormikCore = () => {
-    const enableMFAV2SwrMutation = useEnableMFAV2SwrMutation()
+export const useDisableAuthenticatorAppFormikCore = () => {
+    const disableAuthenticatorAppV2SwrMutation = useDisableAuthenticatorAppV2SwrMutation()
     const userSwr = useQueryUserV2Swr()
     const { getAccessToken, authenticated } = usePrivy()
-    const { onClose } = useEnableMFADisclosure()
     const dispatch = useAppDispatch()
-    return useFormik<EnableMFAFormikValues>({
+    return useFormik<DisableAuthenticatorAppFormikValues>({
         initialValues,
         validationSchema,
         onSubmit: async (values, { resetForm }) => {
@@ -47,27 +42,24 @@ export const useEnableMFAFormikCore = () => {
             }
             const success = await runGraphQLWithToast(
                 async () => {
-                    const response = await enableMFAV2SwrMutation.trigger({
-                        token,
+                    const response = await disableAuthenticatorAppV2SwrMutation.trigger({
                         request: {
                             totpCode: values.totp,
                         },
                     })
-                    if (!response.data?.enableMFAV2) {
+                    if (!response.data?.disableAuthenticatorAppV2) {
                         throw new Error("Failed to verify TOTP")
                     }
-                    return response.data.enableMFAV2
-                }, {
+                    return response.data.disableAuthenticatorAppV2
+                },
+                {
                     showSuccessToast: true,
                     showErrorToast: false,
-                })
+                }
+            )
             if (success) {
                 await userSwr.mutate()
-                // set the page to the scan QR page
-                dispatch(setEnableMFAPage(EnableMFAPage.ScanQR))
-                // close the modal
-                onClose()
-                // reset the form
+                dispatch(setManageMFASettingsPage(ManageMFASettingsPage.Base))
                 resetForm()
             }
         },

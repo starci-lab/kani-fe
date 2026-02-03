@@ -55,6 +55,7 @@ export const WithdrawModal = () => {
                 <KaniModalHeader title="Withdraw" />
                 <KaniModalBody>
                     <KaniTabs
+                        color="primary"
                         disableAnimation
                         selectedKey={withdrawTab}
                         onSelectionChange={

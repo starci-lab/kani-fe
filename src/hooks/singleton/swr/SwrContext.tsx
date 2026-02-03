@@ -6,8 +6,8 @@ import {
     useCreateBotSwrMutationCore,
     useRequestSignInOtpSwrMutationCore,
     useVerifySignInOtpSwrMutationCore,
-    useEnableMFASwrMutationCore,
-    useEnableMFAV2SwrMutationCore,
+    useEnableAuthenticatorAppV2SwrMutationCore,
+    useDisableAuthenticatorAppV2SwrMutationCore,
     useRequestSend2FactorOtpSwrMutationCore,
     useToggleBotSwrMutationCore,
     useQueryUserV2SwrCore,
@@ -42,8 +42,8 @@ export interface SwrContextType {
     createBotSwrMutation: ReturnType<typeof useCreateBotSwrMutationCore>;
     requestSignInOtpSwrMutation: ReturnType<typeof useRequestSignInOtpSwrMutationCore>;
     verifySignInOtpSwrMutation: ReturnType<typeof useVerifySignInOtpSwrMutationCore>;
-    enableMFASwrMutation: ReturnType<typeof useEnableMFASwrMutationCore>;
-    enableMFAV2SwrMutation: ReturnType<typeof useEnableMFAV2SwrMutationCore>;
+    enableAuthenticatorAppV2SwrMutation: ReturnType<typeof useEnableAuthenticatorAppV2SwrMutationCore>;
+    disableAuthenticatorAppV2SwrMutation: ReturnType<typeof useDisableAuthenticatorAppV2SwrMutationCore>;
     requestSend2FactorOtpSwrMutation: ReturnType<typeof useRequestSend2FactorOtpSwrMutationCore>;
     toggleBotSwrMutation: ReturnType<typeof useToggleBotSwrMutationCore>;
     queryUserV2Swr: ReturnType<typeof useQueryUserV2SwrCore>;
@@ -81,8 +81,8 @@ export const SwrProvider = ({ children }: PropsWithChildren) => {
     const createBotV2SwrMutation = useCreateBotV2SwrMutationCore()
     const requestSignInOtpSwrMutation = useRequestSignInOtpSwrMutationCore()
     const verifySignInOtpSwrMutation = useVerifySignInOtpSwrMutationCore()
-    const enableMFASwrMutation = useEnableMFASwrMutationCore()
-    const enableMFAV2SwrMutation = useEnableMFAV2SwrMutationCore()
+    const enableAuthenticatorAppV2SwrMutation = useEnableAuthenticatorAppV2SwrMutationCore()
+    const disableAuthenticatorAppV2SwrMutation = useDisableAuthenticatorAppV2SwrMutationCore()
     const requestSend2FactorOtpSwrMutation = useRequestSend2FactorOtpSwrMutationCore()
     const queryTotpSecretSwrMutation = useQueryTotpSecretSwrMutationCore()
     const queryTotpSecretV2SwrMutation = useQueryTotpSecretV2SwrMutationCore()
@@ -115,8 +115,8 @@ export const SwrProvider = ({ children }: PropsWithChildren) => {
         createBotV2SwrMutation,
         requestSignInOtpSwrMutation,
         verifySignInOtpSwrMutation,
-        enableMFASwrMutation,
-        enableMFAV2SwrMutation,
+        enableAuthenticatorAppV2SwrMutation,
+        disableAuthenticatorAppV2SwrMutation,
         requestSend2FactorOtpSwrMutation,
         queryTotpSecretSwrMutation,
         queryTotpSecretV2SwrMutation,
@@ -149,8 +149,8 @@ export const SwrProvider = ({ children }: PropsWithChildren) => {
         createBotV2SwrMutation,
         requestSignInOtpSwrMutation,
         verifySignInOtpSwrMutation,
-        enableMFASwrMutation,
-        enableMFAV2SwrMutation,
+        enableAuthenticatorAppV2SwrMutation,
+        disableAuthenticatorAppV2SwrMutation,
         requestSend2FactorOtpSwrMutation,
         queryTotpSecretSwrMutation,
         queryTotpSecretV2SwrMutation,

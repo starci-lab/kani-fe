@@ -1,6 +1,6 @@
 import { useFormik } from "formik"
 import * as Yup from "yup"
-import { runGraphQLWithToast } from "@/components/toasts"
+import { runGraphQLWithToast } from "@/modules/toast"
 import { useUpdateBotLiquidityPoolsV2SwrMutation } from "../../swr"
 import { useQueryBotV2Swr } from "../../swr"
 import { useAppSelector } from "@/redux"

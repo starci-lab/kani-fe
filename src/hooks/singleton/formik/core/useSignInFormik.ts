@@ -1,6 +1,6 @@
 import { useFormik } from "formik"
 import * as Yup from "yup"
-import { runGraphQLWithToast } from "@/components/toasts"
+import { runGraphQLWithToast } from "@/modules/toast"
 import { useVerifySignInOtpSwrMutation } from "../../swr"
 import { useSignInDisclosure } from "../../discloresure"
 import { setAccessToken, useAppDispatch } from "@/redux"
