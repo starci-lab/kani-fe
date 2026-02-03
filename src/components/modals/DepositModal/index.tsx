@@ -64,18 +64,18 @@ export const DepositModal = () => {
                         <div className="flex items-center justify-between gap-4 w-full">
                             <TooltipTitle title="Deposit Address" />
                             <div className="flex items-center gap-1 ">
-                                <div className="text-sm">
-                                    {truncateMiddle({ str: bot?.accountAddress ?? "" })}
-                                </div>
                                 {bot?.accountAddress && (
                                 <SnippetIcon
                                     copyString={bot?.accountAddress ?? ""}
                                     classNames={{
-                                        checkIcon: "w-4 h-4 text-foreground-500",
-                                        copyIcon: "w-4 h-4 text-foreground-500",
+                                        checkIcon: "w-5 h-5 text-foreground-500",
+                                        copyIcon: "w-5 h-5 text-foreground-500",
                                     }}
                                 />
                                 )}
+                                <div className="text-sm">
+                                    {truncateMiddle({ str: bot?.accountAddress ?? "" })}
+                                </div>
                             </div>
                         </div>
                         {

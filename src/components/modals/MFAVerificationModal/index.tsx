@@ -46,7 +46,7 @@ export const MFAVerificationModal = () => {
                                                 </div>
                                             </div>
                                             <Spacer y={2} />
-                                            <div className="text-xs text-foreground-500 text-left">
+                                            <div className="text-xs text-primary text-left">
                                                 Available
                                             </div>
                                         </div>
