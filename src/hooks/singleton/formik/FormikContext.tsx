@@ -9,6 +9,8 @@ import {
     useVerifyFormikCore,
     useUpdateBotLiquidityPoolsFormikCore,
     useUpdateBotNameFormikCore,
+    usePercentageWithdrawFormikCore,
+    useSingleAssetWithdrawFormikCore,
 } from "./core"
 
 export interface FormikContextType {
@@ -19,6 +21,8 @@ export interface FormikContextType {
     verifyFormik: ReturnType<typeof useVerifyFormikCore>
     updateBotLiquidityPoolsFormik: ReturnType<typeof useUpdateBotLiquidityPoolsFormikCore>
     updateBotNameFormik: ReturnType<typeof useUpdateBotNameFormikCore>
+    percentageWithdrawFormik: ReturnType<typeof usePercentageWithdrawFormikCore>
+    singleAssetWithdrawFormik: ReturnType<typeof useSingleAssetWithdrawFormikCore>
 }
 
 export const FormikContext = createContext<FormikContextType | null>(null)
@@ -32,6 +36,8 @@ export const FormikProvider = ({ children }: PropsWithChildren) => {
     const verifyFormik = useVerifyFormikCore()
     const updateBotLiquidityPoolsFormik = useUpdateBotLiquidityPoolsFormikCore()
     const updateBotNameFormik = useUpdateBotNameFormikCore()
+    const percentageWithdrawFormik = usePercentageWithdrawFormikCore()
+    const singleAssetWithdrawFormik = useSingleAssetWithdrawFormikCore()
     const value = useMemo(
         () => (
             {
@@ -41,7 +47,9 @@ export const FormikProvider = ({ children }: PropsWithChildren) => {
                 signInFormik,
                 verifyFormik,
                 updateBotLiquidityPoolsFormik,
-                updateBotNameFormik
+                updateBotNameFormik,
+                percentageWithdrawFormik,
+                singleAssetWithdrawFormik
             }), [
             enableMFAFormik, 
             confirmTotpFormik, 
@@ -49,7 +57,9 @@ export const FormikProvider = ({ children }: PropsWithChildren) => {
             signInFormik, 
             verifyFormik,
             updateBotLiquidityPoolsFormik,
-            updateBotNameFormik
+            updateBotNameFormik,
+            percentageWithdrawFormik,
+            singleAssetWithdrawFormik
         ]
     )
 

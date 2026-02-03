@@ -16,6 +16,11 @@ export enum BotDisplayMode {
     List = "list",
 }
 
+export enum WithdrawTab {
+    SingleAsset = "singleAsset",
+    Percentage = "percentage",
+}
+
 export type UpdatePoolsFilters = Partial<{
     dexIds?: Array<string>
     sortBy?: LiquidityPoolsSortBy
@@ -61,6 +66,7 @@ export interface BotSlice {
     transactionsPages: TransactionsPages
     positionsPages: PositionsPages
     displayMode: BotDisplayMode
+    withdrawTab: WithdrawTab
 }
 
 export type BotChartConfigPayload = Partial<{
@@ -92,6 +98,7 @@ const initialState: BotSlice = {
         totalPages: 1,
     },
     displayMode: BotDisplayMode.Grid,
+    withdrawTab: WithdrawTab.Percentage,
 }
 
 export const botSlice = createSlice({
@@ -215,6 +222,9 @@ export const botSlice = createSlice({
                 }
             }
         },
+        setBotWithdrawTab: (state, action: PayloadAction<WithdrawTab>) => {
+            state.withdrawTab = action.payload
+        },
     },
 })
 
@@ -242,6 +252,7 @@ export const {
     updateBotPerformanceDisplayMode,
     updateBotPerformanceDisplayModeInBots,
     updateBotPositionsPerformanceDisplayMode,
+    setBotWithdrawTab,
 } = botSlice.actions
 
 export interface UpdateBotPerformanceDisplayModePayload {

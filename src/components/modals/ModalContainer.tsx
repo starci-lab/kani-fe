@@ -9,6 +9,7 @@ import { VerifyModal } from "./VerifyModal"
 import { PositionModal } from "./PositionModal"
 import { MenuModal } from "./MenuModal"
 import { SortByModal } from "./SortByModal"
+import { WithdrawModal } from "./WithdrawModal"
 
 export const ModalContainer = () => {
     return (
@@ -23,6 +24,7 @@ export const ModalContainer = () => {
             <PositionModal />
             <MenuModal />
             <SortByModal />
+            <WithdrawModal />
         </>
     )
 }

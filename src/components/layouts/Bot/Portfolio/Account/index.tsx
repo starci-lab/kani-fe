@@ -26,13 +26,14 @@ import {
 import { ArrowSquareOutIcon } from "@phosphor-icons/react"
 import { 
     useDepositDisclosure, 
-    useQueryBotsV2Swr 
+    useQueryBotsV2Swr,
+    useWithdrawDisclosure
 } from "@/hooks/singleton"
 
 export interface WalletAction {
     label: string
     icon: React.ElementType
-    color: "default" | "danger"
+    color: "secondary" | "danger"
     onPress: () => void
     disabled?: boolean
     tooltip?: string
@@ -42,6 +43,7 @@ export const Account = () => {
     const bot = useAppSelector((state) => state.bot.bot)
     const chainAssets = useMemo(() => getChainAssets(bot?.chainId ?? ChainId.Solana), [bot?.chainId])
     const depositDisclosure = useDepositDisclosure()
+    const withdrawDisclosure = useWithdrawDisclosure()
     const url = useMemo(() => explorerUrl({
         type: ExplorerType.Account,
         value: bot?.accountAddress ?? "",
@@ -52,7 +54,7 @@ export const Account = () => {
         {
             label: "Deposit",
             icon: ArrowLineDownIcon,
-            color: "default",
+            color: "secondary",
             tooltip: "Generate a QR code or address to deposit funds into this bot.",
             onPress: () => {
                 depositDisclosure.onOpen()
@@ -61,10 +63,10 @@ export const Account = () => {
         {
             label: "Withdraw",
             icon: ArrowLineUpIcon,
-            color: "default",
+            color: "secondary",
             tooltip: "Withdraw funds from this bot.",   
             onPress: () => {
-                console.log("Withdraw")
+                withdrawDisclosure.onOpen()
             },
         },
     ]
