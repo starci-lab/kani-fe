@@ -84,7 +84,7 @@ export const useSingleAssetWithdrawFormikCore = () => {
                             const result = await withdrawV2Mutation.trigger({
                                 request: {
                                     id: botId,
-                                    tokens: [{ id: tokenId, amount }],
+                                    tokenInputs: [{ id: tokenId, amount }],
                                 },
                                 headers: totp
                                     ? { [GraphQLHeadersKey.TOTP]: totp }

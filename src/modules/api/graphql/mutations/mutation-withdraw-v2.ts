@@ -12,14 +12,14 @@ const mutation1 = gql`
   }
 `
 
-export interface MutationWithdrawV2Token {
+export interface WithdrawV2TokenInput {
     id: string
     amount: string
 }
 
 export interface MutationWithdrawV2Request {
     id: string
-    tokens: Array<MutationWithdrawV2Token>
+    tokenInputs: Array<WithdrawV2TokenInput>
 }
 
 export interface MutationWithdrawV2ResponseData {
