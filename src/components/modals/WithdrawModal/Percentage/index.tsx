@@ -1,5 +1,5 @@
 import { usePercentageWithdrawFormik } from "@/hooks/singleton"
-import { KaniAlert, KaniInput, KaniLink, KaniSlider } from "../../../atomic"
+import { KaniAlert, KaniInput, KaniLink, KaniSlider, KaniSwitch } from "../../../atomic"
 import React from "react"
 import { Spacer } from "@heroui/react"
 import { TooltipTitle } from "../../../reuseable"
@@ -52,6 +52,23 @@ export const Percentage = () => {
                         onChange={(value) => formik.setFieldValue("percentage", value)}
                     />
                 </div>
+            </div>
+            <Spacer y={3} />
+            <div>
+                <TooltipTitle
+                    title="To USDC"
+                    tooltipString="If enabled, the withdrawal amount will be converted to USDC"
+                    isRequired
+                />
+                <Spacer y={1.5} />
+                <div className="text-xs text-foreground-500">
+                            If enabled, the withdrawal amount will be converted to USDC.
+                </div>
+                <Spacer y={3} />
+                <KaniSwitch
+                    isSelected={formik.values.toUsdc}
+                    onValueChange={(value) => formik.setFieldValue("toUsdc", value)}
+                />
             </div>
             <Spacer y={3} />
             <div className="flex flex-col gap-1.5">

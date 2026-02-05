@@ -8,6 +8,7 @@ import { usePrivy } from "@privy-io/react-auth"
 export interface PercentageWithdrawFormikValues {
     percentage: number
     chainId?: ChainId
+    toUsdc: boolean
 }
 
 const validationSchema = Yup.object({
@@ -28,6 +29,7 @@ export const usePercentageWithdrawFormikCore = () => {
         initialValues: {
             percentage: 0,
             chainId: bot?.chainId,
+            toUsdc: false,
         },
         validationSchema,
         enableReinitialize: true,

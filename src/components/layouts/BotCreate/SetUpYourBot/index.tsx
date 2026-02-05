@@ -18,12 +18,16 @@ export const SetUpYourBot = () => {
         <div>
             <div className="text-2xl font-bold">Set Up Your Bot</div>
             <Spacer y={6} />
-            <div className="flex flex-col gap-3">
+            <div>
                 <TooltipTitle
-                    title="Bot Name"
-                    tooltipString="This is the name of your bot"
+                    title="Name"
                     isRequired
                 />
+                <Spacer y={1.5} />
+                <div className="text-xs text-foreground-500">
+                A descriptive name to help you recognize this bot. Only visible to you.
+                </div>
+                <Spacer y={3} />
                 <KaniInput
                     placeholder="Enter your bot name"
                     value={formik.values.name}
@@ -34,11 +38,16 @@ export const SetUpYourBot = () => {
                 />
             </div>
             <Spacer y={6} />
-            <div className="flex flex-col gap-3">
+            <div>
                 <TooltipTitle
                     title="Chain"
                     isRequired
                 />
+                <Spacer y={1.5} />
+                <div className="text-xs text-foreground-500">
+                Select the chain you want to use for your bot.
+                </div>
+                <Spacer y={3} />
                 <div className="w-fit">
                     <SelectChainDropdown />
                 </div>

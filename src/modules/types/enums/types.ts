@@ -15,7 +15,8 @@ export enum BotType {
 }
 
 export enum TransactionType {
-    Swap = "swap",
+    ReconcileBalance = "reconcileBalance",
+    Withdraw = "withdraw",
     OpenPosition = "openPosition",
     ClosePosition = "closePosition",
 }

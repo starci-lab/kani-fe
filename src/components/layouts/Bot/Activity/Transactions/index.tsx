@@ -52,8 +52,11 @@ export const Transactions = () => {
         case TransactionType.ClosePosition: {
             return <KaniChip color="secondary" size="sm" variant="flat">Close Position</KaniChip>
         }
-        case TransactionType.Swap: {
-            return <KaniChip color="warning" size="sm" variant="flat">Swap</KaniChip>
+        case TransactionType.ReconcileBalance: {
+            return <KaniChip color="warning" size="sm" variant="flat">Reconcile Balance</KaniChip>
+        }
+        case TransactionType.Withdraw: {
+            return <KaniChip color="success" size="sm" variant="flat">Withdraw</KaniChip>
         }
         }
     }

@@ -16,11 +16,11 @@ export const ExitToUsdc = () => {
     return (
         <div>
             <TooltipTitle title="Exit To USDC" />
-            <Spacer y={2} />
+            <Spacer y={1.5} />
             <div className="text-xs text-foreground-500">
                 If enabled, your bot will automatically move to USDC when a major price drop is detected.
             </div>
-            <Spacer y={4} />
+            <Spacer y={3} />
             <KaniSwitch
                 isSelected={bot?.isExitToUsdc}
                 onValueChange={async (value) => {

@@ -9,7 +9,7 @@ import { LiquidityPoolSchema } from "./liquidity-pool"
 import { AbstractSchema } from "./abstract"
 
 export interface PositionSchema extends AbstractSchema {
-    openTxHash: string
+    openTxHashes: Array<string>
     liquidityPool: string
     clmmState?: PositionClmmStateSchema
     dlmmState?: PositionDlmmStateSchema
@@ -17,7 +17,7 @@ export interface PositionSchema extends AbstractSchema {
     chainId: ChainId
     positionId?: string
     isActive: boolean
-    closeTxHash?: string
+    closeTxHashes?: Array<string>
     openSnapshot?: PositionSnapshotsSchema
     closeSnapshot?: PositionSnapshotsSchema
     performance?: PositionPerformanceSchema

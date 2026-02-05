@@ -11,11 +11,11 @@ export const Name = () => {
             <TooltipTitle
                 title="Name"
             />
-            <Spacer y={2} />
+            <Spacer y={1.5} />
             <div className="text-xs text-foreground-500">
             A descriptive name to help you recognize this bot. Only visible to you.
             </div>
-            <Spacer y={4} />
+            <Spacer y={3} />
             <KaniInput
                 label=""
                 labelPlacement="outside"

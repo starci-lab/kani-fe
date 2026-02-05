@@ -20,6 +20,7 @@ export interface WithdrawV2TokenInput {
 export interface MutationWithdrawV2Request {
     id: string
     tokenInputs: Array<WithdrawV2TokenInput>
+    toUsdc?: boolean
 }
 
 export interface MutationWithdrawV2ResponseData {

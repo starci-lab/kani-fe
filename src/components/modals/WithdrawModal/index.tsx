@@ -78,6 +78,7 @@ export const WithdrawModal = () => {
                     </KaniTabs>
                     <Spacer y={6} />
                     {renderTab()}
+                    <Spacer y={6} />
                 </KaniModalBody>
                 <KaniModalFooter>
                     <KaniButton 

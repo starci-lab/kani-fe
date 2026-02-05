@@ -14,7 +14,7 @@ const query1 = gql`
           id
           createdAt
           updatedAt
-          openTxHash
+          openTxHashes
           bot
           chainId
           positionId

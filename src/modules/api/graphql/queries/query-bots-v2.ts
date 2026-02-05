@@ -40,13 +40,11 @@ const query1 = gql`
                 id
                 createdAt
                 updatedAt
-                openTxHash
                 liquidityPool
                 bot
                 chainId
                 positionId
                 isActive
-                closeTxHash
                 metadata
                 openSnapshot {
                   balanceValue

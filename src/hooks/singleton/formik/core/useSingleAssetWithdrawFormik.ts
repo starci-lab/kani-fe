@@ -5,7 +5,7 @@ import { useQueryBalancesV2Swr, useWithdrawV2SwrMutation } from "../../swr"
 import { useEffect } from "react"
 import { setMFAVerificationModalOnAction, useAppDispatch, useAppSelector } from "@/redux"
 import Decimal from "decimal.js"
-import { toDecimalAmount } from "@/modules/utils"
+import { toDecimalAmount, toRawAmount } from "@/modules/utils"
 import BN from "bn.js"
 import { ChainId } from "@/modules/types"
 import { usePrivy } from "@privy-io/react-auth"
@@ -18,6 +18,7 @@ export interface SingleAssetWithdrawFormikValues {
     amount?: string
     balance?: Decimal
     showBalance: boolean
+    toUsdc: boolean
 }
 
 const validationSchema = Yup.object({
@@ -53,6 +54,7 @@ export const useSingleAssetWithdrawFormikCore = () => {
             tokenId: swr.data?.data?.balancesV2.data?.[0]?.id,
             showBalance: true,
             chainId: bot?.chainId,
+            toUsdc: false,
         },
         validationSchema,
         enableReinitialize: true,
@@ -76,6 +78,10 @@ export const useSingleAssetWithdrawFormikCore = () => {
                     const botId = bot?.id
                     const tokenId = formik.values.tokenId
                     const amount = formik.values.amount
+                    const token = tokens.find((token) => token.id === tokenId)
+                    if (!token) {
+                        throw new Error("Token not found")
+                    }
                     if (!botId || !tokenId || !amount) {
                         return false
                     }
@@ -84,7 +90,13 @@ export const useSingleAssetWithdrawFormikCore = () => {
                             const result = await withdrawV2Mutation.trigger({
                                 request: {
                                     id: botId,
-                                    tokenInputs: [{ id: tokenId, amount }],
+                                    tokenInputs: [
+                                        { 
+                                            id: tokenId, 
+                                            amount: toRawAmount({ amount: new Decimal(amount), decimals: new Decimal(token.decimals) }).toString() 
+                                        }
+                                    ],
+                                    toUsdc: formik.values.toUsdc,
                                 },
                                 headers: totp
                                     ? { [GraphQLHeadersKey.TOTP]: totp }

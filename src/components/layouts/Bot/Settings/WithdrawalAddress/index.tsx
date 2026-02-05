@@ -9,7 +9,7 @@ export const WithdrawalAddress = () => {
     return (
         <div>
             <TooltipTitle title="Withdrawal Address" />
-            <Spacer y={2} />
+            <Spacer y={1.5} />
             <div className="text-xs text-foreground-500">
                 You must provide this address to allow Privy to enforce a withdrawal policy that
                 restricts transfers to this address only.{" "}
