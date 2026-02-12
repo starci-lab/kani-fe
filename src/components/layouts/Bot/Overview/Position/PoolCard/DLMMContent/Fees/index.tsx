@@ -13,7 +13,7 @@ import { useAppSelector } from "@/redux"
 import { useQueryReservesWithFeesV2Swr } from "@/hooks/singleton"
 import { round } from "@/modules/utils"
 
-export const Liquidity = () => {
+export const Fees = () => {
     const queryReservesWithFeesV2Swr = useQueryReservesWithFeesV2Swr()
     const tokens = useAppSelector((state) => state.static.tokens)
     const tokenPrices = useAppSelector((state) => state.socket.prices)
@@ -37,28 +37,28 @@ export const Liquidity = () => {
         return tokenPrices[tokenB?.id ?? ""] ?? 0
     }, [tokenPrices, tokenB?.id])
 
-    const tokenAReserve = useMemo(() => {
+    const tokenAFee = useMemo(() => {
         return new Decimal(
-            queryReservesWithFeesV2Swr?.data?.data?.reservesWithFeesV2.data
-                ?.reserveA ?? 0,
+            queryReservesWithFeesV2Swr?.data?.data?.reservesWithFeesV2.data?.feeA ??
+            0,
         )
-    }, [
-        queryReservesWithFeesV2Swr?.data?.data?.reservesWithFeesV2.data?.reserveA,
-    ])
-    const tokenBReserve = useMemo(() => {
+    }, [queryReservesWithFeesV2Swr?.data?.data?.reservesWithFeesV2.data?.feeA])
+    const tokenBFee = useMemo(() => {
         return new Decimal(
-            queryReservesWithFeesV2Swr?.data?.data?.reservesWithFeesV2.data
-                ?.reserveB ?? 0,
+            queryReservesWithFeesV2Swr?.data?.data?.reservesWithFeesV2.data?.feeB ??
+            0,
         )
-    }, [
-        queryReservesWithFeesV2Swr?.data?.data?.reservesWithFeesV2.data?.reserveB,
-    ])
-    const totalReservesInUsdDecimal = useMemo(() => {
-        return tokenAReserve
+    }, [queryReservesWithFeesV2Swr?.data?.data?.reservesWithFeesV2.data?.feeB])
+    const totalFeesInUsdDecimal = useMemo(() => {
+        return tokenAFee
+            .add(tokenBFee)
             .mul(new Decimal(tokenPriceA.price ?? 0))
-            .add(tokenBReserve.mul(new Decimal(tokenPriceB.price ?? 0)))
-    }, [tokenAReserve, tokenBReserve, tokenPriceA.price, tokenPriceB.price])
-    
+            .add(tokenBFee.mul(new Decimal(tokenPriceB.price ?? 0)))
+    }, [tokenAFee, tokenBFee, tokenPriceA.price, tokenPriceB.price])
+    const totalFeesInUsd = useMemo(() => {
+        return round(totalFeesInUsdDecimal)
+    }, [totalFeesInUsdDecimal])
+
     const isLoading = queryReservesWithFeesV2Swr.isLoading
     const hasData = !!queryReservesWithFeesV2Swr.data
 
@@ -66,9 +66,9 @@ export const Liquidity = () => {
         <>
             <div className="flex items-center justify-between">
                 <TooltipTitle
-                    title="Liquidity"
+                    title="Fees"
                     classNames={{ title: "text-sm text-foreground-500" }}
-                    tooltipString="Liquidity are the reserves of the pool."
+                    tooltipString="Fees are the fees earned by the bot for providing liquidity to the pool."
                 />
                 {isLoading || !hasData ? (
                     <div className="grid grid-cols-[1fr_150px] items-center gap-2">
@@ -82,32 +82,36 @@ export const Liquidity = () => {
                         </div>
                     </div>
                 ) : (
-                    <div className="grid grid-cols-[1fr_150px] items-center gap-2">
-                        <div className="flex items-center gap-2">
-                            <div className="text-sm">
-                                ${round(totalReservesInUsdDecimal)}
-                            </div>
-                            <KaniDivider orientation="vertical" className="h-5" />
+                    <div className="flex items-center gap-2">
+                        <div className="text-sm">
+                            ${round(totalFeesInUsdDecimal)}
                         </div>
-                        <div className="flex flex-col gap-2">
-                            <KaniChip
-                                className="ml-auto"
-                                variant="flat"
-                                startContent={
-                                    <KaniImage src={tokenA?.iconUrl} className="w-5 h-5" />
-                                }
-                            >
-                                {round(tokenAReserve)} {tokenA?.symbol}
-                            </KaniChip>
-                            <KaniChip
-                                className="ml-auto"
-                                variant="flat"
-                                startContent={
-                                    <KaniImage src={tokenB?.iconUrl} className="w-5 h-5" />
-                                }
-                            >
-                                {round(tokenBReserve)} {tokenB?.symbol}
-                            </KaniChip>
+                        <div className="grid grid-cols-[1fr_150px] items-center gap-2">
+                            <KaniDivider orientation="vertical" className="h-5" />
+                            <div className="flex flex-col gap-2">
+                                <KaniChip
+                                    className="ml-auto"
+                                    variant="flat"
+                                    startContent={
+                                        <KaniImage src={tokenA?.iconUrl} className="w-5 h-5" />
+                                    }
+                                >
+                                    <span className="text-secondary">
+                                        +{round(tokenAFee)} {tokenA?.symbol}
+                                    </span>
+                                </KaniChip>
+                                <KaniChip
+                                    className="ml-auto"
+                                    variant="flat"
+                                    startContent={
+                                        <KaniImage src={tokenB?.iconUrl} className="w-5 h-5" />
+                                    }
+                                >
+                                    <span className="text-secondary">
+                                        +{round(tokenBFee)} {tokenB?.symbol}
+                                    </span>
+                                </KaniChip>
+                            </div>
                         </div>
                     </div>
                 )}

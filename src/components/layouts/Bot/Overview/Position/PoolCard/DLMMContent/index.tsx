@@ -1,8 +1,9 @@
 import React from "react"
 import { Spacer } from "@heroui/react"
 import { Chart } from "./Chart"
-import { Yield } from "./Yield"
 import { Liquidity } from "./Liquidity"
+import { Fees } from "./Fees"
+import { Rewards } from "./Rewards"
 
 export const DLMMContent = () => {
     return (
@@ -10,8 +11,9 @@ export const DLMMContent = () => {
             <Chart />
             <Spacer y={6} />
             <div className="flex flex-col gap-3">
-                <Yield />
                 <Liquidity />
+                <Fees />
+                <Rewards />
             </div>
         </>
     )

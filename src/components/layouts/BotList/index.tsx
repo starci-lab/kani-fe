@@ -25,6 +25,7 @@ export const BotList = () => {
         }
         return <Bots/>
     }
+    const isCreateBotDisabled = (accountLimits?.maxBotsPerAccount || 0) <= (bots?.length || 0)
     return (
         <div> 
             <div className="flex items-center justify-between">
@@ -35,7 +36,13 @@ export const BotList = () => {
             <Spacer y={6} />
             <div className="flex items-center justify-between flex-col gap-3 sm:flex-row flex-col-reverse">
                 <DisplayModeToggle />
-                <KaniButton className="md:w-fit w-full" color="primary" startContent={<PlusIcon className="w-5 h-5"/>} onPress={() => router.push(paths().bots().create())}>
+                <KaniButton 
+                    isDisabled={isCreateBotDisabled}
+                    className="md:w-fit w-full" 
+                    color="primary" 
+                    startContent={<PlusIcon className="w-5 h-5"/>} 
+                    onPress={() => router.push(paths().bots().create())}
+                >
                     Create Bot
                 </KaniButton>
             </div>
