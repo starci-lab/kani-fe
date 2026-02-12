@@ -39,9 +39,9 @@ const validationSchema = Yup.object(
         liquidityPoolIds: Yup.array().of(Yup.string()).required("Liquidity pool IDs are required"),
         isExitToUsdc: Yup.boolean().required("Exit to USDC is required"),
         isTermsOfServiceAccepted: Yup.boolean().required("Terms of service acceptance is required").oneOf([true], "Terms of service acceptance is required"),
-        withdrawalAddress: Yup.string().required("Withdrawal address is required")
+        withdrawalAddress: Yup.string()
             .test("is-address", "Invalid withdrawal address", function (value) {
-                if (!value) return false
+                if (!value) return true
                 return isAddress(value, this.parent.chainId)
             }
             ),
