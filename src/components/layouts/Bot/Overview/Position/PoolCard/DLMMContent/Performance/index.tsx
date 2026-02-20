@@ -27,7 +27,7 @@ export const Performance = () => {
     // ===== Base tokens / pool =====
     const nativeToken = useMemo(() => {
         return tokens.find(
-            (t) => t.type === TokenType.Native && t.chainId === bot?.chainId,
+            (token) => token.type === TokenType.Native && token.chainId === bot?.chainId,
         )
     }, [tokens, bot?.chainId])
 
@@ -270,7 +270,7 @@ export const Performance = () => {
     }, [bot?.activePosition?.associatedPosition?.openSnapshot?.positionValueInUsd, totalInUsd])
 
     const targetToken = useMemo(() => {
-        return tokens.find((t) => t.id === bot?.targetToken)
+        return tokens.find((token) => token.id === bot?.targetToken)
     }, [tokens, bot?.targetToken])
 
     if (!targetToken) return null

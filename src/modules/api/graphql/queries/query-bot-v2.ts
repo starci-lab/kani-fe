@@ -49,6 +49,7 @@ const query1 = gql`
             positionId
             isActive
             metadata
+            rentAmount
             openSnapshot {
               targetBalanceAmount
               quoteBalanceAmount

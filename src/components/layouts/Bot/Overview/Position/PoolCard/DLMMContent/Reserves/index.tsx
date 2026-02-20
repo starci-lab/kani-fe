@@ -13,7 +13,7 @@ import { useAppSelector } from "@/redux"
 import { useQueryReservesWithFeesV2Swr } from "@/hooks/singleton"
 import { round } from "@/modules/utils"
 
-export const Liquidity = () => {
+export const Reserves = () => {
     const queryReservesWithFeesV2Swr = useQueryReservesWithFeesV2Swr()
     const tokens = useAppSelector((state) => state.static.tokens)
     const tokenPrices = useAppSelector((state) => state.socket.prices)
@@ -66,9 +66,9 @@ export const Liquidity = () => {
         <>
             <div className="flex items-center justify-between">
                 <TooltipTitle
-                    title="Liquidity"
+                    title="Reserves"
                     classNames={{ title: "text-sm text-foreground-500" }}
-                    tooltipString="Liquidity are the reserves of the pool."
+                    tooltipString="Reserves are the reserves of the pool."
                 />
                 {isLoading || !hasData ? (
                     <div className="grid grid-cols-[1fr_150px] items-center gap-2">

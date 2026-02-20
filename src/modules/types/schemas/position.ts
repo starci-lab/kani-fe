@@ -25,6 +25,7 @@ export interface PositionSchema extends AbstractSchema {
     fees: PositionFeesSchema
     positionSettlement?: PositionSettlementSchema
     associatedLiquidityPool?: LiquidityPoolSchema
+    rentAmount?: string
 }
 
 export interface RaydiumPositionMetadata {

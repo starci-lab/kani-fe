@@ -1,118 +1,161 @@
 import React, { useMemo } from "react"
 import { Spacer } from "@heroui/react"
 import { TooltipTitle } from "../../../../../../../reuseable"
-import {
-    KaniChip,
-    KaniDivider,
-    KaniImage,
-    KaniSkeleton,
-} from "../../../../../../../atomic"
+import { KaniChip, KaniDivider, KaniImage, KaniSkeleton } from "../../../../../../../atomic"
 import Decimal from "decimal.js"
-import numeral from "numeral"
 import { useAppSelector } from "@/redux"
 import { useQueryReservesWithFeesV2Swr } from "@/hooks/singleton"
 import { round } from "@/modules/utils"
+import { PerformanceDisplayMode } from "@/modules/types"
 
 export const Reserves = () => {
-    const queryReservesWithFeesV2Swr = useQueryReservesWithFeesV2Swr()
-    const tokens = useAppSelector((state) => state.static.tokens)
-    const tokenPrices = useAppSelector((state) => state.socket.prices)
-    const activePosition = useAppSelector(
-        (state) => state.bot.bot?.activePosition,
-    )
-    const liquidityPool = activePosition?.associatedLiquidityPool
-    const tokenA = useMemo(
-        () => tokens.find((token) => token.id === liquidityPool?.tokenA),
-        [tokens, liquidityPool?.tokenA],
-    )
-    const tokenB = useMemo(
-        () => tokens.find((token) => token.id === liquidityPool?.tokenB),
-        [tokens, liquidityPool?.tokenB],
-    )
+  const queryReservesWithFeesV2Swr = useQueryReservesWithFeesV2Swr()
 
-    const tokenPriceA = useMemo(() => {
-        return tokenPrices[tokenA?.id ?? ""] ?? 0
-    }, [tokenPrices, tokenA?.id])
-    const tokenPriceB = useMemo(() => {
-        return tokenPrices[tokenB?.id ?? ""] ?? 0
-    }, [tokenPrices, tokenB?.id])
+  const bot = useAppSelector((state) => state.bot.bot)
+  const tokens = useAppSelector((state) => state.static.tokens)
+  const tokenPrices = useAppSelector((state) => state.socket.prices)
+  const activePosition = useAppSelector((state) => state.bot.bot?.activePosition)
 
-    const tokenAReserve = useMemo(() => {
-        return new Decimal(
-            queryReservesWithFeesV2Swr?.data?.data?.reservesWithFeesV2.data
-                ?.reserveA ?? 0,
-        )
-    }, [
-        queryReservesWithFeesV2Swr?.data?.data?.reservesWithFeesV2.data?.reserveA,
-    ])
-    const tokenBReserve = useMemo(() => {
-        return new Decimal(
-            queryReservesWithFeesV2Swr?.data?.data?.reservesWithFeesV2.data
-                ?.reserveB ?? 0,
-        )
-    }, [
-        queryReservesWithFeesV2Swr?.data?.data?.reservesWithFeesV2.data?.reserveB,
-    ])
-    const totalReservesInUsdDecimal = useMemo(() => {
-        return tokenAReserve
-            .mul(new Decimal(tokenPriceA.price ?? 0))
-            .add(tokenBReserve.mul(new Decimal(tokenPriceB.price ?? 0)))
-    }, [tokenAReserve, tokenBReserve, tokenPriceA.price, tokenPriceB.price])
-    
-    const isLoading = queryReservesWithFeesV2Swr.isLoading
-    const hasData = !!queryReservesWithFeesV2Swr.data
+  const liquidityPool = activePosition?.associatedLiquidityPool
 
-    return (
-        <>
-            <div className="flex items-center justify-between">
-                <TooltipTitle
-                    title="Reserves"
-                    classNames={{ title: "text-sm text-foreground-500" }}
-                    tooltipString="Reserves are the reserves of the pool."
-                />
-                {isLoading || !hasData ? (
-                    <div className="grid grid-cols-[1fr_150px] items-center gap-2">
-                        <div className="flex items-center gap-2">
-                            <KaniSkeleton className="h-[20px] w-[60px] rounded-md" />
-                            <KaniDivider orientation="vertical" className="h-5" />
-                        </div>
-                        <div className="flex flex-col gap-2 items-end">
-                            <KaniSkeleton className="h-[28px] w-[120px] rounded-full" />
-                            <KaniSkeleton className="h-[28px] w-[120px] rounded-full" />
-                        </div>
-                    </div>
-                ) : (
-                    <div className="grid grid-cols-[1fr_150px] items-center gap-2">
-                        <div className="flex items-center gap-2">
-                            <div className="text-sm">
-                                ${round(totalReservesInUsdDecimal)}
-                            </div>
-                            <KaniDivider orientation="vertical" className="h-5" />
-                        </div>
-                        <div className="flex flex-col gap-2">
-                            <KaniChip
-                                className="ml-auto"
-                                variant="flat"
-                                startContent={
-                                    <KaniImage src={tokenA?.iconUrl} className="w-5 h-5" />
-                                }
-                            >
-                                {round(tokenAReserve)} {tokenA?.symbol}
-                            </KaniChip>
-                            <KaniChip
-                                className="ml-auto"
-                                variant="flat"
-                                startContent={
-                                    <KaniImage src={tokenB?.iconUrl} className="w-5 h-5" />
-                                }
-                            >
-                                {round(tokenBReserve)} {tokenB?.symbol}
-                            </KaniChip>
-                        </div>
-                    </div>
-                )}
+  const tokenA = useMemo(
+    () => tokens.find((t) => t.id === liquidityPool?.tokenA),
+    [tokens, liquidityPool?.tokenA],
+  )
+  const tokenB = useMemo(
+    () => tokens.find((t) => t.id === liquidityPool?.tokenB),
+    [tokens, liquidityPool?.tokenB],
+  )
+
+  const targetIsA = useMemo(() => {
+    return bot?.targetToken === liquidityPool?.tokenA
+  }, [bot?.targetToken, liquidityPool?.tokenA])
+
+  // keep consistent shape: { price: number }
+  const tokenPriceA = useMemo(() => {
+    return tokenPrices[tokenA?.id ?? ""] ?? { price: 0 }
+  }, [tokenPrices, tokenA?.id])
+
+  const tokenPriceB = useMemo(() => {
+    return tokenPrices[tokenB?.id ?? ""] ?? { price: 0 }
+  }, [tokenPrices, tokenB?.id])
+
+  const priceA = useMemo(() => new Decimal(tokenPriceA.price ?? 0), [tokenPriceA.price])
+  const priceB = useMemo(() => new Decimal(tokenPriceB.price ?? 0), [tokenPriceB.price])
+
+  const targetSymbol = useMemo(() => {
+    return targetIsA ? tokenA?.symbol : tokenB?.symbol
+  }, [targetIsA, tokenA?.symbol, tokenB?.symbol])
+
+  // helpers
+  const toUsd = useMemo(() => {
+    return (amount: Decimal, price: Decimal) => amount.mul(price)
+  }, [])
+
+  const toTargetFromA = useMemo(() => {
+    return (amountA: Decimal) => {
+      if (targetIsA) return amountA
+      // A -> B: amountA * (priceA/priceB)
+      if (priceA.lte(0) || priceB.lte(0)) return new Decimal(0)
+      return amountA.mul(priceA.div(priceB))
+    }
+  }, [targetIsA, priceA, priceB])
+
+  const toTargetFromB = useMemo(() => {
+    return (amountB: Decimal) => {
+      if (!targetIsA) return amountB
+      // B -> A: amountB * (priceB/priceA)
+      if (priceA.lte(0) || priceB.lte(0)) return new Decimal(0)
+      return amountB.mul(priceB.div(priceA))
+    }
+  }, [targetIsA, priceA, priceB])
+
+  // reserves raw
+  const tokenAReserve = useMemo(() => {
+    return new Decimal(queryReservesWithFeesV2Swr?.data?.data?.reservesWithFeesV2.data?.reserveA ?? 0)
+  }, [queryReservesWithFeesV2Swr?.data?.data?.reservesWithFeesV2.data?.reserveA])
+
+  const tokenBReserve = useMemo(() => {
+    return new Decimal(queryReservesWithFeesV2Swr?.data?.data?.reservesWithFeesV2.data?.reserveB ?? 0)
+  }, [queryReservesWithFeesV2Swr?.data?.data?.reservesWithFeesV2.data?.reserveB])
+
+  // reserves -> usd
+  const tokenAReserveInUsd = useMemo(() => toUsd(tokenAReserve, priceA), [tokenAReserve, toUsd, priceA])
+  const tokenBReserveInUsd = useMemo(() => toUsd(tokenBReserve, priceB), [tokenBReserve, toUsd, priceB])
+
+  const totalReservesInUsdDecimal = useMemo(() => {
+    return tokenAReserveInUsd.add(tokenBReserveInUsd)
+  }, [tokenAReserveInUsd, tokenBReserveInUsd])
+
+  // reserves -> target
+  const tokenAReserveInTarget = useMemo(() => toTargetFromA(tokenAReserve), [tokenAReserve, toTargetFromA])
+  const tokenBReserveInTarget = useMemo(() => toTargetFromB(tokenBReserve), [tokenBReserve, toTargetFromB])
+
+  const totalReservesInTargetDecimal = useMemo(() => {
+    return tokenAReserveInTarget.add(tokenBReserveInTarget)
+  }, [tokenAReserveInTarget, tokenBReserveInTarget])
+
+  const totalDisplay = useMemo(() => {
+    if (bot?.performanceDisplayMode === PerformanceDisplayMode.Usd) {
+      return `$${round(totalReservesInUsdDecimal)}`
+    }
+    return `${round(totalReservesInTargetDecimal)} ${targetSymbol ?? ""}`
+  }, [bot?.performanceDisplayMode, totalReservesInUsdDecimal, totalReservesInTargetDecimal, targetSymbol])
+
+  const isLoading = queryReservesWithFeesV2Swr.isLoading
+  const hasData = !!queryReservesWithFeesV2Swr.data
+
+  if (!bot) return null
+
+  return (
+    <>
+      <div className="flex items-center justify-between">
+        <TooltipTitle
+          title="Reserves"
+          classNames={{ title: "text-sm text-foreground-500" }}
+          tooltipString="Reserves are the reserves of the pool."
+        />
+
+        {isLoading || !hasData ? (
+          <div className="grid grid-cols-[1fr_150px] items-center gap-2">
+            <div className="flex items-center gap-2">
+              <KaniSkeleton className="h-[20px] w-[60px] rounded-md" />
+              <KaniDivider orientation="vertical" className="h-5" />
             </div>
-            <Spacer y={3} />
-        </>
-    )
+            <div className="flex flex-col gap-2 items-end">
+              <KaniSkeleton className="h-[28px] w-[120px] rounded-full" />
+              <KaniSkeleton className="h-[28px] w-[120px] rounded-full" />
+            </div>
+          </div>
+        ) : (
+          <div className="grid grid-cols-[1fr_150px] items-center gap-2">
+            <div className="flex items-center gap-2">
+              <div className="text-sm">{totalDisplay}</div>
+              <KaniDivider orientation="vertical" className="h-5" />
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <KaniChip
+                className="ml-auto"
+                variant="flat"
+                startContent={<KaniImage src={tokenA?.iconUrl} className="w-5 h-5" />}
+              >
+                {round(tokenAReserve)} {tokenA?.symbol}
+              </KaniChip>
+
+              <KaniChip
+                className="ml-auto"
+                variant="flat"
+                startContent={<KaniImage src={tokenB?.iconUrl} className="w-5 h-5" />}
+              >
+                {round(tokenBReserve)} {tokenB?.symbol}
+              </KaniChip>
+            </div>
+          </div>
+        )}
+      </div>
+
+      <Spacer y={3} />
+    </>
+  )
 }
