@@ -1,9 +1,15 @@
 import { useFormik } from "formik"
 import * as Yup from "yup"
-import { useRequireMFADisclosure, useMFAVerificationDisclosure } from "../../discloresure"
+import { useRequireMFADisclosure, useMFAVerificationDisclosure, useWithdrawDisclosure } from "../../discloresure"
 import { ChainId } from "@/modules/types"
 import { setMFAVerificationModalOnAction, useAppDispatch, useAppSelector } from "@/redux"
 import { usePrivy } from "@privy-io/react-auth"
+import { useQueryBalancesV2Swr, useWithdrawV2SwrMutation } from "../../swr"
+import { runGraphQLWithToast } from "@/components"
+import { GraphQLHeadersKey } from "@/modules/api"
+import { bnMulDecimal, toRawAmount } from "@/modules/utils"
+import Decimal from "decimal.js"
+import BN from "bn.js"
 
 export interface PercentageWithdrawFormikValues {
     percentage: number
@@ -20,12 +26,17 @@ const validationSchema = Yup.object({
 
 export const usePercentageWithdrawFormikCore = () => {
     const { getAccessToken, authenticated } = usePrivy()
+    const swr = useQueryBalancesV2Swr()
+    const withdrawV2Mutation = useWithdrawV2SwrMutation()
+    const { onClose: onCloseWithdrawModal } = useWithdrawDisclosure()
     const user = useAppSelector((state) => state.session.user)
     const { onOpen: onOpenRequireMFAModal } = useRequireMFADisclosure()
     const { onOpen: onOpenMFAVerificationModal } = useMFAVerificationDisclosure()
     const dispatch = useAppDispatch()
     const bot = useAppSelector((state) => state.bot.bot)
-    return useFormik<PercentageWithdrawFormikValues>({
+    const balances = swr.data?.data?.balancesV2.data
+    const tokens = useAppSelector((state) => state.static.tokens)
+    const formik = useFormik<PercentageWithdrawFormikValues>({
         initialValues: {
             percentage: 0,
             chainId: bot?.chainId,
@@ -49,12 +60,60 @@ export const usePercentageWithdrawFormikCore = () => {
                 throw new Error("Token is required")
             }
             dispatch(
-                setMFAVerificationModalOnAction(() => {
-                    alert("onAction")
-                    return true
-                })
+                setMFAVerificationModalOnAction(
+                    async ({ totp }) => {
+                        const botId = bot?.id
+                        if (!botId) {
+                            throw new Error("Bot ID is required")
+                        }
+                        const percentage = formik.values.percentage
+                        if (!percentage) {
+                            throw new Error("Percentage is required")
+                        }
+                        const success = await runGraphQLWithToast(
+                            async () => {
+                                const result = await withdrawV2Mutation.trigger({
+                                    request: {
+                                        id: botId ?? "",
+                                        tokenInputs:
+                                        balances?.map((balance) => ({
+                                            id: balance.id,
+                                            amount: bnMulDecimal({
+                                                bn: new BN(balance.balanceAmount),
+                                                decimal: new Decimal(percentage).div(new Decimal(100)),
+                                            }).toString()
+                                        })) ?? [],
+                                        toUsdc: formik.values.toUsdc,
+                                    },
+                                    headers: totp
+                                        ? { 
+                                            [
+                                            GraphQLHeadersKey.TOTP
+                                            ]: totp 
+                                        }
+                                        : undefined,
+                                })
+                                const response = result?.data?.withdrawV2
+                                if (!response) {
+                                    throw new Error("Withdrawal failed")
+                                }
+                                return response
+                            },
+                            { 
+                                showSuccessToast: true, 
+                                showErrorToast: true 
+                            }
+                        )
+                        if (success) {
+                            await swr.mutate()
+                            onCloseWithdrawModal()
+                            formik.resetForm()
+                        }
+                        return success
+                    })    
             )
             onOpenMFAVerificationModal()
         },
     })
+    return formik
 }

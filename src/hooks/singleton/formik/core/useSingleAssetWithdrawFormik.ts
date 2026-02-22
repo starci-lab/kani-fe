@@ -74,49 +74,50 @@ export const useSingleAssetWithdrawFormikCore = () => {
                 throw new Error("Token is required")
             }
             dispatch(
-                setMFAVerificationModalOnAction(async ({ totp }) => {
-                    const botId = bot?.id
-                    const tokenId = formik.values.tokenId
-                    const amount = formik.values.amount
-                    const token = tokens.find((token) => token.id === tokenId)
-                    if (!token) {
-                        throw new Error("Token not found")
-                    }
-                    if (!botId || !tokenId || !amount) {
-                        return false
-                    }
-                    const success = await runGraphQLWithToast(
-                        async () => {
-                            const result = await withdrawV2Mutation.trigger({
-                                request: {
-                                    id: botId,
-                                    tokenInputs: [
-                                        { 
-                                            id: tokenId, 
-                                            amount: toRawAmount({ amount: new Decimal(amount), decimals: new Decimal(token.decimals) }).toString() 
-                                        }
-                                    ],
-                                    toUsdc: formik.values.toUsdc,
-                                },
-                                headers: totp
-                                    ? { [GraphQLHeadersKey.TOTP]: totp }
-                                    : undefined,
-                            })
-                            const response = result?.data?.withdrawV2
-                            if (!response) {
-                                throw new Error("Withdrawal failed")
-                            }
-                            return response
-                        },
-                        { showSuccessToast: true, showErrorToast: true }
-                    )
-                    if (success) {
-                        await swr.mutate()
-                        onCloseWithdrawModal()
-                        formik.resetForm()
-                    }
-                    return success
-                })
+                setMFAVerificationModalOnAction(
+                    async ({ totp }) => {
+                        const botId = bot?.id
+                        const tokenId = formik.values.tokenId
+                        const amount = formik.values.amount
+                        const token = tokens.find((token) => token.id === tokenId)
+                        if (!token) {
+                            throw new Error("Token not found")
+                        }
+                        if (!botId || !tokenId || !amount) {
+                            return false
+                        }
+                        const success = await runGraphQLWithToast(
+                            async () => {
+                                const result = await withdrawV2Mutation.trigger({
+                                    request: {
+                                        id: botId,
+                                        tokenInputs: [
+                                            { 
+                                                id: tokenId, 
+                                                amount: toRawAmount({ amount: new Decimal(amount), decimals: new Decimal(token.decimals) }).toString() 
+                                            }
+                                        ],
+                                        toUsdc: formik.values.toUsdc,
+                                    },
+                                    headers: totp
+                                        ? { [GraphQLHeadersKey.TOTP]: totp }
+                                        : undefined,
+                                })
+                                const response = result?.data?.withdrawV2
+                                if (!response) {
+                                    throw new Error("Withdrawal failed")
+                                }
+                                return response
+                            },
+                            { showSuccessToast: true, showErrorToast: true }
+                        )
+                        if (success) {
+                            await swr.mutate()
+                            onCloseWithdrawModal()
+                            formik.resetForm()
+                        }
+                        return success
+                    })
             )
             onOpenMFAVerificationModal()
         },
