@@ -44,6 +44,8 @@ export const WithdrawModal = () => {
         }
     }
     const dispatch = useAppDispatch()
+    const confirmWithdrawal = useAppSelector((state) => state.socket.confirmWithdrawal)
+    const showWithdrawalExecuting = useAppSelector((state) => state.socket.showWithdrawalExecuting)
     return (
         <KaniModal size="sm" isOpen={isOpen} onOpenChange={onOpenChange} onClose={
             () => {

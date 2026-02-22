@@ -46,6 +46,7 @@ export interface PublicationDynamicLiquidityPoolsInfoEventPayload {
     results: Record<string, PublicationDynamicLiquidityPoolInfo>
 }
 
+// Publication price
 export interface PublicationPrice {
     price: number
 }
@@ -62,27 +63,64 @@ export interface SubscribePricesEventPayload {
     ids: Array<string>
 }
 
+// Publication price
 export interface PublicationPrice {
     price: number
 }
 
+// Publication price event payload
 export interface PublicationPriceEventPayload {
     results: Record<string, PublicationPrice>
 }
 
+// Received token
+export interface ReceivedToken {
+    id: string
+    amount: string
+}
+
+// Publication confirm withdrawal
+export interface PublicationConfirmWithdrawal {
+    botId: string
+    txHashes: Array<string>
+    receivedTokens: Array<ReceivedToken>
+}
+
+// Set confirm withdrawal payload
+export interface SetConfirmWithdrawalPayload {
+    botId: string
+    txHashes: Array<string>
+    receivedTokens: Array<ReceivedToken>
+}
 
 export interface SocketSlice {
     dynamicLiquidityPoolInfos: Record<string, DynamicLiquidityPoolInfoCacheResult>
     prices: Record<string, PublicationPrice>
     liquidityPoolIds: Array<string>
     tokenIds: Array<string>
+    confirmWithdrawal?: PublicationConfirmWithdrawal
+    showWithdrawalExecuting: boolean
 }
+
+// Set dynamic liquidity pool info payload
+export interface SetDynamicLiquidityPoolInfoPayload {
+    id: string
+    dynamicLiquidityPoolInfo: DynamicLiquidityPoolInfoCacheResult
+}
+
+// Set price payload
+export interface SetPricePayload {
+    id: string
+    price: PublicationPrice
+}
+
 
 const initialState: SocketSlice = {
     dynamicLiquidityPoolInfos: {},
     prices: {},
     liquidityPoolIds: [],
     tokenIds: [],
+    showWithdrawalExecuting: false,
 }
 
 export const socketSlice = createSlice({
@@ -119,6 +157,12 @@ export const socketSlice = createSlice({
         removeSocketTokenId: (state, action: PayloadAction<string>) => {
             state.tokenIds = state.tokenIds.filter(id => id !== action.payload)
         },
+        setConfirmWithdrawal: (state, action: PayloadAction<SetConfirmWithdrawalPayload>) => {
+            state.confirmWithdrawal = action.payload
+        },
+        setShowWithdrawalExecuting: (state, action: PayloadAction<boolean>) => {
+            state.showWithdrawalExecuting = action.payload
+        },
     },
 })
 export const socketReducer = socketSlice.reducer
@@ -133,14 +177,6 @@ export const {
     addSocketTokenId,
     removeSocketLiquidityPoolId,
     removeSocketTokenId,
+    setConfirmWithdrawal,
+    setShowWithdrawalExecuting,
 } = socketSlice.actions
-
-export interface SetDynamicLiquidityPoolInfoPayload {
-    id: string
-    dynamicLiquidityPoolInfo: DynamicLiquidityPoolInfoCacheResult
-}
-
-export interface SetPricePayload {
-    id: string
-    price: PublicationPrice
-}
