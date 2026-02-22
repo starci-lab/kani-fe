@@ -1,8 +1,9 @@
 "use client"
-import { 
-    KaniButton, 
-    KaniModal, 
-    KaniModalBody, KaniModalContent, KaniModalFooter, KaniModalHeader, KaniTab, KaniTabs } from "../../atomic"
+import {
+    KaniButton,
+    KaniModal,
+    KaniModalBody, KaniModalContent, KaniModalFooter, KaniModalHeader, KaniTab, KaniTabs
+} from "../../atomic"
 import { useWithdrawDisclosure } from "@/hooks/singleton"
 import React, { useMemo } from "react"
 import { useAppSelector, WithdrawTab, setBotWithdrawTab } from "@/redux"
@@ -11,6 +12,7 @@ import { Percentage } from "./Percentage"
 import { Spacer } from "@heroui/react"
 import { SingleAsset } from "./SingleAsset"
 import { useSingleAssetWithdrawFormik, usePercentageWithdrawFormik } from "@/hooks/singleton"
+import { WithdrawalExecuting } from "./WithdrawalExecuting"
 
 export const WithdrawModal = () => {
     const { isOpen, onOpenChange, onClose } = useWithdrawDisclosure()
@@ -19,10 +21,10 @@ export const WithdrawModal = () => {
     const withdrawTab = useAppSelector((state) => state.bot.withdrawTab)
     const formik = useMemo(() => {
         switch (withdrawTab) {
-        case WithdrawTab.Percentage:
-            return percentageFormik
-        case WithdrawTab.SingleAsset:
-            return singleAssetFormik
+            case WithdrawTab.Percentage:
+                return percentageFormik
+            case WithdrawTab.SingleAsset:
+                return singleAssetFormik
         }
     }, [singleAssetFormik, percentageFormik, withdrawTab])
     const tabs = [
@@ -37,10 +39,10 @@ export const WithdrawModal = () => {
     ]
     const renderTab = () => {
         switch (withdrawTab) {
-        case WithdrawTab.Percentage:
-            return <Percentage />
-        case WithdrawTab.SingleAsset:
-            return <SingleAsset />
+            case WithdrawTab.Percentage:
+                return <Percentage />
+            case WithdrawTab.SingleAsset:
+                return <SingleAsset />
         }
     }
     const dispatch = useAppDispatch()
@@ -56,44 +58,52 @@ export const WithdrawModal = () => {
             <KaniModalContent>
                 <KaniModalHeader title="Withdraw" />
                 <KaniModalBody>
-                    <KaniTabs
-                        color="primary"
-                        disableAnimation
-                        selectedKey={withdrawTab}
-                        onSelectionChange={
-                            (key) => {
-                                const _key = key as WithdrawTab
-                                dispatch(setBotWithdrawTab(_key))
-                            }
-                        }
-                        classNames={{
-                            tabList: "w-full"
-                        }}
-                    >
-                        {
-                            tabs.map(
-                                (tab) => (
-                                    <KaniTab key={tab.key} title={tab.title} className="w-full" />
-                                )
-                            )
-                        }
-                    </KaniTabs>
-                    <Spacer y={6} />
-                    {renderTab()}
-                    <Spacer y={6} />
+                    {
+                        !showWithdrawalExecuting ? (
+                            <WithdrawalExecuting />
+                        ) : (
+                            <>
+                                <KaniTabs
+                                    color="primary"
+                                    disableAnimation
+                                    selectedKey={withdrawTab}
+                                    onSelectionChange={
+                                        (key) => {
+                                            const _key = key as WithdrawTab
+                                            dispatch(setBotWithdrawTab(_key))
+                                        }
+                                    }
+                                    classNames={{
+                                        tabList: "w-full"
+                                    }}
+                                >
+                                    {
+                                        tabs.map(
+                                            (tab) => (
+                                                <KaniTab key={tab.key} title={tab.title} className="w-full" />
+                                            )
+                                        )
+                                    }
+                                </KaniTabs>
+                                <Spacer y={6} />
+                                {renderTab()}
+                                <Spacer y={6} />
+                            </>
+                        )
+                    }
                 </KaniModalBody>
                 <KaniModalFooter>
-                    <KaniButton 
-                        color="primary" 
-                        isLoading={formik.isSubmitting} 
-                        className="flex-1" 
+                    <KaniButton
+                        color="primary"
+                        isLoading={formik.isSubmitting}
+                        className="flex-1"
                         isDisabled={!formik.isValid}
                         onPress={
                             async () => {
                                 await formik.submitForm()
                             }
-                        }>    
-                    Proceed
+                        }>
+                        Proceed
                     </KaniButton>
                 </KaniModalFooter>
             </KaniModalContent>
