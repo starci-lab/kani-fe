@@ -15,7 +15,7 @@ export const WithdrawalAddress = () => {
                 restricts transfers to this address only.{" "}
                 <KaniLink
                     className="text-xs"
-                    href="https://docs.kani.com/how-it-works/withdrawal-address"
+                    href="https://docs.kanibot.xyz/how-it-works/withdrawal-address"
                     target="_blank"
                 >
                     Learn more

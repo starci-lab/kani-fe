@@ -8,6 +8,7 @@ export enum MFAVerificationPage {
 export interface MFAVerificationModalSlice {
     page: MFAVerificationPage
     onAction: MFAVerificationModalOnActionFn
+    isActionPending: boolean
 }
 
 export interface MFAVerificationModalOnActionParams {
@@ -21,6 +22,7 @@ export type MFAVerificationModalOnActionFn = (
 const initialState: MFAVerificationModalSlice = {
     page: MFAVerificationPage.Base,
     onAction: () => false,
+    isActionPending: false,
 }
 
 export const mfaVerificationModalSlice = createSlice({
@@ -36,9 +38,15 @@ export const mfaVerificationModalSlice = createSlice({
         ) => {
             state.onAction = action.payload
         },
+        setMFAVerificationModalIsActionPending: (state, action: PayloadAction<boolean>) => {
+            state.isActionPending = action.payload
+        },
     },
 })
 
 export const mfaVerificationModalReducer = mfaVerificationModalSlice.reducer
-export const { setMFAVerificationModalPage, setMFAVerificationModalOnAction } =
-    mfaVerificationModalSlice.actions
+export const { 
+    setMFAVerificationModalPage, 
+    setMFAVerificationModalOnAction, 
+    setMFAVerificationModalIsActionPending 
+} = mfaVerificationModalSlice.actions

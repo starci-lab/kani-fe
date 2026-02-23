@@ -18,12 +18,12 @@ export const Percentage = () => {
                 title="Percentage withdrawal"
                 description={
                     <div>
-                    In percentage withdrawal mode, you will receive each token in proportion to your wallet balance. Gas sponsored by Kani. {" "}
+                    In percentage withdrawal mode, you will receive each token in proportion to your wallet balance. {" "}
                         <KaniLink href="https://kani.com/learn-more" underline="hover" className="text-primary text-xs">Learn more</KaniLink>
                     </div>}
             />
             <Spacer y={3} />
-            <div className="flex flex-col gap-1.5">
+            <div className="flex flex-col gap-3">
                 <TooltipTitle 
                     title="Percentage"
                     classNames={{
@@ -57,7 +57,6 @@ export const Percentage = () => {
             <div>
                 <TooltipTitle
                     title="To USDC"
-                    tooltipString="If enabled, the withdrawal amount will be converted to USDC"
                     isRequired
                 />
                 <Spacer y={1.5} />
@@ -71,13 +70,18 @@ export const Percentage = () => {
                 />
             </div>
             <Spacer y={3} />
-            <div className="flex flex-col gap-1.5">
+            <div>
                 <TooltipTitle 
                     title="Withdrawal Address"
                     classNames={{
                         title: "text-sm",
                     }}
                 />
+                <Spacer y={1.5} />
+                <div className="text-xs text-foreground-500">
+                    This is your bot&apos;s withdrawal address. Please update it in Settings so Privy can apply the correct withdrawal policy to protect your funds.
+                </div>
+                <Spacer y={3} />
                 <KaniInput
                     isDisabled
                     value={truncateMiddle({ str: bot?.withdrawalAddress ?? "" })}

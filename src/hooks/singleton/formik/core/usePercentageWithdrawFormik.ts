@@ -1,13 +1,21 @@
 import { useFormik } from "formik"
 import * as Yup from "yup"
-import { useRequireMFADisclosure, useMFAVerificationDisclosure, useWithdrawDisclosure } from "../../discloresure"
+import { 
+    useRequireMFADisclosure, 
+    useMFAVerificationDisclosure
+} from "../../discloresure"
 import { ChainId } from "@/modules/types"
-import { setMFAVerificationModalOnAction, useAppDispatch, useAppSelector } from "@/redux"
+import { 
+    setMFAVerificationModalIsActionPending, 
+    setMFAVerificationModalOnAction, 
+    useAppDispatch, 
+    useAppSelector 
+} from "@/redux"
 import { usePrivy } from "@privy-io/react-auth"
 import { useQueryBalancesV2Swr, useWithdrawV2SwrMutation } from "../../swr"
 import { runGraphQLWithToast } from "@/components"
 import { GraphQLHeadersKey } from "@/modules/api"
-import { bnMulDecimal, toRawAmount } from "@/modules/utils"
+import { bnMulDecimal } from "@/modules/utils"
 import Decimal from "decimal.js"
 import BN from "bn.js"
 
@@ -28,14 +36,12 @@ export const usePercentageWithdrawFormikCore = () => {
     const { getAccessToken, authenticated } = usePrivy()
     const swr = useQueryBalancesV2Swr()
     const withdrawV2Mutation = useWithdrawV2SwrMutation()
-    const { onClose: onCloseWithdrawModal } = useWithdrawDisclosure()
     const user = useAppSelector((state) => state.session.user)
     const { onOpen: onOpenRequireMFAModal } = useRequireMFADisclosure()
     const { onOpen: onOpenMFAVerificationModal } = useMFAVerificationDisclosure()
     const dispatch = useAppDispatch()
     const bot = useAppSelector((state) => state.bot.bot)
     const balances = swr.data?.data?.balancesV2.data
-    const tokens = useAppSelector((state) => state.static.tokens)
     const formik = useFormik<PercentageWithdrawFormikValues>({
         initialValues: {
             percentage: 0,
@@ -100,18 +106,19 @@ export const usePercentageWithdrawFormikCore = () => {
                                 return response
                             },
                             { 
-                                showSuccessToast: true, 
+                                showSuccessToast: false, 
                                 showErrorToast: true 
                             }
                         )
                         if (success) {
                             await swr.mutate()
-                            onCloseWithdrawModal()
                             formik.resetForm()
                         }
                         return success
-                    })    
+                    }
+                )    
             )
+            dispatch(setMFAVerificationModalIsActionPending(true))
             onOpenMFAVerificationModal()
         },
     })

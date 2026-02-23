@@ -6,7 +6,13 @@ import {
 } from "../../atomic"
 import { useWithdrawDisclosure } from "@/hooks/singleton"
 import React, { useMemo } from "react"
-import { useAppSelector, WithdrawTab, setBotWithdrawTab } from "@/redux"
+import { 
+    useAppSelector, 
+    WithdrawTab, 
+    setWithdrawModalTab, 
+    setMFAVerificationModalIsActionPending,
+    setWithdrawalExecuting 
+} from "@/redux"
 import { useAppDispatch } from "@/redux"
 import { Percentage } from "./Percentage"
 import { Spacer } from "@heroui/react"
@@ -18,7 +24,8 @@ export const WithdrawModal = () => {
     const { isOpen, onOpenChange, onClose } = useWithdrawDisclosure()
     const singleAssetFormik = useSingleAssetWithdrawFormik()
     const percentageFormik = usePercentageWithdrawFormik()
-    const withdrawTab = useAppSelector((state) => state.bot.withdrawTab)
+    const withdrawTab = useAppSelector((state) => state.modals.withdraw.tab)
+    const isActionPending = useAppSelector((state) => state.modals.mfaVerification.isActionPending)
     const formik = useMemo(() => {
         switch (withdrawTab) {
             case WithdrawTab.Percentage:
@@ -46,18 +53,23 @@ export const WithdrawModal = () => {
         }
     }
     const dispatch = useAppDispatch()
-    const showWithdrawalExecuting = useAppSelector((state) => state.socket.showWithdrawalExecuting)
+    const withdrawalExecuting = useAppSelector((state) => state.modals.withdraw.withdrawalExecuting)
+    const onCloseModal = () => {
+        onClose()
+        dispatch(setWithdrawalExecuting(false))
+        dispatch(setMFAVerificationModalIsActionPending(false))
+        formik.resetForm()
+        percentageFormik.resetForm()
+    }
     return (
-        <KaniModal size="sm" isOpen={isOpen} onOpenChange={onOpenChange} onClose={
+        <KaniModal size="md" isOpen={isOpen} onOpenChange={onOpenChange} onClose={
             () => {
-                onClose()
-                formik.resetForm()
-                percentageFormik.resetForm()
+                onCloseModal()
             }}>
             <KaniModalContent>
                 <KaniModalHeader title="Withdraw" />
                 {
-                    showWithdrawalExecuting ? (
+                    withdrawalExecuting ? (
                         <>
                             <KaniModalBody>
                                 <WithdrawalExecuting />
@@ -68,7 +80,7 @@ export const WithdrawModal = () => {
                                     className="flex-1"
                                     onPress={
                                         async () => {
-                                            onClose()
+                                            onCloseModal()
                                         }
                                     }>
                                     Close
@@ -85,7 +97,7 @@ export const WithdrawModal = () => {
                                     onSelectionChange={
                                         (key) => {
                                             const _key = key as WithdrawTab
-                                            dispatch(setBotWithdrawTab(_key))
+                                            dispatch(setWithdrawModalTab(_key))
                                         }
                                     }
                                     classNames={{
@@ -102,12 +114,11 @@ export const WithdrawModal = () => {
                                 </KaniTabs>
                                 <Spacer y={6} />
                                 {renderTab()}
-                                <Spacer y={6} />
                             </KaniModalBody>
                             <KaniModalFooter>
                                 <KaniButton
                                     color="primary"
-                                    isLoading={formik.isSubmitting}
+                                    isLoading={formik.isSubmitting || isActionPending}
                                     className="flex-1"
                                     isDisabled={!formik.isValid}
                                     onPress={

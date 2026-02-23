@@ -12,6 +12,7 @@ import {
     depositModalReducer,
     sessionReducer,
     createBotReducer,
+    withdrawModalReducer,
 } from "./slices"
 
 export const store = configureStore({
@@ -29,6 +30,7 @@ export const store = configureStore({
             exportPrivateKey: exportPrivateKeyReducer,
             enableMFAModal: enableMFAModalReducer,
             mfaVerification: mfaVerificationModalReducer,
+            withdraw: withdrawModalReducer,
         }),
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware({

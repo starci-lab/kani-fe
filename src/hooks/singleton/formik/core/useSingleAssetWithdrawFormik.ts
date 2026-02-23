@@ -1,9 +1,14 @@
 import { useFormik } from "formik"
 import * as Yup from "yup"
-import { useRequireMFADisclosure, useMFAVerificationDisclosure, useWithdrawDisclosure } from "../../discloresure"
+import { useRequireMFADisclosure, useMFAVerificationDisclosure } from "../../discloresure"
 import { useQueryBalancesV2Swr, useWithdrawV2SwrMutation } from "../../swr"
 import { useEffect } from "react"
-import { setMFAVerificationModalOnAction, useAppDispatch, useAppSelector } from "@/redux"
+import { 
+    setMFAVerificationModalIsActionPending, 
+    setMFAVerificationModalOnAction, 
+    useAppDispatch, 
+    useAppSelector 
+} from "@/redux"
 import Decimal from "decimal.js"
 import { toDecimalAmount, toRawAmount } from "@/modules/utils"
 import BN from "bn.js"
@@ -42,7 +47,6 @@ const validationSchema = Yup.object({
 export const useSingleAssetWithdrawFormikCore = () => {
     const swr = useQueryBalancesV2Swr()
     const withdrawV2Mutation = useWithdrawV2SwrMutation()
-    const { onClose: onCloseWithdrawModal } = useWithdrawDisclosure()
     const { getAccessToken, authenticated } = usePrivy()
     const { onOpen: onOpenRequireMFAModal } = useRequireMFADisclosure()
     const { onOpen: onOpenMFAVerificationModal } = useMFAVerificationDisclosure()
@@ -109,16 +113,17 @@ export const useSingleAssetWithdrawFormikCore = () => {
                                 }
                                 return response
                             },
-                            { showSuccessToast: true, showErrorToast: true }
+                            { showSuccessToast: false, showErrorToast: true }
                         )
                         if (success) {
                             await swr.mutate()
-                            onCloseWithdrawModal()
                             formik.resetForm()
                         }
                         return success
-                    })
+                    }
+                )
             )
+            dispatch(setMFAVerificationModalIsActionPending(true))
             onOpenMFAVerificationModal()
         },
     })

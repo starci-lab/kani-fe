@@ -1,7 +1,13 @@
 import { useFormik } from "formik"
 import * as Yup from "yup"
+import { 
+    setMFAVerificationModalPage, 
+    MFAVerificationPage,
+    useAppDispatch, 
+    useAppSelector, 
+    setWithdrawalExecuting 
+} from "@/redux"
 import { useMFAVerificationDisclosure } from "../../discloresure"
-import { setMFAVerificationModalPage, MFAVerificationPage, useAppDispatch, useAppSelector } from "@/redux"
 
 export interface VerifyAuthenticatorAppFormikValues {
     authenticatorAppCode: string
@@ -22,9 +28,8 @@ const validationSchema = Yup.object({
 
 export const useVerifyAuthenticatorAppFormikCore = () => {
     const dispatch = useAppDispatch()
-    const { onClose: onCloseMFAVerificationModal } = useMFAVerificationDisclosure()
     const onAction = useAppSelector((state) => state.modals.mfaVerification.onAction)
-
+    const { onClose: onCloseMFAVerificationModal } = useMFAVerificationDisclosure()
     return useFormik<VerifyAuthenticatorAppFormikValues>({
         initialValues,
         validationSchema,
@@ -35,6 +40,7 @@ export const useVerifyAuthenticatorAppFormikCore = () => {
                 onCloseMFAVerificationModal()
                 dispatch(setMFAVerificationModalPage(MFAVerificationPage.Base))
                 resetForm()
+                dispatch(setWithdrawalExecuting(true))
             }
         },
     })

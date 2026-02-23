@@ -3,7 +3,7 @@ import { KaniModal, KaniModalContent, KaniModalHeader, KaniModalBody, KaniCard, 
 import { useMFAVerificationDisclosure, useVerifyAuthenticatorAppFormik } from "@/hooks/singleton"
 import { CaretRightIcon, PasswordIcon } from "@phosphor-icons/react"
 import { Spacer } from "@heroui/react"
-import { setMFAVerificationModalPage, MFAVerificationPage } from "@/redux"
+import { setMFAVerificationModalIsActionPending, setMFAVerificationModalPage, MFAVerificationPage } from "@/redux"
 import { useAppDispatch, useAppSelector } from "@/redux"
 import { AuthenticatorAppPage } from "./AuthenticatorAppPage"
 import { AuthenticationFactor } from "@/modules/types"
@@ -67,6 +67,7 @@ export const MFAVerificationModal = () => {
         <KaniModal size="sm" isOpen={isOpen} onOpenChange={onOpenChange}         
         onClose={() => {
             formik.resetForm()
+            dispatch(setMFAVerificationModalIsActionPending(false))
             onClose()
         }}
         >

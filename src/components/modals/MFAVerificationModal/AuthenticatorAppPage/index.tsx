@@ -65,6 +65,7 @@ export const AuthenticatorAppPage = () => {
                     <KaniButton
                         isDisabled={!!formik.errors.authenticatorAppCodeInput || !formik.values.authenticatorAppCodeInput}
                         fullWidth
+                        isLoading={formik.isSubmitting}
                         color="primary"
                         onPress={async () => {
                             formik.setFieldValue("authenticatorAppCode", formik.values.authenticatorAppCodeInput)

@@ -14,6 +14,7 @@ export interface SidebarItem {
     key: SidebarTab | string
     label: string
     icon: React.ElementType
+    href?: string
 }
 
 export const Sidebar = () => {
@@ -38,12 +39,14 @@ export const Sidebar = () => {
             ariaLabel: "Docs",
             key: "docs",
             label: "Docs",
+            href: "https://docs.kanibot.xyz",
             icon: BookIcon,
         },
         {
             ariaLabel: "Support",
             key: "support",
             label: "Support",
+            href: "https://kanibot.xyz/support",
             icon: LifebuoyIcon,
         }
     ]
@@ -71,7 +74,7 @@ export const Sidebar = () => {
             <Spacer y={4}/>
             <KaniListbox aria-label="Secondary Navigation">
                 {tabs2.map((tab) => (
-                    <KaniListboxItem aria-label={tab.ariaLabel} key={tab.key} startContent={<tab.icon />} endContent={<LinkIcon />}>{tab.label}</KaniListboxItem>
+                    <KaniListboxItem aria-label={tab.ariaLabel} key={tab.key} startContent={<tab.icon />} endContent={<LinkIcon />} href={tab.href}>{tab.label}</KaniListboxItem>
                 ))}
             </KaniListbox>
         </div>
