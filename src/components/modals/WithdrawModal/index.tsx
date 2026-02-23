@@ -46,7 +46,6 @@ export const WithdrawModal = () => {
         }
     }
     const dispatch = useAppDispatch()
-    const confirmWithdrawal = useAppSelector((state) => state.socket.confirmWithdrawal)
     const showWithdrawalExecuting = useAppSelector((state) => state.socket.showWithdrawalExecuting)
     return (
         <KaniModal size="sm" isOpen={isOpen} onOpenChange={onOpenChange} onClose={
@@ -57,12 +56,28 @@ export const WithdrawModal = () => {
             }}>
             <KaniModalContent>
                 <KaniModalHeader title="Withdraw" />
-                <KaniModalBody>
-                    {
-                        !showWithdrawalExecuting ? (
-                            <WithdrawalExecuting />
-                        ) : (
-                            <>
+                {
+                    showWithdrawalExecuting ? (
+                        <>
+                            <KaniModalBody>
+                                <WithdrawalExecuting />
+                            </KaniModalBody>
+                            <KaniModalFooter>
+                                <KaniButton
+                                    color="primary"
+                                    className="flex-1"
+                                    onPress={
+                                        async () => {
+                                            onClose()
+                                        }
+                                    }>
+                                    Close
+                                </KaniButton>
+                            </KaniModalFooter>
+                        </>
+                    ) : (
+                        <>
+                            <KaniModalBody>
                                 <KaniTabs
                                     color="primary"
                                     disableAnimation
@@ -88,25 +103,25 @@ export const WithdrawModal = () => {
                                 <Spacer y={6} />
                                 {renderTab()}
                                 <Spacer y={6} />
-                            </>
-                        )
-                    }
-                </KaniModalBody>
-                <KaniModalFooter>
-                    <KaniButton
-                        color="primary"
-                        isLoading={formik.isSubmitting}
-                        className="flex-1"
-                        isDisabled={!formik.isValid}
-                        onPress={
-                            async () => {
-                                await formik.submitForm()
-                            }
-                        }>
-                        Proceed
-                    </KaniButton>
-                </KaniModalFooter>
+                            </KaniModalBody>
+                            <KaniModalFooter>
+                                <KaniButton
+                                    color="primary"
+                                    isLoading={formik.isSubmitting}
+                                    className="flex-1"
+                                    isDisabled={!formik.isValid}
+                                    onPress={
+                                        async () => {
+                                            await formik.submitForm()
+                                        }
+                                    }>
+                                    Proceed
+                                </KaniButton>
+                            </KaniModalFooter>
+                        </>
+                    )
+                }
             </KaniModalContent>
-        </KaniModal>
+        </KaniModal >
     )
 }
