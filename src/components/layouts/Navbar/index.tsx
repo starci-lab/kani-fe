@@ -19,7 +19,7 @@ export const Navbar = () => {
             <KaniNavbarBrand>
                 <div className="flex items-center gap-1">
                     <Image src="/logo.svg" alt="KANI" width={40} height={40} />
-                    <div className="text-2xl font-semibold text-primary">KANI</div>
+                    <div className="text-2xl font-semibold text-primary sm:block hidden">KANI</div>
                 </div>
             </KaniNavbarBrand>
             <KaniNavbarContent justify="end">
