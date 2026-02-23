@@ -227,6 +227,10 @@ export const Bot = () => {
             <Tabs
                 variant="underlined"
                 color="primary"
+                classNames={{
+                    base: "sm:w-fit w-full",
+                    tabList: "sm:w-fit w-full",
+                }}
                 selectedKey={tab}
                 onSelectionChange={(value) => {
                     const _value = value as BotTab
@@ -238,8 +242,8 @@ export const Bot = () => {
                 {tabs.map((tab) => (
                     <Tab key={tab.key} title={
                         <div className="flex items-center gap-2">
-                            <tab.icon className="w-5 h-5 min-w-5 min-h-5 sm:block hidden" />
-                            {tab.title}
+                            <tab.icon className="w-5 h-5 min-w-5 min-h-5" />
+                            <span className="sm:block hidden">{tab.title}</span>
                         </div>
                     } />
                 ))}

@@ -84,6 +84,7 @@ export const PoolCard = (
                                 color="foreground"
                                 size="sm"
                                 underline="hover"
+                                className="sm:block hidden"
                                 isExternal
                                 href={liquidityPool.url ?? ""}>
                                 {tokenA?.name}-{tokenB?.name}
