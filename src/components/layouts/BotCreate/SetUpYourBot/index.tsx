@@ -8,12 +8,14 @@ import {
 } from "../../../atomic"
 import { Spacer } from "@heroui/react"
 import { TooltipTitle } from "../../../reuseable"
-import { useCreateBotFormik } from "@/hooks/singleton"
+import { useCreateBotFormik, useAdvancedConfigurationDisclosure } from "@/hooks/singleton"
 import { SelectChainDropdown } from "./SelectChainDropdown"
 import { SelectPools } from "./SelectPools"
 import { SelectTokens } from "./SelectTokens"
+
 export const SetUpYourBot = () => {
     const formik = useCreateBotFormik()
+    const { onOpen: onOpenAdvancedConfiguration } = useAdvancedConfigurationDisclosure()
     return (
         <div>
             <div className="text-2xl font-bold">Set Up Your Bot</div>
@@ -60,7 +62,6 @@ export const SetUpYourBot = () => {
             <div>
                 <TooltipTitle
                     title="Exit To USDC"
-                    tooltipString="This is the exit to USDC of your bot"
                     isRequired
                 />
                 <Spacer y={1.5} />
@@ -77,7 +78,6 @@ export const SetUpYourBot = () => {
             <div>
                 <TooltipTitle
                     title="Withdrawal Address"
-                    tooltipString="This is the withdrawal address of your bot. You must provide here(or update later) to let Privy add correct policy to protect your funds."
                 />
                 <Spacer y={1.5} />
                 <div className="text-xs text-foreground-500">
@@ -92,6 +92,20 @@ export const SetUpYourBot = () => {
                     errorMessage={formik.errors.withdrawalAddress}
                     isInvalid={!!(formik.errors.withdrawalAddress && formik.touched.withdrawalAddress)}
                 />
+            </div>
+            <Spacer y={6} />
+            <div>
+                <TooltipTitle
+                    title="Advanced Configuration"
+                />
+                <Spacer y={1.5} />
+                <div className="text-xs text-foreground-500">
+                Configure advanced parameters that control how the bot enters and exits positions.
+                </div>
+                <Spacer y={3} />
+                <KaniButton variant="flat" onPress={onOpenAdvancedConfiguration}>
+                    Open
+                </KaniButton>
             </div>
             <Spacer y={6} />
             <div className="flex gap-2">

@@ -1,7 +1,8 @@
 import { DocumentNode, gql } from "@apollo/client"
 import { createApolloClient } from "../clients"
 import { GraphQLResponse, MutationParams } from "../types"
-import { ChainId } from "@/modules/types"
+import { BotViolateIndicatorSchema, ChainId, RangeTier } from "@/modules/types"
+import { DeepPartial } from "@apollo/client/utilities"
 
 const mutation1 = gql`
   mutation CreateBotV2($request: CreateBotV2Request!) {
@@ -29,6 +30,8 @@ export interface MutationCreateBotV2Request {
     liquidityPoolIds?: Array<string>;
     isExitToUsdc: boolean;
     withdrawalAddress?: string;
+    rangeTier: RangeTier;
+    violateIndicators: Array<DeepPartial<BotViolateIndicatorSchema>>;
 }
 
 export enum MutationCreateBotV2 {
