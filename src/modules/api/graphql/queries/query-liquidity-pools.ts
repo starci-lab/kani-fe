@@ -36,7 +36,6 @@ const query1 = gql`
             staleMs
             clmmState {
                 tickSpacing
-                tickMultiplier
             }
             analytics {
                 volume24H
@@ -47,7 +46,6 @@ const query1 = gql`
             }
             dlmmState {
                 binStep
-                binOffset
                 basisPointMax
             }
         }

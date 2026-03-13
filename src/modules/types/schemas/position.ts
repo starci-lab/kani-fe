@@ -23,7 +23,7 @@ export interface PositionSchema extends AbstractSchema {
     performance?: PositionPerformanceSchema
     metadata?: unknown
     fees: PositionFeesSchema
-    positionSettlement?: PositionSettlementSchema
+    positionSettlements?: Array<PositionSettlementSchema>
     associatedLiquidityPool?: LiquidityPoolSchema
     rentAmount?: string
 }

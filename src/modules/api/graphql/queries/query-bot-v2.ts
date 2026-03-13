@@ -76,7 +76,7 @@ const query1 = gql`
               targetAmount
               quoteAmount
             }
-            positionSettlement {
+            positionSettlements {
               reason
               metadata
             }
@@ -108,11 +108,9 @@ const query1 = gql`
             staleMs
             clmmState {
               tickSpacing
-              tickMultiplier
             }
             dlmmState {
               binStep
-              binOffset
               basisPointMax
             }
             analytics {
