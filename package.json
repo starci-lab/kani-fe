@@ -44,6 +44,7 @@
     "react-jazzicon": "^1.0.4",
     "react-redux": "^9.2.0",
     "recharts": "^3.2.1",
+    "simple-statistics": "^7.8.9",
     "socket.io-client": "^4.8.1",
     "superjson": "^2.2.2",
     "swr": "^2.3.6",

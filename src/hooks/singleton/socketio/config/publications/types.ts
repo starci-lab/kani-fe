@@ -1,6 +1,7 @@
 import {
     DynamicLiquidityPoolInfoCacheResult 
 } from "@/modules/types"
+import { ViolateIndicatorResultEntry } from "@/redux"
 
 export type PublicationDynamicLiquidityPoolInfo = DynamicLiquidityPoolInfoCacheResult
 
@@ -23,7 +24,17 @@ export interface ReceivedToken {
 
 /** Event payload for confirm withdrawal publication. */
 export interface PublicationConfirmWithdrawalEventPayload {
+    /** The id of the bot. */
     botId: string
+    /** The transaction hashes. */
     txHashes: Array<string>
+    /** The received tokens. */
     receivedTokens: Array<ReceivedToken>
+}
+
+
+/** Event payload for indicators publication (violate indicator results for a bot). */
+export interface PublicationIndicatorsEventPayload {
+    /** The results of the indicators. */
+    entries: Array<ViolateIndicatorResultEntry>
 }

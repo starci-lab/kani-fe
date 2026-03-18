@@ -93,6 +93,11 @@ export interface SetConfirmWithdrawalPayload {
     receivedTokens: Array<ReceivedToken>
 }
 
+// Set indicator payload
+export interface SetIndicatorPayload {
+    results: ViolateIndicatorResults
+}
+
 export interface SocketSlice {
     dynamicLiquidityPoolInfos: Record<string, DynamicLiquidityPoolInfoCacheResult>
     prices: Record<string, PublicationPrice>
@@ -100,6 +105,7 @@ export interface SocketSlice {
     tokenIds: Array<string>
     confirmWithdrawal?: PublicationConfirmWithdrawal
     showWithdrawalExecuting: boolean
+    indicators: ViolateIndicatorResults
 }
 
 // Set dynamic liquidity pool info payload
@@ -114,6 +120,46 @@ export interface SetPricePayload {
     price: PublicationPrice
 }
 
+/**
+ * The status of a violate indicator result.
+ */
+export enum IndicatorStatus {
+    /**
+     * The indicator has triggered (violation).
+     */
+    Trigger = "trigger",
+    /**
+     * The indicator has reentered (safe to re-enter).
+     */
+    Reentry = "reentry",
+    /**
+     * The indicator has no action.
+     */
+    NoAction = "noAction",
+}
+
+/** Record of a violate indicator result. */
+export interface IndicatorRecord {
+    time: number
+    value: number
+}
+
+/** Single violate indicator result (status + timeWindowMs + metadata). */
+export interface ViolateIndicatorResultEntry {
+    /** The id of the indicator. */
+    id: string
+    /** The status of the indicator. */
+    status: IndicatorStatus
+    /** The time window in milliseconds. */
+    timeWindowMs: number
+    /** The metadata of the indicator. */
+    metadata: unknown
+    /** The records of the indicator. */
+    records: Array<IndicatorRecord>
+}
+
+/** Cache result: per-bot array of violate indicator results (or null if calculator skipped). */
+export type ViolateIndicatorResults = Array<ViolateIndicatorResultEntry>
 
 const initialState: SocketSlice = {
     dynamicLiquidityPoolInfos: {},
@@ -121,6 +167,7 @@ const initialState: SocketSlice = {
     liquidityPoolIds: [],
     tokenIds: [],
     showWithdrawalExecuting: false,
+    indicators: [],
 }
 
 export const socketSlice = createSlice({
@@ -163,6 +210,9 @@ export const socketSlice = createSlice({
         setShowWithdrawalExecuting: (state, action: PayloadAction<boolean>) => {
             state.showWithdrawalExecuting = action.payload
         },
+        setIndicators: (state, action: PayloadAction<ViolateIndicatorResults>) => {
+            state.indicators = action.payload
+        },
     },
 })
 export const socketReducer = socketSlice.reducer
@@ -179,4 +229,5 @@ export const {
     removeSocketTokenId,
     setConfirmWithdrawal,
     setShowWithdrawalExecuting,
+    setIndicators,
 } = socketSlice.actions

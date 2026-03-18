@@ -34,6 +34,28 @@ const query1 = gql`
           gasBalanceAmount
           snapshotAt
         }
+        violateIndicators {
+          id
+          name
+          type
+          timeWindowMs
+          triggerThresholds {
+            operation
+            indicators {
+              name
+              op
+              value
+            }
+          }
+          reentryThresholds {
+            operation
+            indicators {
+              name
+              op
+              value
+            }
+          }
+        }
         activePosition {
           id
           type

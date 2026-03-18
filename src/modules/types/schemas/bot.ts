@@ -6,6 +6,7 @@ import { ActiveJobSchema } from "./active-job"
 import { PrivyMetadataSchema } from "./privy-metadata"
 import { AbstractSchema } from "./abstract"
 import { BotChartConfigSchema } from "./bot-chart-config"
+import { BotViolateIndicatorSchema } from "./bot-violate-indicator"
 
 export interface BotPerformance24H {
     roi: number
@@ -39,4 +40,5 @@ export interface BotSchema extends AbstractSchema {
     chartConfig?: BotChartConfigSchema
     status?: BotStatus
     avatarUrl: string
+    violateIndicators?: Array<BotViolateIndicatorSchema>
 }

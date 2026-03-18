@@ -59,6 +59,30 @@ const query1 = gql`
           createdAt
           updatedAt
         }
+        violateIndicators {
+          id
+          name
+          type
+          timeWindowMs
+          createdAt
+          updatedAt
+          triggerThresholds {
+            operation
+            indicators {
+              name
+              op
+              value
+            }
+          }
+          reentryThresholds {
+            operation
+            indicators {
+              name
+              op
+              value
+            }
+          }
+        }
       }
     }
   }
