@@ -71,7 +71,7 @@ export const Reserves = () => {
                     tooltipString="Reserves are the reserves of the pool."
                 />
                 {isLoading || !hasData ? (
-                    <div className="grid grid-cols-[1fr_150px] items-center gap-2">
+                    <div className="grid grid-cols-[1fr_135px] items-center gap-2">
                         <div className="flex items-center gap-2">
                             <KaniSkeleton className="h-[20px] w-[60px] rounded-md" />
                             <KaniDivider orientation="vertical" className="h-5" />
@@ -82,7 +82,7 @@ export const Reserves = () => {
                         </div>
                     </div>
                 ) : (
-                    <div className="grid grid-cols-[1fr_150px] items-center gap-2">
+                    <div className="grid grid-cols-[1fr_135px] items-center gap-2">
                         <div className="flex items-center gap-2">
                             <div className="text-sm">
                                 ${round(totalReservesInUsdDecimal)}

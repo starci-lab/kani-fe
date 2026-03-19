@@ -11,7 +11,6 @@ import { useAppDispatch } from "@/redux"
 import { computePercentage, round, toDecimalAmount } from "@/modules/utils"
 import Decimal from "decimal.js"
 import BN from "bn.js"
-
 export const Performance = () => {
     const updateBotPerformanceDisplayModeV2SwrMutation =
     useUpdateBotPerformanceDisplayModeV2SwrMutation()
@@ -259,7 +258,6 @@ export const Performance = () => {
 
         const diff = new Decimal(totalInUsd.sub(prev))
         const isPositive = diff.greaterThanOrEqualTo(0)
-        console.log(`diff: ${diff.toString()}, prev: ${prev.toString()}`)
         const roiUsdDecimal = computePercentage({
             numerator: diff,
             denominator: new Decimal(bot?.activePosition?.associatedPosition?.openSnapshot?.positionValueInUsd ?? 0),

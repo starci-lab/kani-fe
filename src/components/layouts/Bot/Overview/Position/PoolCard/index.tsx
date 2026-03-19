@@ -9,12 +9,14 @@ import {
     KaniLink,
 } from "../../../../../atomic"
 import { useAppSelector } from "@/redux"
-import { Spacer } from "@heroui/react"
+import { Divider, Spacer } from "@heroui/react"
 import { computePercentage, round } from "@/modules/utils"
 import { PoolTypeChip } from "../../../../../reuseable"
 import { CLMMContent } from "./CLMMContent"
 import { DLMMContent } from "./DLMMContent"
 import Decimal from "decimal.js"
+import { ClockIcon } from "@phosphor-icons/react"
+import { TimeCounter } from "../../../../../reuseable"
 
 export const PoolCard = (
 ) => {
@@ -36,8 +38,8 @@ export const PoolCard = (
     return (
         <KaniCard>
             <KaniCardBody>
-                <div className="flex items-center gap-4 justify-between">
-                    <div className="flex items-center gap-2 justify-start">
+                <div className="flex items-center gap-4 justify-between flex-col sm:flex-row">
+                    <div className="flex items-center gap-2">
                         <div className="flex items-center gap-1">
                             <KaniAvatar
                                 src={dex?.iconUrl}
@@ -73,6 +75,7 @@ export const PoolCard = (
                             <KaniLink
                                 color="foreground"
                                 isExternal
+                                className="whitespace-nowrap"
                                 size="sm"
                                 underline="hover"
                                 href={activePosition?.associatedLiquidityPool?.url ?? ""}>
@@ -83,6 +86,13 @@ export const PoolCard = (
                             <div className="text-sm">
                                 {computePercentage({ numerator: new Decimal(activePosition?.associatedLiquidityPool?.fee ?? 0), denominator: new Decimal(1) }).toString()}%
                             </div>
+                        </div>
+                        <Divider orientation="vertical" className="h-5" />
+                        <div className="flex justify-between items-center gap-1">
+                            <ClockIcon
+                                className="w-5 h-5 text-foreground-500"
+                            />
+                            <TimeCounter createdAt={activePosition?.associatedPosition?.createdAt} />
                         </div>
                     </div>
                 </div>
