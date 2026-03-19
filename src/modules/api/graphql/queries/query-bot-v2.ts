@@ -136,7 +136,11 @@ const query1 = gql`
               basisPointMax
             }
             analytics {
-              apr24H
+              apr24H {
+                fees
+                rewards
+                total
+              }
               fees24H
               liquidity
               tvl

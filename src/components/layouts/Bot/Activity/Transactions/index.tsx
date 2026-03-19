@@ -58,6 +58,9 @@ export const Transactions = () => {
         case TransactionType.Withdraw: {
             return <KaniChip color="success" size="sm" variant="flat">Withdraw</KaniChip>
         }
+        case TransactionType.TransferFees: {
+            return <KaniChip color="secondary" size="sm" variant="flat">Transfer Fees</KaniChip>
+        }
         }
     }
     const url = useCallback(

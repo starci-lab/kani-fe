@@ -4,10 +4,16 @@ import { LiquidityPoolClmmStateSchema } from "./liquidity-pool-clmm-state"
 import { LiquidityPoolDlmmStateSchema } from "./liquidity-pool-dlmm-state"
 import { AbstractSchema } from "./abstract"
 
+export interface GraphQLLiquidityPoolAprBreakdown {
+    fees: string
+    rewards: string
+    total: string
+}
+
 export interface GraphQLLiquidityPoolAnalytics {
     volume24H: string
     fees24H: string
-    apr24H: string
+    apr24H: GraphQLLiquidityPoolAprBreakdown
     tvl: string
     liquidity: string
 }

@@ -40,7 +40,11 @@ const query1 = gql`
             analytics {
                 volume24H
                 fees24H
-                apr24H
+                apr24H {
+                    fees
+                    rewards
+                    total
+                }
                 tvl
                 liquidity
             }

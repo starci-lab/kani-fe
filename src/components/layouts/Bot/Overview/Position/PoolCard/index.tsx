@@ -117,7 +117,7 @@ export const PoolCard = (
                     <div className="flex items-center justify-between">
                         <div className="text-sm text-foreground-500">APR 24H</div>
                         <div className="flex items-center gap-2 text-sm">
-                            {round(new Decimal(activePosition?.associatedLiquidityPool?.analytics?.apr24H ?? 0))}%
+                            {round(new Decimal(activePosition?.associatedLiquidityPool?.analytics?.apr24H?.total ?? 0))}%
                         </div>
                     </div>
                 </div>  

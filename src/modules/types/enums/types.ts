@@ -19,6 +19,7 @@ export enum TransactionType {
     Withdraw = "withdraw",
     OpenPosition = "openPosition",
     ClosePosition = "closePosition",
+    TransferFees = "transferFees",
 }
 
 export enum JobType {
