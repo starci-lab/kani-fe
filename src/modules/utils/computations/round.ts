@@ -7,7 +7,7 @@ import numeral from "numeral"
 export const round = (
     decimal: Decimal,
     fractionDigits = publicEnv().computation.round.fractionDigits,
-    maxLength = 6
+    maxLength = 4
 ): string => {
     // Step 1: Round the number using the configured fraction digits
     const rounded = decimal.toDecimalPlaces(
