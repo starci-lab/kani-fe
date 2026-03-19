@@ -78,12 +78,14 @@ export const DonutChart = ({
             {showLegend && (
                 <div className="flex flex-wrap items-start justify-start text-sm gap-1">
                     {chartData.map((item) => (
-                        <div key={item.name} className="flex items-center gap-2">
-                            <div
-                                className="h-2 w-2 rounded-full"
-                                style={{ backgroundColor: item.color }}
-                            ></div>
-                            <div className="text-sm text-default-500">{item.name}</div>
+                        <div key={item.name} className="grid grid-cols-[80px_60px] items-center gap-2">
+                            <div className="flex items-center gap-2">
+                                <div
+                                    className="h-2 w-2 rounded-full"
+                                    style={{ backgroundColor: item.color }}
+                                ></div>
+                                <div className="text-sm text-default-500">{item.name}</div>
+                            </div>
                             <div className="text-sm">
                                 {computePercentage({ numerator: new Decimal(item.value), denominator: new Decimal(1) }).toString()}%
                             </div>
