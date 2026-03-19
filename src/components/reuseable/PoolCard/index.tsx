@@ -6,9 +6,8 @@ import {
     KaniCardBody,
     KaniLink,
     KaniSkeleton,
-    KaniTooltip
 } from "../../atomic"
-import React, { useMemo } from "react"
+import React from "react"
 import { LiquidityPoolSchema } from "@/modules/types"
 import { useAppSelector } from "@/redux"
 import { computePercentage, round } from "@/modules/utils"
@@ -16,8 +15,8 @@ import { cn, Spacer } from "@heroui/react"
 import { PoolTypeChip } from "../PoolTypeChip"
 import { TooltipTitle } from "../TooltipTitle"
 import Decimal from "decimal.js"
-import { PlantIcon, SealCheckIcon } from "@phosphor-icons/react"
-import { DonutChart } from "../charts"
+import { SealCheckIcon } from "@phosphor-icons/react"
+import { Apr24HDisplay } from "../Apr24HDisplay"
 
 export interface PoolCardProps {
     liquidityPool: LiquidityPoolSchema
@@ -39,22 +38,6 @@ export const PoolCard = (
     const tokenB = tokens.find((token) => token.id === liquidityPool.tokenB)
     const dexes = useAppSelector((state) => state.static.dexes)
     const dex = dexes.find((dex) => dex.id === liquidityPool.dex)
-    const apr24HDecimal = useMemo(() => {
-        return new Decimal(liquidityPool.analytics?.apr24H?.total ?? 0)
-    }, [liquidityPool.analytics?.apr24H?.total])
-    const apr24HString = useMemo(() => {
-        return computePercentage({
-            numerator: new Decimal(liquidityPool.analytics?.apr24H?.total ?? 0),
-            denominator: new Decimal(1),
-            fractionDigits: 2,
-        }).toString()
-    }, [liquidityPool.analytics?.apr24H?.total])
-    const apr24HFeesDecimal = useMemo(() => {
-        return new Decimal(liquidityPool.analytics?.apr24H?.fees ?? 0)
-    }, [liquidityPool.analytics?.apr24H?.fees])
-    const apr24HRewardsDecimal = useMemo(() => {
-        return new Decimal(liquidityPool.analytics?.apr24H?.rewards ?? 0)
-    }, [liquidityPool.analytics?.apr24H?.rewards])
     const renderContent = () => {
         return <KaniCard
             isPressable
@@ -139,52 +122,11 @@ export const PoolCard = (
                     <div className="flex items-center justify-between">
                         <TooltipTitle title="APR 24H" classNames={{ title: "text-sm text-foreground-500" }} />
                         <div className="flex items-center gap-2">
-                            {liquidityPool.analytics?.apr24H
-                                ?
-                                <div className="flex items-center gap-1 text-success">
-                                    <PlantIcon
-                                        className="w-4 h-4"
-                                    />
-                                    <KaniTooltip
-                                        content={
-                                            (
-                                                <div>
-                                                    <div className="flex items-center gap-1">
-                                                        <div className="text-sm text-foreground-500">
-                                                        Total APR
-                                                        </div>
-                                                        <div className="text-sm">
-                                                            {computePercentage({ numerator: apr24HDecimal, denominator: new Decimal(1) }).toString()}%
-                                                        </div>
-                                                    </div>
-                                                    <Spacer y={1} />
-                                                    <div className="flex items-center gap-1">
-                                                        <DonutChart
-                                                            showTooltip={false}
-                                                            data={
-                                                                [
-                                                                    { 
-                                                                        name: "Fees", 
-                                                                        value: apr24HFeesDecimal.toNumber() 
-                                                                    },
-                                                                    { 
-                                                                        name: "Rewards", 
-                                                                        value: apr24HRewardsDecimal.toNumber() 
-                                                                    },
-                                                                ]
-                                                            }
-                                                        />
-                                                    </div>
-                                                </div>
-                                            )
-                                        }
-                                    >
-                                        <div className="text-sm">
-                                            {`${apr24HString}%`}
-                                        </div>
-                                    </KaniTooltip>
-                                </div>
-                                : <KaniSkeleton className="h-5 w-[50px] rounded-md" />}
+                            {
+                                liquidityPool.analytics?.apr24H && (
+                                    <Apr24HDisplay apr24H={liquidityPool.analytics.apr24H} fractionDigits={2} />
+                                )
+                            }
                         </div>
                     </div>
                 </div>

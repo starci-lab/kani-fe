@@ -11,12 +11,11 @@ import {
 import { useAppSelector } from "@/redux"
 import { Divider, Spacer } from "@heroui/react"
 import { computePercentage, round } from "@/modules/utils"
-import { PoolTypeChip } from "../../../../../reuseable"
+import { Apr24HDisplay, PoolTypeChip, TimeCounter } from "../../../../../reuseable"
 import { CLMMContent } from "./CLMMContent"
 import { DLMMContent } from "./DLMMContent"
 import Decimal from "decimal.js"
 import { ClockIcon } from "@phosphor-icons/react"
-import { TimeCounter } from "../../../../../reuseable"
 
 export const PoolCard = (
 ) => {
@@ -34,6 +33,10 @@ export const PoolCard = (
     const dex = useMemo(
         () => dexes.find((dex) => dex.id === activePosition?.associatedLiquidityPool?.dex),
         [dexes, activePosition?.associatedLiquidityPool?.dex]
+    )
+    const liquidityPool = useMemo(
+        () => activePosition?.associatedLiquidityPool,
+        [activePosition?.associatedLiquidityPool]
     )
     return (
         <KaniCard>
@@ -126,11 +129,15 @@ export const PoolCard = (
                     </div>
                     <div className="flex items-center justify-between">
                         <div className="text-sm text-foreground-500">APR 24H</div>
-                        <div className="flex items-center gap-2 text-sm">
-                            {round(new Decimal(activePosition?.associatedLiquidityPool?.analytics?.apr24H?.total ?? 0))}%
+                        <div className="flex items-center gap-2">
+                            {
+                                liquidityPool?.analytics?.apr24H && (
+                                    <Apr24HDisplay apr24H={liquidityPool?.analytics?.apr24H} />
+                                )
+                            }
                         </div>
                     </div>
-                </div>  
+                </div>
             </KaniCardBody>
         </KaniCard >
     )
