@@ -9,7 +9,7 @@ import {
     KaniModalFooter,
     KaniAlert,
 } from "../../atomic"
-import { useExportPrivateKeyDisclosure } from "@/hooks/singleton/discloresure"
+import { useExportPrivateKeyDisclosure } from "@/hooks/singleton"
 import { useAppSelector } from "@/redux"
 import { Spacer } from "@heroui/react"
 import { SnippetIcon } from "../../reuseable"

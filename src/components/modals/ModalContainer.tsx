@@ -11,6 +11,7 @@ import { MenuModal } from "./MenuModal"
 import { SortByModal } from "./SortByModal"
 import { WithdrawModal } from "./WithdrawModal"
 import { RequireMFAModal } from "./RequireMFAModal"
+import { EditViolateIndicatorRulesModal } from "./EditViolateIndicatorRulesModal"
 
 export const ModalContainer = () => {
     return (
@@ -27,6 +28,7 @@ export const ModalContainer = () => {
             <SortByModal />
             <WithdrawModal />
             <RequireMFAModal />
+            <EditViolateIndicatorRulesModal />
         </>
     )
 }

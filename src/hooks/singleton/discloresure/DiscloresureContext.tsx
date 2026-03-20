@@ -20,6 +20,7 @@ import {
     useWithdrawDisclosureCore,
     useRequireMFADisclosureCore,
     useAdvancedConfigurationDisclosureCore,
+    useViolateIndicatorRulesDisclosureCore,
 } from "./core"
 
 export interface DiscloresureContextType {
@@ -41,6 +42,7 @@ export interface DiscloresureContextType {
     withdraw: ReturnType<typeof useWithdrawDisclosureCore>
     requireMFA: ReturnType<typeof useRequireMFADisclosureCore>
     advancedConfiguration: ReturnType<typeof useAdvancedConfigurationDisclosureCore>
+    violateIndicatorRules: ReturnType<typeof useViolateIndicatorRulesDisclosureCore>
 }
 
 export const DiscloresureContext = createContext<DiscloresureContextType | null>(null)
@@ -64,6 +66,7 @@ export const DiscloresureProvider = ({ children }: PropsWithChildren) => {
     const withdraw = useWithdrawDisclosureCore()
     const requireMFA = useRequireMFADisclosureCore()
     const advancedConfiguration = useAdvancedConfigurationDisclosureCore()
+    const violateIndicatorRules = useViolateIndicatorRulesDisclosureCore()
     const value = useMemo(() => ({
         connect, 
         exportPrivateKey, 
@@ -82,7 +85,8 @@ export const DiscloresureProvider = ({ children }: PropsWithChildren) => {
         sortBy,
         withdraw,
         requireMFA,
-        advancedConfiguration
+        advancedConfiguration,
+        violateIndicatorRules
     }), [
         connect, 
         exportPrivateKey, 
@@ -101,7 +105,8 @@ export const DiscloresureProvider = ({ children }: PropsWithChildren) => {
         sortBy,
         withdraw,
         requireMFA,
-        advancedConfiguration
+        advancedConfiguration,
+        violateIndicatorRules
     ])
     return (
         <DiscloresureContext.Provider value={value}>
